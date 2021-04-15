@@ -1,8 +1,26 @@
 package controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+
 
 public class MainTemplateController {
+
+    @FXML
+    private ImageView profilePictureImageView;
+
+    @FXML
+    private Label userNameLabel;
+
+    @FXML
+    private Label userRoleLabel;
+
+    @FXML
+    private Label lastSyncLabel;
+
+
     public void toMainScreen(ActionEvent actionEvent) {
     }
 
