@@ -1,0 +1,116 @@
+.button{
+    -fx-font-family: Verdana;
+    -fx-text-fill: lightgrey;
+}
+
+.hyperlink{
+    -fx-border-style: None;
+    -fx-font-family: Verdana;
+    -fx-text-fill: lightgrey;
+    -fx-border-color: transparent;
+}
+
+.upload{
+    -fx-background-radius: 15px;
+    -fx-background-color:  #007A9F;
+    -fx-font-size: 12px;
+}
+.login{
+    -fx-font-size: 15px;
+    -fx-background-radius: 15px;
+    -fx-background-color: #a1289f;
+}
+
+.round{
+    -fx-background-color: #1f2328;
+    -fx-text-fill: lightgrey;
+    -fx-border-radius: 20;
+    -fx-border-color: lightgrey;
+    -fx-border-width: 2;
+    -fx-font-family: Verdana;
+    -fx-text-alignment: center;
+    -fx-padding: 0;
+    -fx-font-size: 25px;
+}
+
+.round:hover{
+    -fx-border-color: #a1289f;
+    -fx-font-size: 27px;
+    -fx-text-fill: #a1289f;
+}
+
+.round:pressed{
+    -fx-border-color: #771f76;
+    -fx-font-size: 27px;
+    -fx-text-fill: #771f76;
+}
+.submit{
+    -fx-background-color: #a1289f;
+    -fx-background-radius: 15px;
+    -fx-font-size: 20px;
+}
+
+.view{
+    -fx-background-color:  #007A9F;
+    -fx-font-size: 15px;
+    -fx-background-radius: 10px;
+}
+
+.create{
+    -fx-background-color: #568c58;
+    -fx-font-size: 15px;
+    -fx-background-radius: 12px;
+}
+
+.create:hover{
+    -fx-background-color: #4b7a4d;
+    -fx-font-size: 16px;
+}
+
+.create:pressed{
+    -fx-background-color: #406942;
+    -fx-font-size: 16px;
+}
+
+.upload:hover{
+    -fx-background-color: #046f91;
+    -fx-font-size: 13px;
+}
+
+.upload:pressed{
+    -fx-background-color: #025B77;
+}
+
+.submit:hover{
+    -fx-background-color: #8f258d;
+    -fx-font-size: 21px;
+}
+
+.submit:pressed{
+    -fx-background-color: #771f76;
+}
+
+.login:hover{
+    -fx-font-size: 16px;
+    -fx-background-color: #8f258d;
+}
+
+
+.link:hover{
+    -fx-text-fill: #a1289f;
+    -fx-font-size: 13px;
+}
+
+.link:pressed{
+    -fx-text-fill: #771f76;
+    -fx-font-size: 13px;
+}
+
+.menuButton{
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+}
+
+.menuButton:hover{
+    -fx-pref-width: 180;
+}
