@@ -14,7 +14,6 @@ public class TeamMember {
     private String teamRole;
     private String email;
     private String sportBranch;
-
     //ImageView is used instead of Image to display photo easily
     private ImageView profilePhoto;
 
