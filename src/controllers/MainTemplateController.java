@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import models.UserSession;
@@ -23,7 +24,7 @@ public class MainTemplateController {
 
     private UserSession user;
 
-    public void initData(UserSession user){
+    public void initData(UserSession user) {
         this.user = user;
         userNameLabel.setText(user.getUser().getFirstName());
         userRoleLabel.setText(user.getUser().getTeamRole());
@@ -62,6 +63,5 @@ public class MainTemplateController {
 
     public void SynchronizeData(ActionEvent actionEvent) {
     }
-
-
 }
+
