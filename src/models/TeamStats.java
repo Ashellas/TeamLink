@@ -14,6 +14,14 @@ public class TeamStats extends Stats{
         this.trainingPerformanceReport = trainingPerformanceReport;
     }
 
+    //For teams in the standings
+    public TeamStats(int id, int gamesPlayed, int gamesWon, int gamesLost, int gamesDrawn, int placement, int points, int gamesLeft) {
+        super(id, gamesPlayed, gamesWon, gamesLost, gamesDrawn);
+        this.placement = placement;
+        this.points = points;
+        this.gamesLeft = gamesLeft;
+    }
+
     public int getPlacement() {
         return placement;
     }

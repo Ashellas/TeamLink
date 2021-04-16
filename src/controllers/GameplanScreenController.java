@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import models.UserSession;
 
 
 public class GameplanScreenController {
@@ -20,6 +21,11 @@ public class GameplanScreenController {
     @FXML
     private Label lastSyncLabel;
 
+    private UserSession user;
+
+    public void initData(UserSession user){
+        this.user = user;
+    }
 
     public void toMainScreen(ActionEvent actionEvent) {
     }
