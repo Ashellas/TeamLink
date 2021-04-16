@@ -14,9 +14,8 @@ public class Main extends Application {
 //aasd
     @Override
     public void start(Stage primaryStage) throws Exception{
-<<<<<<< Updated upstream
         Parent root = FXMLLoader.load(getClass().getResource("views/MainTemplate2.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("TeamLink");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         primaryStage.setMinHeight(700);
