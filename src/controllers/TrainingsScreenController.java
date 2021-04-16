@@ -25,6 +25,9 @@ public class TrainingsScreenController {
 
     public void initData(UserSession user){
         this.user = user;
+        userNameLabel.setText(user.getUser().getFirstName());
+        userRoleLabel.setText(user.getUser().getTeamRole());
+        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
     }
 
     public void toMainScreen(ActionEvent actionEvent) {

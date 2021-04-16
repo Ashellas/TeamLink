@@ -25,6 +25,10 @@ public class MainScreenController {
 
     public void initData(UserSession user){
         this.user = user;
+        userNameLabel.setText(user.getUser().getFirstName());
+        userRoleLabel.setText(user.getUser().getTeamRole());
+        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        lastSyncLabel.setText(user.getLastSync().toString()); //TODO get timeDiff in background maybe
     }
 
     public void toMainScreen(ActionEvent actionEvent) {

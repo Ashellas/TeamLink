@@ -2,6 +2,7 @@ package models;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class UserSession {
     private TeamMember user;
@@ -14,8 +15,9 @@ public class UserSession {
     private Connection databaseConnection;
     private ArrayList<TeamApplication> teamApplications;
     private ArrayList<Gameplan> gameplans;
+    private Date lastSync;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ArrayList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ArrayList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -26,6 +28,7 @@ public class UserSession {
         this.databaseConnection = databaseConnection;
         this.teamApplications = teamApplications;
         this.gameplans = gameplans;
+        this.lastSync = lastSync;
     }
 
     public TeamMember getUser() {
@@ -66,5 +69,9 @@ public class UserSession {
 
     public ArrayList<Gameplan> getGameplans() {
         return gameplans;
+    }
+
+    public Date getLastSync() {
+        return lastSync;
     }
 }

@@ -23,6 +23,13 @@ public class ChatScreenController {
 
     private UserSession user;
 
+    public void initData(UserSession user){
+        this.user = user;
+        userNameLabel.setText(user.getUser().getFirstName());
+        userRoleLabel.setText(user.getUser().getTeamRole());
+        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+    }
+
     public void toMainScreen(ActionEvent actionEvent) {
     }
 
@@ -56,7 +63,4 @@ public class ChatScreenController {
     public void SynchronizeData(ActionEvent actionEvent) {
     }
 
-    public void initData(UserSession user){
-        this.user = user;
-    }
 }
