@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+<<<<<<< Updated upstream
+=======
 import javafx.stage.StageStyle;
 
 import java.awt.*;
@@ -14,9 +16,17 @@ public class Main extends Application {
 //aasd
     @Override
     public void start(Stage primaryStage) throws Exception{
+<<<<<<< Updated upstream
         Parent root = FXMLLoader.load(getClass().getResource("views/MainTemplate2.fxml"));
+=======
+<<<<<<< Updated upstream
+        Parent root = FXMLLoader.load(getClass().getResource("views/MainTemplate.fxml"));
+        primaryStage.setTitle("Hello World");
+=======
         Parent root = FXMLLoader.load(getClass().getResource("views/DemoScene.fxml"));
+>>>>>>> Stashed changes
         primaryStage.setTitle("TeamLink");
+>>>>>>> Stashed changes
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         primaryStage.setMinHeight(700);
