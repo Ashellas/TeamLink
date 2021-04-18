@@ -1,13 +1,18 @@
 package controllers;
 
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import models.DatabaseManager;
 import models.Team;
 import models.TeamMember;
@@ -17,8 +22,7 @@ import org.controlsfx.control.PopOver;
 import javax.xml.crypto.Data;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -33,13 +37,26 @@ public class DemoSceneController implements Initializable {
     private Label userRoleLabel;
 
     @FXML
+    private Label counter;
+
+    @FXML
     private Label lastSyncLabel;
 
     private Executor exec;
 
+    private Executor executor;
+
+    @FXML
+    private ImageView syncImage;
+
     private UserSession user;
 
     private TeamMember member;
+
+    private Date timeLoaded;
+
+    @FXML
+    private ProgressBar loader;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,8 +65,25 @@ public class DemoSceneController implements Initializable {
             t.setDaemon(true);
             return t ;
         });
+        executor = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(false);
+            return t ;
+        });
         System.out.println(" Tried at : " + new java.util.Date());
         createUserSession();
+        rotate();
+        timeLoaded = new Date();
+        }
+
+    //Indefinite rotation
+    private void rotate() {
+        RotateTransition rt = new RotateTransition(Duration.seconds(2), syncImage);
+        rt.setFromAngle(0);
+        rt.setToAngle(360);
+        rt.setCycleCount(Animation.INDEFINITE);
+        rt.play();
+
     }
 
     private void createUserSession() {
@@ -96,15 +130,6 @@ public class DemoSceneController implements Initializable {
                 return member;
             }
         };
-        userCreateTask.setOnFailed(e -> {
-            userCreateTask.getException().printStackTrace();
-            // inform user of error...
-        });
-
-        userCreateTask.setOnSucceeded(e ->
-                // Task.getValue() gives the value returned from call()...
-                System.out.println(" Succeed at : " + new java.util.Date()));
-
         // run the task using a thread from the thread pool:
         exec.execute(userCreateTask);
     }

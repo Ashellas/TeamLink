@@ -36,10 +36,11 @@ public class Team {
     }
 
     //For teams which do not belong to user
-    public Team(int teamId, String teamName, String abbrevation) {
+    public Team(int teamId, String teamName, String abbrevation, TeamStats teamStats) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.abbrevation = abbrevation;
+        this.teamStats = teamStats;
     }
 
 

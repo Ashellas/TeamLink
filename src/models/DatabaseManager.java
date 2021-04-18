@@ -16,8 +16,33 @@ public class DatabaseManager {
             return null;
         }
         ArrayList<Team> userTeams = createUserTeams(user, databaseConnection);
+        //ArrayList<ArrayList<Team>> leagueTeams = createLeagueTeams(databaseConnection, userTeams);
+        ArrayList<ArrayList<Game>> gamesOfTheCurrentRound = new ArrayList<>();
+        for( Team team : userTeams){
+            gamesOfTheCurrentRound.add(createGamesOfTheCurrentRound(databaseConnection, team));
+        }
         return null;
     }
+
+
+    private static ArrayList<Game> createGamesOfTheCurrentRound(Connection databaseConnection, Team team) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
+                "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? " +
+                "join league_teams lt on lt.league_team_id = league_games.away_team_id join league_teams t " +
+                "on t.league_team_id = league_games.home_team_id");
+        prepStmt.setInt(1, team.getLeagueId());
+        ResultSet gamesResultSet = prepStmt.executeQuery();
+        while (gamesResultSet.next()){
+            Date gameDate = gamesResultSet.getDate("game_date_time");
+            int roundNo = gamesResultSet.getInt("round_no");
+            String gameLocationName = gamesResultSet.getString("game_location_name");
+            String gameLocationLink = gamesResultSet.getString("game_location_link");
+            String result = gamesResultSet.getString("final_score");
+            //TODO get teams from the standings
+        }
+        return null;
+    }
+
 
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
         PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * FROM team_members " +
