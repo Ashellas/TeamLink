@@ -1,6 +1,8 @@
 package models;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -29,6 +31,10 @@ public class UserSession {
         this.teamApplications = teamApplications;
         this.gameplans = gameplans;
         this.lastSync = lastSync;
+    }
+
+    public UserSession() throws SQLException {
+        this.databaseConnection = DriverManager.getConnection("jdbc:mysql://139.177.181.92:3306/teamlink", "atak", "**CTRLaltBilkentg3m**");
     }
 
     public TeamMember getUser() {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Team {
 
     private int teamId;
+    private int databaseTeamId;
     private int leagueId;
     private String teamName;
     private String abbrevation;
@@ -19,8 +20,9 @@ public class Team {
     private TeamStats teamStats;
     private ArrayList<TeamMember> teamMembers;
 
-    public Team(int teamId, int leagueId, String teamName, String abbrevation, int teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
+    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, int teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
         this.teamId = teamId;
+        this.databaseTeamId = databaseTeamId;
         this.leagueId = leagueId;
         this.teamName = teamName;
         this.abbrevation = abbrevation;
@@ -40,8 +42,14 @@ public class Team {
         this.abbrevation = abbrevation;
     }
 
+
+
     public int getTeamId() {
         return teamId;
+    }
+
+    public int getDatabaseTeamId() {
+        return databaseTeamId;
     }
 
     public int getLeagueId() {

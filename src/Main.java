@@ -1,8 +1,15 @@
+import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+>>>>>>> Stashed changes
 
 public class Main extends Application {
 //aasd
@@ -10,6 +17,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("views/MainTemplate.fxml"));
         primaryStage.setTitle("Hello World");
+        Parent root = FXMLLoader.load(getClass().getResource("views/DemoScene.fxml"));
+        primaryStage.setTitle("TeamLink");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         primaryStage.show();
