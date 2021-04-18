@@ -9,20 +9,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 public class Main extends Application {
 //aasd
     @Override
     public void start(Stage primaryStage) throws Exception{
-<<<<<<< Updated upstream
-        Parent root = FXMLLoader.load(getClass().getResource("views/MainTemplate.fxml"));
-        primaryStage.setTitle("Hello World");
-=======
->>>>>>> Stashed changes
+
         Parent root = FXMLLoader.load(getClass().getResource("views/DemoScene.fxml"));
         primaryStage.setTitle("TeamLink");
         primaryStage.setScene(new Scene(root));
