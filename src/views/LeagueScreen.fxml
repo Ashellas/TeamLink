@@ -1,480 +1,614 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <Pane layoutY="7.0" prefHeight="1080.0" prefWidth="1922.0" style="-fx-background-color: #1f2328;" />
-      <VBox layoutX="106.0" layoutY="454.0" prefHeight="800.0" prefWidth="140.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="170.0">
+      <GridPane style="-fx-background-color: #3e4752;">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/home_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefWidth="80.0" styleClass="buttonText" text="Menu" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#toSquadScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/squad_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefHeight="20.0" prefWidth="80.0" styleClass="buttonText" text="Squad" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="100.0" mnemonicParsing="false" onAction="#toCalendarScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/calendar_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefHeight="20.0" prefWidth="80.0" styleClass="buttonText" text="Calendar" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="189.0" mnemonicParsing="false" onAction="#toGameplanScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/gameplan_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Gameplans" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="279.0" mnemonicParsing="false" onAction="#toTrainingsScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/training_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Training" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="368.0" mnemonicParsing="false" onAction="#toLeagueScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/league_purple.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="League" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="458.0" mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/chat_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Chat/Forum" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="10.0" layoutY="548.0" mnemonicParsing="false" onAction="#toSettingsScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
-                           <image>
-                              <Image url="@../Resources/Images/settings_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Settings" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-         </children>
-      </VBox>
-      <HBox alignment="CENTER_LEFT" layoutX="300.0" layoutY="7.0" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #30363d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#logoutButtonPushed" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/Images/logout_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefWidth="80.0" styleClass="buttonText" text="Logout" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
-               <HBox.margin>
-                  <Insets left="15.0" right="15.0" />
-               </HBox.margin>
-            </Pane>
-            <Button layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="80.0" prefWidth="120.0" styleClass="help" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/Images/help_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefHeight="20.0" prefWidth="54.0" styleClass="buttonText" text="Help" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="5.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-         </children></HBox>
-      <HBox alignment="CENTER_RIGHT" layoutX="1590.0" prefHeight="80.0" prefWidth="700.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <VBox prefHeight="60.0" prefWidth="100.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="Last Sync" textFill="LIGHTGRAY">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="5 mins ago" textFill="LIGHTGRAY">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
+                  <Button mnemonicParsing="false" onAction="#logoutButtonPushed" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/logout_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefWidth="80.0" styleClass="buttonText" text="Logout" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                  </Pane>
+                  <Button layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="80.0" prefWidth="120.0" styleClass="help" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/help_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                              <Label prefHeight="20.0" prefWidth="54.0" styleClass="buttonText" text="Help" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
-            </VBox>
-            <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
-               <HBox.margin>
-                  <Insets left="15.0" right="15.0" />
-               </HBox.margin>
-            </Pane>
-            <Button fx:id="mainMenuButton22" mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/Images/sync_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefWidth="242.0" styleClass="buttonText" text="Synchronize" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
-               <HBox.margin>
-                  <Insets left="15.0" right="15.0" />
-               </HBox.margin>
-            </Pane>
-            <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
-                     <children>
-                        <ImageView fx:id="notificationImageView" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/Images/notification_white.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefWidth="242.0" styleClass="buttonText" text="Notifications" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </HBox>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
-               <HBox.margin>
-                  <Insets left="15.0" right="15.0" />
-               </HBox.margin>
-            </Pane>
-            <VBox prefHeight="60.0" prefWidth="100.0">
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="700.0" GridPane.columnIndex="1">
                <children>
-                  <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="User Name" textFill="LIGHTGRAY">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="userRoleLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="Role" textFill="LIGHTGRAY">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
-            <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
-               <HBox.margin>
-                  <Insets left="15.0" right="15.0" />
-               </HBox.margin>
-            </Pane>
-            <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <graphic>
-                  <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
+                  <VBox prefHeight="60.0" prefWidth="100.0">
                      <children>
-                        <ImageView fx:id="profilePictureImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/Images/profile_white.png" />
-                           </image>
-                           <HBox.margin>
+                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="Last Sync" textFill="LIGHTGRAY">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="5 mins ago" textFill="LIGHTGRAY">
+                           <VBox.margin>
                               <Insets />
-                           </HBox.margin>
-                        </ImageView>
-                        <Label prefWidth="242.0" styleClass="buttonText" text="Profile" textFill="WHITE" visible="false">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
+                           </VBox.margin>
                         </Label>
                      </children>
+                  </VBox>
+                  <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                  </Pane>
+                  <Button fx:id="mainMenuButton22" mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
-                        <Insets left="10.0" />
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
-                  </HBox>
-               </graphic>
-               <HBox.margin>
-                  <Insets right="15.0" />
-               </HBox.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/sync_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefWidth="242.0" styleClass="buttonText" text="Synchronize" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                  </Pane>
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
+                           <children>
+                              <ImageView fx:id="notificationImageView" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/notification_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefWidth="242.0" styleClass="buttonText" text="Notifications" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                  </Pane>
+                  <VBox prefHeight="60.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="User Name" textFill="LIGHTGRAY">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="userRoleLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="Role" textFill="LIGHTGRAY">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Pane maxHeight="60.0" minHeight="0.0" prefHeight="80.0" prefWidth="2.0" style="-fx-background-color: a1289f;">
+                     <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                     </HBox.margin>
+                  </Pane>
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
+                           <children>
+                              <ImageView fx:id="profilePictureImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/profile_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefWidth="242.0" styleClass="buttonText" text="Profile" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </HBox>
          </children>
-      </HBox>
+      </GridPane>
+      <GridPane alignment="CENTER" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <GridPane GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="327.0" minHeight="133.0" prefHeight="138.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="645.0" minHeight="451.0" prefHeight="640.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label contentDisplay="CENTER" text="Standings" textFill="LIGHTGRAY">
+                     <font>
+                        <Font size="39.0" />
+                     </font>
+                     <graphic>
+                        <Line endX="63.0" startX="-100.0" stroke="#a1289f" strokeWidth="2.0" translateX="2.0" translateY="25.0" />
+                     </graphic>
+                  </Label>
+                  <TableView fx:id="standingsTableView" prefHeight="640.0" prefWidth="572.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="1">
+                    <columns>
+                      <TableColumn fx:id="teamsColumnStandings" maxWidth="478.0" minWidth="-1.0" prefWidth="200.0" text="Teams" />
+                      <TableColumn fx:id="winColumnStandings" prefWidth="95.0" text="W" />
+                        <TableColumn fx:id="drawColumnStandings" prefWidth="95.0" text="D" />
+                        <TableColumn fx:id="losesColumnStandings" prefWidth="95.0" text="L" />
+                        <TableColumn fx:id="pointsColumnStandings" prefWidth="95.0" text="P" />
+                    </columns>
+                  </TableView>
+               </children>
+            </GridPane>
+            <GridPane>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="1">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/home_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefWidth="80.0" styleClass="buttonText" text="Menu" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toSquadScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="2">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/squad_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefHeight="20.0" prefWidth="80.0" styleClass="buttonText" text="Squad" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toCalendarScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="3">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/calendar_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefHeight="20.0" prefWidth="80.0" styleClass="buttonText" text="Calendar" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toGameplanScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="4">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/gameplan_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Gameplans" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toTrainingsScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="5">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/training_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Training" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toLeagueScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="6">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/league_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="League" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="7">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/chat_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Chat/Forum" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#toSettingsScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="8">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                           <children>
+                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                 <image>
+                                    <Image url="@../Resources/Images/settings_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label ellipsisString="" prefWidth="80.0" styleClass="buttonText" text="Settings" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </GridPane>
+            <GridPane prefHeight="719.0" prefWidth="653.0" GridPane.columnIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="141.0" minHeight="87.0" prefHeight="136.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="562.0" minHeight="10.0" prefHeight="253.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="406.0" minHeight="10.0" prefHeight="93.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="406.0" minHeight="10.0" prefHeight="291.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label contentDisplay="CENTER" text="Team Overview" textFill="LIGHTGRAY" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                     <graphic>
+                        <Line endX="100.0" startX="-100.0" stroke="#a1289f" strokeWidth="2.0" translateY="14.0" />
+                     </graphic>
+                  </Label>
+                  <Label contentDisplay="CENTER" text="Fixture" textFill="LIGHTGRAY">
+                     <font>
+                        <Font size="39.0" />
+                     </font>
+                     <graphic>
+                        <Line endX="40.0" startX="-100.0" stroke="#a1289f" strokeWidth="2.0" translateY="22.0" />
+                     </graphic>
+                  </Label>
+                  <TableView fx:id="fixtureTable" prefHeight="254.0" prefWidth="653.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="1">
+                    <columns>
+                      <TableColumn fx:id="homeColumn" prefWidth="150.0" text="HOME" />
+                      <TableColumn fx:id="awayColumn" prefWidth="150.0" text="AWAY" />
+                        <TableColumn fx:id="scoreColumn" prefWidth="150.0" text="SCORE" />
+                        <TableColumn fx:id="dateColumn" prefWidth="150.0" text="DATE" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="teamOverviewTable" prefHeight="254.0" prefWidth="653.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="3">
+                    <columns>
+                      <TableColumn fx:id="placementColumn" prefWidth="97.0" text="Placement" />
+                      <TableColumn fx:id="winsColumn" prefWidth="97.0" text="Wins" />
+                        <TableColumn fx:id="drawsColumn" prefWidth="97.0" text="Draws" />
+                        <TableColumn fx:id="losesColumn" prefWidth="97.0" text="Loses" />
+                        <TableColumn fx:id="pointsColumn" prefWidth="97.0" text="Points" />
+                        <TableColumn fx:id="matchesLeftColumn" prefWidth="97.0" text="Matches Left" />
+                    </columns>
+                  </TableView>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
    </children>
-</AnchorPane>
+</GridPane>

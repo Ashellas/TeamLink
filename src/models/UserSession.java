@@ -1,5 +1,7 @@
 package models;
 
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +12,7 @@ public class UserSession {
     private TeamMember user;
     private ArrayList<Team> userTeams;
     private ArrayList<Game> gamesOfTheCurrentRound;
-    private ArrayList<Team> standings;//It can be designed better
+    private ObservableList<Team> standings;//It can be designed better
     private ArrayList<Notifications> notifications;
     private ArrayList<CalendarEvent> calendarEvents;
     private ArrayList<Training> trainings;
@@ -19,7 +21,7 @@ public class UserSession {
     private ArrayList<Gameplan> gameplans;
     private Date lastSync;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ArrayList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ObservableList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -49,7 +51,7 @@ public class UserSession {
         return gamesOfTheCurrentRound;
     }
 
-    public ArrayList<Team> getStandings() {
+    public ObservableList<Team> getStandings() {
         return standings;
     }
 

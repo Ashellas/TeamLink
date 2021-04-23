@@ -104,3 +104,13 @@
     -fx-background-color: #d3d3d3;
     -fx-border-color: black;
 }
+
+.back{
+    -fx-background-color: transparent;
+    -fx-font-size: 15px;
+}
+
+.back:hover{
+    -fx-pref-width: 150px;
+    -fx-background-color: #343a42;
+}

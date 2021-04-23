@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class DatabaseManager {
 
-
     public static UserSession login( Connection databaseConnection, String email, String password) throws SQLException {
         TeamMember user = createUser(databaseConnection, email, password);
         if(user == null){
@@ -23,7 +22,6 @@ public class DatabaseManager {
         }
         return null;
     }
-
 
     private static ArrayList<Game> createGamesOfTheCurrentRound(Connection databaseConnection, Team team) throws SQLException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
@@ -42,7 +40,6 @@ public class DatabaseManager {
         }
         return null;
     }
-
 
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
         PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * FROM team_members " +

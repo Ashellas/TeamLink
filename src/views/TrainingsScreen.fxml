@@ -386,7 +386,7 @@
                      <children>
                         <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../IdeaProjects/tactics/src/Resources/Images/help_white.png" />
+                              <Image url="@../Resources/Images/help_white.png" />
                            </image>
                            <HBox.margin>
                               <Insets />
