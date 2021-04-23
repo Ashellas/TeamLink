@@ -8,7 +8,14 @@ import java.util.ArrayList;
 public class Team {
 
     private int teamId;
+    private int databaseTeamId;
     private int leagueId;
+    private int gamesWon;
+    private int gamesDrawn;
+    private int gamesLost;
+    private int points;
+    private int placement;
+    private int matchesLeft;
     private String teamName;
     private String abbrevation;
     private int teamCode;
@@ -19,8 +26,9 @@ public class Team {
     private TeamStats teamStats;
     private ArrayList<TeamMember> teamMembers;
 
-    public Team(int teamId, int leagueId, String teamName, String abbrevation, int teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
+    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, int teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
         this.teamId = teamId;
+        this.databaseTeamId = databaseTeamId;
         this.leagueId = leagueId;
         this.teamName = teamName;
         this.abbrevation = abbrevation;
@@ -31,21 +39,58 @@ public class Team {
         this.teamLogo = new ImageView(teamLogo);
         this.teamStats = teamStats;
         this.teamMembers = teamMembers;
+        this.gamesWon = teamStats.getGamesWon();
+        this.gamesDrawn = teamStats.getGamesDrawn();
+        this.gamesLost = teamStats.getGamesLost();
+        this.points = teamStats.getPoints();
+        this.placement = teamStats.getPlacement();
+        this.matchesLeft = teamStats.getGamesLeft();
     }
 
     //For teams which do not belong to user
-    public Team(int teamId, String teamName, String abbrevation) {
+    public Team(int teamId, String teamName, String abbrevation, TeamStats teamStats) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.abbrevation = abbrevation;
+        this.teamStats = teamStats;
     }
+
+
 
     public int getTeamId() {
         return teamId;
     }
 
+    public int getDatabaseTeamId() {
+        return databaseTeamId;
+    }
+
     public int getLeagueId() {
         return leagueId;
+    }
+
+    public int getGamesWon(){
+        return gamesWon;
+    }
+
+    public int getGamesDrawn(){
+        return gamesDrawn;
+    }
+
+    public int getGamesLost(){
+        return gamesLost;
+    }
+
+    public int getPoints(){
+        return points;
+    }
+
+    public int getPlacement(){
+        return placement;
+    }
+
+    public int getMatchesLeft(){
+        return matchesLeft;
     }
 
     public String getTeamName() {
