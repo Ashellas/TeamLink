@@ -10,12 +10,6 @@ public class Team {
     private int teamId;
     private int databaseTeamId;
     private int leagueId;
-    private int gamesWon;
-    private int gamesDrawn;
-    private int gamesLost;
-    private int points;
-    private int placement;
-    private int matchesLeft;
     private String teamName;
     private String abbrevation;
     private int teamCode;
@@ -39,12 +33,6 @@ public class Team {
         this.teamLogo = new ImageView(teamLogo);
         this.teamStats = teamStats;
         this.teamMembers = teamMembers;
-        this.gamesWon = teamStats.getGamesWon();
-        this.gamesDrawn = teamStats.getGamesDrawn();
-        this.gamesLost = teamStats.getGamesLost();
-        this.points = teamStats.getPoints();
-        this.placement = teamStats.getPlacement();
-        this.matchesLeft = teamStats.getGamesLeft();
     }
 
     //For teams which do not belong to user
@@ -54,7 +42,6 @@ public class Team {
         this.abbrevation = abbrevation;
         this.teamStats = teamStats;
     }
-
 
 
     public int getTeamId() {
@@ -69,32 +56,32 @@ public class Team {
         return leagueId;
     }
 
+    public String getTeamName() {
+        return teamName;
+    }
+
     public int getGamesWon(){
-        return gamesWon;
+        return teamStats.getGamesWon();
     }
 
     public int getGamesDrawn(){
-        return gamesDrawn;
+        return teamStats.getGamesDrawn();
     }
 
     public int getGamesLost(){
-        return gamesLost;
+        return teamStats.getGamesLost();
     }
 
     public int getPoints(){
-        return points;
+        return teamStats.getPoints();
     }
 
     public int getPlacement(){
-        return placement;
+        return teamStats.getPlacement();
     }
 
     public int getMatchesLeft(){
-        return matchesLeft;
-    }
-
-    public String getTeamName() {
-        return teamName;
+        return teamStats.getGamesLeft();
     }
 
     public String getAbbrevation() {

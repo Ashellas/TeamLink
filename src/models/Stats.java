@@ -4,8 +4,8 @@ public abstract class Stats {
     private int id;
     private int gamesPlayed;
     private int gamesWon;
-    private int gamesDrawn;
     private int gamesLost;
+    private int gamesDrawn;
 
     public Stats(int id, int gamesPlayed, int gamesWon, int gamesLost, int gamesDrawn) {
         this.id = id;

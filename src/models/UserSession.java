@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class UserSession {
     private TeamMember user;
-    private ObservableList<Team> userTeams;
+    private ArrayList<Team> userTeams;
     private ArrayList<Game> gamesOfTheCurrentRound;
     private ObservableList<Team> standings;//It can be designed better
     private ArrayList<Notifications> notifications;
@@ -21,7 +21,7 @@ public class UserSession {
     private ArrayList<Gameplan> gameplans;
     private Date lastSync;
 
-    public UserSession(TeamMember user, ObservableList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ObservableList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ObservableList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -43,7 +43,7 @@ public class UserSession {
         return user;
     }
 
-    public ObservableList<Team> getUserTeams() {
+    public ArrayList<Team> getUserTeams() {
         return userTeams;
     }
 

@@ -125,7 +125,7 @@
                   </GridPane>
                </children>
             </GridPane>
-            <GridPane>
+            <GridPane GridPane.halignment="CENTER" GridPane.valignment="TOP">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
@@ -135,15 +135,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" style="-fx-background-color: transparent;" styleClass="round" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../Resources/Images/help_white.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <VBox alignment="CENTER" prefHeight="105.0" prefWidth="826.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
                         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="826.0" text="Create a Team" textFill="LIGHTGRAY">
@@ -158,17 +149,29 @@
                         </Pane>
                      </children>
                   </VBox>
+                  <Button ellipsisString="" mnemonicParsing="false" prefHeight="90.0" prefWidth="70.0" styleClass="back" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Go Back" GridPane.valignment="TOP">
+                     <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/Images/outline_arrow_back_ios_white_24dp.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button ellipsisString="" mnemonicParsing="false" prefHeight="90.0" prefWidth="80.0" styleClass="back" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Help" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                     <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/Images/help_white.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
                </children>
             </GridPane>
-            <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" style="-fx-background-color: transparent;" GridPane.valignment="TOP">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Resources/Images/help_white.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
          </children>
          <effect>
             <DropShadow height="53.17" radius="25.7875" width="51.98">
