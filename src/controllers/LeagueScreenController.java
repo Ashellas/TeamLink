@@ -1,5 +1,6 @@
 package controllers;
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -69,11 +70,21 @@ public class LeagueScreenController {
     @FXML
     private TableColumn<models.Team, Integer> matchesLeftColumn;
 
+    @FXML
+    private JFXComboBox<String> teamSelectionComboBox;
+
+    @FXML
+    private Label leagueNameLabel;
+
     private UserSession user;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
 
-    private ObservableList<models.Team> userTeam = FXCollections.observableArrayList();
+    private ObservableList<String> userTeamNames = FXCollections.observableArrayList();
+
+    private ObservableList<models.Team> userSelectedTeam = FXCollections.observableArrayList();
+
+    private ObservableList<models.Team> userTeams = FXCollections.observableArrayList();
 
     public void initData(UserSession user){
         this.user = user;
@@ -81,9 +92,29 @@ public class LeagueScreenController {
         userRoleLabel.setText(user.getUser().getTeamRole());
         profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
 
-        setStandingsTable(user);
+        setTeamSelectionComboBox(user);
 
-        setTeamOverviewTable(user);
+        setStandingsTable(user);
+    }
+
+    /**
+     * Sets the team selection combo box
+     * @param user UserSession class that holds the information about the user
+     */
+    public void setTeamSelectionComboBox( UserSession user)
+    {
+        for( int arrayIndex = 0; arrayIndex < user.getUserTeams().size(); arrayIndex++){
+            userTeamNames.add( user.getUserTeams().get(arrayIndex).getTeamName());
+            userTeams.add( user.getUserTeams().get(arrayIndex));
+        }
+
+        teamSelectionComboBox.setItems( userTeamNames);
+
+        teamSelectionComboBox.setValue( userTeamNames.get(0));
+
+        leagueNameLabel.setText( userTeams.get(0).getLeagueName());
+
+        setTeamOverviewTable( user, userTeams.get(0));
     }
 
     /**
@@ -121,12 +152,11 @@ public class LeagueScreenController {
         }
     }
 
-    public void setTeamOverviewTable( UserSession user){
-        //userTeam = Assign the team
+    public void setTeamOverviewTable( UserSession user, Team selectedTeam){
 
-        /*
+        userSelectedTeam.add( selectedTeam);
 
-        if( is a football team){
+        if( user.getUser().getSportBranch().equals("Football") ){
             //Creates the columns of the table
             placementColumn.setCellValueFactory( new PropertyValueFactory<>("placement"));
             winsColumn.setCellValueFactory( new PropertyValueFactory<>("gamesWon"));
@@ -135,9 +165,9 @@ public class LeagueScreenController {
             pointsColumn.setCellValueFactory( new PropertyValueFactory<>("points"));
             matchesLeftColumn.setCellValueFactory( new PropertyValueFactory<>("matchesLeft"));
 
-            teamOverviewTable.setItems( userTeam);
+            teamOverviewTable.setItems( userSelectedTeam);
         }
-        else if( is a basketball team){
+        else if( user.getUser().getSportBranch().equals("Basketball")){
             //Sets the draw column non-visible
             drawsColumn.setVisible(false);
 
@@ -148,16 +178,16 @@ public class LeagueScreenController {
             pointsColumn.setCellValueFactory( new PropertyValueFactory<>("points"));
             matchesLeftColumn.setCellValueFactory( new PropertyValueFactory<>("matchesLeft"));
 
-            teamOverviewTable.setItems( userTeam);
+            teamOverviewTable.setItems( userSelectedTeam);
         }
-
-         */
-
     }
 
     public void setFixtureTable( UserSession user){
+    }
 
-
+    public void onSelection( ActionEvent event){
+        userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
+        teamOverviewTable.refresh();
     }
 
     public void toMainScreen(ActionEvent actionEvent) {
