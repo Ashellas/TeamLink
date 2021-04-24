@@ -32,10 +32,10 @@ public class LeagueScreenController {
     private TableView<models.Team> standingsTableView;
 
     @FXML
-    private TableView<models.Team> fixtureTable;
+    private TableView<models.Team> teamOverviewTable;
 
     @FXML
-    private TableView<models.Team> teamOverviewTable;
+    private TableView<models.Game> fixtureTable;
 
     @FXML
     private TableColumn<models.Team, String> teamsColumnStandings;
@@ -71,7 +71,22 @@ public class LeagueScreenController {
     private TableColumn<models.Team, Integer> matchesLeftColumn;
 
     @FXML
+    private TableColumn<models.Game, String> homeColumn;
+
+    @FXML
+    private TableColumn<models.Game, String> awayColumn;
+
+    @FXML
+    private TableColumn<models.Game, String> scoreColumn;
+
+    @FXML
+    private TableColumn<models.Game, String> dateColumn;
+
+    @FXML
     private JFXComboBox<String> teamSelectionComboBox;
+
+    @FXML
+    private JFXComboBox<Integer> roundNumberComboBox;
 
     @FXML
     private Label leagueNameLabel;
@@ -98,7 +113,7 @@ public class LeagueScreenController {
     }
 
     /**
-     * Sets the team selection combo box
+     * Sets the team selection combo box and the team overview table of the selected team
      * @param user UserSession class that holds the information about the user
      */
     public void setTeamSelectionComboBox( UserSession user)
@@ -115,6 +130,10 @@ public class LeagueScreenController {
         leagueNameLabel.setText( userTeams.get(0).getLeagueName());
 
         setTeamOverviewTable( user, userTeams.get(0));
+    }
+
+    public void setRoundNumberComboBox( UserSession user){
+
     }
 
     /**
@@ -152,6 +171,11 @@ public class LeagueScreenController {
         }
     }
 
+    /**
+     * Sets the team overview table of the selected team
+     * @param user
+     * @param selectedTeam
+     */
     public void setTeamOverviewTable( UserSession user, Team selectedTeam){
 
         userSelectedTeam.add( selectedTeam);
@@ -182,12 +206,22 @@ public class LeagueScreenController {
         }
     }
 
-    public void setFixtureTable( UserSession user){
+    public void setFixtureTable( UserSession user, Team selectedTeam){
+
     }
 
+    /**
+     * When a new team selected from the team selection combo box, team overview table is refreshed
+     * according to the new team that is selected.
+     * @param event ActionEvent object
+     */
     public void onSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
         teamOverviewTable.refresh();
+    }
+
+    public void onSelectionRoundNumberComboBox( ActionEvent event){
+
     }
 
     public void toMainScreen(ActionEvent actionEvent) {
