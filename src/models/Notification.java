@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 
 import java.util.Date;
 
-public class Notifications {
+public class Notification {
     private int notificationId;
     private String title;
     private TeamMember sender;
@@ -15,7 +15,7 @@ public class Notifications {
     private boolean isUnread; //TODO how can this be functional
     private ImageView senderProfilePhoto;
 
-    public Notifications(int notificationId, String title, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread, Image senderProfilePhoto) {
+    public Notification(int notificationId, String title, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread, Image senderProfilePhoto) {
         this.notificationId = notificationId;
         this.title = title;
         this.sender = sender;

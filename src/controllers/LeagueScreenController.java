@@ -101,7 +101,7 @@ public class LeagueScreenController {
             losesColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
             pointsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("points"));
 
-            teams = user.getStandings();
+            teams = user.getStandings(null);
 
             standingsTableView.setItems( teams);
         }
@@ -116,7 +116,7 @@ public class LeagueScreenController {
             losesColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
             pointsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("points"));
 
-            teams = user.getStandings();
+            teams = user.getStandings(null);
             standingsTableView.setItems( teams);
         }
     }

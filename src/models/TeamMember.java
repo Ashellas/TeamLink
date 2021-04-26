@@ -28,6 +28,12 @@ public class TeamMember {
         this.profilePhoto = new ImageView(profilePhoto);
     }
 
+    public TeamMember(int memberId, String firstName, String lastName) {
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public int getMemberId() {
         return memberId;
     }

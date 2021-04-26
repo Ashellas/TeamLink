@@ -35,6 +35,15 @@ public class Team {
         this.teamMembers = teamMembers;
     }
 
+
+    public Team(int teamId, String teamName, String city, String ageGroup, Image teamLogo) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+        this.city = city;
+        this.ageGroup = ageGroup;
+        this.teamLogo = new ImageView(teamLogo);
+    }
+
     //For teams which do not belong to user
     public Team(int teamId, String teamName, String abbrevation, TeamStats teamStats) {
         this.teamId = teamId;

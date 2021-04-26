@@ -7,13 +7,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class UserSession {
     private TeamMember user;
     private ArrayList<Team> userTeams;
-    private ArrayList<Game> gamesOfTheCurrentRound;
-    private ObservableList<Team> standings;//It can be designed better
-    private ArrayList<Notifications> notifications;
+    private HashMap<Team,ObservableList<Game>> gamesOfTheCurrentRound;
+    private HashMap<Team,ObservableList<Team>> standings;//It can be designed better
+    private ArrayList<Notification> notifications;
     private ArrayList<CalendarEvent> calendarEvents;
     private ArrayList<Training> trainings;
     private Connection databaseConnection;
@@ -21,7 +22,7 @@ public class UserSession {
     private ArrayList<Gameplan> gameplans;
     private Date lastSync;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, ArrayList<Game> gamesOfTheCurrentRound, ObservableList<Team> standings, ArrayList<Notifications> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -47,15 +48,15 @@ public class UserSession {
         return userTeams;
     }
 
-    public ArrayList<Game> getGamesOfTheCurrentRound() {
-        return gamesOfTheCurrentRound;
+    public ObservableList<Game> getGamesOfTheCurrentRound(Team team) {
+        return gamesOfTheCurrentRound.get(team);
     }
 
-    public ObservableList<Team> getStandings() {
-        return standings;
+    public ObservableList<Team> getStandings(Team team) {
+        return standings.get(team);
     }
 
-    public ArrayList<Notifications> getNotifications() {
+    public ArrayList<Notification> getNotifications() {
         return notifications;
     }
 
