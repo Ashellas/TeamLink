@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +26,12 @@ public class DatabaseManager {
         HashMap<Team, ArrayList<Gameplan>> gameplans = createGameplans(databaseConnection, userTeams);
         ObservableList<Training> trainings = createTrainings(databaseConnection, userTeams);
         ArrayList<TeamApplication> teamApplications = createApplication(databaseConnection, user, userTeams);
+        ArrayList<CalendarEvent> calendarEvents = createCalendarEvents(databaseConnection, user, userTeams);
+        Date lastSync = new Date();
+        return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync);
+    }
+
+    private static ArrayList<CalendarEvent> createCalendarEvents(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) {
         return null;
     }
 
@@ -36,7 +43,7 @@ public class DatabaseManager {
         }
         ArrayList<Training> trainings = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from trainings where training_date_time < now() " +
-                "and team_id in (?) LIMIT 2");
+                "and team_id in (?) ORDER BY training_date_time desc LIMIT 2");
         prepStmt.setArray(1, databaseConnection.createArrayOf("VARCHAR", teamIds.toArray()));
         ResultSet pastTraininingsResultSet = prepStmt.executeQuery();
         while(pastTraininingsResultSet.next()){
@@ -49,15 +56,30 @@ public class DatabaseManager {
             String actionLink = "/views/TrainingsScreen.fxml";
             String notes = pastTraininingsResultSet.getString("notes");
             int teamIndex = teamIds.indexOf(pastTraininingsResultSet.getInt("team_id"));
-            trainings.add(new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex % 5],
+            trainings.add( new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex % 5],
                     locationName, locationLink, userTeams.get(teamIndex), notes));
         }
         pastTraininingsResultSet.last();
 
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from trainings where training_date_time > now() " +
-                "and team_id in (?) LIMIT ?");
+                "and team_id in (?) ORDER BY training_date_time asc LIMIT ?");
         preparedStatement.setArray(1, databaseConnection.createArrayOf("VARCHAR", teamIds.toArray()));
         preparedStatement.setInt(2, 8 - pastTraininingsResultSet.getRow());
+        ResultSet futureTrainingsResultSet = preparedStatement.executeQuery();
+        while(futureTrainingsResultSet.next()){
+            int trainingId = futureTrainingsResultSet.getInt("training_id");
+            String title = futureTrainingsResultSet.getString("title");
+            Date  trainingDate = futureTrainingsResultSet.getDate("training_date_time");
+            String description = futureTrainingsResultSet.getString("training_description");
+            String locationName = futureTrainingsResultSet.getString("location_name");
+            String locationLink = futureTrainingsResultSet.getString("location_link");
+            String actionLink = "/views/TrainingsScreen.fxml";
+            String notes = futureTrainingsResultSet.getString("notes");
+            int teamIndex = teamIds.indexOf(futureTrainingsResultSet.getInt("team_id"));
+            trainings.add(0, new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex % 5],
+                    locationName, locationLink, userTeams.get(teamIndex), notes));
+        }
+        return FXCollections.observableArrayList(trainings);
     }
 
 

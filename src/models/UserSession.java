@@ -16,13 +16,13 @@ public class UserSession {
     private HashMap<Team,ObservableList<Team>> standings;//It can be designed better
     private ArrayList<Notification> notifications;
     private ArrayList<CalendarEvent> calendarEvents;
-    private ArrayList<Training> trainings;
+    private ObservableList<Training> trainings;
     private Connection databaseConnection;
     private ArrayList<TeamApplication> teamApplications;
-    private ArrayList<Gameplan> gameplans;
+    private HashMap<Team, ArrayList<Gameplan>> gameplans;
     private Date lastSync;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ArrayList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, ArrayList<Gameplan> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -64,7 +64,7 @@ public class UserSession {
         return calendarEvents;
     }
 
-    public ArrayList<Training> getTrainings() {
+    public ObservableList<Training> getTrainings() {
         return trainings;
     }
 
@@ -76,7 +76,8 @@ public class UserSession {
         return teamApplications;
     }
 
-    public ArrayList<Gameplan> getGameplans() {
+    //TODO it can be modified similar to getStandings() method
+    public HashMap<Team, ArrayList<Gameplan>> getGameplans() {
         return gameplans;
     }
 
