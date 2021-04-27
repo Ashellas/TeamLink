@@ -14,18 +14,27 @@ import java.util.List;
 
 public class DatabaseManager {
 
-    public static UserSession login( Connection databaseConnection, String email, String password) throws SQLException {
+    public static UserSession login( UserSession userSession, String email, String password) throws SQLException {
+        Connection databaseConnection = userSession.getDatabaseConnection();
         TeamMember user = createUser(databaseConnection, email, password);
+        System.out.println("user found");
         if(user == null){
-            return null;
+            return userSession;
         }
         ArrayList<Team> userTeams = createUserTeams(user, databaseConnection);
+        System.out.println("teams found");
         HashMap<Team, ObservableList<Team>> standings = createStandings(databaseConnection, userTeams);
+        System.out.println("standings found");
         HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = createGamesOfTheCurrentRound(databaseConnection, userTeams, standings);
+        System.out.println("games found");
         ArrayList<Notification> notifications = createNotifications(databaseConnection, user,0);
+        System.out.println("notifications found");
         HashMap<Team, ArrayList<Gameplan>> gameplans = createGameplans(databaseConnection, userTeams);
+        System.out.println("gameplans found");
         ObservableList<Training> trainings = createTrainings(databaseConnection, userTeams);
+        System.out.println("trainings found");
         ArrayList<TeamApplication> teamApplications = createApplication(databaseConnection, user, userTeams);
+        System.out.println("teamapplications found");
         ArrayList<CalendarEvent> calendarEvents = createCalendarEvents(databaseConnection, user, userTeams);
         Date lastSync = new Date();
         return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync);
@@ -37,14 +46,13 @@ public class DatabaseManager {
 
     private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
         String[] colorCodes = {"a","b","c","d","e"};
-        List<Integer> teamIds = new ArrayList<>();
-        for( Team team : userTeams){
-            teamIds.add(team.getTeamId());
+        String teamIds = "" + userTeams.get(0).getTeamId();
+        for( int i = 1; i < userTeams.size(); i++){
+            teamIds += ", " + userTeams.get(i).getTeamId();
         }
         ArrayList<Training> trainings = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from trainings where training_date_time < now() " +
-                "and team_id in (?) ORDER BY training_date_time desc LIMIT 2");
-        prepStmt.setArray(1, databaseConnection.createArrayOf("VARCHAR", teamIds.toArray()));
+                "and team_id in (" + teamIds + ") ORDER BY training_date_time desc LIMIT 2");
         ResultSet pastTraininingsResultSet = prepStmt.executeQuery();
         while(pastTraininingsResultSet.next()){
             int trainingId = pastTraininingsResultSet.getInt("training_id");
@@ -62,9 +70,8 @@ public class DatabaseManager {
         pastTraininingsResultSet.last();
 
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from trainings where training_date_time > now() " +
-                "and team_id in (?) ORDER BY training_date_time asc LIMIT ?");
-        preparedStatement.setArray(1, databaseConnection.createArrayOf("VARCHAR", teamIds.toArray()));
-        preparedStatement.setInt(2, 8 - pastTraininingsResultSet.getRow());
+                "and team_id in (" + teamIds + ") ORDER BY training_date_time asc LIMIT ?");
+        preparedStatement.setInt(1, 8 - pastTraininingsResultSet.getRow());
         ResultSet futureTrainingsResultSet = preparedStatement.executeQuery();
         while(futureTrainingsResultSet.next()){
             int trainingId = futureTrainingsResultSet.getInt("training_id");
@@ -164,7 +171,7 @@ public class DatabaseManager {
         ArrayList<Notification> notifications = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm on tm.member_id = notifications.sender_id and recipent_id = ? LIMIT ?,8");
         prepStmt.setInt(1, user.getMemberId());
-        prepStmt.setInt(1,pageNumber * 8);
+        prepStmt.setInt(2,pageNumber * 8);
         ResultSet resultSet = prepStmt.executeQuery();
         while (resultSet.next()){
             int id = resultSet.getInt("id");
@@ -384,7 +391,6 @@ public class DatabaseManager {
         }
         return userTeams;
     }
-
 
     //TODO make this Work
     private static PlayerStats getFootballStats(Connection databaseConnection, int memberId) {

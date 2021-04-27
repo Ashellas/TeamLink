@@ -2,6 +2,7 @@ import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.transform.Scale;
@@ -13,6 +14,9 @@ import javafx.stage.StageStyle;
 import java.awt.*;
 
 import javafx.stage.StageStyle;
+import models.InitializeData;
+import models.UserSession;
+
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,10 +27,15 @@ public class Main extends Application {
 //aasd
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-        Parent root = FXMLLoader.load(getClass().getResource("views/DemoScene.fxml"));
+        UserSession userSession = new UserSession();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("views/LoginScreen.fxml"));
+        loader.load();
+        InitializeData c2 = loader.getController();
+        c2.initData(userSession);
+        Parent p = loader.getRoot();
+        primaryStage.setScene(new Scene(p));
         primaryStage.setTitle("TeamLink");
-        primaryStage.setScene(new Scene(root));
         primaryStage.setMaximized(true);
         primaryStage.setMinHeight(700);
         primaryStage.setMinWidth(1100);

@@ -5,10 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import models.InitializeData;
 import models.UserSession;
 
 
-public class MainTemplateController {
+public class MainTemplateController implements InitializeData {
 
     @FXML
     private ImageView profilePictureImageView;

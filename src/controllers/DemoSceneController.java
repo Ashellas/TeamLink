@@ -126,7 +126,7 @@ public class DemoSceneController implements Initializable {
         Task<TeamMember> userCreateTask = new Task<TeamMember>() {
             @Override
             public TeamMember call() throws Exception {
-                DatabaseManager.login(user.getDatabaseConnection(), "talay@gmail.com","Talayyucel");
+                DatabaseManager.login(user, "talay@gmail.com","Talayyucel");
                 return member;
             }
         };

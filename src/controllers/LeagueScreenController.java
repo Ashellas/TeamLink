@@ -9,11 +9,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import models.InitializeData;
 import models.Team;
 import models.UserSession;
 
 
-public class LeagueScreenController {
+public class LeagueScreenController implements InitializeData {
     //Variables
     @FXML
     private ImageView profilePictureImageView;

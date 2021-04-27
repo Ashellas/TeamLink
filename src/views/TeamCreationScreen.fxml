@@ -16,7 +16,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #151617;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #151617;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.TeamCreationScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="1100.0" prefWidth="100.0" />
@@ -67,10 +67,10 @@
                       <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TextField maxWidth="1.7976931348623157E308" minHeight="40.0" promptText="Team Name" stylesheets="@../stylesheets/textFieldStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField minHeight="40.0" promptText="Abbrevation" stylesheets="@../stylesheets/textFieldStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <ComboBox maxWidth="1.7976931348623157E308" minHeight="40.0" prefWidth="150.0" promptText="Choose City" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <ComboBox maxWidth="1.7976931348623157E308" minHeight="40.0" prefWidth="150.0" promptText="Choose Age Group" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="teamNameField" maxWidth="1.7976931348623157E308" minHeight="40.0" promptText="Team Name" stylesheets="@../stylesheets/textFieldStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="abbrevationField" minHeight="40.0" promptText="Abbrevation" stylesheets="@../stylesheets/textFieldStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="cityBox" maxWidth="1.7976931348623157E308" minHeight="40.0" prefWidth="150.0" promptText="Choose City" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="ageGroupBox" maxWidth="1.7976931348623157E308" minHeight="40.0" prefWidth="150.0" promptText="Choose Age Group" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                   <GridPane GridPane.columnIndex="2">
@@ -98,12 +98,12 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" scaleX="1.1" scaleY="1.1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                              <ImageView fx:id="teamLogoView" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" scaleX="1.1" scaleY="1.1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <image>
                                     <Image url="@../Resources/Images/emptyTeamLogo.png" />
                                  </image>
                               </ImageView>
-                              <Button minHeight="30.0" mnemonicParsing="false" prefWidth="120.0" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Upload Image" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                              <Button fx:id="uploadImageButton" minHeight="30.0" mnemonicParsing="false" onAction="#uploadImageButtonPushed" prefWidth="120.0" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Upload Image" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -118,7 +118,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button maxHeight="55.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="submit" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button maxHeight="55.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submitButtonPushed" styleClass="submit" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -149,7 +149,7 @@
                         </Pane>
                      </children>
                   </VBox>
-                  <Button ellipsisString="" mnemonicParsing="false" prefHeight="90.0" prefWidth="70.0" styleClass="back" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Go Back" GridPane.valignment="TOP">
+                  <Button ellipsisString="" mnemonicParsing="false" onAction="#backButtonPushed" prefHeight="90.0" prefWidth="50.0" styleClass="back" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Go Back" GridPane.valignment="TOP">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -158,7 +158,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button ellipsisString="" mnemonicParsing="false" prefHeight="90.0" prefWidth="80.0" styleClass="back" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Help" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+                  <Button ellipsisString="" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="90.0" prefWidth="80.0" styleClass="back" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Help" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                            <image>

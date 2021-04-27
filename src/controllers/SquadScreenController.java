@@ -4,10 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import models.InitializeData;
 import models.UserSession;
 
 
-public class SquadScreenController {
+public class SquadScreenController implements InitializeData {
 
     @FXML
     private ImageView profilePictureImageView;

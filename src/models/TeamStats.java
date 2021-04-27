@@ -36,6 +36,8 @@ public class TeamStats extends Stats{
         return totalRounds;
     }
 
+
+
     public TrainingPerformanceReport getTrainingPerformanceReport() {
         return trainingPerformanceReport;
     }

@@ -99,4 +99,28 @@ public class Team {
     public ArrayList<TeamMember> getTeamMembers() {
         return teamMembers;
     }
+
+    public int getGamesWon(){
+        return teamStats.getGamesWon();
+    }
+
+    public int getGamesDrawn(){
+        return teamStats.getGamesDrawn();
+    }
+
+    public int getGamesLost(){
+        return teamStats.getGamesLost();
+    }
+
+    public int getPoints(){
+        return teamStats.getPoints();
+    }
+
+    public int getPlacement(){
+        return teamStats.getPlacement();
+    }
+
+    public int getMatchesLeft(){
+        return teamStats.getTotalRounds();
+    }
 }
