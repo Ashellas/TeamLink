@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 
-import java.io.InputStream;
+import java.io.*;
 import java.sql.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -62,15 +62,19 @@ public class DatabaseManager {
             String locationName = pastTraininingsResultSet.getString("location_name");
             String locationLink = pastTraininingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
-            String notes = pastTraininingsResultSet.getString("notes"   );
-            int teamIndex = teamIds.indexOf(pastTraininingsResultSet.getInt("team_id"));
-            trainings.add( new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex % 5],
+            String notes = pastTraininingsResultSet.getString("notes");
+            int teamIndex = 0;
+            for (int i = 0; i < userTeams.size(); i++){
+                if(userTeams.get(i).getTeamId() == pastTraininingsResultSet.getInt("team_id")){
+                    teamIndex = i % 5;
+                }
+            }
+            trainings.add( new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex],
                     locationName, locationLink, userTeams.get(teamIndex), notes));
         }
-        pastTraininingsResultSet.last();
-
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from trainings where training_date_time > now() " +
                 "and team_id in (" + teamIds + ") ORDER BY training_date_time asc LIMIT ?");
+        System.out.println(pastTraininingsResultSet.getRow() + "rows are made");
         preparedStatement.setInt(1, 8 - pastTraininingsResultSet.getRow());
         ResultSet futureTrainingsResultSet = preparedStatement.executeQuery();
         while(futureTrainingsResultSet.next()){
@@ -82,8 +86,13 @@ public class DatabaseManager {
             String locationLink = futureTrainingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
             String notes = futureTrainingsResultSet.getString("notes");
-            int teamIndex = teamIds.indexOf(futureTrainingsResultSet.getInt("team_id"));
-            trainings.add(0, new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex % 5],
+            int teamIndex = 0;
+            for (int i = 0; i < userTeams.size(); i++){
+                if(userTeams.get(i).getTeamId() == pastTraininingsResultSet.getInt("team_id")){
+                    teamIndex = i % 5;
+                }
+            }
+            trainings.add(0, new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex],
                     locationName, locationLink, userTeams.get(teamIndex), notes));
         }
         return FXCollections.observableArrayList(trainings);
@@ -407,9 +416,48 @@ public class DatabaseManager {
         return null;
     }
 
+    public static boolean signUpUser(Connection databaseConnection, String firstName, String lastName, String email, java.sql.Date birthday, String password, String teamRole, String sportBranch, File selectedFile) throws SQLException, IOException {
+        PreparedStatement predStmt = databaseConnection.prepareStatement("INSERT INTO team_members( first_name, last_name, email, " +
+                "birthday, password, team_role, sport_branch, photo) values(?,?,?,?,MD5(?),?,?,?)");
+
+        // Fills the statement with relevant info
+        predStmt.setString(1, firstName);
+        predStmt.setString(2, lastName);
+        predStmt.setString(3, email);
+        predStmt.setDate(4, birthday);
+        predStmt.setString(5, password);
+        predStmt.setString(6, teamRole);
+        predStmt.setString(7, sportBranch);
+
+        if(selectedFile != null){
+            FileInputStream fileInputStream = new FileInputStream(selectedFile.getAbsolutePath());
+            predStmt.setBinaryStream(8,fileInputStream,fileInputStream.available());
+        }
+        else {
+            predStmt.setBlob(8, InputStream.nullInputStream());
+        }
+        // Prints out a report
+        int row = predStmt.executeUpdate();
+        if(row > 0) {
+            System.out.println("Saved into the database");
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isEmailTaken(Connection databaseConnection, String email) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * FROM team_members " +
+                "where email = ?");
+        prepStmt.setString(1, email);
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+            return true;
+        }
+        return false;
+    }
+
     private String formatDateToMYSQL(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
-
 }
