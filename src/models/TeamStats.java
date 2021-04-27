@@ -3,14 +3,13 @@ package models;
 public class TeamStats extends Stats{
     private int placement;
     private int points;
-    private int gamesLeft;
+    private int totalRounds;
     private TrainingPerformanceReport trainingPerformanceReport;
 
-    public TeamStats(int id, int gamesPlayed, int gamesWon, int gamesLost, int gamesDrawn, int placement, int points, int gamesLeft, TrainingPerformanceReport trainingPerformanceReport) {
+        public TeamStats(int id, int gamesPlayed, int gamesWon, int gamesLost, int gamesDrawn, int points, int totalRounds, TrainingPerformanceReport trainingPerformanceReport) {
         super(id, gamesPlayed, gamesWon, gamesLost, gamesDrawn);
-        this.placement = placement;
         this.points = points; //TODO how to calculate points
-        this.gamesLeft = gamesLeft;
+        this.totalRounds = totalRounds;
         this.trainingPerformanceReport = trainingPerformanceReport;
     }
 
@@ -21,6 +20,10 @@ public class TeamStats extends Stats{
         this.points = points;
     }
 
+    public void setPlacement(int placement) {
+        this.placement = placement;
+    }
+
     public int getPlacement() {
         return placement;
     }
@@ -29,8 +32,8 @@ public class TeamStats extends Stats{
         return points;
     }
 
-    public int getGamesLeft() {
-        return gamesLeft;
+    public int getTotalRounds() {
+        return totalRounds;
     }
 
     public TrainingPerformanceReport getTrainingPerformanceReport() {

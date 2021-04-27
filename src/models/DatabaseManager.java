@@ -54,7 +54,7 @@ public class DatabaseManager {
             String locationName = pastTraininingsResultSet.getString("location_name");
             String locationLink = pastTraininingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
-            String notes = pastTraininingsResultSet.getString("notes");
+            String notes = pastTraininingsResultSet.getString("notes"   );
             int teamIndex = teamIds.indexOf(pastTraininingsResultSet.getInt("team_id"));
             trainings.add( new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex % 5],
                     locationName, locationLink, userTeams.get(teamIndex), notes));
@@ -81,7 +81,6 @@ public class DatabaseManager {
         }
         return FXCollections.observableArrayList(trainings);
     }
-
 
     private static ArrayList<TeamApplication> createApplication(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) throws SQLException {
         ArrayList<TeamApplication> teamApplications = new ArrayList<>();
@@ -361,23 +360,31 @@ public class DatabaseManager {
                     teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture));
                 }
             }
-            prepStmt = databaseConnection.prepareStatement("select title from leagues where league_id = ?");
-            prepStmt.setInt(1, leagueId);
+
+            prepStmt = databaseConnection.prepareStatement("select * from team_performances join leagues l on l.league_id = team_performances.league_id and league_team_id = ?");
+            prepStmt.setInt(1, databaseTeamId);
             ResultSet leagueResultSet = prepStmt.executeQuery();
             String leagueName = "";
+            TeamStats teamStats = null;
             if(leagueResultSet.next()){
-                leagueName = leagueResultSet.getString(1);
+                int statsId = leagueResultSet.getInt("id");
+                leagueName = leagueResultSet.getString("title");
+                int gamesPlayed = leagueResultSet.getInt("games_played");
+                int gamesWon = leagueResultSet.getInt("games_won");
+                int gamesDrawn = leagueResultSet.getInt("games_drawn");
+                int gamesLost = leagueResultSet.getInt("games_lost");
+                int points = leagueResultSet.getInt("points");
+                int totalRounds = leagueResultSet.getInt("total_rounds");
+                //TODO calculate training averages
+                TrainingPerformanceReport trainingPerformanceReport = null;
+                //Placement will be modified in standings creation
+                teamStats = new TeamStats(statsId, gamesPlayed, gamesWon, gamesLost, gamesDrawn, points, totalRounds, trainingPerformanceReport);
             }
-            TeamStats teamStats = getTeamStats( databaseConnection, teamId);
             userTeams.add( new Team(teamId, databaseTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city, ageGroup, teamLogo, teamStats, teamMembers));
         }
         return userTeams;
     }
 
-    //TODO make this work
-    private static TeamStats getTeamStats(Connection databaseConnection, int teamId) {
-        return null;
-    }
 
     //TODO make this Work
     private static PlayerStats getFootballStats(Connection databaseConnection, int memberId) {

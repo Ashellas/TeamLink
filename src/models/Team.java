@@ -52,8 +52,6 @@ public class Team {
         this.teamStats = teamStats;
     }
 
-
-
     public int getTeamId() {
         return teamId;
     }
