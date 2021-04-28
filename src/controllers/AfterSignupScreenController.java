@@ -203,6 +203,7 @@ public class AfterSignupScreenController implements InitializeData {
 
     public void toMainScreen(ActionEvent actionEvent) {
     }
+
     public void SynchronizeData(ActionEvent actionEvent) {
     }
 }

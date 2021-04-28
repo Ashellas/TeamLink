@@ -523,6 +523,18 @@ public class DatabaseManager {
         return false;
     }
 
+    public static ObservableList<String> getLeagues(UserSession user, String city, String ageGroup) throws SQLException {
+        ArrayList<String> leagueNames = new ArrayList<>();
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from leagues where city = ? and age_group = ?");
+        prepStmt.setString(1, city);
+        prepStmt.setString(2, ageGroup);
+        ResultSet resultSet = prepStmt.executeQuery();
+        while (resultSet.next()){
+            leagueNames.add(resultSet.getString("title"));
+        }
+        return FXCollections.observableArrayList(leagueNames);
+    }
+
     private String formatDateToMYSQL(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);

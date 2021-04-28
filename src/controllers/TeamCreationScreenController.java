@@ -14,7 +14,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import models.DatabaseManager;
+import models.InitializeData;
 import models.TeamMember;
+import models.UserSession;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +37,7 @@ import java.util.prefs.Preferences;
  * help button action is missing
  * Does not connect to database
  */
-public class TeamCreationScreenController implements Initializable {
+public class TeamCreationScreenController implements InitializeData {
 
     @FXML
     private TextField teamNameField;
@@ -49,6 +52,9 @@ public class TeamCreationScreenController implements Initializable {
     private ComboBox ageGroupBox;
 
     @FXML
+    private ComboBox leagueBox;
+
+    @FXML
     private Button uploadImageButton;
 
     @FXML
@@ -57,41 +63,32 @@ public class TeamCreationScreenController implements Initializable {
     @FXML
     private Pane errorPane;
 
-    private Connection myCon;
-
     private File selectedFile;
 
     private ObservableList<String> cityList = FXCollections.observableArrayList("Istanbul", "Ankara", "İzmir");
 
     private ObservableList<String> ageGroupList = FXCollections.observableArrayList("U18", "U16", "U14", "U12");
 
-    private TeamMember user;
+
+    private UserSession user;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // TODO
-        /*
-        try {
-            myCon = GameManager.connectDatabase();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        */
-
+    public void initData(UserSession userSession) {
+        user = userSession;
         cityBox.getItems().addAll(cityList);
         ageGroupBox.getItems().addAll(ageGroupList);
-
-        Preferences pref  = Preferences.userRoot();
-        System.out.println(pref.get("id","nooo"));
-        // TODO
-        /*
-        try {
-            user = GameManager.createTeamMember(Integer.parseInt(pref.get("id","")), myCon);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        */
     }
+
+    
+    public void onSelection( ActionEvent event) throws SQLException {
+        //TODO think about creating league model class to get id easily
+        if(ageGroupBox.getValue() != null && cityBox.getValue() != null){
+            ObservableList<String> leagueList = DatabaseManager.getLeagues(user, cityBox.getValue().toString(), ageGroupBox.getValue().toString());
+            leagueBox.setDisable(false);
+            leagueBox.getItems().addAll(leagueList);
+        }
+    }
+
 
     /**
      * Changes scene to the after signup screen
@@ -99,7 +96,7 @@ public class TeamCreationScreenController implements Initializable {
      * @throws IOException
      */
     public void backButtonPushed(ActionEvent event) throws IOException {
-        // TODO
+        // TODO if he has teams go to settings if not go to aftersign up
         // GameManager.changeScene(getClass().getResource("AfterSignUp.fxml"), event);
     }
 
@@ -156,6 +153,7 @@ public class TeamCreationScreenController implements Initializable {
      * @throws SQLException
      */
     private boolean isThereAnError() throws SQLException {
+        /*
         // Checks if any of the fields is empty
         if(teamNameField.getText().equals("") || abbrevationField.getText().equals("")
                 || cityBox.getValue() == null || ageGroupBox.getValue() == null){
@@ -186,6 +184,8 @@ public class TeamCreationScreenController implements Initializable {
             return true;
         }
         // If there are no errors returns false
+
+         */
         return false;
     }
 
@@ -208,6 +208,7 @@ public class TeamCreationScreenController implements Initializable {
      * @throws IOException
      */
     private void saveToDatabase() throws SQLException, IOException {
+        /*
         int uniqueCode;
         int teamId;
         //Prepares the statement
@@ -253,6 +254,7 @@ public class TeamCreationScreenController implements Initializable {
             preparedStatement.executeUpdate();
         }
 
+         */
     }
 
     /**
@@ -261,6 +263,7 @@ public class TeamCreationScreenController implements Initializable {
      * @throws SQLException
      */
     private int createUniqueRandomTeamCode() throws SQLException {
+        /*
 
         final int BOUND = 100000000;
         ResultSet resultSet;
@@ -276,5 +279,10 @@ public class TeamCreationScreenController implements Initializable {
         }while (resultSet.next());
 
         return teamCode;
+
+         */
+        return 0;
     }
+
+
 }
