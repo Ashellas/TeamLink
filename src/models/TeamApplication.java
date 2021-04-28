@@ -4,13 +4,19 @@ public class TeamApplication {
     private int applicationId;
     private TeamMember applicant;
     private Team appliedTeam;
-    private boolean isRejected;
+    private String applicationStatus;
 
     public TeamApplication(int applicationId, TeamMember applicant, Team appliedTeam, boolean isRejected) {
         this.applicationId = applicationId;
         this.applicant = applicant;
         this.appliedTeam = appliedTeam;
-        this.isRejected = isRejected;
+        if(isRejected){
+            applicationStatus = "Rejected";
+        }
+        else{
+            applicationStatus = "Pending";
+        }
+
     }
 
     public int getApplicationId() {
@@ -25,7 +31,20 @@ public class TeamApplication {
         return appliedTeam;
     }
 
-    public boolean isRejected() {
-        return isRejected;
+    public String getTeamName(){
+        return appliedTeam.getTeamName();
+    }
+
+    public String getAgeGroup(){
+        return appliedTeam.getAgeGroup();
+    }
+
+    public String getCity(){
+        return appliedTeam.getCity();
+    }
+
+
+    public String getApplicationStatus() {
+        return applicationStatus;
     }
 }

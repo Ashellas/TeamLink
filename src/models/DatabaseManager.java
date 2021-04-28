@@ -6,6 +6,8 @@ import javafx.scene.image.Image;
 
 import java.io.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public class DatabaseManager {
         TeamMember user = createUser(databaseConnection, email, password);
         System.out.println("user found");
         if(user == null){
+            System.out.println("haha");
             return userSession;
         }
         ArrayList<Team> userTeams = createUserTeams(user, databaseConnection);
@@ -33,7 +36,7 @@ public class DatabaseManager {
         System.out.println("gameplans found");
         ObservableList<Training> trainings = createTrainings(databaseConnection, userTeams);
         System.out.println("trainings found");
-        ArrayList<TeamApplication> teamApplications = createApplication(databaseConnection, user, userTeams);
+        ObservableList<TeamApplication> teamApplications = createApplication(databaseConnection, user, userTeams);
         System.out.println("teamapplications found");
         ArrayList<CalendarEvent> calendarEvents = createCalendarEvents(databaseConnection, user, userTeams);
         Date lastSync = new Date();
@@ -45,6 +48,9 @@ public class DatabaseManager {
     }
 
     private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
+        if(userTeams.isEmpty()){
+            return null;
+        }
         String[] colorCodes = {"a","b","c","d","e"};
         String teamIds = "" + userTeams.get(0).getTeamId();
         for( int i = 1; i < userTeams.size(); i++){
@@ -62,7 +68,6 @@ public class DatabaseManager {
             String locationName = pastTraininingsResultSet.getString("location_name");
             String locationLink = pastTraininingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
-            String notes = pastTraininingsResultSet.getString("notes");
             int teamIndex = 0;
             for (int i = 0; i < userTeams.size(); i++){
                 if(userTeams.get(i).getTeamId() == pastTraininingsResultSet.getInt("team_id")){
@@ -70,7 +75,7 @@ public class DatabaseManager {
                 }
             }
             trainings.add( new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex],
-                    locationName, locationLink, userTeams.get(teamIndex), notes));
+                    locationName, locationLink, userTeams.get(teamIndex)));
         }
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from trainings where training_date_time > now() " +
                 "and team_id in (" + teamIds + ") ORDER BY training_date_time asc LIMIT ?");
@@ -85,7 +90,6 @@ public class DatabaseManager {
             String locationName = futureTrainingsResultSet.getString("location_name");
             String locationLink = futureTrainingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
-            String notes = futureTrainingsResultSet.getString("notes");
             int teamIndex = 0;
             for (int i = 0; i < userTeams.size(); i++){
                 if(userTeams.get(i).getTeamId() == pastTraininingsResultSet.getInt("team_id")){
@@ -93,14 +97,14 @@ public class DatabaseManager {
                 }
             }
             trainings.add(0, new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex],
-                    locationName, locationLink, userTeams.get(teamIndex), notes));
+                    locationName, locationLink, userTeams.get(teamIndex)));
         }
         return FXCollections.observableArrayList(trainings);
     }
 
-    private static ArrayList<TeamApplication> createApplication(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) throws SQLException {
+    private static ObservableList<TeamApplication> createApplication(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) throws SQLException {
         ArrayList<TeamApplication> teamApplications = new ArrayList<>();
-        if(user.getTeamRole().equals("Head Coach")){
+        if(user.getTeamRole().equals("Head Coach") && !userTeams.isEmpty()){
             for(Team team : userTeams){
                 PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_applications join  team_members tm on team_applications.applicant_id = tm.member_id and team_id = ? and isDeclined = false");
                 prepStmt.setInt(1, team.getTeamId());
@@ -111,7 +115,7 @@ public class DatabaseManager {
                     String firstName = resultSet.getString("first_name");
                     String lastName = resultSet.getString("last_name");
                     String email = resultSet.getString("email");
-                    Date birthday = resultSet.getDate("birthday");
+                    LocalDate birthday = resultSet.getDate("birthday").toLocalDate();
                     String teamRole = resultSet.getString("team_role");
                     //TODO get Image
                     Image profilePicture;
@@ -154,10 +158,13 @@ public class DatabaseManager {
                     teamApplications.add(new TeamApplication(applicationId, user, appliedTeam , isDeclined));
             }
         }
-        return teamApplications;
+        return FXCollections.observableArrayList(teamApplications);
     }
 
     private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
+        if(userTeams.isEmpty()){
+            return null;
+        }
         HashMap<Team, ArrayList<Gameplan>> teamGameplans = new HashMap<>();
         for( Team team : userTeams){
             ArrayList<Gameplan> gameplans = new ArrayList<>();
@@ -199,6 +206,9 @@ public class DatabaseManager {
     }
 
     public static HashMap<Team, ObservableList<Team>> createStandings(Connection databaseConnection, ArrayList<Team> userTeams ) throws SQLException {
+        if(userTeams.isEmpty()){
+            return null;
+        }
         HashMap<Team, ObservableList<Team>> standings = new HashMap<>();
         for( Team team: userTeams){
             ArrayList<Team> teams = new ArrayList<>();
@@ -227,6 +237,9 @@ public class DatabaseManager {
     }
 
     private static HashMap<Team, ObservableList<Game>> createGamesOfTheCurrentRound(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings) throws SQLException {
+        if(userTeams.isEmpty()){
+            return null;
+        }
         HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = new HashMap<>();
         for (Team team : userTeams){
             ArrayList<Game> games = new ArrayList<>();
@@ -275,7 +288,7 @@ public class DatabaseManager {
             int memberId = resultSet.getInt("member_id");
             String firstName = resultSet.getString("first_name");
             String lastName = resultSet.getString("last_name");
-            Date birthday = resultSet.getDate("birthday");
+            LocalDate birthday = resultSet.getDate("birthday").toLocalDate();
             String teamRole = resultSet.getString("team_role");
             String sportBranch = resultSet.getString("sport_branch");
             Image profilePicture;
@@ -326,7 +339,7 @@ public class DatabaseManager {
             String abbrevation = teamsResultSet.getString("abbrevation");
             String city = teamsResultSet.getString("city");
             String ageGroup = teamsResultSet.getString("age_group");
-            int teamCode = teamsResultSet.getInt("team_code");
+            String teamCode = teamsResultSet.getString("team_code");
             int captainId = teamsResultSet.getInt("captain_id");
             Image teamLogo;
             byte[] photoBytes = teamsResultSet.getBytes("team_logo");
@@ -346,7 +359,7 @@ public class DatabaseManager {
                 String firstName = membersResultSet.getString("first_name");
                 String lastName = membersResultSet.getString("last_name");
                 String email = membersResultSet.getString("email");
-                Date birthday = membersResultSet.getDate("birthday");
+                LocalDate birthday = membersResultSet.getDate("birthday").toLocalDate();
                 String teamRole = membersResultSet.getString("team_role");
                 String sportBranch = membersResultSet.getString("sport_branch");
                 Image profilePicture;
@@ -416,8 +429,8 @@ public class DatabaseManager {
         return null;
     }
 
-    public static boolean signUpUser(Connection databaseConnection, String firstName, String lastName, String email, java.sql.Date birthday, String password, String teamRole, String sportBranch, File selectedFile) throws SQLException, IOException {
-        PreparedStatement predStmt = databaseConnection.prepareStatement("INSERT INTO team_members( first_name, last_name, email, " +
+    public static UserSession signUpUser(UserSession userSession, String firstName, String lastName, String email, java.sql.Date birthday, String password, String teamRole, String sportBranch, File selectedFile) throws SQLException, IOException {
+        PreparedStatement predStmt = userSession.getDatabaseConnection().prepareStatement("INSERT INTO team_members( first_name, last_name, email, " +
                 "birthday, password, team_role, sport_branch, photo) values(?,?,?,?,MD5(?),?,?,?)");
 
         // Fills the statement with relevant info
@@ -440,9 +453,11 @@ public class DatabaseManager {
         int row = predStmt.executeUpdate();
         if(row > 0) {
             System.out.println("Saved into the database");
-            return true;
+            TeamMember user = createUser(userSession.getDatabaseConnection(), email, password);
+            userSession.setUser(user);
+            return userSession;
         }
-        return false;
+        return userSession;
     }
 
     public static boolean isEmailTaken(Connection databaseConnection, String email) throws SQLException {
@@ -451,6 +466,49 @@ public class DatabaseManager {
         prepStmt.setString(1, email);
         ResultSet resultSet = prepStmt.executeQuery();
         if(resultSet.next()){
+            return true;
+        }
+        return false;
+    }
+
+
+    public static String isTeamCodeProper(UserSession user, String teamCode) throws SQLException {
+        //TODO age test, code's existence, sport_branch
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from teams where team_code = ?");
+        prepStmt.setString(1, teamCode);
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+              int age = Period.between(user.getUser().getBirthday(), LocalDate.now()).getYears();
+              int maxAge = Integer.parseInt(resultSet.getString("age_group").substring(1));
+              if(age > maxAge){
+                  return "Your age is bigger than team's age_group";
+              }
+              if(!user.getUser().getSportBranch().equals(resultSet.getString("sport_branch"))){
+                  return "This team does not play your sport";
+              }
+              if( applyTeam(user, resultSet.getInt("team_id"))){
+                  return "Success";
+              }
+              else{
+                  return "an Error Occured";
+              }
+        }
+        else{
+            return "Team does not exist";
+        }
+    }
+
+    public static UserSession updateApplications(UserSession userSession) throws SQLException {
+        ObservableList<TeamApplication> teamApplications = createApplication(userSession.getDatabaseConnection(), userSession.getUser(), userSession.getUserTeams());
+        userSession.setTeamApplications(teamApplications);
+        return userSession;
+    }
+    public static boolean applyTeam(UserSession user, int teamId) throws SQLException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_applications(applicant_id, team_id) VALUES (?,?)");
+        prepStmt.setInt(1, user.getUser().getMemberId());
+        prepStmt.setInt(2, teamId);
+        int row = prepStmt.executeUpdate();
+        if(row >= 1){
             return true;
         }
         return false;

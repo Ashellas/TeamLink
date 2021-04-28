@@ -18,11 +18,11 @@ public class UserSession {
     private ArrayList<CalendarEvent> calendarEvents;
     private ObservableList<Training> trainings;
     private Connection databaseConnection;
-    private ArrayList<TeamApplication> teamApplications;
+    private ObservableList<TeamApplication> teamApplications;
     private HashMap<Team, ArrayList<Gameplan>> gameplans;
     private Date lastSync;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ArrayList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -36,9 +36,11 @@ public class UserSession {
         this.lastSync = lastSync;
     }
 
-    public UserSession() throws SQLException {
-        this.databaseConnection = DriverManager.getConnection("jdbc:mysql://139.177.181.92:3306/teamlink", "atak", "**CTRLaltBilkentg3m**");
+    public UserSession(Connection connection){
+        this.databaseConnection = connection;
     }
+
+
 
     public TeamMember getUser() {
         return user;
@@ -72,7 +74,7 @@ public class UserSession {
         return databaseConnection;
     }
 
-    public ArrayList<TeamApplication> getTeamApplications() {
+    public ObservableList<TeamApplication> getTeamApplications() {
         return teamApplications;
     }
 
@@ -83,5 +85,49 @@ public class UserSession {
 
     public Date getLastSync() {
         return lastSync;
+    }
+
+    public void setUser(TeamMember user) {
+        this.user = user;
+    }
+
+    public void setUserTeams(ArrayList<Team> userTeams) {
+        this.userTeams = userTeams;
+    }
+
+    public void setGamesOfTheCurrentRound(HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound) {
+        this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
+    }
+
+    public void setStandings(HashMap<Team, ObservableList<Team>> standings) {
+        this.standings = standings;
+    }
+
+    public void setNotifications(ArrayList<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public void setCalendarEvents(ArrayList<CalendarEvent> calendarEvents) {
+        this.calendarEvents = calendarEvents;
+    }
+
+    public void setTrainings(ObservableList<Training> trainings) {
+        this.trainings = trainings;
+    }
+
+    public void setDatabaseConnection(Connection databaseConnection) {
+        this.databaseConnection = databaseConnection;
+    }
+
+    public void setTeamApplications(ObservableList<TeamApplication> teamApplications) {
+        this.teamApplications = teamApplications;
+    }
+
+    public void setGameplans(HashMap<Team, ArrayList<Gameplan>> gameplans) {
+        this.gameplans = gameplans;
+    }
+
+    public void setLastSync(Date lastSync) {
+        this.lastSync = lastSync;
     }
 }

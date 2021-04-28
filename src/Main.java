@@ -21,13 +21,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 
 public class Main extends Application {
 //aasd
     @Override
     public void start(Stage primaryStage) throws Exception{
-        UserSession userSession = new UserSession();
+        Connection databaseConnection = DriverManager.getConnection("jdbc:mysql://139.177.181.92:3306/teamlink", "atak", "**CTRLaltBilkentg3m**");
+        UserSession userSession = new UserSession(databaseConnection);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("views/LoginScreen.fxml"));
         loader.load();

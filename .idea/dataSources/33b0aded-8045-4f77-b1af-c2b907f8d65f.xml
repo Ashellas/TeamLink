@@ -1625,7 +1625,7 @@ teamlink|schema||atak||grant option|G</Grants>
     </column>
     <column id="452" parent="292" name="team_code">
       <Position>7</Position>
-      <DataType>int|0s</DataType>
+      <DataType>varchar(8)|0s</DataType>
     </column>
     <column id="453" parent="292" name="age_group">
       <Position>8</Position>
@@ -1633,7 +1633,7 @@ teamlink|schema||atak||grant option|G</Grants>
     </column>
     <column id="454" parent="292" name="sport_branch">
       <Position>9</Position>
-      <DataType>int|0s</DataType>
+      <DataType>varchar(20)|0s</DataType>
     </column>
     <column id="455" parent="292" name="team_logo">
       <Position>10</Position>
@@ -1780,20 +1780,16 @@ teamlink|schema||atak||grant option|G</Grants>
       <Position>7</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="486" parent="295" name="notes">
-      <Position>8</Position>
-      <DataType>varchar(140)|0s</DataType>
-    </column>
-    <index id="487" parent="295" name="team_id">
+    <index id="486" parent="295" name="team_id">
       <ColNames>team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="488" parent="295" name="PRIMARY">
+    <key id="487" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>training_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="489" parent="295" name="trainings_ibfk_1">
+    <foreign-key id="488" parent="295" name="trainings_ibfk_1">
       <ColNames>team_id</ColNames>
       <RefTableName>teams</RefTableName>
       <RefColNames>team_id</RefColNames>

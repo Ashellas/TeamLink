@@ -71,7 +71,7 @@ public class LoginScreenController implements  InitializeData{
             System.out.println("failed");
         }
         else {
-            if (userSession.getUserTeams() != null) {
+            if (userSession.getUserTeams().size() != 0) {
                 AppManager.changeScene(getClass().getResource("/views/MainTemplate2.fxml"), event, userSession);
             } else {
                 AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, userSession);
@@ -85,7 +85,6 @@ public class LoginScreenController implements  InitializeData{
      * @throws IOException
      */
     public void dontHaveAnAccountLinkPushed(ActionEvent event) throws IOException {
-        System.out.println("aa");
         AppManager.changeScene(getClass().getResource("/views/SignupScreen.fxml"), event, userSession);
     }
 

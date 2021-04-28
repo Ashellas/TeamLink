@@ -90,7 +90,7 @@ public class DemoSceneController implements Initializable {
         Task<UserSession> userCreateTask = new Task<UserSession>() {
             @Override
             public UserSession call() throws Exception {
-                user =  new UserSession();
+                user =  new UserSession(null);
                 System.out.println(" Succeed at : " + new java.util.Date());
                 return user;
             }

@@ -105,13 +105,12 @@ public class SignupController implements InitializeData {
         //If there is no error in the form, saves it into database
         if( !isThereAnError() )
         {
-            if(DatabaseManager.signUpUser(user.getDatabaseConnection(), firstNameField.getText(),
+            if(DatabaseManager.signUpUser(user, firstNameField.getText(),
                     lastNameField.getText(), emailField.getText(), java.sql.Date.valueOf(dateOfBirthPicker.getValue()),
-                    passwordField.getText(), roleBox.getValue().toString(), sportBranchBox.getValue().toString(), selectedFile)){
-
+                    passwordField.getText(), roleBox.getValue().toString(),
+                    sportBranchBox.getValue().toString(), selectedFile).getUser() != null){
+                AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, user);
             }
-            // Changes scene to the after sign up screen
-            AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, user);
         }
     }
 
