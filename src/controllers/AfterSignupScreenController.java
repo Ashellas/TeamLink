@@ -89,7 +89,6 @@ public class AfterSignupScreenController implements InitializeData {
         catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(userSession.getTeamApplications().get(0).getTeamName());
     }
 
     //TODO add checking for already made submissions

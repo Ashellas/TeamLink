@@ -476,21 +476,30 @@ public class DatabaseManager {
         //TODO age test, code's existence, sport_branch
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from teams where team_code = ?");
         prepStmt.setString(1, teamCode);
-        ResultSet resultSet = prepStmt.executeQuery();
-        if(resultSet.next()){
+        ResultSet teamsResultSet = prepStmt.executeQuery();
+        if(teamsResultSet.next()){
               int age = Period.between(user.getUser().getBirthday(), LocalDate.now()).getYears();
-              int maxAge = Integer.parseInt(resultSet.getString("age_group").substring(1));
+              int maxAge = Integer.parseInt(teamsResultSet.getString("age_group").substring(1));
               if(age > maxAge){
                   return "Your age is bigger than team's age_group";
               }
-              if(!user.getUser().getSportBranch().equals(resultSet.getString("sport_branch"))){
+              if(!user.getUser().getSportBranch().equals(teamsResultSet.getString("sport_branch"))){
                   return "This team does not play your sport";
               }
-              if( applyTeam(user, resultSet.getInt("team_id"))){
-                  return "Success";
+              prepStmt = user.getDatabaseConnection().prepareStatement("select * from team_applications where applicant_id = ? and team_id = ? and isDeclined = false");
+              prepStmt.setInt(1, user.getUser().getMemberId());
+              prepStmt.setInt(2, teamsResultSet.getInt("team_id"));
+              ResultSet applicationResultSet = prepStmt.executeQuery();
+              if(applicationResultSet.next()){
+                  return "You have pending application to that team";
               }
               else{
-                  return "an Error Occured";
+                  if( applyTeam(user, teamsResultSet.getInt("team_id"))){
+                      return "Success";
+                  }
+                  else{
+                      return "an Error Occured";
+                  }
               }
         }
         else{
@@ -504,7 +513,7 @@ public class DatabaseManager {
         return userSession;
     }
     public static boolean applyTeam(UserSession user, int teamId) throws SQLException {
-        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_applications(applicant_id, team_id) VALUES (?,?)");
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_applications(applicant_id, team_id, isDeclined) VALUES (?,?, false )");
         prepStmt.setInt(1, user.getUser().getMemberId());
         prepStmt.setInt(2, teamId);
         int row = prepStmt.executeUpdate();
