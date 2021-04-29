@@ -60,8 +60,6 @@ public class LoginScreenController implements  InitializeData{
     @FXML
     private Pane disablePane;
 
-    private boolean isloaded;
-
     private Executor exec;
 
     private Stage loading;
@@ -69,7 +67,6 @@ public class LoginScreenController implements  InitializeData{
     @Override
     public void initData(UserSession user) {
         userSession = user;
-        isloaded = false;
         exec = Executors.newCachedThreadPool(runnable -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -126,7 +123,7 @@ public class LoginScreenController implements  InitializeData{
 
     private void createUserSession(ActionEvent event) {
 
-        Task<UserSession> userCreateTask = new Task<UserSession>() {
+        Task<UserSession> userCreateTask =  new Task<UserSession>() {
             @Override
             public UserSession call() throws Exception {
                 System.out.println(" Succeed at : " + new java.util.Date());

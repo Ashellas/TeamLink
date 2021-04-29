@@ -212,12 +212,14 @@ public class DatabaseManager {
         HashMap<Team, ObservableList<Team>> standings = new HashMap<>();
         for( Team team: userTeams){
             ArrayList<Team> teams = new ArrayList<>();
-            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join team_performances tp on league_teams.league_id = tp.league_id and tp.league_team_id = league_teams.league_team_id and tp.league_id = ? order by points desc");
+            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join team_performances tp " +
+                    "on league_teams.league_id = tp.league_id and tp.league_team_id = league_teams.league_team_id and tp.league_id = " +
+                    "? order by points desc");
             prepStmt.setInt(1, team.getLeagueId());
             ResultSet resultSet = prepStmt.executeQuery();
             int placement = 1;
             while (resultSet.next()){
-                int teamId = resultSet.getInt("tp.league_id");
+                int teamId = resultSet.getInt("tp.league_team_id");
                 int id = resultSet.getInt("id");
                 String teamName = resultSet.getString("team_name");
                 String abbrevation = resultSet.getString("abbrevation");
@@ -227,9 +229,14 @@ public class DatabaseManager {
                 int gamesLost = resultSet.getInt("games_lost");
                 int points = resultSet.getInt("points");
                 TeamStats teamStats = new TeamStats(id, gamesPlayed, gamesWon, gamesLost, gamesDrawn, placement, points);
-                Team leagueTeam = new Team(teamId, teamName, abbrevation, teamStats);
+                if(team.getTeamId() != teamId){
+                    Team leagueTeam = new Team(teamId, teamName, abbrevation, teamStats);
+                    teams.add(leagueTeam);
+                }
+                else{
+                    teams.add(team);
+                }
                 placement++;
-                teams.add(leagueTeam);
             }
             standings.put(team, FXCollections.observableArrayList(teams));
         }
@@ -244,9 +251,7 @@ public class DatabaseManager {
         for (Team team : userTeams){
             ObservableList<Game> games = FXCollections.observableArrayList();
             PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
-                    "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? " +
-                    "join league_teams lt on lt.league_team_id = league_games.away_team_id join league_teams t " +
-                    "on t.league_team_id = league_games.home_team_id");
+                    "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? ");
             prepStmt.setInt(1, team.getLeagueId());
             ResultSet gamesResultSet = prepStmt.executeQuery();
             while (gamesResultSet.next()){
@@ -267,6 +272,7 @@ public class DatabaseManager {
                     if(leagueTeam.getTeamId() == awayTeamId){
                         awayTeam = leagueTeam;
                     }
+                    System.out.println(leagueTeam.getTeamId());
                 }
                 Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result);
                 games.add(game);

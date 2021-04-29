@@ -104,6 +104,7 @@ public class SquadScreenController implements InitializeData {
 
         detailedViewColumn.setCellFactory(ButtonTableCell.<TeamMember>forTableColumn("View", (TeamMember p) -> {
             showPane();
+            System.out.println(p.getFirstName());
             return p;
         }));
     }
