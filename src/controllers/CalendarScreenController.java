@@ -1,7 +1,9 @@
 package controllers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -66,9 +68,11 @@ public class CalendarScreenController implements InitializeData{
         for (int i = 0; i < 42; i++) {
             Label day = new Label("");
             labels.add(day);
+            
             int row = i / 7;
             int column = i % 7;
-            calendar.add(day, column, row);
+            GridPane gp = (GridPane) calendar.getChildren().get(i);
+            gp.add(day, 0, 0);
         }
         createCalendar(firstDay, maxDay);
     }
@@ -121,6 +125,7 @@ public class CalendarScreenController implements InitializeData{
         clearCalendar();
         createCalendar(firstDay, maxDay);
     }
+
 
     public void toMainScreen(ActionEvent actionEvent) {
     }
