@@ -157,8 +157,7 @@ public class LeagueScreenController implements InitializeData {
     }
 
     public void setFixtureTable( UserSession user){
-
-
+        
     }
 
     public void toMainScreen(ActionEvent actionEvent) {

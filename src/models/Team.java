@@ -12,7 +12,7 @@ public class Team {
     private int leagueId;
     private String teamName;
     private String abbrevation;
-    private int teamCode;
+    private String teamCode;
     private String leagueName;
     private String city;
     private String ageGroup;
@@ -20,7 +20,7 @@ public class Team {
     private TeamStats teamStats;
     private ArrayList<TeamMember> teamMembers;
 
-    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, int teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
+    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, String teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
         this.teamId = teamId;
         this.databaseTeamId = databaseTeamId;
         this.leagueId = leagueId;
@@ -72,7 +72,7 @@ public class Team {
         return abbrevation;
     }
 
-    public int getTeamCode() {
+    public String getTeamCode() {
         return teamCode;
     }
 

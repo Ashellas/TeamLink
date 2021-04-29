@@ -18,6 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.AppManager;
+import models.DatabaseManager;
 import models.InitializeData;
 import models.UserSession;
 
@@ -31,6 +32,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -84,12 +86,15 @@ public class SignupController implements InitializeData {
 
     private File selectedFile;
 
-    private UserSession userSession;
+    private UserSession user;
 
 
     @Override
     public void initData(UserSession userSession) {
-        userSession = userSession;
+        user = userSession;
+
+        roleBox.getItems().addAll(roleList);
+        sportBranchBox.getItems().addAll(sportBranchList);
     }
     /**
      * Saves the player info into database if teamCode is working and every text field is filled
@@ -100,9 +105,12 @@ public class SignupController implements InitializeData {
         //If there is no error in the form, saves it into database
         if( !isThereAnError() )
         {
-            saveToDatabase();
-            // Changes scene to the after sign up screen
-            AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, userSession);
+            if(DatabaseManager.signUpUser(user, firstNameField.getText(),
+                    lastNameField.getText(), emailField.getText(), java.sql.Date.valueOf(dateOfBirthPicker.getValue()),
+                    passwordField.getText(), roleBox.getValue().toString(),
+                    sportBranchBox.getValue().toString(), selectedFile).getUser() != null){
+                AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, user);
+            }
         }
     }
 
@@ -135,7 +143,7 @@ public class SignupController implements InitializeData {
      * @throws IOException
      */
     public void backButtonPushed(ActionEvent event) throws IOException {
-        AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"), event, userSession);
+        AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"), event, user);
     }
 
     /**
@@ -188,15 +196,8 @@ public class SignupController implements InitializeData {
             displayError("Invalid Email");
             return true;
         }
-        //Checks if there exists an account with same email and pa
-        PreparedStatement prepStmt = myCon.prepareStatement("SELECT * FROM team_members " +
-                "where email = ?");
 
-        prepStmt.setString(1,emailField.getText());
-
-        ResultSet resultSet = prepStmt.executeQuery();
-
-        if(resultSet.next()){
+        if(DatabaseManager.isEmailTaken(user.getDatabaseConnection(), emailField.getText())){
             displayError("Email is used before");
             return true;
         }
@@ -232,50 +233,4 @@ public class SignupController implements InitializeData {
         snackbar.getStylesheets().add("sample/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
     }
-
-    /**
-     * Gets the required information form the fields and saves them to the database
-     * @throws SQLException
-     * @throws IOException
-     */
-    private void saveToDatabase() throws SQLException, IOException {
-        //Prepares the statement
-        PreparedStatement predStmt =myCon.prepareStatement("INSERT INTO team_members( first_name, last_name, email, birthday, password, role, sport_branch, photo) " +
-                "values(?,?,?,?,MD5(?),?,?,?)");
-
-        LocalDate localDate = dateOfBirthPicker.getValue();
-
-        // Fills the statement with relevant info
-        predStmt.setString(1, firstNameField.getText());
-        predStmt.setString(2, lastNameField.getText());
-        predStmt.setString(3, emailField.getText());
-        predStmt.setString(4, localDate.toString());
-        predStmt.setString(5, passwordField.getText());
-        predStmt.setString(6, roleBox.getValue().toString());
-        predStmt.setString(7, sportBranchBox.getValue().toString());
-
-        if(selectedFile != null){
-            FileInputStream fileInputStream = new FileInputStream(selectedFile.getAbsolutePath());
-            predStmt.setBinaryStream(8,fileInputStream,fileInputStream.available());
-        }
-        else {
-            predStmt.setBlob(8, InputStream.nullInputStream());
-        }
-
-        // Prints out a report
-        int row = predStmt.executeUpdate();
-        if(row > 0) {
-            System.out.println("Saved into the database");
-        }
-        PreparedStatement preparedStatement = myCon.prepareStatement("select * from team_members where email =  ?");
-        preparedStatement.setString(1,emailField.getText());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if(resultSet.next())
-        {
-            Preferences preferences = Preferences.userRoot();
-            preferences.put("id",resultSet.getString("member_id"));
-        }
-    }
-
-
 }

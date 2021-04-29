@@ -244,7 +244,7 @@ public class TrainingsScreenController implements Initializable
 
         Training training = new Training( 1, nameHolder.getText(), trainingDate, descriptionHolder.getText()
                 , "actionLink", colorCode, locationHolder.getText(), locationUrlHolder.getText()
-                , t1, noteHolder.getText() );
+                , t1 );
 
         // remove training pane and add stats pane again
         createTrainingPane.setVisible( false );

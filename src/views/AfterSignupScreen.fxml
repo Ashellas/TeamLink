@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainTemplateController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfterSignupScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -595,7 +595,7 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <TextField promptText="Enter Code" GridPane.columnIndex="1" />
+                                    <TextField fx:id="teamCodeField" promptText="Enter Code" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                               <GridPane GridPane.rowIndex="6">
@@ -608,7 +608,7 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" />
+                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submitButtonPushed" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                               <Label text="Create new Team" textFill="LIGHTGRAY" GridPane.halignment="CENTER" GridPane.rowIndex="8">
@@ -627,7 +627,7 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="create" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Create" GridPane.columnIndex="1" />
+                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#createTeamButtonPushed" styleClass="create" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Create" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>

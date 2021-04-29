@@ -2,6 +2,7 @@ package models;
 
 import javafx.scene.image.Image;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ public class Player extends TeamMember{
     private PlayerStats stats;
     private boolean isCaptain;
 
-    public Player(int memberId, String firstName, String lastName, Date birthday, String teamRole, String email, String sportBranch, Image profilePhoto, String position, ArrayList<Injury> injuries, PlayerStats stats, boolean isCaptain) {
+    public Player(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email, String sportBranch, Image profilePhoto, String position, ArrayList<Injury> injuries, PlayerStats stats, boolean isCaptain) {
         super(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePhoto);
         this.position = position;
         this.injuries = injuries;
