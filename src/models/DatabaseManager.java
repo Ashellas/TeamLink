@@ -535,11 +535,6 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(leagueNames);
     }
 
-    public static UserSession createTeam(UserSession user, String teamName, String abbrevation, String city, String ageGroup, String leagueName, File teamLogo) {
-        //PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("")
-        return null;
-    }
-
     public static ObservableList<String> getLeagueTeams(UserSession user, String city, String ageGroup, String league) throws SQLException {
         ArrayList<String> teamNames = new ArrayList<>();
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select team_name from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and l.age_group = ? and l.city = ?");
@@ -553,12 +548,68 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(teamNames);
     }
 
+    public static UserSession createTeam(UserSession user, String teamName, String abbrevation, String city, String ageGroup, String leagueName, String leagueTeamName, File teamLogo) throws SQLException, IOException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
+        prepStmt.setString(1, leagueName);
+        prepStmt.setString(2, leagueTeamName);
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+            PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO teams(team_name, city, abbrevation, age_group,  " +
+                    "team_code, sport_branch, league_id, database_team_id, team_logo) values (?,?,?,?,?,?,?,?,?)");
+            String teamCode = createUniqueRandomTeamCode(user.getDatabaseConnection());
+            int leagueId = resultSet.getInt("l.league_id");
+            int leagueTeamId = resultSet.getInt("league_team_id");
+            preparedStatement.setString(1, teamName);
+            preparedStatement.setString(2, city);
+            preparedStatement.setString(3, abbrevation);
+            preparedStatement.setString(4, ageGroup);
+            preparedStatement.setString(5, teamCode);
+            preparedStatement.setString(6, user.getUser().getSportBranch());
+            preparedStatement.setInt(7, leagueId);
+            preparedStatement.setInt(8, leagueTeamId);
+            if(teamLogo != null){
+                FileInputStream fileInputStream = new FileInputStream(teamLogo.getAbsolutePath());
+                preparedStatement.setBinaryStream(9,fileInputStream,fileInputStream.available());
+            }
+            else {
+                preparedStatement.setBlob(9, InputStream.nullInputStream());
+            }
+            int row = preparedStatement.executeUpdate();
+
+            PreparedStatement preparedStmt = user.getDatabaseConnection().prepareStatement("select * from teams where team_code = ?");
+            preparedStmt.setString(1, teamCode);
+
+            ResultSet teamResultSet = preparedStmt.executeQuery();
+
+            // Assigns user to that team
+            if(teamResultSet.next()){
+                int teamId = teamResultSet.getInt("team_id");
+                prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_and_members(team_member_id, team_id) VALUES (?,?)");
+                prepStmt.setInt(1, user.getUser().getMemberId());
+                prepStmt.setInt(2, teamId);
+                row = prepStmt.executeUpdate();
+                ArrayList<TeamMember> teamMembers = new ArrayList<>();
+                ArrayList<Team> userTeams = new ArrayList<>();
+                teamMembers.add(user.getUser());
+                if(teamLogo != null){
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.getAbsolutePath()), null, teamMembers));
+                }
+                else{
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers));
+                }
+                user.setUserTeams(userTeams);
+            }
+        }
+        return user;
+    }
+
+
     /**
      * Creates a unique 8 digit code for the team
      * @return the created code
      * @throws SQLException
      */
-    private int createUniqueRandomTeamCode(Connection databaseConnection) throws SQLException {
+    private static String createUniqueRandomTeamCode(Connection databaseConnection) throws SQLException {
 
 
         final int BOUND = 100000000;
@@ -574,7 +625,7 @@ public class DatabaseManager {
             resultSet = prepStmt.executeQuery();
         }while (resultSet.next());
 
-        return teamCode;
+        return "" + teamCode;
     }
 
 
