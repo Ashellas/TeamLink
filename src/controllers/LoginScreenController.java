@@ -2,6 +2,7 @@ package controllers;
 
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbarLayout;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.prefs.Preferences;
 
 /**
@@ -57,9 +60,27 @@ public class LoginScreenController implements  InitializeData{
     @FXML
     private Pane disablePane;
 
+    private boolean isloaded;
+
+    private Executor exec;
+
+    private Stage loading;
+
     @Override
     public void initData(UserSession user) {
         userSession = user;
+        isloaded = false;
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
+        try{
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        disablePane.setVisible(false);
     }
 
 
@@ -74,19 +95,10 @@ public class LoginScreenController implements  InitializeData{
      * @throws SQLException
      * @throws IOException
      */
-    public void loginButtonPushed(ActionEvent event) throws SQLException, IOException {
-        userSession = DatabaseManager.login(userSession, emailField.getText(), passwordField.getText());
-        if(userSession.getUser() == null) {
-            //displayError("No user found");
-            System.out.println("failed");
-        }
-        else {
-            if (userSession.getUserTeams().size() != 0) {
-                AppManager.changeScene(getClass().getResource("/views/MainTemplate2.fxml"), event, userSession);
-            } else {
-                AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, userSession);
-            }
-        }
+    public void loginButtonPushed(ActionEvent event) throws  IOException {
+        createUserSession(event);
+        disablePane.setVisible(true);
+        loading.show();
     }
 
     /**
@@ -105,24 +117,65 @@ public class LoginScreenController implements  InitializeData{
     public void onHelpButtonPushed(ActionEvent event) throws IOException {
         // TODO
         makeIconsDark();
-        AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"), event, userSession);
+
+        createUserSession(event);
+    }
 
 
 
+    private void createUserSession(ActionEvent event) {
 
-        Stage loading;
+        Task<UserSession> userCreateTask = new Task<UserSession>() {
+            @Override
+            public UserSession call() throws Exception {
+                System.out.println(" Succeed at : " + new java.util.Date());
+                userSession = DatabaseManager.login(userSession, emailField.getText(), passwordField.getText());
+                return userSession;
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            if(userSession.getUser() == null) {
+                //displayError("No user found");
+                System.out.println("failed");
+            }
+            else {
+                if (userSession.getUserTeams().size() != 0) {
+                    try {
+                        AppManager.changeScene(getClass().getResource("/views/MainTemplate2.fxml"), event, userSession);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                } else {
+                    try {
+                        AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"), event, userSession);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            }
+            loading.close();
+            System.out.println("gg"); });
+
+                // Task.getValue() gives the value returned from call()...
+
+
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
+    }
+
+    private void createLoading() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
         loading = new Stage();
         loading.initStyle(StageStyle.UNDECORATED);
         loading.initModality(Modality.APPLICATION_MODAL);
         loading.setScene(new Scene(root));
         disablePane.setOpacity(0.5);
-        loading.show();
-
-        
-
     }
-
     /**
      * Shows the error message
      * @param errorMessage message to show
