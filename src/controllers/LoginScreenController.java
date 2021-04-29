@@ -11,8 +11,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.AppManager;
 import models.DatabaseManager;
 import models.InitializeData;
@@ -46,6 +50,12 @@ public class LoginScreenController implements  InitializeData{
     private Pane errorPane;
 
     private UserSession userSession;
+
+    @FXML
+    private ImageView helpIcon;
+
+    @FXML
+    private Pane disablePane;
 
     @Override
     public void initData(UserSession user) {
@@ -92,8 +102,25 @@ public class LoginScreenController implements  InitializeData{
      * Shows the help information for the current scene
      * @param event help button pushed
      */
-    public void onHelpButtonPushed(ActionEvent event) {
+    public void onHelpButtonPushed(ActionEvent event) throws IOException {
         // TODO
+        makeIconsDark();
+        AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"), event, userSession);
+
+
+
+
+        Stage loading;
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        disablePane.setOpacity(0.5);
+        loading.show();
+
+        
+
     }
 
     /**
@@ -110,6 +137,11 @@ public class LoginScreenController implements  InitializeData{
 
     }
 
+    public void makeIconsDark() {
+        Image blackHelp = new   Image("/Resources/Images/black/help_black.png");
+        helpIcon.setImage(blackHelp);
+        System.out.println("aa");
+    }
 
 
 }

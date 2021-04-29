@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.prefs.Preferences;
 
 public class UserSession {
+
+    private final Preferences preferences = Preferences.userRoot();
+
     private TeamMember user;
     private ArrayList<Team> userTeams;
     private HashMap<Team,ObservableList<Game>> gamesOfTheCurrentRound;
@@ -22,6 +25,7 @@ public class UserSession {
     private ObservableList<TeamApplication> teamApplications;
     private HashMap<Team, ArrayList<Gameplan>> gameplans;
     private Date lastSync;
+    private String styleSheet;
 
     public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
         this.user = user;
@@ -35,14 +39,13 @@ public class UserSession {
         this.teamApplications = teamApplications;
         this.gameplans = gameplans;
         this.lastSync = lastSync;
-
+        styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm());
     }
 
     public UserSession(Connection connection){
         this.databaseConnection = connection;
+        styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm());
     }
-
-
 
     public TeamMember getUser() {
         return user;
@@ -89,6 +92,10 @@ public class UserSession {
         return lastSync;
     }
 
+    public String getStyleSheet() {
+        return styleSheet;
+    }
+
     public void setUser(TeamMember user) {
         this.user = user;
     }
@@ -131,5 +138,9 @@ public class UserSession {
 
     public void setLastSync(Date lastSync) {
         this.lastSync = lastSync;
+    }
+
+    public void setStyleSheet(String styleSheet) {
+        this.styleSheet = styleSheet;
     }
 }
