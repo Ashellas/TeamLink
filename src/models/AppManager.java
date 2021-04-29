@@ -20,7 +20,7 @@ public class AppManager {
         c2.initData(userSession);
         Parent p = loader.getRoot();
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(p));
+        stage.setScene(new Scene(p, ((Node) event.getSource()).getScene().getWidth(), ((Node) event.getSource()).getScene().getHeight()));
         stage.show();
     }
 

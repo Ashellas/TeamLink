@@ -295,6 +295,7 @@ public class DatabaseManager {
             byte[] photoBytes = resultSet.getBytes("photo");
             if(photoBytes != null)
             {
+                System.out.println("NOOO");
                 InputStream imageFile = resultSet.getBinaryStream("photo");
                 profilePicture = new Image(imageFile);
             }

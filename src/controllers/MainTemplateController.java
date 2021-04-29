@@ -5,8 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import models.AppManager;
 import models.InitializeData;
 import models.UserSession;
+
+import java.io.IOException;
 
 
 public class MainTemplateController implements InitializeData {
@@ -29,13 +32,16 @@ public class MainTemplateController implements InitializeData {
         this.user = user;
         userNameLabel.setText(user.getUser().getFirstName());
         userRoleLabel.setText(user.getUser().getTeamRole());
-        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        if(user.getUser().getProfilePhoto() != null){
+            profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        }
     }
 
     public void toMainScreen(ActionEvent actionEvent) {
     }
 
-    public void toSquadScreen(ActionEvent actionEvent) {
+    public void toSquadScreen(ActionEvent actionEvent) throws IOException {
+        AppManager.changeScene(getClass().getResource("/views/SquadScreen.fxml"),actionEvent, user);
     }
 
     public void toCalendarScreen(ActionEvent actionEvent) {
@@ -47,7 +53,8 @@ public class MainTemplateController implements InitializeData {
     public void toTrainingsScreen(ActionEvent actionEvent) {
     }
 
-    public void toLeagueScreen(ActionEvent actionEvent) {
+    public void toLeagueScreen(ActionEvent actionEvent) throws IOException {
+        AppManager.changeScene(getClass().getResource("/views/LeagueScreen.fxml"),actionEvent, user);
     }
 
     public void toChatScreen(ActionEvent actionEvent) {

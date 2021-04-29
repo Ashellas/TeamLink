@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.prefs.Preferences;
 
 public class UserSession {
     private TeamMember user;
@@ -34,6 +35,7 @@ public class UserSession {
         this.teamApplications = teamApplications;
         this.gameplans = gameplans;
         this.lastSync = lastSync;
+
     }
 
     public UserSession(Connection connection){
