@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,6 +59,9 @@ public class TeamCreationScreenController implements InitializeData {
     private ImageView teamLogoView;
 
     @FXML
+    private ComboBox teamBox;
+
+    @FXML
     private Pane errorPane;
 
     private File selectedFile;
@@ -66,8 +70,10 @@ public class TeamCreationScreenController implements InitializeData {
 
     private ObservableList<String> ageGroupList = FXCollections.observableArrayList("U18", "U16", "U14", "U12");
 
+    private String selectedAgeGroup = "", selectedCity = "", selectedLeague = "";
 
     private UserSession user;
+
 
     @Override
     public void initData(UserSession userSession) {
@@ -78,13 +84,55 @@ public class TeamCreationScreenController implements InitializeData {
 
 
     public void onSelection( ActionEvent event) throws SQLException {
+
         //TODO think about creating league model class to get id easily
         if(ageGroupBox.getValue() != null && cityBox.getValue() != null){
-            ObservableList<String> leagueList = DatabaseManager.getLeagues(user, cityBox.getValue().toString(), ageGroupBox.getValue().toString());
             leagueBox.setDisable(false);
-            leagueBox.getItems().addAll(leagueList);
+            teamBox.getItems().clear();
+            leagueBox.getItems().clear();
+            ObservableList<String> leagueList = DatabaseManager.getLeagues(user, cityBox.getValue().toString(), ageGroupBox.getValue().toString());
+            leagueBox.getSelectionModel().clearSelection();
+            leagueBox .setButtonCell(new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (empty || item == null) {
+                        setText("Choose League");
+                    } else {
+                        setText(item);
+                    }
+                }
+            });
+            if(leagueList.size() != 0){
+                leagueBox.getItems().addAll(leagueList);
+            }
+        }
+
+    }
+
+    public void onLeagueSelection(ActionEvent actionEvent) throws SQLException {
+        if(leagueBox.getValue() != null){
+            teamBox.setDisable(false);
+            ObservableList<String> teamList = DatabaseManager.getLeagueTeams(user, cityBox.getValue().toString(), ageGroupBox.getValue().toString(), leagueBox.getValue().toString());
+            teamBox.getSelectionModel().clearSelection();
+            teamBox .setButtonCell(new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (empty || item == null) {
+                        setText("Choose Team");
+                    } else {
+                        setText(item);
+                    }
+                }
+            });
+            if(teamList.size() != 0){
+                teamBox.getItems().addAll(teamList);
+            }
         }
     }
+
+
 
 
     /**
@@ -151,7 +199,6 @@ public class TeamCreationScreenController implements InitializeData {
      * @throws SQLException
      */
     private boolean isThereAnError() throws SQLException {
-                /*
         // Checks if any of the fields is empty
         if(teamNameField.getText().equals("") || abbrevationField.getText().equals("")
                 || cityBox.getValue() == null || ageGroupBox.getValue() == null){
@@ -169,21 +216,6 @@ public class TeamCreationScreenController implements InitializeData {
             displayError("Team Names must be smaller than 30 characters");
             return true;
         }
-        // Checks if there exists a team with same name and age group in the  database
-        PreparedStatement prepStmt = myCon.prepareStatement("SELECT * FROM teams " +
-                "where team_name = ? and age_group = ?");
-
-        prepStmt.setString(1,teamNameField.getText());
-        prepStmt.setString(2,ageGroupBox.getValue().toString());
-        ResultSet resultSet = prepStmt.executeQuery();
-
-        if(resultSet.next()){
-            displayError("Team Name is used before for this age group");
-            return true;
-        }
-        // If there are no errors returns false
-
-         */
         return false;
     }
 
@@ -207,6 +239,8 @@ public class TeamCreationScreenController implements InitializeData {
      */
     private void saveToDatabase() throws SQLException, IOException {
         /*
+        user = DatabaseManager.createTeam(user, teamNameField.getText(), abbrevationField.getText(), cityBox.getValue().toString(),
+                ageGroupBox.getValue().toString(), leagueBox.getValue().toString(), selectedFile);
         int uniqueCode;
         int teamId;
         //Prepares the statement
@@ -281,6 +315,7 @@ public class TeamCreationScreenController implements InitializeData {
          */
         return 0;
     }
+
 
 
 }

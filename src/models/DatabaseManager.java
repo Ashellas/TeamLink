@@ -535,6 +535,49 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(leagueNames);
     }
 
+    public static UserSession createTeam(UserSession user, String teamName, String abbrevation, String city, String ageGroup, String leagueName, File teamLogo) {
+        //PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("")
+        return null;
+    }
+
+    public static ObservableList<String> getLeagueTeams(UserSession user, String city, String ageGroup, String league) throws SQLException {
+        ArrayList<String> teamNames = new ArrayList<>();
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select team_name from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and l.age_group = ? and l.city = ?");
+        prepStmt.setString(1, league);
+        prepStmt.setString(2, ageGroup);
+        prepStmt.setString(3, city);
+        ResultSet resultSet = prepStmt.executeQuery();
+        while (resultSet.next()){
+            teamNames.add(resultSet.getString(1));
+        }
+        return FXCollections.observableArrayList(teamNames);
+    }
+
+    /**
+     * Creates a unique 8 digit code for the team
+     * @return the created code
+     * @throws SQLException
+     */
+    private int createUniqueRandomTeamCode(Connection databaseConnection) throws SQLException {
+
+
+        final int BOUND = 100000000;
+        ResultSet resultSet;
+
+        int teamCode;
+        String tempCode;
+
+        do{
+            teamCode =  (int)(Math.random() * BOUND);
+            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from teams where team_code = ?");
+            prepStmt.setInt(1,teamCode);
+            resultSet = prepStmt.executeQuery();
+        }while (resultSet.next());
+
+        return teamCode;
+    }
+
+
     private String formatDateToMYSQL(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);

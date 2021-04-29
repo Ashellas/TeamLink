@@ -113,9 +113,9 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="700.0" GridPane.columnIndex="1">
                <children>
-                  <VBox prefHeight="60.0" prefWidth="100.0">
+                  <VBox prefHeight="60.0" prefWidth="150.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="Last Sync" textFill="LIGHTGRAY">
+                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="150.0" text="Last Sync" textFill="LIGHTGRAY">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -123,7 +123,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="5 mins ago" textFill="LIGHTGRAY">
+                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="5 mins ago" textFill="LIGHTGRAY">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
