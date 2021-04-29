@@ -3,6 +3,7 @@ package models;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TeamMember {
@@ -10,14 +11,14 @@ public class TeamMember {
     private int memberId;
     private String firstName;
     private String lastName;
-    private Date birthday;
+    private LocalDate birthday;
     private String teamRole;
     private String email;
     private String sportBranch;
     //ImageView is used instead of Image to display photo easily
     private ImageView profilePhoto;
 
-    public TeamMember(int memberId, String firstName, String lastName, Date birthday, String teamRole, String email, String sportBranch, Image profilePhoto) {
+    public TeamMember(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email, String sportBranch, Image profilePhoto) {
         this.memberId = memberId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,6 +27,12 @@ public class TeamMember {
         this.email = email;
         this.sportBranch = sportBranch;
         this.profilePhoto = new ImageView(profilePhoto);
+    }
+
+    public TeamMember(int memberId, String firstName, String lastName) {
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public int getMemberId() {
@@ -40,7 +47,7 @@ public class TeamMember {
         return lastName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 

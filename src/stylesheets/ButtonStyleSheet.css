@@ -14,7 +14,7 @@
 .upload{
     -fx-background-radius: 15px;
     -fx-background-color:  #007A9F;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
 }
 .login{
     -fx-font-size: 20px;
@@ -68,7 +68,7 @@
 
 .upload:hover{
     -fx-background-color: #046f91;
-    -fx-font-size: 13px;
+    -fx-font-size: 15px;
 }
 
 .upload:pressed{

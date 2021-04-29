@@ -15,23 +15,23 @@ public abstract class Stats {
         this.gamesDrawn = gamesDrawn;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public int getGamesPlayed(){
+    public int getGamesPlayed() {
         return gamesPlayed;
     }
 
-    public int getGamesWon(){
+    public int getGamesWon() {
         return gamesWon;
     }
 
-    public int getGamesDrawn(){
-        return gamesDrawn;
+    public int getGamesLost() {
+        return gamesLost;
     }
 
-    public int getGamesLost(){
-        return gamesLost;
+    public int getGamesDrawn() {
+        return gamesDrawn;
     }
 }

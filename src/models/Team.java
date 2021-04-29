@@ -12,7 +12,7 @@ public class Team {
     private int leagueId;
     private String teamName;
     private String abbrevation;
-    private int teamCode;
+    private String teamCode;
     private String leagueName;
     private String city;
     private String ageGroup;
@@ -20,7 +20,7 @@ public class Team {
     private TeamStats teamStats;
     private ArrayList<TeamMember> teamMembers;
 
-    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, int teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
+    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, String teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
         this.teamId = teamId;
         this.databaseTeamId = databaseTeamId;
         this.leagueId = leagueId;
@@ -35,6 +35,15 @@ public class Team {
         this.teamMembers = teamMembers;
     }
 
+
+    public Team(int teamId, String teamName, String city, String ageGroup, Image teamLogo) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+        this.city = city;
+        this.ageGroup = ageGroup;
+        this.teamLogo = new ImageView(teamLogo);
+    }
+
     //For teams which do not belong to user
     public Team(int teamId, String teamName, String abbrevation, TeamStats teamStats) {
         this.teamId = teamId;
@@ -42,7 +51,6 @@ public class Team {
         this.abbrevation = abbrevation;
         this.teamStats = teamStats;
     }
-
 
     public int getTeamId() {
         return teamId;
@@ -60,35 +68,11 @@ public class Team {
         return teamName;
     }
 
-    public int getGamesWon(){
-        return teamStats.getGamesWon();
-    }
-
-    public int getGamesDrawn(){
-        return teamStats.getGamesDrawn();
-    }
-
-    public int getGamesLost(){
-        return teamStats.getGamesLost();
-    }
-
-    public int getPoints(){
-        return teamStats.getPoints();
-    }
-
-    public int getPlacement(){
-        return teamStats.getPlacement();
-    }
-
-    public int getMatchesLeft(){
-        return teamStats.getGamesLeft();
-    }
-
     public String getAbbrevation() {
         return abbrevation;
     }
 
-    public int getTeamCode() {
+    public String getTeamCode() {
         return teamCode;
     }
 
@@ -114,5 +98,29 @@ public class Team {
 
     public ArrayList<TeamMember> getTeamMembers() {
         return teamMembers;
+    }
+
+    public int getGamesWon(){
+        return teamStats.getGamesWon();
+    }
+
+    public int getGamesDrawn(){
+        return teamStats.getGamesDrawn();
+    }
+
+    public int getGamesLost(){
+        return teamStats.getGamesLost();
+    }
+
+    public int getPoints(){
+        return teamStats.getPoints();
+    }
+
+    public int getPlacement(){
+        return teamStats.getPlacement();
+    }
+
+    public int getMatchesLeft(){
+        return teamStats.getTotalRounds();
     }
 }

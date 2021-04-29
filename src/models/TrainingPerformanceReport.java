@@ -2,14 +2,14 @@ package models;
 
 public class TrainingPerformanceReport {
     private int id;
-    private double[] lastFiveTrainingAverage;
+    private double[] lastFiveTraining;
     private double lastWeekAverage;
     private double lastMonthAverage;
     private double seasonAverage;
 
-    public TrainingPerformanceReport(int id, double[] lastFiveTrainingAverage, double lastWeekAverage, double lastMonthAverage, double seasonAverage) {
+    public TrainingPerformanceReport(int id, double[] lastFiveTraining, double lastWeekAverage, double lastMonthAverage, double seasonAverage) {
         this.id = id;
-        this.lastFiveTrainingAverage = lastFiveTrainingAverage;
+        this.lastFiveTraining = lastFiveTraining;
         this.lastWeekAverage = lastWeekAverage;
         this.lastMonthAverage = lastMonthAverage;
         this.seasonAverage = seasonAverage;
@@ -19,8 +19,8 @@ public class TrainingPerformanceReport {
         return id;
     }
 
-    public double[] getLastFiveTrainingAverage() {
-        return lastFiveTrainingAverage;
+    public double[] getLastFiveTraining() {
+        return lastFiveTraining;
     }
 
     public double getLastWeekAverage() {

@@ -10,11 +10,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import models.InitializeData;
 import models.Team;
 import models.UserSession;
 
 
-public class LeagueScreenController {
+public class LeagueScreenController implements InitializeData {
+
     //Variables
     @FXML
     private ImageView profilePictureImageView;
@@ -86,9 +88,6 @@ public class LeagueScreenController {
     private JFXComboBox<String> teamSelectionComboBox;
 
     @FXML
-    private JFXComboBox<Integer> roundNumberComboBox;
-
-    @FXML
     private Label leagueNameLabel;
 
     private UserSession user;
@@ -108,8 +107,6 @@ public class LeagueScreenController {
         profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
 
         setTeamSelectionComboBox(user);
-
-        setStandingsTable(user);
     }
 
     /**
@@ -129,11 +126,13 @@ public class LeagueScreenController {
 
         leagueNameLabel.setText( userTeams.get(0).getLeagueName());
 
-        setTeamOverviewTable( user, userTeams.get(0));
-    }
+        userSelectedTeam.add( userTeams.get(0));
 
-    public void setRoundNumberComboBox( UserSession user){
+        setStandingsTable(user);
 
+        setTeamOverviewTable( user);
+
+        setFixtureTable( user);
     }
 
     /**
@@ -151,7 +150,7 @@ public class LeagueScreenController {
             losesColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
             pointsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("points"));
 
-            teams = user.getStandings();
+            teams = user.getStandings( userSelectedTeam.get(0));
 
             standingsTableView.setItems( teams);
         }
@@ -166,7 +165,7 @@ public class LeagueScreenController {
             losesColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
             pointsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("points"));
 
-            teams = user.getStandings();
+            teams = user.getStandings( userSelectedTeam.get(0));
             standingsTableView.setItems( teams);
         }
     }
@@ -174,11 +173,8 @@ public class LeagueScreenController {
     /**
      * Sets the team overview table of the selected team
      * @param user
-     * @param selectedTeam
      */
-    public void setTeamOverviewTable( UserSession user, Team selectedTeam){
-
-        userSelectedTeam.add( selectedTeam);
+    public void setTeamOverviewTable( UserSession user){
 
         if( user.getUser().getSportBranch().equals("Football") ){
             //Creates the columns of the table
@@ -206,7 +202,13 @@ public class LeagueScreenController {
         }
     }
 
-    public void setFixtureTable( UserSession user, Team selectedTeam){
+    public void setFixtureTable( UserSession user){
+        homeColumn.setCellValueFactory( new PropertyValueFactory<>("homeTeamName"));
+        scoreColumn.setCellValueFactory( new PropertyValueFactory<>("result"));
+        awayColumn.setCellValueFactory( new PropertyValueFactory<>( "awayTeamName"));
+        dateColumn.setCellValueFactory( new PropertyValueFactory<>( "eventDateTime"));
+
+        fixtureTable.setItems( user.getGamesOfTheCurrentRound( userSelectedTeam.get(0)));
 
     }
 
@@ -218,11 +220,10 @@ public class LeagueScreenController {
     public void onSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
         teamOverviewTable.refresh();
+        standingsTableView.refresh();
+        fixtureTable.refresh();
     }
 
-    public void onSelectionRoundNumberComboBox( ActionEvent event){
-
-    }
 
     public void toMainScreen(ActionEvent actionEvent) {
     }

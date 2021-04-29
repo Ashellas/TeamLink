@@ -7,17 +7,15 @@ public class Training extends CalendarEvent{
     private String trainingLocationName;
     private String trainingLocationLink;
     private Team team;
-    //TODO do we need Notes here?
-    private String notes;
+
     //I deleted TrainingPerformance from here
 
 
-    public Training(int calendarEventId, String eventTitle, Date eventDateTime, String description, String actionLink, String colorCode, String trainingLocationName, String trainingLocationLink, Team team, String notes) {
+    public Training(int calendarEventId, String eventTitle, Date eventDateTime, String description, String actionLink, String colorCode, String trainingLocationName, String trainingLocationLink, Team team) {
         super(calendarEventId, eventTitle, eventDateTime, description, actionLink, colorCode);
         this.trainingLocationName = trainingLocationName;
         this.trainingLocationLink = trainingLocationLink;
         this.team = team;
-        this.notes = notes;
     }
 
     public String getTrainingLocationName() {
@@ -32,7 +30,4 @@ public class Training extends CalendarEvent{
         return team;
     }
 
-    public String getNotes() {
-        return notes;
-    }
 }

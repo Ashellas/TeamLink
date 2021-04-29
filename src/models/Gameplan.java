@@ -9,12 +9,13 @@ public class Gameplan {
     private String filePath;
     private int version;
 
-    public Gameplan(int gameplanId, String title, ArrayList<Team> teams, String filePath, int version) {
+    public Gameplan(int gameplanId, String title, Team team, int version) {
         this.gameplanId = gameplanId;
         this.title = title;
-        this.teams = teams;
-        this.filePath = filePath;
+        teams = new ArrayList<>();
+        teams.add(team);
         this.version = version;
+        filePath = title + "_" + version + ".pdf";
     }
 
     public int getGameplanId() {
@@ -35,5 +36,13 @@ public class Gameplan {
 
     public int getVersion() {
         return version;
+    }
+
+    public void addTeam(Team team){
+        teams.add(team);
+    }
+
+    public void setTeams(ArrayList<Team> teams){
+        this.teams = teams;
     }
 }

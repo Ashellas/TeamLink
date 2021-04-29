@@ -90,7 +90,7 @@ public class DemoSceneController implements Initializable {
         Task<UserSession> userCreateTask = new Task<UserSession>() {
             @Override
             public UserSession call() throws Exception {
-                user =  new UserSession();
+                user =  new UserSession(null);
                 System.out.println(" Succeed at : " + new java.util.Date());
                 return user;
             }
@@ -126,7 +126,7 @@ public class DemoSceneController implements Initializable {
         Task<TeamMember> userCreateTask = new Task<TeamMember>() {
             @Override
             public TeamMember call() throws Exception {
-                DatabaseManager.login(user.getDatabaseConnection(), "talay@gmail.com","Talayyucel");
+                DatabaseManager.login(user, "talay@gmail.com","Talayyucel");
                 return member;
             }
         };
