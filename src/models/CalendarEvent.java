@@ -43,3 +43,5 @@ public class CalendarEvent {
         return colorCode;
     }
 }
+
+// Birthdays, National Holidays, Training, Match
