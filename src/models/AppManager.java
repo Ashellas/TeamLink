@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 
 public class AppManager {
     public static void changeScene(URL fxmlfile, ActionEvent event, UserSession userSession) throws IOException {
@@ -21,5 +22,18 @@ public class AppManager {
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(p));
         stage.show();
+    }
+
+    public static String getLastSyncText(Date lastSync){
+        long differenceInMinutes = (new Date().getTime() - lastSync.getTime()) / 1000 / 60;
+        if(differenceInMinutes < 2){
+            return "few moments ago";
+        }
+        else if (differenceInMinutes < 60){
+            return (int)differenceInMinutes + " mins ago";
+        }
+        else {
+            return "more than an hour ago";
+        }
     }
 }

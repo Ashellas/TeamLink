@@ -26,6 +26,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -53,7 +54,7 @@ public class AfterSignupScreenController implements InitializeData {
     private Label lastSyncLabel;
 
     @FXML
-    private Pane messagePane;
+        private Pane messagePane;
 
     @FXML
     private TableView<TeamApplication> teamApplicationTable;
@@ -89,7 +90,12 @@ public class AfterSignupScreenController implements InitializeData {
         catch (Exception e){
             e.printStackTrace();
         }
+        if(!user.getUser().getTeamRole().equals("Head Coach")){
+            createTeamPane.setVisible(false);
+        }
+        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
     }
+
 
     //TODO add checking for already made submissions
     //TODO send Notification to people who can accept the application
@@ -109,6 +115,7 @@ public class AfterSignupScreenController implements InitializeData {
         else{
             //Display Error
         }
+        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
     }
 
     /**
@@ -205,5 +212,6 @@ public class AfterSignupScreenController implements InitializeData {
     }
 
     public void SynchronizeData(ActionEvent actionEvent) {
+        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
     }
 }

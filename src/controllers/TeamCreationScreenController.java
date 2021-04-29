@@ -14,10 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import models.DatabaseManager;
-import models.InitializeData;
-import models.TeamMember;
-import models.UserSession;
+import models.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,7 +76,7 @@ public class TeamCreationScreenController implements InitializeData {
         ageGroupBox.getItems().addAll(ageGroupList);
     }
 
-    
+
     public void onSelection( ActionEvent event) throws SQLException {
         //TODO think about creating league model class to get id easily
         if(ageGroupBox.getValue() != null && cityBox.getValue() != null){
@@ -97,6 +94,7 @@ public class TeamCreationScreenController implements InitializeData {
      */
     public void backButtonPushed(ActionEvent event) throws IOException {
         // TODO if he has teams go to settings if not go to aftersign up
+        AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"),event, user);
         // GameManager.changeScene(getClass().getResource("AfterSignUp.fxml"), event);
     }
 
@@ -153,7 +151,7 @@ public class TeamCreationScreenController implements InitializeData {
      * @throws SQLException
      */
     private boolean isThereAnError() throws SQLException {
-        /*
+                /*
         // Checks if any of the fields is empty
         if(teamNameField.getText().equals("") || abbrevationField.getText().equals("")
                 || cityBox.getValue() == null || ageGroupBox.getValue() == null){

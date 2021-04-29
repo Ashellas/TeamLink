@@ -32,7 +32,7 @@ public class Main extends Application {
         Connection databaseConnection = DriverManager.getConnection("jdbc:mysql://139.177.181.92:3306/teamlink", "atak", "**CTRLaltBilkentg3m**");
         UserSession userSession = new UserSession(databaseConnection);
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("views/TeamCreationScreen.fxml"));
+        loader.setLocation(getClass().getResource("views/LoginScreen.fxml"));
         loader.load();
         InitializeData c2 = loader.getController();
         c2.initData(userSession);
