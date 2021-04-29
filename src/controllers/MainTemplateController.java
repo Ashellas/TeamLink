@@ -35,6 +35,7 @@ public class MainTemplateController implements InitializeData {
         if(user.getUser().getProfilePhoto() != null){
             profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
         }
+        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
     }
 
     public void toMainScreen(ActionEvent actionEvent) {
