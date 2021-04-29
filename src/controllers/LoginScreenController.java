@@ -96,6 +96,7 @@ public class LoginScreenController implements  InitializeData{
      * @throws IOException
      */
     public void loginButtonPushed(ActionEvent event) throws  IOException {
+        //TODO if fields are empty do not check
         createUserSession(event);
         disablePane.setVisible(true);
         loading.show();
@@ -142,6 +143,7 @@ public class LoginScreenController implements  InitializeData{
             if(userSession.getUser() == null) {
                 //displayError("No user found");
                 System.out.println("failed");
+                disablePane.setVisible(false);
             }
             else {
                 if (userSession.getUserTeams().size() != 0) {

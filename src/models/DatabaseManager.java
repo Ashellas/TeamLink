@@ -242,7 +242,7 @@ public class DatabaseManager {
         }
         HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = new HashMap<>();
         for (Team team : userTeams){
-            ArrayList<Game> games = new ArrayList<>();
+            ObservableList<Game> games = FXCollections.observableArrayList();
             PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
                     "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? " +
                     "join league_teams lt on lt.league_team_id = league_games.away_team_id join league_teams t " +
@@ -271,9 +271,9 @@ public class DatabaseManager {
                 Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result);
                 games.add(game);
             }
-            gamesOfTheCurrentRound.put(team, FXCollections.observableArrayList(games));
+            gamesOfTheCurrentRound.put(team, games);
         }
-        return null;
+        return gamesOfTheCurrentRound;
     }
 
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
