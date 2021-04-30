@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import models.InitializeData;
 import models.Team;
 import models.UserSession;
@@ -94,6 +95,27 @@ public class LeagueScreenController implements InitializeData {
     @FXML
     private Button leftButtonFixture;
 
+    @FXML
+    private Label homeTeamLabel;
+
+    @FXML
+    private Label awayTeamLabel;
+
+    @FXML
+    private Label scoreLabel;
+
+    @FXML
+    private Label dateLabel;
+
+    @FXML
+    private Label gameLocationLabel;
+
+    @FXML
+    private Label gameLocationLinkLabel;
+
+    @FXML
+    private GridPane matchDetailsPane;
+
     private UserSession user;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
@@ -163,7 +185,7 @@ public class LeagueScreenController implements InitializeData {
             //Sets the draw column non-visible
             drawColumnStandings.setVisible(false);
 
-            standingsTableView.setPrefWidth( 5 * standingsTableView.getWidth() / 6);
+            standingsTableView.setMaxWidth( standingsTableView.getMaxWidth() * 0.83);
 
             //Creates the columns of the table
             teamsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("teamName"));
@@ -196,6 +218,8 @@ public class LeagueScreenController implements InitializeData {
         else if( user.getUser().getSportBranch().equals("Basketball")){
             //Sets the draw column non-visible
             drawsColumn.setVisible(false);
+
+            teamOverviewTable.setMaxWidth( teamOverviewTable.getMaxWidth() * 0.83);
 
             //Creates the columns of the table
             placementColumn.setCellValueFactory( new PropertyValueFactory<>("placement"));
