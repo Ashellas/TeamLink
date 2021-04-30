@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="240.0" prefWidth="370.0" style="-fx-background-color: #3e4752; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoadingScreenController">
+   <children>
+      <ImageView fx:id="ball1" fitHeight="67.0" fitWidth="50.0" layoutX="160.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Images/loading.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ball2" fitHeight="67.0" fitWidth="50.0" layoutX="160.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Images/loading.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ball3" fitHeight="67.0" fitWidth="50.0" layoutX="160.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Images/loading.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ball4" fitHeight="67.0" fitWidth="50.0" layoutX="160.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Images/loading.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ball5" fitHeight="67.0" fitWidth="50.0" layoutX="160.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Images/loading.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ball6" fitHeight="67.0" fitWidth="50.0" layoutX="160.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Resources/Images/loading.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="130.0" layoutX="121.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="120.0">
+         <image>
+            <Image url="@../Resources/Images/app_logo.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="loadingText" layoutX="157.0" layoutY="210.0" text="Loading..." textFill="LIGHTGRAY">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -5,9 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import models.InitializeData;
@@ -85,10 +83,16 @@ public class LeagueScreenController implements InitializeData {
     private TableColumn<models.Game, String> dateColumn;
 
     @FXML
-    private JFXComboBox<String> teamSelectionComboBox;
+    private ComboBox<String> teamSelectionComboBox;
 
     @FXML
     private Label leagueNameLabel;
+
+    @FXML
+    private Button rightButtonFixture;
+
+    @FXML
+    private Button leftButtonFixture;
 
     private UserSession user;
 
@@ -159,6 +163,8 @@ public class LeagueScreenController implements InitializeData {
             //Sets the draw column non-visible
             drawColumnStandings.setVisible(false);
 
+            standingsTableView.setPrefWidth( 5 * standingsTableView.getWidth() / 6);
+
             //Creates the columns of the table
             teamsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("teamName"));
             winColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesWon"));
@@ -222,6 +228,14 @@ public class LeagueScreenController implements InitializeData {
         teamOverviewTable.refresh();
         standingsTableView.refresh();
         fixtureTable.refresh();
+    }
+
+    public void rightButtonFixtureClicked( ActionEvent event){
+
+    }
+
+    public void leftButtonFixtureClicked( ActionEvent event){
+
     }
 
 

@@ -28,6 +28,7 @@
 
 .table-view .table-cell{
     -fx-text-fill: white;
+    -fx-alignment: center;
 }
 
 .table-row-cell{

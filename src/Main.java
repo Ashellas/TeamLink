@@ -40,6 +40,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(p));
         primaryStage.setTitle("TeamLink");
         primaryStage.setMaximized(true);
+        primaryStage.setFullScreen(false);
         primaryStage.setMinHeight(700);
         primaryStage.setMinWidth(1100);
         primaryStage.show();

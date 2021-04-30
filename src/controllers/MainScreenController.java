@@ -4,8 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import models.AppManager;
 import models.InitializeData;
 import models.UserSession;
+
+import java.io.IOException;
 
 
 public class MainScreenController implements InitializeData {
@@ -47,7 +50,8 @@ public class MainScreenController implements InitializeData {
     public void toTrainingsScreen(ActionEvent actionEvent) {
     }
 
-    public void toLeagueScreen(ActionEvent actionEvent) {
+    public void toLeagueScreen(ActionEvent actionEvent) throws IOException {
+        AppManager.changeScene(getClass().getResource("LeagueScreen.fxml"),actionEvent, user);
     }
 
     public void toChatScreen(ActionEvent actionEvent) {

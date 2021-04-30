@@ -3,6 +3,7 @@ package models;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -26,7 +27,13 @@ public class TeamMember {
         this.teamRole = teamRole;
         this.email = email;
         this.sportBranch = sportBranch;
-        this.profilePhoto = new ImageView(profilePhoto);
+        if(profilePhoto != null){
+            this.profilePhoto = new ImageView(profilePhoto);
+        }
+        else{
+            InputStream inStream = getClass().getResourceAsStream("/Resources/Images/white/profile_white.png");
+            this.profilePhoto = new ImageView(new Image(inStream));
+        }
     }
 
     public TeamMember(int memberId, String firstName, String lastName) {
@@ -50,6 +57,8 @@ public class TeamMember {
     public LocalDate getBirthday() {
         return birthday;
     }
+
+    public String getBirthdayString(){return birthday.toString();}
 
     public String getTeamRole() {
         return teamRole;

@@ -1,5 +1,7 @@
 package models;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -123,4 +125,25 @@ public class Team {
     public int getMatchesLeft(){
         return teamStats.getTotalRounds();
     }
+
+    public ObservableList<Player> getPlayers(){
+        ArrayList<Player> players = new ArrayList<>();
+        for( TeamMember member : teamMembers){
+            if(member.getTeamRole().equals("Player")){
+                players.add((Player) member);
+            }
+        }
+        return FXCollections.observableArrayList(players);
+    }
+
+    public ObservableList<TeamMember> getMembersWithRole(String teamRole){
+        ArrayList<TeamMember> memberList = new ArrayList<>();
+        for( TeamMember member : teamMembers){
+            if(member.getTeamRole().equals(teamRole)){
+                memberList.add( member);
+            }
+        }
+        return FXCollections.observableArrayList(memberList);
+    }
+
 }
