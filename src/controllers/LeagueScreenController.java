@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import models.*;
 
 
@@ -119,6 +120,9 @@ public class LeagueScreenController implements InitializeData {
 
     @FXML
     private Button closeDetailsButton;
+
+    @FXML
+    private Pane blackenedPane;
 
     private UserSession user;
 
@@ -272,9 +276,11 @@ public class LeagueScreenController implements InitializeData {
     public void onCloseDetailsButtonClicked( ActionEvent event){
         matchDetailsPane.setVisible(false);
         setStatisticsPane.setVisible(false);
+        blackenedPane.setVisible(false);
     }
 
     public void onFixtureDetailsClicked( Game gameClicked, UserSession user){
+        blackenedPane.setVisible(true);
         matchDetailsPane.setVisible(true);
         homeTeamLabel.setText( gameClicked.getHomeTeamName());
         awayTeamLabel.setText( gameClicked.getAwayTeamName());
