@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import models.*;
 
 
@@ -51,18 +53,53 @@ public class SquadScreenController implements InitializeData {
     @FXML
     private TableColumn<TeamMember, Button> detailedViewColumn;
 
+    @FXML
+    private Pane disablePane;
+
+    @FXML
+    private Pane detailsPane;
+
+    @FXML
+    private GridPane lastFiveTrainingsGrid;
+
+    @FXML
+    private GridPane trainingAveragesGrid;
+
+    @FXML
+    private GridPane averageGameStatsGrid;
+
+    @FXML
+    private GridPane lastGameStatsGrid;
+
+    @FXML
+    private Label detailsFullNameLabel;
+
+    @FXML
+    private Label detailsBirthdayLabel;
+
+    @FXML
+    private Label detailsEmailLabel;
+
+    @FXML
+    private Label detailsTeamRoleLabel;
+
     private UserSession user;
 
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
 
     private ObservableList<String> memberFilterOptions = FXCollections.observableArrayList("All Members", "Players", "Assistant Coaches", "Head Coaches");
 
+    private String[] footballAverages = {"Gpg","Apg","Spg","YCpg", "RCpg"};
+    private String[] footballGameStats = {"Gls", "Ast","Svs","YC","RC"};
+
+    private String[] basketballAverages = {"Ppg","Apg","Rpg","Spg", "Bpg"};
+    private String[] basketballGameStats = {"Pts", "Ast","Rbd","Stl","Blk"};
+
     public void initData(UserSession user){
         this.user = user;
         userNameLabel.setText(user.getUser().getFirstName());
         userRoleLabel.setText(user.getUser().getTeamRole());
         if(user.getUser().getProfilePhoto() != null){
-            System.out.println("OMG");
             profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
         }
         lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
@@ -74,6 +111,23 @@ public class SquadScreenController implements InitializeData {
         teamBox.getSelectionModel().selectFirst();
         memberFilterBox.getSelectionModel().selectFirst();
         updateSquadTable();
+        setUpDetailsPane();
+        disablePane.setVisible(false);
+        detailsPane.setVisible(false);
+    }
+
+    private void setUpDetailsPane() {
+        //TODO get values from database and show it here
+        for(int i = 0; i < 5; i++){
+            if(user.getUser().getSportBranch().equals("Basketball")){
+                Label averageLabel = new Label(basketballAverages[i]);
+                Label statsLabel = new Label(basketballGameStats[i]);
+                averageLabel.getStyleClass().add("detailsLabel");
+                statsLabel.getStyleClass().add("detailsLabel");
+                averageGameStatsGrid.add(averageLabel, i, 0);
+                lastGameStatsGrid.add(statsLabel, i, 0);
+            }
+        }
     }
 
     public void updateSquadTable() {
@@ -103,14 +157,18 @@ public class SquadScreenController implements InitializeData {
         }
 
         detailedViewColumn.setCellFactory(ButtonTableCell.<TeamMember>forTableColumn("View", (TeamMember p) -> {
-            showPane();
-            System.out.println(p.getFirstName());
+            showPane(p);
             return p;
         }));
     }
 
-    public  void showPane(){
-
+    private void showPane(TeamMember member) {
+        disablePane.setVisible(true);
+        detailsPane.setVisible(true);
+        detailsFullNameLabel.setText(member.getFullName());
+        detailsBirthdayLabel.setText(member.getBirthdayString());
+        detailsEmailLabel.setText(member.getEmail());
+        detailsTeamRoleLabel.setText(member.getTeamRole());
     }
 
     public void toMainScreen(ActionEvent actionEvent) {
@@ -144,5 +202,8 @@ public class SquadScreenController implements InitializeData {
     }
 
     public void SynchronizeData(ActionEvent actionEvent) {
+    }
+
+    public void closeButtonPushed(ActionEvent event) {
     }
 }

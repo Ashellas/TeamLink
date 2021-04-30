@@ -1,0 +1,14 @@
+.detailsGrid Line {
+    -fx-stroke   :  a1289f;
+    -fx-stroke-width: 0.5px;
+}
+
+.statsGrid Line {
+    -fx-stroke   :  d3d3d3;
+    -fx-stroke-width: 1.5px;
+}
+
+.detailsLabel{
+    -fx-text-fill: d3d3d3;
+    -fx-font-size: 18px;
+}

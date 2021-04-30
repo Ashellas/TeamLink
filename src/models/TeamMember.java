@@ -75,4 +75,6 @@ public class TeamMember {
     public ImageView getProfilePhoto() {
         return profilePhoto;
     }
+
+    public String getFullName(){ return firstName + " " + lastName;}
 }

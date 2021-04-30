@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
+import org.controlsfx.control.spreadsheet.Grid;
 
 
 public class LeagueScreenController implements InitializeData {
@@ -32,9 +33,6 @@ public class LeagueScreenController implements InitializeData {
     private TableView<models.Team> standingsTableView;
 
     @FXML
-    private TableView<models.Team> teamOverviewTable;
-
-    @FXML
     private TableView<models.Game> fixtureTable;
 
     @FXML
@@ -53,22 +51,34 @@ public class LeagueScreenController implements InitializeData {
     private TableColumn<models.Team, Integer> pointsColumnStandings;
 
     @FXML
-    private TableColumn<models.Team, Integer> placementColumn;
+    private Label placementLabel;
 
     @FXML
-    private TableColumn<models.Team, Integer> winsColumn;
+    private Label winsLabel;
 
     @FXML
-    private TableColumn<models.Team, Integer> drawsColumn;
+    private Label drawsLabel;
 
     @FXML
-    private TableColumn<models.Team, Integer> losesColumn;
+    private Label losesLabel;
 
     @FXML
-    private TableColumn<models.Team, Integer> pointsColumn;
+    private Label pointsLabel;
 
     @FXML
-    private TableColumn<models.Team, Integer> matchesLeftColumn;
+    private Label matchesLeftLabel;
+
+    @FXML
+    private Label drawsNameLabel;
+
+    @FXML
+    private Label losesNameLabel;
+
+    @FXML
+    private Label pointsNameLabel;
+
+    @FXML
+    private Label matchesLeftNameLabel;
 
     @FXML
     private TableColumn<models.Game, String> homeColumn;
@@ -117,9 +127,6 @@ public class LeagueScreenController implements InitializeData {
 
     @FXML
     private GridPane setStatisticsPane;
-
-    @FXML
-    private Button closeDetailsButton;
 
     @FXML
     private Pane blackenedPane;
@@ -213,30 +220,34 @@ public class LeagueScreenController implements InitializeData {
     public void setTeamOverviewTable( UserSession user){
 
         if( user.getUser().getSportBranch().equals("Football") ){
-            //Creates the columns of the table
-            placementColumn.setCellValueFactory( new PropertyValueFactory<>("placement"));
-            winsColumn.setCellValueFactory( new PropertyValueFactory<>("gamesWon"));
-            drawsColumn.setCellValueFactory( new PropertyValueFactory<>("gamesDrawn"));
-            losesColumn.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
-            pointsColumn.setCellValueFactory( new PropertyValueFactory<>("points"));
-            matchesLeftColumn.setCellValueFactory( new PropertyValueFactory<>("matchesLeft"));
 
-            teamOverviewTable.setItems( userSelectedTeam);
+            //Set the labels according to the information received from selected team
+            placementLabel.setText( String.valueOf( userSelectedTeam.get(0).getPlacement()));
+            winsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesWon()));
+            drawsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesDrawn()));
+            losesLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesLost()));
+            pointsLabel.setText( String.valueOf( userSelectedTeam.get(0).getPoints()));
+            matchesLeftLabel.setText( String.valueOf( userSelectedTeam.get(0).getMatchesLeft()));
         }
         else if( user.getUser().getSportBranch().equals("Basketball")){
-            //Sets the draw column non-visible
-            drawsColumn.setVisible(false);
 
-            teamOverviewTable.setMaxWidth( teamOverviewTable.getMaxWidth() * 0.83);
+            /*
+            Set the places of the name labels to omit the draw column
+             */
+            drawsNameLabel.setText( losesNameLabel.getText());
+            losesNameLabel.setText( pointsNameLabel.getText());
+            pointsNameLabel.setText( matchesLeftNameLabel.getText());
+            matchesLeftNameLabel.setText("");
 
-            //Creates the columns of the table
-            placementColumn.setCellValueFactory( new PropertyValueFactory<>("placement"));
-            winsColumn.setCellValueFactory( new PropertyValueFactory<>("gamesWon"));
-            losesColumn.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
-            pointsColumn.setCellValueFactory( new PropertyValueFactory<>("points"));
-            matchesLeftColumn.setCellValueFactory( new PropertyValueFactory<>("matchesLeft"));
-
-            teamOverviewTable.setItems( userSelectedTeam);
+            /* Set the labels according to the information received from selected team
+               by avoiding draw column
+             */
+            placementLabel.setText( String.valueOf( userSelectedTeam.get(0).getPlacement()));
+            winsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesWon()));
+            drawsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesLost()));
+            losesLabel.setText( String.valueOf( userSelectedTeam.get(0).getPoints()));
+            pointsLabel.setText( String.valueOf( userSelectedTeam.get(0).getMatchesLeft()));
+            matchesLeftLabel.setText("");
         }
     }
 
@@ -253,6 +264,40 @@ public class LeagueScreenController implements InitializeData {
 
     }
 
+    public void updateTeamOverviewTable(UserSession user){
+
+        if( user.getUser().getSportBranch().equals("Football") ){
+
+            //Set the labels according to the information received from selected team
+            placementLabel.setText( String.valueOf( userSelectedTeam.get(0).getPlacement()));
+            winsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesWon()));
+            drawsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesDrawn()));
+            losesLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesLost()));
+            pointsLabel.setText( String.valueOf( userSelectedTeam.get(0).getPoints()));
+            matchesLeftLabel.setText( String.valueOf( userSelectedTeam.get(0).getMatchesLeft()));
+        }
+        else if( user.getUser().getSportBranch().equals("Basketball")){
+
+            /*
+            Set the places of the name labels to omit the draw column
+             */
+            drawsNameLabel.setText( losesNameLabel.getText());
+            losesNameLabel.setText( pointsNameLabel.getText());
+            pointsNameLabel.setText( matchesLeftNameLabel.getText());
+            matchesLeftNameLabel.setText("");
+
+            /* Set the labels according to the information received from selected team
+               by avoiding draw column
+             */
+            placementLabel.setText( String.valueOf( userSelectedTeam.get(0).getPlacement()));
+            winsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesWon()));
+            drawsLabel.setText( String.valueOf( userSelectedTeam.get(0).getGamesLost()));
+            losesLabel.setText( String.valueOf( userSelectedTeam.get(0).getPoints()));
+            pointsLabel.setText( String.valueOf( userSelectedTeam.get(0).getMatchesLeft()));
+            matchesLeftLabel.setText("");
+        }
+    }
+
     /**
      * When a new team selected from the team selection combo box, team overview table is refreshed
      * according to the new team that is selected.
@@ -260,7 +305,7 @@ public class LeagueScreenController implements InitializeData {
      */
     public void onSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
-        teamOverviewTable.refresh();
+        updateTeamOverviewTable( user);
         standingsTableView.refresh();
         fixtureTable.refresh();
     }

@@ -133,7 +133,6 @@ public class LoginScreenController implements  InitializeData{
         };
         userCreateTask.setOnFailed(e -> {
             userCreateTask.getException().printStackTrace();
-            // inform user of error...
         });
 
         userCreateTask.setOnSucceeded(e -> {
