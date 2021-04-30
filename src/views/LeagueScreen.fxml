@@ -267,9 +267,9 @@
       </GridPane>
       <GridPane alignment="CENTER" GridPane.rowIndex="1">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="580.0" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -355,13 +355,13 @@
                   </GridPane>
                   <GridPane GridPane.rowIndex="4">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="580.0" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="580.0" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TableView fx:id="standingsTableView" prefHeight="483.0" prefWidth="653.0" stylesheets="@../stylesheets/tableViewStyleSheet.css">
+                        <TableView fx:id="standingsTableView" maxWidth="580.0" stylesheets="@../stylesheets/tableViewStyleSheet.css">
                           <columns>
                             <TableColumn fx:id="teamsColumnStandings" maxWidth="478.0" minWidth="-1.0" prefWidth="200.0" text="Teams" />
                             <TableColumn fx:id="winColumnStandings" prefWidth="95.0" text="W" />
@@ -665,20 +665,20 @@
                   </GridPane>
                   <GridPane maxHeight="450.0" maxWidth="726.0" prefHeight="500.0" prefWidth="653.0" GridPane.rowIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="526.0" minWidth="10.0" prefWidth="526.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" percentWidth="13.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="526.0" minWidth="10.0" percentWidth="74.0" prefWidth="526.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" percentWidth="13.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TableView fx:id="fixtureTable" maxHeight="450.0" maxWidth="542.0" prefHeight="450.0" prefWidth="542.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.columnIndex="1">
+                        <TableView fx:id="fixtureTable" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.columnIndex="1">
                           <columns>
-                            <TableColumn fx:id="homeColumn" maxWidth="1.7976931348623157E308" prefWidth="150.0" text="HOME" />
+                            <TableColumn fx:id="homeColumn" maxWidth="1.7976931348623157E308" prefWidth="140.0" text="HOME" />
                             <TableColumn fx:id="scoreColumn" prefWidth="87.0" text="SCORE" />
-                              <TableColumn fx:id="awayColumn" prefWidth="154.0" text="AWAY" />
-                              <TableColumn fx:id="dateColumn" prefWidth="135.0" text="DATE" />
+                              <TableColumn fx:id="awayColumn" prefWidth="140.0" text="AWAY" />
+                              <TableColumn fx:id="detailsColumn" prefWidth="135.0" text="DETAILS" />
                           </columns>
                         </TableView>
                         <GridPane>
@@ -754,13 +754,13 @@
                   </GridPane>
                   <GridPane GridPane.rowIndex="3">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="582.0" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="582.0" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <TableView fx:id="teamOverviewTable" maxHeight="85.0" maxWidth="584.0" prefHeight="74.0" prefWidth="584.0" stylesheets="@../stylesheets/tableViewStyleSheet.css">
+                        <TableView fx:id="teamOverviewTable" maxWidth="582.0" stylesheets="@../stylesheets/tableViewStyleSheet.css">
                           <columns>
                             <TableColumn fx:id="placementColumn" prefWidth="97.0" text="Placement" />
                             <TableColumn fx:id="winsColumn" prefWidth="97.0" text="Wins" />
@@ -776,7 +776,7 @@
             </GridPane>
          </children>
       </GridPane>
-      <GridPane fx:id="matchDetailsPane" maxHeight="600.0" maxWidth="576.0" style="-fx-background-color: #1f2328;" translateX="192.0" visible="false" GridPane.rowIndex="1">
+      <GridPane fx:id="matchDetailsPane" maxHeight="600.0" maxWidth="576.0" style="-fx-background-color: #1f2328;" translateX="150.0" visible="false" GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -827,6 +827,19 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
+                  <Button fx:id="closeDetailsButton" mnemonicParsing="false" onAction="#onCloseDetailsButtonClicked" prefHeight="18.0" prefWidth="37.0">
+                     <graphic>
+                        <HBox prefHeight="18.0" prefWidth="16.0">
+                           <children>
+                              <ImageView fitHeight="28.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/x_close_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </graphic>
+                  </Button>
                </children>
             </GridPane>
             <Label fx:id="gameLocationLabel" text="Game Location:" textFill="LIGHTGRAY" GridPane.rowIndex="1">
@@ -846,7 +859,7 @@
             </HBox>
          </children>
       </GridPane>
-      <GridPane maxHeight="600.0" maxWidth="576.0" style="-fx-background-color: #1f2328;" translateX="768.0" visible="false" GridPane.rowIndex="1">
+      <GridPane fx:id="setStatisticsPane" maxHeight="600.0" maxWidth="576.0" style="-fx-background-color: #1f2328;" translateX="721.0" visible="false" GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>

@@ -9,9 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import models.InitializeData;
-import models.Team;
-import models.UserSession;
+import models.*;
 
 
 public class LeagueScreenController implements InitializeData {
@@ -81,7 +79,7 @@ public class LeagueScreenController implements InitializeData {
     private TableColumn<models.Game, String> scoreColumn;
 
     @FXML
-    private TableColumn<models.Game, String> dateColumn;
+    private TableColumn<models.Game, Button> detailsColumn;
 
     @FXML
     private ComboBox<String> teamSelectionComboBox;
@@ -115,6 +113,12 @@ public class LeagueScreenController implements InitializeData {
 
     @FXML
     private GridPane matchDetailsPane;
+
+    @FXML
+    private GridPane setStatisticsPane;
+
+    @FXML
+    private Button closeDetailsButton;
 
     private UserSession user;
 
@@ -236,9 +240,12 @@ public class LeagueScreenController implements InitializeData {
         homeColumn.setCellValueFactory( new PropertyValueFactory<>("homeTeamName"));
         scoreColumn.setCellValueFactory( new PropertyValueFactory<>("result"));
         awayColumn.setCellValueFactory( new PropertyValueFactory<>( "awayTeamName"));
-        dateColumn.setCellValueFactory( new PropertyValueFactory<>( "eventDateTime"));
 
         fixtureTable.setItems( user.getGamesOfTheCurrentRound( userSelectedTeam.get(0)));
+        detailsColumn.setCellFactory( ButtonTableCell.<Game>forTableColumn("View", (Game gameClicked) -> {
+            onFixtureDetailsClicked( gameClicked, user);
+            return gameClicked;
+        }));
 
     }
 
@@ -262,6 +269,26 @@ public class LeagueScreenController implements InitializeData {
 
     }
 
+    public void onCloseDetailsButtonClicked( ActionEvent event){
+        matchDetailsPane.setVisible(false);
+        setStatisticsPane.setVisible(false);
+    }
+
+    public void onFixtureDetailsClicked( Game gameClicked, UserSession user){
+        matchDetailsPane.setVisible(true);
+        homeTeamLabel.setText( gameClicked.getHomeTeamName());
+        awayTeamLabel.setText( gameClicked.getAwayTeamName());
+        scoreLabel.setText( gameClicked.getResult());
+        dateLabel.setText( gameClicked.getEventDateTime().toString());
+        gameLocationLabel.setText( gameClicked.getGameLocationName());
+        gameLocationLinkLabel.setText(gameClicked.getGameLocationLink());
+
+        if( user.getUser().getTeamRole().equals("Head Coach") ){
+            setStatisticsPane.setVisible(true);
+        }
+
+
+    }
 
     public void toMainScreen(ActionEvent actionEvent) {
     }
