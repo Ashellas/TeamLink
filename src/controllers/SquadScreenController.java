@@ -12,6 +12,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
 
 public class SquadScreenController extends MainTemplateController implements InitializeData {
 
@@ -78,9 +81,6 @@ public class SquadScreenController extends MainTemplateController implements Ini
     @FXML
     private ImageView playerPhotoView;
 
-    @FXML
-    private ImageView cancelButtonView;
-
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
 
     private ObservableList<String> memberFilterOptions = FXCollections.observableArrayList("All Members", "Players", "Assistant Coaches", "Head Coaches");
@@ -95,10 +95,18 @@ public class SquadScreenController extends MainTemplateController implements Ini
         super.initData(user);
 
         if(user.isStyleDark()) {
-            darkIcons();
+            try {
+                darkIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         else {
-            lightIcons();
+            try {
+                lightIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         for(Team team : user.getUserTeams()){
             teamNames.add(team.getTeamName());
@@ -169,10 +177,18 @@ public class SquadScreenController extends MainTemplateController implements Ini
         }
         else{
             if(user.isStyleDark()) {
-                darkIcons();
+                try {
+                    darkIcons();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
             else {
-                lightIcons();
+                try {
+                    lightIcons();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         }
         detailsFullNameLabel.setText(member.getFullName());
@@ -181,52 +197,16 @@ public class SquadScreenController extends MainTemplateController implements Ini
         detailsTeamRoleLabel.setText(member.getTeamRole());
     }
 
-    public void toMainScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSquadScreen(ActionEvent actionEvent) {
-    }
-
-    public void toCalendarScreen(ActionEvent actionEvent) {
-    }
-
-    public void toGameplanScreen(ActionEvent actionEvent) {
-    }
-
-    public void toTrainingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void toLeagueScreen(ActionEvent actionEvent) {
-    }
-
-    public void toChatScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSettingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void logoutButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void helpButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void SynchronizeData(ActionEvent actionEvent) {
-    }
-
     public void closeButtonPushed(ActionEvent event) {
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
     }
 
-    private void darkIcons() {
-        profileIcon.setImage(new Image("/Resources/Images/white/profile_white.png"));
-        cancelButtonView.setImage(new Image("/Resources/Images/white/profile_white.png"));
+    private void darkIcons() throws URISyntaxException {
+        playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/white/big_profile_white.png").toURI().toString()));
     }
 
-    private void lightIcons() {
-
-        profileIcon.setImage((new Image("/Resources/Images/white/profile_black.png")));
-
+    private void lightIcons() throws URISyntaxException {
+        playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/black/big_profile_black.png").toURI().toString()));
     }
 }

@@ -225,7 +225,7 @@ public class SettingsScreenController extends MainTemplateController {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/white/copy_white.png")));
         if (user.getUser().getProfilePhoto() == null) {
-            accountPhoto.setImage((new Image("/Resources/Images/white/profile_white.png")));
+            accountPhoto.setImage((new Image("/Resources/Images/white/big_profile_white.png")));
         }
 
     }
@@ -234,7 +234,7 @@ public class SettingsScreenController extends MainTemplateController {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/black/copy_black.png")));
         if (user.getUser().getProfilePhoto() == null) {
-            accountPhoto.setImage((new Image("/Resources/Images/black/profile_black.png")));
+            accountPhoto.setImage((new Image("/Resources/Images/black/big_profile_black.png")));
         }
     }
 

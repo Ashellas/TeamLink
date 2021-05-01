@@ -200,11 +200,13 @@ public class DatabaseManager {
             boolean isUnread = resultSet.getBoolean("is_unread");
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
-            Image profilePicture;
+            Image profilePicture = null;
             if(senderId == 1){
                 //TODO change according to theme selection
                 InputStream inStream = DatabaseManager.class.getResourceAsStream("/Resources/Images/app_logo.png");
-                profilePicture = new Image(inStream);
+                if(inStream != null){
+                    profilePicture = new Image(inStream);
+                }
             }
             else{
                 byte[] photoBytes = resultSet.getBytes("photo");

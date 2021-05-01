@@ -18,6 +18,10 @@ text : #151617
     -fx-text-fill: #151617;
 }
 
+.label{
+    -fx-text-fill: #151617;
+}
+
 .text-field {
     -fx-border-color: #151617;
     -fx-text-fill: #151617;
@@ -70,6 +74,7 @@ text : #151617
 .mainHelp:hover {
     -fx-background-color: #d3d3d3;
 }
+
 
 .buttonText {
     -fx-text-fill: #151617;

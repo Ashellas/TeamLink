@@ -16,6 +16,10 @@ Main background : #1f2328
     -fx-text-fill: #d3d3d3;
 }
 
+.label{
+    -fx-text-fill: #d3d3d3;
+}
+
 .text-field {
     -fx-border-color: #d3d3d3;
     -fx-text-fill: #d3d3d3;

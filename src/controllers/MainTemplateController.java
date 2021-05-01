@@ -90,7 +90,7 @@ public class MainTemplateController implements InitializeData {
     }
 
     public void toMainScreen(ActionEvent actionEvent) throws IOException {
-        AppManager.changeScene(getClass().getResource("/views/MainTemplate2.fxml"),actionEvent, user);
+        AppManager.changeScene(getClass().getResource("/views/MainScreen.fxml"),actionEvent, user);
     }
 
     public void toSquadScreen(ActionEvent actionEvent) throws IOException {
