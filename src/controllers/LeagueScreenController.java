@@ -381,7 +381,10 @@ public class LeagueScreenController implements InitializeData {
         userSelectedTeamMembers.clear();
 
         for( int arrayIndex = 0; arrayIndex < teamOfCoach.getTeamMembers().size(); arrayIndex++){
-            userSelectedTeamMembers.add( teamOfCoach.getTeamMembers().get( arrayIndex));
+            if( !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Head Coach") &&
+                !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Assistant Coach")){
+                userSelectedTeamMembers.add( teamOfCoach.getTeamMembers().get( arrayIndex));
+            }
         }
 
         playerStatisticsTable.refresh();
@@ -545,7 +548,7 @@ public class LeagueScreenController implements InitializeData {
                 userSelectedTeamMembersAtPlayersAddComboBox.add( userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex));
             }
         }
-        
+
         addPlayerTable.refresh();
     }
 
