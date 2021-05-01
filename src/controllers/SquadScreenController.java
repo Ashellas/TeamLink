@@ -78,6 +78,9 @@ public class SquadScreenController extends MainTemplateController implements Ini
     @FXML
     private ImageView playerPhotoView;
 
+    @FXML
+    private ImageView cancelButtonView;
+
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
 
     private ObservableList<String> memberFilterOptions = FXCollections.observableArrayList("All Members", "Players", "Assistant Coaches", "Head Coaches");
@@ -217,12 +220,13 @@ public class SquadScreenController extends MainTemplateController implements Ini
     }
 
     private void darkIcons() {
-        profileIcon.setImage((new Image("/Resources/Images/white/profile_white.png")));
+        profileIcon.setImage(new Image("/Resources/Images/white/profile_white.png"));
+        cancelButtonView.setImage(new Image("/Resources/Images/white/profile_white.png"));
     }
 
     private void lightIcons() {
 
-        profileIcon.setImage((new Image("/Resources/Images/white/profile_white.png")));
+        profileIcon.setImage((new Image("/Resources/Images/white/profile_black.png")));
 
     }
 }

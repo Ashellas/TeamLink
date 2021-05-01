@@ -3,6 +3,10 @@
     -fx-stroke-width: 0.5px;
 }
 
+.detailsGrid{
+    -fx-background-color:  #1f2328;
+}
+
 .grid-view{
     -fx-background-color: #1f2328;
 }
@@ -38,12 +42,6 @@
     -fx-max-width: Infinity;
 }
 
-.little{
-    -fx-text-fill: d3d3d3;
-    -fx-font-size: 10px;
-    -fx-alignment: center;
-    -fx-max-width: Infinity;
-}
 
 .list-view{
     -fx-background-color: transparent;
