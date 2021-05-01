@@ -210,4 +210,5 @@ public class LoginScreenController implements  InitializeData{
         helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
     }
 
+
 }
