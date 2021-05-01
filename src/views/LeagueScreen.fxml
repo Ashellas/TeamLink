@@ -1053,11 +1053,11 @@
                </children>
             </GridPane>
             <ComboBox fx:id="addPlayersComboBox" onAction="#onAddPlayersComboBoxSelection" prefWidth="150.0" promptText="Select Team" GridPane.rowIndex="1" />
-            <TableView prefHeight="200.0" prefWidth="200.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="2">
+            <TableView fx:id="addPlayerTable" prefHeight="200.0" prefWidth="200.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="2">
               <columns>
-                <TableColumn prefWidth="160.0" text="Name" />
-                <TableColumn prefWidth="160.0" text="Role" />
-                  <TableColumn prefWidth="160.0" text="Add" />
+                <TableColumn fx:id="addPlayerNameColumn" prefWidth="160.0" text="Name" />
+                <TableColumn fx:id="addPlayerRoleColumn" prefWidth="160.0" text="Role" />
+                  <TableColumn fx:id="addPlayerAddColumn" prefWidth="160.0" text="Add" />
               </columns>
             </TableView>
          </children>

@@ -40,6 +40,9 @@ public class LeagueScreenController implements InitializeData {
     private TableView<models.TeamMember> playerStatisticsTable;
 
     @FXML
+    private TableView<models.TeamMember> addPlayerTable;
+
+    @FXML
     private TableColumn<models.Team, String> teamsColumnStandings;
 
     @FXML
@@ -103,6 +106,9 @@ public class LeagueScreenController implements InitializeData {
     private ComboBox<String> teamSelectionComboBox;
 
     @FXML
+    private ComboBox<String> addPlayersComboBox;
+
+    @FXML
     private Label leagueNameLabel;
 
     @FXML
@@ -156,6 +162,15 @@ public class LeagueScreenController implements InitializeData {
     @FXML
     private GridPane addPlayersGridPane;
 
+    @FXML
+    private TableColumn<TeamMember, String> addPlayerNameColumn;
+
+    @FXML
+    private TableColumn<TeamMember, String> addPlayerRoleColumn;
+
+    @FXML
+    private TableColumn<TeamMember, Button> addPlayerAddColumn;
+
     private UserSession user;
 
     private Team teamOfCoach;
@@ -164,11 +179,19 @@ public class LeagueScreenController implements InitializeData {
 
     private ObservableList<models.Team> userTeams = FXCollections.observableArrayList();
 
+    private ObservableList<Team> userTeamsAddPlayersComboBox = FXCollections.observableArrayList();
+
     private ObservableList<String> userTeamNames = FXCollections.observableArrayList();
+
+    private ObservableList<String> userTeamNamesAddPlayersComboBox = FXCollections.observableArrayList();
 
     private ObservableList<models.Team> userSelectedTeam = FXCollections.observableArrayList();
 
+    private ObservableList<Team> userSelectedTeamAtPlayersAddComboBox = FXCollections.observableArrayList();
+
     private ObservableList<TeamMember> userSelectedTeamMembers = FXCollections.observableArrayList();
+
+    private ObservableList<TeamMember> userSelectedTeamMembersAtPlayersAddComboBox = FXCollections.observableArrayList();
 
 
     public void initData(UserSession user){
@@ -177,15 +200,14 @@ public class LeagueScreenController implements InitializeData {
         userRoleLabel.setText(user.getUser().getTeamRole());
         profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
 
-        setTeamSelectionComboBox(user);
-        setPlayerStatisticsTable( user);
+        setTeamSelectionComboBox();
+        setPlayerStatisticsTable( );
     }
 
     /**
      * Sets the team selection combo box and the team overview table of the selected team
-     * @param user UserSession class that holds the information about the user
      */
-    public void setTeamSelectionComboBox( UserSession user)
+    public void setTeamSelectionComboBox()
     {
         for( int arrayIndex = 0; arrayIndex < user.getUserTeams().size(); arrayIndex++){
             userTeamNames.add( user.getUserTeams().get(arrayIndex).getTeamName());
@@ -200,18 +222,45 @@ public class LeagueScreenController implements InitializeData {
 
         userSelectedTeam.add( userTeams.get(0));
 
-        setStandingsTable(user);
+        setStandingsTable();
 
-        setTeamOverviewTable( user);
+        setTeamOverviewTable();
 
-        setFixtureTable( user);
+        setFixtureTable();
+    }
+
+    public void setAddPlayersComboBox(){
+
+        for( int arrayIndex = 0; arrayIndex < userTeams.size(); arrayIndex++){
+            if( !userTeams.get( arrayIndex).equals( teamOfCoach)){
+                userTeamsAddPlayersComboBox.add( userTeams.get( arrayIndex));
+            }
+        }
+
+        for( int arrayIndex = 0; arrayIndex < userTeamsAddPlayersComboBox.size(); arrayIndex++){
+            userTeamNamesAddPlayersComboBox.add( userTeamsAddPlayersComboBox.get(arrayIndex).getTeamName());
+        }
+
+        addPlayersComboBox.setItems( userTeamNamesAddPlayersComboBox);
+    }
+
+    public void setAddPlayerTable(){
+        addPlayerNameColumn.setCellValueFactory( new PropertyValueFactory<>("fullName"));
+        addPlayerRoleColumn.setCellValueFactory( new PropertyValueFactory<>("teamRole"));
+
+        addPlayerTable.setItems(userSelectedTeamMembersAtPlayersAddComboBox);
+
+        addPlayerAddColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn( "Add", (TeamMember player) -> {
+            System.out.println( "calisiyor");
+            onAddPlayerButtonClicked( player);
+            return player;
+        }));
     }
 
     /**
      * Sets the standing table according to the league's latest situation
-     * @param user UserSession class that holds the information about the user
      */
-    public void setStandingsTable( UserSession user)
+    public void setStandingsTable()
     {
         if( user.getUser().getSportBranch().equals("Football") )
         {
@@ -248,9 +297,8 @@ public class LeagueScreenController implements InitializeData {
 
     /**
      * Sets the team overview table of the selected team
-     * @param user the UserSession object that holds the user's information
      */
-    public void setTeamOverviewTable( UserSession user){
+    public void setTeamOverviewTable(){
 
         /*
             If the branch of the user is football, set the table according to the football branch
@@ -293,9 +341,8 @@ public class LeagueScreenController implements InitializeData {
     /**
      * Sets the fixture table by setting the table's cells and put information inside the cells
      * according to the latest round played.
-     * @param user the UserSession object that holds information about the user
      */
-    public void setFixtureTable( UserSession user){
+    public void setFixtureTable(){
         // Set the columns by calling setCellValueFactory method
         homeColumn.setCellValueFactory( new PropertyValueFactory<>("homeTeamName"));
         scoreColumn.setCellValueFactory( new PropertyValueFactory<>("result"));
@@ -305,13 +352,13 @@ public class LeagueScreenController implements InitializeData {
 
         //Add view buttons and its listener so user can reach to the details of the clicked match
         detailsColumn.setCellFactory( ButtonTableCell.<Game>forTableColumn("View", (Game gameClicked) -> {
-            onFixtureDetailsClicked( gameClicked, user);
+            onFixtureDetailsClicked( gameClicked);
             return gameClicked;
         }));
 
     }
 
-    public void setPlayerStatisticsTable(UserSession user){
+    public void setPlayerStatisticsTable(){
         playerStatisticsNameColumn.setCellValueFactory( new PropertyValueFactory<>("fullName"));
         playerStatisticsPointsColumn.setCellValueFactory( new PropertyValueFactory<>("pointsOrGoalsScored"));
         playerStatisticsAssistsColumn.setCellValueFactory( new PropertyValueFactory<>("assists"));
@@ -389,9 +436,8 @@ public class LeagueScreenController implements InitializeData {
 
     /**
      * Updates the team overview table when the selected team is changed via combo box
-     * @param user the UserSession object that holds the information about the user
      */
-    public void updateTeamOverviewTable(UserSession user){
+    public void updateTeamOverviewTable(){
 
         if( user.getUser().getSportBranch().equals("Football") ){
 
@@ -432,10 +478,11 @@ public class LeagueScreenController implements InitializeData {
      */
     public void onTeamSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
-        updateTeamOverviewTable( user);
+        updateTeamOverviewTable();
         standingsTableView.refresh();
         fixtureTable.refresh();
     }
+
 
     public void rightButtonFixtureClicked( ActionEvent event){
 
@@ -451,7 +498,7 @@ public class LeagueScreenController implements InitializeData {
         blackenedPane.setVisible(false);
     }
 
-    public void onFixtureDetailsClicked( Game gameClicked, UserSession user){
+    public void onFixtureDetailsClicked( Game gameClicked){
         blackenedPane.setVisible(true);
         matchDetailsPane.setVisible(true);
         homeTeamLabel.setText( gameClicked.getHomeTeamName());
@@ -479,6 +526,8 @@ public class LeagueScreenController implements InitializeData {
 
     public void onClickAddPlayerButton( ActionEvent event){
         addPlayersGridPane.setVisible(true);
+        setAddPlayersComboBox();
+        setAddPlayerTable();
     }
 
     public void onCloseAddPlayersButtonClicked( ActionEvent event){
@@ -486,7 +535,23 @@ public class LeagueScreenController implements InitializeData {
     }
 
     public void onAddPlayersComboBoxSelection( ActionEvent event){
+        userSelectedTeamAtPlayersAddComboBox.clear();
+        userSelectedTeamAtPlayersAddComboBox.add(0, userTeamsAddPlayersComboBox.get( addPlayersComboBox.getSelectionModel().getSelectedIndex()));
+        userSelectedTeamMembersAtPlayersAddComboBox.clear();
+        for( int arrayIndex = 0; arrayIndex < userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().size(); arrayIndex++){
+            if( !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Head Coach")
+                && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
+            {
+                userSelectedTeamMembersAtPlayersAddComboBox.add( userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex));
+            }
+        }
+        
+        addPlayerTable.refresh();
+    }
 
+    public void onAddPlayerButtonClicked( TeamMember player){
+        userSelectedTeamMembers.add( player);
+        playerStatisticsTable.refresh();
     }
 
     public void toMainScreen(ActionEvent actionEvent) {
