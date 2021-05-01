@@ -11,7 +11,7 @@ public class CalendarButton extends Button {
     String actionLink;
     String colorCode;
     UserSession user;
-    public CalendarButton(String title, String time, String actionLink, String colorCode, UserSession user) throws IOException {
+    public CalendarButton (String title, String time, String actionLink, String colorCode, UserSession user) throws IOException {
         this.setText(title + " @" + time);
         this.actionLink = actionLink;
         this.colorCode = colorCode;
@@ -23,7 +23,12 @@ public class CalendarButton extends Button {
                 e.printStackTrace();
             }
         });
-        this.setStyle("-fx-background-color:" + colorCode);
+        this.setStyle("-fx-background-color:" + colorCode + ";" + "-fx-font-size: 10");
         this.setCursor(Cursor.HAND);
+    }
+    public CalendarButton (String title, String colorCode, UserSession user) {
+        this.setText(title);
+        this.setStyle("-fx-background-color: " + colorCode);
+        this.user = user;
     }
 }
