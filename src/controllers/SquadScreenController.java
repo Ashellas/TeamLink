@@ -97,7 +97,7 @@ public class SquadScreenController implements InitializeData {
 
     public void initData(UserSession user){
         this.user = user;
-        userNameLabel.setText(user.getUser().getFirstName());
+        /*userNameLabel.setText(user.getUser().getFirstName());
         userRoleLabel.setText(user.getUser().getTeamRole());
         if(user.getUser().getProfilePhoto() != null){
             profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
@@ -114,6 +114,8 @@ public class SquadScreenController implements InitializeData {
         setUpDetailsPane();
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
+
+         */
     }
 
     private void setUpDetailsPane() {

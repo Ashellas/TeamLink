@@ -199,7 +199,7 @@ public class DatabaseManager {
             boolean isUnread = resultSet.getBoolean("is_unread");
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
-            Notification notification = new Notification(id, title, new TeamMember(senderId, senderFirstName, senderLastName), user ,clickAction, timeSent, isUnread, null);
+            Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName), user ,clickAction, timeSent, isUnread, null);
             notifications.add(notification);
         }
         return notifications;

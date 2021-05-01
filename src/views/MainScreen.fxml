@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -21,24 +15,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainTemplateController">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-   </rowConstraints>
-
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainScreenController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
    <children>
       <GridPane style="-fx-background-color: #3e4752;">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="200.0">
                <children>
@@ -49,9 +42,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="logoutIcon" fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/logout_white.png" />
+                                    <Image url="@../Resources/Images/white/logout_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -87,9 +80,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="helpIcon" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/help_white.png" />
+                                    <Image url="@../Resources/Images/white/help_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -117,9 +110,9 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="700.0" GridPane.columnIndex="1">
                <children>
-                  <VBox prefHeight="60.0" prefWidth="100.0">
+                  <VBox prefHeight="60.0" prefWidth="150.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="Last Sync" textFill="LIGHTGRAY">
+                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="150.0" text="Last Sync" textFill="LIGHTGRAY">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -127,7 +120,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="5 mins ago" textFill="LIGHTGRAY">
+                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="5 mins ago" textFill="LIGHTGRAY">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -146,9 +139,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="syncIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/sync_white.png" />
+                                    <Image url="@../Resources/Images/white/sync_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -183,7 +176,7 @@
                            <children>
                               <ImageView fx:id="notificationImageView" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/notification_white.png" />
+                                    <Image url="@../Resources/Images/white/notification_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -240,7 +233,7 @@
                            <children>
                               <ImageView fx:id="profilePictureImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/profile_white.png" />
+                                    <Image url="@../Resources/Images/white/profile_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -269,19 +262,19 @@
          </children>
       </GridPane>
       <GridPane alignment="CENTER" GridPane.rowIndex="1">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
             <GridPane>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
                   <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -289,10 +282,10 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
+              </rowConstraints>
                <children>
                   <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="1">
                      <padding>
@@ -301,9 +294,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="homeIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/home_white.png" />
+                                    <Image url="@../Resources/Images/white/home_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -331,9 +324,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="squadIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/squad_white.png" />
+                                    <Image url="@../Resources/Images/white/squad_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -361,9 +354,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="CalendarIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/calendar_white.png" />
+                                    <Image url="@../Resources/Images/white/calendar_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -391,9 +384,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="gameplanIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/gameplan_white.png" />
+                                    <Image url="@../Resources/Images/white/gameplan_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -421,9 +414,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="trainingIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/training_white.png" />
+                                    <Image url="@../Resources/Images/white/training_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -451,9 +444,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="leagueIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/league_white.png" />
+                                    <Image url="@../Resources/Images/white/league_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -479,11 +472,11 @@
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
-                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                        <HBox fx:id="chatIcon" alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
                               <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/chat_white.png" />
+                                    <Image url="@../Resources/Images/white/chat_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -511,9 +504,9 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="settnigsIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/settings_white.png" />
+                                    <Image url="@../Resources/Images/white/settings_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -537,102 +530,208 @@
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
                   <GridPane GridPane.columnIndex="1">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="5.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="5.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" percentHeight="70.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <GridPane style="-fx-background-color: #3e4752;" stylesheets="@../stylesheets/gridPaneStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="0.0" percentHeight="0.1" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <HBox fx:id="emptyHBox" prefHeight="100.0" prefWidth="200.0" />
+                              <GridPane GridPane.rowIndex="1">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="0.0" percentHeight="3.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Notifications" textFill="WHITE" GridPane.columnIndex="2">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                    </Label>
+                                    <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Pane layoutX="176.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Pane layoutX="93.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <GridPane GridPane.rowIndex="3">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button layoutX="214.0" layoutY="10.0" mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: transparent;" textFill="#aa2020" GridPane.columnIndex="1">
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                       <graphic>
+                                          <HBox alignment="CENTER" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="79.0" prefWidth="70.0">
+                                             <children>
+                                                <ImageView fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                                   <image>
+                                                      <Image url="@../Resources/Images/white/outline_arrow_back_ios_white_24dp.png" />
+                                                   </image>
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </ImageView>
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" style="-fx-background-color: transparent;" textFill="#aa2020">
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                       <graphic>
+                                          <HBox alignment="CENTER" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
+                                             <children>
+                                                <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                                   <image>
+                                                      <Image url="@../Resources/Images/white/outline_arrow_back_ios_white_24dp.png" />
+                                                   </image>
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </ImageView>
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane fx:id="notificationsGrid" alignment="TOP_RIGHT" gridLinesVisible="true" styleClass="notifications" stylesheets="@../stylesheets/gridPaneStyleSheet.css" GridPane.rowIndex="2">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                        <GridPane style="-fx-background-color: #3e4752;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button mnemonicParsing="false" text="View" GridPane.columnIndex="1">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <Label prefHeight="44.0" prefWidth="454.0" style="-fx-alignment: center;" text="14 new Applications for your teams" textFill="LIGHTGRAY">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </GridPane>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" percentHeight="70.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" percentHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <GridPane style="-fx-background-color: white;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <GridPane style="-fx-background-color: #3e4752;" GridPane.rowIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints minHeight="0.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="0.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <GridPane GridPane.rowIndex="1">
-                                <columnConstraints>
+                              <GridPane>
+                                 <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="5.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="0.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="0.0" percentHeight="3.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                                 </rowConstraints>
                                  <children>
-                                    <Label text="Notifications" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <Label text="Calendar" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                    <Pane layoutX="176.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Pane layoutX="93.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                 </children>
-                              </GridPane>
-                              <GridPane GridPane.rowIndex="7">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
-                           </children>
-                        </GridPane>
-                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <GridPane style="-fx-background-color: white;" GridPane.columnIndex="1">
-                                <columnConstraints>
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Button mnemonicParsing="false" text="View" GridPane.columnIndex="2">
+                                    <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                    <Pane layoutX="176.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Pane layoutX="93.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <Button mnemonicParsing="false" text="View" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -640,11 +739,128 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
-                                    <Label text="4 new Applications" GridPane.columnIndex="1">
+                                 </children>
+                              </GridPane>
+                              <GridPane stylesheets="@../stylesheets/gridPaneStyleSheet.css" GridPane.rowIndex="1">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <GridPane fx:id="calendarGrid" gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                      <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" percentHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label styleClass="standings" text="Monday" />
+                                          <Label layoutX="10.0" layoutY="52.0" styleClass="standings" text="Tuesday" GridPane.columnIndex="1" />
+                                          <Label layoutX="128.0" layoutY="52.0" styleClass="standings" text="Wednesday" GridPane.columnIndex="2" />
+                                          <Label layoutX="10.0" layoutY="52.0" styleClass="standings" text="Monday" />
+                                          <Label layoutX="10.0" layoutY="52.0" styleClass="standings" text="Monday" />
+                                          <Label layoutX="246.0" layoutY="52.0" styleClass="standings" text="Friday" GridPane.columnIndex="3" />
+                                          <Label layoutX="364.0" layoutY="52.0" styleClass="standings" text="Saturday" GridPane.columnIndex="4" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                        <GridPane layoutX="10.0" layoutY="88.0" style="-fx-background-color: #3e4752;" GridPane.rowIndex="3">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="0.0" percentHeight="3.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Standings" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <font>
-                                          <Font size="15.0" />
+                                          <Font size="20.0" />
                                        </font>
                                     </Label>
+                                    <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Pane layoutX="176.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Pane layoutX="93.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <Button mnemonicParsing="false" text="View" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </GridPane>
+                              <GridPane stylesheets="@../stylesheets/gridPaneStyleSheet.css" GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <GridPane fx:id="standingsGrid" gridLinesVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                      <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="40.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="100.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="100.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="100.0" />
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="86.0" styleClass="standings" text="Plc" />
+                                          <Label layoutX="10.0" layoutY="21.0" prefHeight="18.0" prefWidth="86.0" styleClass="standings" text="Team Name" GridPane.columnIndex="1" />
+                                          <Label layoutX="80.0" layoutY="21.0" prefHeight="18.0" prefWidth="86.0" styleClass="standings" text="GP" GridPane.columnIndex="2" />
+                                          <Label layoutX="315.0" layoutY="21.0" prefHeight="18.0" prefWidth="86.0" styleClass="standings" text="W" GridPane.columnIndex="3" />
+                                          <Label layoutX="385.0" layoutY="21.0" prefHeight="18.0" prefWidth="86.0" styleClass="standings" text="L" GridPane.columnIndex="4" />
+                                          <Label layoutX="456.0" layoutY="21.0" prefHeight="18.0" prefWidth="86.0" styleClass="standings" text="Pts" GridPane.columnIndex="5" />
+                                       </children>
+                                    </GridPane>
                                  </children>
                               </GridPane>
                            </children>
