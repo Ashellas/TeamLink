@@ -1,11 +1,13 @@
 package models;
 
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +22,9 @@ public class AppManager {
         c2.initData(userSession);
         Parent p = loader.getRoot();
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(p));
+        Scene scene = new Scene(p, ((Node) event.getSource()).getScene().getWidth(), ((Node) event.getSource()).getScene().getHeight());
+        scene.getStylesheets().add(userSession.getStyleSheet());
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -35,5 +39,19 @@ public class AppManager {
         else {
             return "more than an hour ago";
         }
+    }
+
+    public static void fadeOut(Node node, int duration) {
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(duration),node);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+        fadeTransition.play();
+    }
+
+    public static void fadeIn(Node node, int duration) {
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(duration),node);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+        fadeTransition.play();
     }
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 public class Notification {
     private int notificationId;
     private String title;
+    private String description;
     private TeamMember sender;
     private TeamMember recipient;
     private String clickAction;
@@ -15,9 +16,10 @@ public class Notification {
     private boolean isUnread; //TODO how can this be functional
     private ImageView senderProfilePhoto;
 
-    public Notification(int notificationId, String title, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread, Image senderProfilePhoto) {
+    public Notification(int notificationId, String title, String description, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread, Image senderProfilePhoto) {
         this.notificationId = notificationId;
         this.title = title;
+        this.description = description;
         this.sender = sender;
         this.recipient = recipient;
         this.clickAction = clickAction;
@@ -32,6 +34,10 @@ public class Notification {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public TeamMember getSender() {

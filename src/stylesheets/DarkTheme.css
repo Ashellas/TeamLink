@@ -1,0 +1,23 @@
+/*
+Background login etc. :  #151617
+Light gray : #d3d3d3
+Main background : #1f2328
+ */
+
+.backGround {
+    -fx-background-color:  #151617;
+}
+
+.mainPane {
+    -fx-background-color:  #1f2328;
+}
+
+.text {
+    -fx-text-fill: #d3d3d3;
+}
+
+.text-field {
+    -fx-border-color: #d3d3d3;
+    -fx-text-fill: #d3d3d3;
+    -fx-prompt-text-fill: #d3d3d3;
+}

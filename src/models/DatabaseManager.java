@@ -199,7 +199,7 @@ public class DatabaseManager {
             boolean isUnread = resultSet.getBoolean("is_unread");
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
-            Notification notification = new Notification(id, title, new TeamMember(senderId, senderFirstName, senderLastName), user ,clickAction, timeSent, isUnread, null);
+            Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName), user ,clickAction, timeSent, isUnread, null);
             notifications.add(notification);
         }
         return notifications;
@@ -212,12 +212,14 @@ public class DatabaseManager {
         HashMap<Team, ObservableList<Team>> standings = new HashMap<>();
         for( Team team: userTeams){
             ArrayList<Team> teams = new ArrayList<>();
-            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join team_performances tp on league_teams.league_id = tp.league_id and tp.league_team_id = league_teams.league_team_id and tp.league_id = ? order by points desc");
+            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join team_performances tp " +
+                    "on league_teams.league_id = tp.league_id and tp.league_team_id = league_teams.league_team_id and tp.league_id = " +
+                    "? order by points desc");
             prepStmt.setInt(1, team.getLeagueId());
             ResultSet resultSet = prepStmt.executeQuery();
             int placement = 1;
             while (resultSet.next()){
-                int teamId = resultSet.getInt("tp.league_id");
+                int teamId = resultSet.getInt("tp.league_team_id");
                 int id = resultSet.getInt("id");
                 String teamName = resultSet.getString("team_name");
                 String abbrevation = resultSet.getString("abbrevation");
@@ -227,9 +229,14 @@ public class DatabaseManager {
                 int gamesLost = resultSet.getInt("games_lost");
                 int points = resultSet.getInt("points");
                 TeamStats teamStats = new TeamStats(id, gamesPlayed, gamesWon, gamesLost, gamesDrawn, placement, points);
-                Team leagueTeam = new Team(teamId, teamName, abbrevation, teamStats);
+                if(team.getTeamId() != teamId){
+                    Team leagueTeam = new Team(teamId, teamName, abbrevation, teamStats);
+                    teams.add(leagueTeam);
+                }
+                else{
+                    teams.add(team);
+                }
                 placement++;
-                teams.add(leagueTeam);
             }
             standings.put(team, FXCollections.observableArrayList(teams));
         }
@@ -242,11 +249,9 @@ public class DatabaseManager {
         }
         HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = new HashMap<>();
         for (Team team : userTeams){
-            ArrayList<Game> games = new ArrayList<>();
+            ObservableList<Game> games = FXCollections.observableArrayList();
             PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
-                    "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? " +
-                    "join league_teams lt on lt.league_team_id = league_games.away_team_id join league_teams t " +
-                    "on t.league_team_id = league_games.home_team_id");
+                    "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? ");
             prepStmt.setInt(1, team.getLeagueId());
             ResultSet gamesResultSet = prepStmt.executeQuery();
             while (gamesResultSet.next()){
@@ -267,13 +272,14 @@ public class DatabaseManager {
                     if(leagueTeam.getTeamId() == awayTeamId){
                         awayTeam = leagueTeam;
                     }
+                    System.out.println(leagueTeam.getTeamId());
                 }
                 Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result);
                 games.add(game);
             }
-            gamesOfTheCurrentRound.put(team, FXCollections.observableArrayList(games));
+            gamesOfTheCurrentRound.put(team, games);
         }
-        return null;
+        return gamesOfTheCurrentRound;
     }
 
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
@@ -295,6 +301,7 @@ public class DatabaseManager {
             byte[] photoBytes = resultSet.getBytes("photo");
             if(photoBytes != null)
             {
+                System.out.println("NOOO");
                 InputStream imageFile = resultSet.getBinaryStream("photo");
                 profilePicture = new Image(imageFile);
             }
@@ -534,6 +541,100 @@ public class DatabaseManager {
         }
         return FXCollections.observableArrayList(leagueNames);
     }
+
+    public static ObservableList<String> getLeagueTeams(UserSession user, String city, String ageGroup, String league) throws SQLException {
+        ArrayList<String> teamNames = new ArrayList<>();
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select team_name from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and l.age_group = ? and l.city = ?");
+        prepStmt.setString(1, league);
+        prepStmt.setString(2, ageGroup);
+        prepStmt.setString(3, city);
+        ResultSet resultSet = prepStmt.executeQuery();
+        while (resultSet.next()){
+            teamNames.add(resultSet.getString(1));
+        }
+        return FXCollections.observableArrayList(teamNames);
+    }
+
+    public static UserSession createTeam(UserSession user, String teamName, String abbrevation, String city, String ageGroup, String leagueName, String leagueTeamName, File teamLogo) throws SQLException, IOException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
+        prepStmt.setString(1, leagueName);
+        prepStmt.setString(2, leagueTeamName);
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+            PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO teams(team_name, city, abbrevation, age_group,  " +
+                    "team_code, sport_branch, league_id, database_team_id, team_logo) values (?,?,?,?,?,?,?,?,?)");
+            String teamCode = createUniqueRandomTeamCode(user.getDatabaseConnection());
+            int leagueId = resultSet.getInt("l.league_id");
+            int leagueTeamId = resultSet.getInt("league_team_id");
+            preparedStatement.setString(1, teamName);
+            preparedStatement.setString(2, city);
+            preparedStatement.setString(3, abbrevation);
+            preparedStatement.setString(4, ageGroup);
+            preparedStatement.setString(5, teamCode);
+            preparedStatement.setString(6, user.getUser().getSportBranch());
+            preparedStatement.setInt(7, leagueId);
+            preparedStatement.setInt(8, leagueTeamId);
+            if(teamLogo != null){
+                FileInputStream fileInputStream = new FileInputStream(teamLogo.getAbsolutePath());
+                preparedStatement.setBinaryStream(9,fileInputStream,fileInputStream.available());
+            }
+            else {
+                preparedStatement.setBlob(9, InputStream.nullInputStream());
+            }
+            int row = preparedStatement.executeUpdate();
+
+            PreparedStatement preparedStmt = user.getDatabaseConnection().prepareStatement("select * from teams where team_code = ?");
+            preparedStmt.setString(1, teamCode);
+
+            ResultSet teamResultSet = preparedStmt.executeQuery();
+
+            // Assigns user to that team
+            if(teamResultSet.next()){
+                int teamId = teamResultSet.getInt("team_id");
+                prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_and_members(team_member_id, team_id) VALUES (?,?)");
+                prepStmt.setInt(1, user.getUser().getMemberId());
+                prepStmt.setInt(2, teamId);
+                row = prepStmt.executeUpdate();
+                ArrayList<TeamMember> teamMembers = new ArrayList<>();
+                ArrayList<Team> userTeams = new ArrayList<>();
+                teamMembers.add(user.getUser());
+                if(teamLogo != null){
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.getAbsolutePath()), null, teamMembers));
+                }
+                else{
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers));
+                }
+                user.setUserTeams(userTeams);
+            }
+        }
+        return user;
+    }
+
+
+    /**
+     * Creates a unique 8 digit code for the team
+     * @return the created code
+     * @throws SQLException
+     */
+    private static String createUniqueRandomTeamCode(Connection databaseConnection) throws SQLException {
+
+
+        final int BOUND = 100000000;
+        ResultSet resultSet;
+
+        int teamCode;
+        String tempCode;
+
+        do{
+            teamCode =  (int)(Math.random() * BOUND);
+            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from teams where team_code = ?");
+            prepStmt.setInt(1,teamCode);
+            resultSet = prepStmt.executeQuery();
+        }while (resultSet.next());
+
+        return "" + teamCode;
+    }
+
 
     private String formatDateToMYSQL(Date date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

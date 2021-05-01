@@ -44,4 +44,12 @@ public class Game extends CalendarEvent{
     public String getResult() {
         return result;
     }
+
+    public String getHomeTeamName(){
+        return homeTeam.getTeamName();
+    }
+
+    public String getAwayTeamName(){
+        return awayTeam.getTeamName();
+    }
 }
