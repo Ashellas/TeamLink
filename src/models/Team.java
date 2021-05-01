@@ -122,6 +122,10 @@ public class Team {
         return teamStats.getPlacement();
     }
 
+    public int getMatchesPlayed(){
+        return teamStats.getGamesPlayed();
+    }
+
     public int getMatchesLeft(){
         return teamStats.getTotalRounds();
     }
@@ -144,6 +148,20 @@ public class Team {
             }
         }
         return FXCollections.observableArrayList(memberList);
+    }
+
+    /**
+     * Compares two teams according to their id's
+     * @param otherTeam the latter team that will be compared
+     * @return true if the id's of the both teams are the same
+     */
+    public boolean equals( Team otherTeam){
+        if( this.getTeamId() == otherTeam.getTeamId() ){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -36,6 +37,9 @@ public class LeagueScreenController implements InitializeData {
     private TableView<models.Game> fixtureTable;
 
     @FXML
+    private TableView<models.TeamMember> playerStatisticsTable;
+
+    @FXML
     private TableColumn<models.Team, String> teamsColumnStandings;
 
     @FXML
@@ -49,6 +53,9 @@ public class LeagueScreenController implements InitializeData {
 
     @FXML
     private TableColumn<models.Team, Integer> pointsColumnStandings;
+
+    @FXML
+    private TableColumn<models.Team, Integer> matchesPlayedColumnStandings;
 
     @FXML
     private Label placementLabel;
@@ -99,12 +106,6 @@ public class LeagueScreenController implements InitializeData {
     private Label leagueNameLabel;
 
     @FXML
-    private Button rightButtonFixture;
-
-    @FXML
-    private Button leftButtonFixture;
-
-    @FXML
     private Label homeTeamLabel;
 
     @FXML
@@ -129,17 +130,46 @@ public class LeagueScreenController implements InitializeData {
     private GridPane setStatisticsPane;
 
     @FXML
+    private TableColumn<TeamMember, String> playerStatisticsNameColumn;
+
+    @FXML
+    private TableColumn<TeamMember, String> playerStatisticsPointsColumn;
+
+    @FXML
+    private TableColumn<TeamMember, String> playerStatisticsAssistsColumn;
+
+    @FXML
+    private TableColumn<TeamMember, String> playerStatisticsReboundsColumn;
+
+    @FXML
+    private TableColumn<TeamMember, String> playerStatisticsStealsColumn;
+
+    @FXML
+    private TableColumn<TeamMember, String> playerStatisticsBlocksColumn;
+
+    @FXML
+    private TableColumn<TeamMember, Button> playerStatisticsEnterStatisticsColumn;
+
+    @FXML
     private Pane blackenedPane;
+
+    @FXML
+    private GridPane addPlayersGridPane;
 
     private UserSession user;
 
+    private Team teamOfCoach;
+
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
+
+    private ObservableList<models.Team> userTeams = FXCollections.observableArrayList();
 
     private ObservableList<String> userTeamNames = FXCollections.observableArrayList();
 
     private ObservableList<models.Team> userSelectedTeam = FXCollections.observableArrayList();
 
-    private ObservableList<models.Team> userTeams = FXCollections.observableArrayList();
+    private ObservableList<TeamMember> userSelectedTeamMembers = FXCollections.observableArrayList();
+
 
     public void initData(UserSession user){
         this.user = user;
@@ -148,6 +178,7 @@ public class LeagueScreenController implements InitializeData {
         profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
 
         setTeamSelectionComboBox(user);
+        setPlayerStatisticsTable( user);
     }
 
     /**
@@ -186,6 +217,7 @@ public class LeagueScreenController implements InitializeData {
         {
             //Creates the columns of the table
             teamsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("teamName"));
+            matchesPlayedColumnStandings.setCellValueFactory( new PropertyValueFactory<>("matchesPlayed"));
             winColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesWon"));
             drawColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesDrawn"));
             losesColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
@@ -204,6 +236,7 @@ public class LeagueScreenController implements InitializeData {
 
             //Creates the columns of the table
             teamsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("teamName"));
+            matchesPlayedColumnStandings.setCellValueFactory( new PropertyValueFactory<>("matchesPlayed"));
             winColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesWon"));
             losesColumnStandings.setCellValueFactory( new PropertyValueFactory<>("gamesLost"));
             pointsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("points"));
@@ -215,10 +248,16 @@ public class LeagueScreenController implements InitializeData {
 
     /**
      * Sets the team overview table of the selected team
-     * @param user
+     * @param user the UserSession object that holds the user's information
      */
     public void setTeamOverviewTable( UserSession user){
 
+        /*
+            If the branch of the user is football, set the table according to the football branch
+            with draws column visible, else if the branch of the user is basketball, set the table
+            according to the basketball branch with draws column not visible since it is impossible
+            to get a draw in a basketball match.
+         */
         if( user.getUser().getSportBranch().equals("Football") ){
 
             //Set the labels according to the information received from selected team
@@ -251,12 +290,20 @@ public class LeagueScreenController implements InitializeData {
         }
     }
 
+    /**
+     * Sets the fixture table by setting the table's cells and put information inside the cells
+     * according to the latest round played.
+     * @param user the UserSession object that holds information about the user
+     */
     public void setFixtureTable( UserSession user){
+        // Set the columns by calling setCellValueFactory method
         homeColumn.setCellValueFactory( new PropertyValueFactory<>("homeTeamName"));
         scoreColumn.setCellValueFactory( new PropertyValueFactory<>("result"));
         awayColumn.setCellValueFactory( new PropertyValueFactory<>( "awayTeamName"));
 
         fixtureTable.setItems( user.getGamesOfTheCurrentRound( userSelectedTeam.get(0)));
+
+        //Add view buttons and its listener so user can reach to the details of the clicked match
         detailsColumn.setCellFactory( ButtonTableCell.<Game>forTableColumn("View", (Game gameClicked) -> {
             onFixtureDetailsClicked( gameClicked, user);
             return gameClicked;
@@ -264,6 +311,86 @@ public class LeagueScreenController implements InitializeData {
 
     }
 
+    public void setPlayerStatisticsTable(UserSession user){
+        playerStatisticsNameColumn.setCellValueFactory( new PropertyValueFactory<>("fullName"));
+        playerStatisticsPointsColumn.setCellValueFactory( new PropertyValueFactory<>("pointsOrGoalsScored"));
+        playerStatisticsAssistsColumn.setCellValueFactory( new PropertyValueFactory<>("assists"));
+        playerStatisticsReboundsColumn.setCellValueFactory( new PropertyValueFactory<>("reboundsOrSavesMade"));
+        playerStatisticsStealsColumn.setCellValueFactory( new PropertyValueFactory<>("stealsOrYellowCard"));
+        playerStatisticsBlocksColumn.setCellValueFactory( new PropertyValueFactory<>("blocksOrRedCard"));
+
+        playerStatisticsTable.setItems( userSelectedTeamMembers);
+
+        if( user.getUser().getSportBranch().equals("Football") ){
+            playerStatisticsPointsColumn.setText("Goals Scored");
+            playerStatisticsReboundsColumn.setText("Saves Made");
+            playerStatisticsStealsColumn.setText("Yellow Card");
+            playerStatisticsBlocksColumn.setText("Red Card");
+        }
+    }
+
+    public void updatePlayerStatisticsTable( Team teamOfCoach, Game gameClicked){
+
+        userSelectedTeamMembers.clear();
+
+        for( int arrayIndex = 0; arrayIndex < teamOfCoach.getTeamMembers().size(); arrayIndex++){
+            userSelectedTeamMembers.add( teamOfCoach.getTeamMembers().get( arrayIndex));
+        }
+
+        playerStatisticsTable.refresh();
+
+        if( gameClicked.getResult() != null){
+            setEditableColumnsOfPlayerStatistics();
+            setStatisticEnterButtonsOfPlayerStatistics();
+        }
+    }
+
+    public void setEditableColumnsOfPlayerStatistics(){
+        playerStatisticsPointsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+
+        playerStatisticsPointsColumn.setOnEditCommit( e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setPointsOrGoalsScored(e.getNewValue());
+        });
+
+        playerStatisticsAssistsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+
+        playerStatisticsAssistsColumn.setOnEditCommit( e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setAssists(e.getNewValue());
+        });
+
+        playerStatisticsReboundsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+
+        playerStatisticsReboundsColumn.setOnEditCommit( e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setReboundsOrSavesMade(e.getNewValue());
+        });
+
+        playerStatisticsStealsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+
+        playerStatisticsStealsColumn.setOnEditCommit( e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setStealsOrYellowCard(e.getNewValue());
+        });
+
+        playerStatisticsBlocksColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+
+        playerStatisticsBlocksColumn.setOnEditCommit( e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).setBlocksOrRedCard(e.getNewValue());
+        });
+
+        playerStatisticsTable.setEditable(true);
+    }
+
+    public void setStatisticEnterButtonsOfPlayerStatistics(){
+        playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
+            //TODO: cellere girilmiş girdileri db'ye yollayacak kod
+            System.out.println( "calisiyor");
+            return player;
+        }));
+    }
+
+    /**
+     * Updates the team overview table when the selected team is changed via combo box
+     * @param user the UserSession object that holds the information about the user
+     */
     public void updateTeamOverviewTable(UserSession user){
 
         if( user.getUser().getSportBranch().equals("Football") ){
@@ -303,7 +430,7 @@ public class LeagueScreenController implements InitializeData {
      * according to the new team that is selected.
      * @param event ActionEvent object
      */
-    public void onSelection( ActionEvent event){
+    public void onTeamSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
         updateTeamOverviewTable( user);
         standingsTableView.refresh();
@@ -331,13 +458,34 @@ public class LeagueScreenController implements InitializeData {
         awayTeamLabel.setText( gameClicked.getAwayTeamName());
         scoreLabel.setText( gameClicked.getResult());
         dateLabel.setText( gameClicked.getEventDateTime().toString());
-        gameLocationLabel.setText( gameClicked.getGameLocationName());
-        gameLocationLinkLabel.setText(gameClicked.getGameLocationLink());
+        gameLocationLabel.setText( "Game Location: " + gameClicked.getGameLocationName());
+        gameLocationLinkLabel.setText( "Link: " + gameClicked.getGameLocationLink());
 
-        if( user.getUser().getTeamRole().equals("Head Coach") ){
+        if( ( user.getUser().getTeamRole().equals("Head Coach") ||
+              user.getUser().getTeamRole().equals("Assistant Coach") ) &&
+              ( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ||
+                userSelectedTeam.get(0).equals( gameClicked.getAwayTeam()) ))
+        {
+            if( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ){
+                teamOfCoach = gameClicked.getHomeTeam();
+            }
+            else{
+                teamOfCoach = gameClicked.getAwayTeam();
+            }
             setStatisticsPane.setVisible(true);
+            updatePlayerStatisticsTable( teamOfCoach, gameClicked);
         }
+    }
 
+    public void onClickAddPlayerButton( ActionEvent event){
+        addPlayersGridPane.setVisible(true);
+    }
+
+    public void onCloseAddPlayersButtonClicked( ActionEvent event){
+        addPlayersGridPane.setVisible(false);
+    }
+
+    public void onAddPlayersComboBoxSelection( ActionEvent event){
 
     }
 
