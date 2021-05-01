@@ -63,11 +63,11 @@ public class CalendarScreenController implements InitializeData{
 
     public void initData(UserSession userSession){
         this.user = userSession;
-        //userNameLabel.setText(user.getUser().getFirstName());
-        //userRoleLabel.setText(user.getUser().getTeamRole());
-        //profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        userNameLabel.setText(user.getUser().getFirstName());
+        userRoleLabel.setText(user.getUser().getTeamRole());
+        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
 
-        teamName.setText("teamNameText"); //Set team name
+        teamName.setText(user.getUserTeams().get(0).toString()); //Set team name
 
         GregorianCalendar cal = new GregorianCalendar(); //Create calendar
         realDay = cal.get(GregorianCalendar.DAY_OF_MONTH); //Get day
