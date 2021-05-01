@@ -41,3 +41,17 @@
     -fx-max-width: Infinity;
 }
 
+.list-view{
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.list-cell
+{
+    -fx-background-color: transparent;
+}
+
+.button{
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}

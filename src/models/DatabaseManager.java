@@ -237,7 +237,7 @@ public class DatabaseManager {
                     "? order by points desc");
             prepStmt.setInt(1, team.getLeagueId());
             ResultSet resultSet = prepStmt.executeQuery();
-            int placement = 1;
+                int placement = 1;
             while (resultSet.next()){
                 int teamId = resultSet.getInt("tp.league_team_id");
                 int id = resultSet.getInt("id");
@@ -254,6 +254,7 @@ public class DatabaseManager {
                     teams.add(leagueTeam);
                 }
                 else{
+                    team.getTeamStats().setPlacement(placement);
                     teams.add(team);
                 }
                 placement++;
