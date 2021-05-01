@@ -9,7 +9,7 @@ Main background : #1f2328
 }
 
 .mainPane {
-    -fx-background-color:  #1f2328;
+    -fx-background-color: #1f2328;
 }
 
 .text {
@@ -20,4 +20,83 @@ Main background : #1f2328
     -fx-border-color: #d3d3d3;
     -fx-text-fill: #d3d3d3;
     -fx-prompt-text-fill: #d3d3d3;
+    -fx-border-color: #d3d3d3;
 }
+
+.date-picker .text-field {
+    -fx-border-color: #d3d3d3;
+    -fx-text-fill: #d3d3d3;
+    -fx-background-color:  #1f2328;
+}
+
+.combo-box-base {
+    -fx-background-color:  #1f2328,  #1f2328,  #1f2328,  #1f2328;
+    -fx-border-color: lightgrey;
+}
+
+.combo-box-base:focused {
+    -fx-background-color:  #1f2328,  #1f2328,  #1f2328,  #1f2328;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #1f2328;
+    -fx-border-color: lightgrey;
+    -fx-text-fill: lightgrey;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: lightgrey;
+}
+
+.topPane {
+    -fx-background-color: #3e4752
+}
+
+.back:hover {
+    -fx-background-color: #343a42;
+}
+
+.main:hover {
+    -fx-background-color: #343a42;
+}
+
+.main:pressed {
+    -fx-background-color: #343a42;
+}
+
+.buttonText {
+    -fx-text-fill: #d3d3d3;
+}
+
+.hyperlink {
+    -fx-text-fill: #d3d3d3;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: black;
+}
+
+.table-view .column-header-background{
+    -fx-border-color: #d3d3d3;
+}
+
+.table-view .column-header-background .label{
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-border-color: #d3d3d3;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: white;
+}
+
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color,  #535960;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -fx-table-cell-border-color,  #2b2b2b;
+}
+
