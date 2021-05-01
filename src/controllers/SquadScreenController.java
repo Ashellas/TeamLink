@@ -6,25 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
 
 
-public class SquadScreenController implements InitializeData {
-
-    @FXML
-    private ImageView profilePictureImageView;
-
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label userRoleLabel;
-
-    @FXML
-    private Label lastSyncLabel;
+public class SquadScreenController extends MainTemplateController implements InitializeData {
 
     @FXML
     private ComboBox<String> teamBox;
@@ -72,6 +61,9 @@ public class SquadScreenController implements InitializeData {
     private GridPane lastGameStatsGrid;
 
     @FXML
+    private GridPane squadPane;
+
+    @FXML
     private Label detailsFullNameLabel;
 
     @FXML
@@ -83,7 +75,8 @@ public class SquadScreenController implements InitializeData {
     @FXML
     private Label detailsTeamRoleLabel;
 
-    private UserSession user;
+    @FXML
+    private ImageView playerPhotoView;
 
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
 
@@ -96,13 +89,14 @@ public class SquadScreenController implements InitializeData {
     private String[] basketballGameStats = {"Pts", "Ast","Rbd","Stl","Blk"};
 
     public void initData(UserSession user){
-        this.user = user;
-        /*userNameLabel.setText(user.getUser().getFirstName());
-        userRoleLabel.setText(user.getUser().getTeamRole());
-        if(user.getUser().getProfilePhoto() != null){
-            profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        super.initData(user);
+
+        if(user.isStyleDark()) {
+            darkIcons();
         }
-        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
+        else {
+            lightIcons();
+        }
         for(Team team : user.getUserTeams()){
             teamNames.add(team.getTeamName());
         }
@@ -115,7 +109,7 @@ public class SquadScreenController implements InitializeData {
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
 
-         */
+        AppManager.fadeIn(squadPane,500);
     }
 
     private void setUpDetailsPane() {
@@ -167,6 +161,17 @@ public class SquadScreenController implements InitializeData {
     private void showPane(TeamMember member) {
         disablePane.setVisible(true);
         detailsPane.setVisible(true);
+        if(member.getProfilePhoto() != null){
+            playerPhotoView.setImage(member.getProfilePhoto().getImage());
+        }
+        else{
+            if(user.isStyleDark()) {
+                darkIcons();
+            }
+            else {
+                lightIcons();
+            }
+        }
         detailsFullNameLabel.setText(member.getFullName());
         detailsBirthdayLabel.setText(member.getBirthdayString());
         detailsEmailLabel.setText(member.getEmail());
@@ -209,5 +214,15 @@ public class SquadScreenController implements InitializeData {
     public void closeButtonPushed(ActionEvent event) {
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
+    }
+
+    private void darkIcons() {
+        profileIcon.setImage((new Image("/Resources/Images/white/profile_white.png")));
+    }
+
+    private void lightIcons() {
+
+        profileIcon.setImage((new Image("/Resources/Images/white/profile_white.png")));
+
     }
 }

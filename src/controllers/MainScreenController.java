@@ -90,7 +90,7 @@ public class MainScreenController implements InitializeData {
         //lastSyncLabel.setText(user.getLastSync().toString()); //TODO get timeDiff in background maybe
 
         for(int i = 0; i < 4; i ++){
-            notifications.add(new Notification(i, "Title" + i, "Description" + i, null, null, "/views/SquadScreen.fxml",new Date(),false,null));
+            notifications.add(new Notification(i, "Title" + i, "Description" + i, null, null, "/views/SettingsScreen.fxml",new Date(),false,null));
         }
         notifications.add(new Notification(0, "Title", "Description", null, null, "/views/LoginScreen.fxml",new Date(),false,null));
 

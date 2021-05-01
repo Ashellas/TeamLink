@@ -30,10 +30,6 @@ public class TeamMember {
         if(profilePhoto != null){
             this.profilePhoto = new ImageView(profilePhoto);
         }
-        else{
-            InputStream inStream = getClass().getResourceAsStream("/Resources/Images/white/profile_white.png");
-            this.profilePhoto = new ImageView(new Image(inStream));
-        }
     }
 
     public TeamMember(int memberId, String firstName, String lastName, Image profilePhoto) {

@@ -14,6 +14,7 @@ public class UserSession {
 
     private final Preferences preferences = Preferences.userRoot();
 
+
     private TeamMember user;
     private ArrayList<Team> userTeams;
     private HashMap<Team,ObservableList<Game>> gamesOfTheCurrentRound;
@@ -39,12 +40,12 @@ public class UserSession {
         this.teamApplications = teamApplications;
         this.gameplans = gameplans;
         this.lastSync = lastSync;
-        styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm());
+        styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
 
     public UserSession(Connection connection){
         this.databaseConnection = connection;
-        styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm());
+        styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
 
     public TeamMember getUser() {
@@ -141,6 +142,14 @@ public class UserSession {
     }
 
     public void setStyleSheet(String styleSheet) {
+        preferences.put("stylesheet", styleSheet);
         this.styleSheet = styleSheet;
+    }
+
+    public boolean isStyleDark() {
+        if (styleSheet.equals(getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm())) {
+            return true;
+        }
+        return false;
     }
 }

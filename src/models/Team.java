@@ -146,4 +146,8 @@ public class Team {
         return FXCollections.observableArrayList(memberList);
     }
 
+    @Override
+    public String toString() {
+        return teamName;
+    }
 }
