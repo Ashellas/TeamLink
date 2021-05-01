@@ -144,7 +144,7 @@ public class LoginScreenController implements  InitializeData{
             else {
                 if (userSession.getUserTeams().size() != 0) {
                     try {
-                        AppManager.changeScene(getClass().getResource("/views/MainTemplate2.fxml"), event, userSession);
+                        AppManager.changeScene(getClass().getResource("/views/MainScreen.fxml"), event, userSession);
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }

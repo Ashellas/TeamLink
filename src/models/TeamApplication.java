@@ -43,6 +43,9 @@ public class TeamApplication {
         return appliedTeam.getCity();
     }
 
+    public String getApplicantFullName(){ return applicant.getFullName() ;}
+
+    public String getApplicantTeamRole(){ return applicant.getTeamRole();}
 
     public String getApplicationStatus() {
         return applicationStatus;

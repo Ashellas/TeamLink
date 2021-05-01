@@ -3,6 +3,7 @@ package models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.*;
 import java.sql.*;
@@ -199,7 +200,26 @@ public class DatabaseManager {
             boolean isUnread = resultSet.getBoolean("is_unread");
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
-            Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName), user ,clickAction, timeSent, isUnread, null);
+            Image profilePicture;
+            if(senderId == 1){
+                //TODO change according to theme selection
+                InputStream inStream = DatabaseManager.class.getResourceAsStream("/Resources/Images/app_logo.png");
+                profilePicture = new Image(inStream);
+            }
+            else{
+                byte[] photoBytes = resultSet.getBytes("photo");
+                if(photoBytes != null)
+                {
+                    System.out.println("NOOO");
+                    InputStream imageFile = resultSet.getBinaryStream("photo");
+                    profilePicture = new Image(imageFile);
+                }
+                else{
+                    profilePicture = null;
+                }
+            }
+            Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName, profilePicture)
+                    , user ,clickAction, timeSent, isUnread, null);
             notifications.add(notification);
         }
         return notifications;

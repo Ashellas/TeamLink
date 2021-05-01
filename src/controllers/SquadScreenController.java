@@ -207,5 +207,7 @@ public class SquadScreenController implements InitializeData {
     }
 
     public void closeButtonPushed(ActionEvent event) {
+        disablePane.setVisible(false);
+        detailsPane.setVisible(false);
     }
 }
