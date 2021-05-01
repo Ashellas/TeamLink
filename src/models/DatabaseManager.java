@@ -201,25 +201,16 @@ public class DatabaseManager {
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
             Image profilePicture = null;
-            if(senderId == 1){
-                //TODO change according to theme selection
-                InputStream inStream = DatabaseManager.class.getResourceAsStream("/Resources/Images/app_logo.png");
-                if(inStream != null){
-                    profilePicture = new Image(inStream);
-                }
+            byte[] photoBytes = resultSet.getBytes("photo");
+            if(photoBytes != null)
+            {
+                InputStream imageFile = resultSet.getBinaryStream("photo");
+                profilePicture = new Image(imageFile);
             }
             else{
-                byte[] photoBytes = resultSet.getBytes("photo");
-                if(photoBytes != null)
-                {
-                    System.out.println("NOOO");
-                    InputStream imageFile = resultSet.getBinaryStream("photo");
-                    profilePicture = new Image(imageFile);
-                }
-                else{
-                    profilePicture = null;
-                }
+                profilePicture = null;
             }
+
             Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName, profilePicture)
                     , user ,clickAction, timeSent, isUnread, null);
             notifications.add(notification);

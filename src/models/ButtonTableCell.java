@@ -14,6 +14,8 @@ public class ButtonTableCell<S> extends TableCell<S, Button> {
 
     public ButtonTableCell(String label, Function< S, S> function) {
         this.tableButton = new Button(label);
+        this.tableButton.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
+        this.tableButton.getStyleClass().add("upload");
         this.tableButton.setOnAction((ActionEvent e) -> {
             function.apply(getCurrentItem());
         });
