@@ -5,11 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,7 +19,9 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class MainScreenController implements InitializeData {
@@ -76,7 +76,11 @@ public class MainScreenController implements InitializeData {
 
     private UserSession user;
 
+    GregorianCalendar cal; //Create calendar
+
     ArrayList<Notification> notifications = new ArrayList<>();
+
+    String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"};
 
     public void initData(UserSession user){
         this.user = user;
@@ -94,12 +98,35 @@ public class MainScreenController implements InitializeData {
         Platform.runLater(() -> {
             setUpNotificationsGrid();
             setUpStandingsTable();
+            try {
+                setUpCalendarGrid();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         disablePane.setVisible(false);
         applicantsPane.setVisible(false);
         setUpApplicantsTable();
         System.out.println(user.getStandings(user.getUserTeams().get(0)).indexOf(user.getUserTeams().get(0)));
+    }
 
+    private void setUpCalendarGrid() throws IOException {
+        cal = new GregorianCalendar();
+        int dayOfWeekIndex = (Calendar.DAY_OF_WEEK - 2) % 7;
+        for( int i = 0; i < 4; i++){
+            Label dayNameLabel = new Label(daysOfTheWeek[(dayOfWeekIndex + i) % 7]);
+            dayNameLabel.getStyleClass().add("standings");
+            dayNameLabel.setPrefWidth(standingsEmptyHBox.getWidth());
+            calendarGrid.add(dayNameLabel, i, 0);
+            ListView eventsListView = new ListView();
+            
+            eventsListView.setOrientation(Orientation.VERTICAL);
+            eventsListView.setFocusTraversable(false);
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            CalendarButton eventButton = new CalendarButton("training", sdf.format(new Date()), "/views/SquadScreen.fxml","red", user);
+            eventsListView.getItems().add(eventButton);
+            calendarGrid.add(eventsListView, i, 1);
+        }
     }
 
     private void setUpStandingsTable() {
@@ -192,7 +219,7 @@ public class MainScreenController implements InitializeData {
         int notificationCount = 0;
         for(Notification notification : user.getNotifications()){
             GridPane customGrid = createCustomNotificationGridPane(notification.getTitle(), notification.getDescription());
-            if(!notification.getClickAction().equals("")){
+            if(!notification.getClickAction().equals(   "")){
                 Button button = new Button("View");
                 button.setOnAction(event -> {
                     try {
