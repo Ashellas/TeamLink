@@ -547,7 +547,23 @@
                                     <Font size="52.0" />
                                  </font>
                               </Label>
-                              <ChoiceBox fx:id="teamChoiceBox" prefHeight="40.0" prefWidth="212.0" GridPane.rowIndex="1" />
+                              <GridPane GridPane.rowIndex="1">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="445.0" minWidth="10.0" percentWidth="80.0" prefWidth="445.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="311.0" minWidth="10.0" percentWidth="20.0" prefWidth="188.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="changeButton" mnemonicParsing="false" onAction="#changeButtonClicked" prefHeight="37.0" prefWidth="121.0" style="-fx-background-color: #c312eb; -fx-background-radius: 20;" text="Change team" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                    <ChoiceBox fx:id="teamChoiceBox" prefHeight="40.0" prefWidth="212.0" />
+                                 </children>
+                              </GridPane>
                            </children>
                            <columnConstraints>
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
