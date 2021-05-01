@@ -63,11 +63,11 @@ public class CalendarScreenController implements InitializeData{
 
     public void initData(UserSession userSession){
         this.user = userSession;
-        userNameLabel.setText(user.getUser().getFirstName());
-        userRoleLabel.setText(user.getUser().getTeamRole());
-        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        //userNameLabel.setText(user.getUser().getFirstName());
+        //userRoleLabel.setText(user.getUser().getTeamRole());
+        //profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
 
-        teamName.setText(user.getUserTeams().get(0).toString()); //Set team name
+        //teamName.setText(user.getUserTeams().get(0).getTeamName()); //Set team name
 
         GregorianCalendar cal = new GregorianCalendar(); //Create calendar
         realDay = cal.get(GregorianCalendar.DAY_OF_MONTH); //Get day
@@ -102,16 +102,25 @@ public class CalendarScreenController implements InitializeData{
             Label l = labels.get(i + firstDay - 2);
             l.setText(i + "");
             for (CalendarEvent ce: events) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(ce.getEventDateTime());
-                if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
-                    ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                    try {
-                        buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(),(ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                if (ce.getActionLink() != null) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(ce.getEventDateTime());
+                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
+                        ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                        try {
+                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-
+                else if (ce.getEventTitle() != null) {
+                        Calendar calendar1 = Calendar.getInstance();
+                        calendar1.setTime(ce.getEventDateTime());
+                        if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
+                            ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+                        }
+                    }
                 }
             }
         }
