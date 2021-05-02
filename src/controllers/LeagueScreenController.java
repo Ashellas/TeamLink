@@ -18,6 +18,8 @@ import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class LeagueScreenController extends MainTemplateController {
@@ -188,7 +190,12 @@ public class LeagueScreenController extends MainTemplateController {
     @FXML
     private ImageView rightButtonFixtureImage;
 
+    @FXML
+    private Pane messagePane;
+
     private Team teamOfCoach;
+
+    private Game gameClicked;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
 
@@ -208,6 +215,7 @@ public class LeagueScreenController extends MainTemplateController {
 
     private ObservableList<TeamMember> userSelectedTeamMembersAtPlayersAddComboBox = FXCollections.observableArrayList();
 
+    private HashMap<Game, ArrayList<TeamMember>> addedPlayers = new HashMap<Game, ArrayList<TeamMember>>();
 
     public void initData(UserSession user){
         super.initData(user);
@@ -278,7 +286,6 @@ public class LeagueScreenController extends MainTemplateController {
         addPlayerTable.setItems(userSelectedTeamMembersAtPlayersAddComboBox);
 
         addPlayerAddColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn( "Add", (TeamMember player) -> {
-            System.out.println( "calisiyor");
             onAddPlayerButtonClicked( player);
             return player;
         }));
@@ -380,6 +387,7 @@ public class LeagueScreenController extends MainTemplateController {
         //Add view buttons and its listener so user can reach to the details of the clicked match
         detailsColumn.setCellFactory( ButtonTableCell.<Game>forTableColumn("View", (Game gameClicked) -> {
             onFixtureDetailsClicked( gameClicked);
+            this.gameClicked = gameClicked;
             return gameClicked;
         }));
 
@@ -395,9 +403,9 @@ public class LeagueScreenController extends MainTemplateController {
 
         playerStatisticsTable.setItems( userSelectedTeamMembers);
 
-        if( user.getUser().getSportBranch().equals("Football") ){
-            playerStatisticsPointsColumn.setText("Goals Scored");
-            playerStatisticsReboundsColumn.setText("Saves Made");
+        if( user.getUser().getSportBranch().equals("Basketball") ){
+            playerStatisticsPointsColumn.setText("Goals");
+            playerStatisticsReboundsColumn.setText("Saves");
             playerStatisticsStealsColumn.setText("Yellow Card");
             playerStatisticsBlocksColumn.setText("Red Card");
         }
@@ -414,15 +422,24 @@ public class LeagueScreenController extends MainTemplateController {
             }
         }
 
+        if( addedPlayers.get( gameClicked) != null){
+            for( int arrayIndex = 0; arrayIndex < addedPlayers.get( gameClicked).size(); arrayIndex++){
+                userSelectedTeamMembers.add( addedPlayers.get( gameClicked).get(arrayIndex) );
+            }
+        }
+
         playerStatisticsTable.refresh();
 
-        if( gameClicked.getResult() != null){
-            setEditableColumnsOfPlayerStatistics();
+        if( !gameClicked.isPlayed() ){
+            setEditableColumnsOfPlayerStatistics( gameClicked.isPlayed());
+        }
+        else{
+            setEditableColumnsOfPlayerStatistics(gameClicked.isPlayed());
             setStatisticEnterButtonsOfPlayerStatistics();
         }
     }
 
-    public void setEditableColumnsOfPlayerStatistics(){
+    public void setEditableColumnsOfPlayerStatistics( boolean isPlayed){
         playerStatisticsPointsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
 
         playerStatisticsPointsColumn.setOnEditCommit( e -> {
@@ -453,13 +470,12 @@ public class LeagueScreenController extends MainTemplateController {
             e.getTableView().getItems().get(e.getTablePosition().getRow()).setBlocksOrRedCard(e.getNewValue());
         });
 
-        playerStatisticsTable.setEditable(true);
+        playerStatisticsTable.setEditable( isPlayed);
     }
 
     public void setStatisticEnterButtonsOfPlayerStatistics(){
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
             //TODO: cellere girilmiş girdileri db'ye yollayacak kod
-            System.out.println( "calisiyor");
             return player;
         }));
     }
@@ -555,10 +571,18 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     public void onClickAddPlayerButton( ActionEvent event){
-        addPlayersGridPane.setVisible(true);
-        blackenedPane1.setVisible(true);
-        setAddPlayersComboBox();
-        setAddPlayerTable();
+        if( gameClicked.isPlayed()){
+            super.displayMessage(messagePane, "You cannot add player to a game that is played", true);
+        }
+        else{
+            addPlayersGridPane.setVisible(true);
+            blackenedPane1.setVisible(true);
+            setAddPlayersComboBox();
+            setAddPlayerTable();
+            if( addedPlayers.get( gameClicked) == null){
+                addedPlayers.put( gameClicked, new ArrayList<TeamMember>());
+            }
+        }
     }
 
     public void onCloseAddPlayersButtonClicked( ActionEvent event){
@@ -582,8 +606,14 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     public void onAddPlayerButtonClicked( TeamMember player){
-        userSelectedTeamMembers.add( player);
-        playerStatisticsTable.refresh();
+        if( !userSelectedTeamMembers.contains( player) ){
+            userSelectedTeamMembers.add( player);
+            addedPlayers.get( gameClicked).add( player);
+            playerStatisticsTable.refresh();
+        }
+        else{
+            super.displayMessage(messagePane, "You cannot add the same player", true);
+        }
     }
 
     @Override
@@ -591,12 +621,16 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     private void darkIcons() throws URISyntaxException {
+        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/cancel_white.png").toURI().toString()));
+        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/cancel_white.png").toURI().toString()));
         addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/squad_white.png").toURI().toString()));
         leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
         rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
     }
 
     private void lightIcons() throws URISyntaxException {
+        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/cancel_black.png").toURI().toString()));
+        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/cancel_black.png").toURI().toString()));
         addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/squad_black.png").toURI().toString()));
         leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
         rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
