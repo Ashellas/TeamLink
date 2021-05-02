@@ -164,6 +164,7 @@ public class MainTemplateController implements InitializeData {
             profileIcon.setImage(new Image("/Resources/Images/black/profile_black.png"));
         }
     }
+
     /**
      * Shows the error message
      * @param message message to show

@@ -18,6 +18,11 @@ public class TeamMember {
     private String sportBranch;
     //ImageView is used instead of Image to display photo easily
     private ImageView profilePhoto;
+    private String pointsOrGoalsScored;
+    private String assists;
+    private String reboundsOrSavesMade;
+    private String stealsOrYellowCard;
+    private String blocksOrRedCard;
 
     public TeamMember(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email, String sportBranch, Image profilePhoto) {
         this.memberId = memberId;
@@ -80,4 +85,60 @@ public class TeamMember {
     }
 
     public String getFullName(){ return firstName + " " + lastName;}
+
+    public void setName(String name) {
+        int spaceIndex;
+        spaceIndex = 0;
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) == ' ') {
+                spaceIndex = i;
+            }
+        }
+        firstName = name.substring(0,spaceIndex);
+        lastName = name.substring(spaceIndex + 1);
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setPointsOrGoalsScored( String pointsOrGoalsScored){
+        this.pointsOrGoalsScored = pointsOrGoalsScored;
+    }
+
+    public String getAssists(){
+        return assists;
+    }
+
+    public void setAssists( String assists){
+        this.assists = assists;
+    }
+
+    public String getReboundsOrSavesMade(){
+        return reboundsOrSavesMade;
+    }
+
+    public void setReboundsOrSavesMade( String reboundsOrSavesMade){
+        this.reboundsOrSavesMade = reboundsOrSavesMade;
+    }
+
+    public String getStealsOrYellowCard(){
+        return stealsOrYellowCard;
+    }
+
+    public void setStealsOrYellowCard( String stealsOrYellowCard){
+        this.stealsOrYellowCard = stealsOrYellowCard;
+    }
+
+    public String getBlocksOrRedCard(){
+        return blocksOrRedCard;
+    }
+
+    public void setBlocksOrRedCard( String blocksOrRedCard){
+        this.blocksOrRedCard = blocksOrRedCard;
+    }
 }

@@ -1,5 +1,4 @@
 .detailsGrid Line {
-    -fx-stroke   :  a1289f;
     -fx-stroke-width: 0.5px;
 }
 
@@ -27,4 +26,14 @@
     -fx-font-size: 12px;
     -fx-alignment: center;
     -fx-max-width: Infinity;
+}
+
+.little{
+    -fx-font-size: 10px;
+    -fx-alignment: center;
+}
+
+.mainGrid{
+    -fx-alignment: center;
+
 }

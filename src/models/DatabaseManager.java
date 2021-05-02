@@ -6,6 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -17,7 +21,7 @@ import java.util.List;
 
 public class DatabaseManager {
 
-    public static UserSession login( UserSession userSession, String email, String password) throws SQLException {
+    public static UserSession login( UserSession userSession, String email, String password) throws SQLException, IOException {
         Connection databaseConnection = userSession.getDatabaseConnection();
         TeamMember user = createUser(databaseConnection, email, password);
         System.out.println("user found");
@@ -44,11 +48,7 @@ public class DatabaseManager {
         return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync);
     }
 
-    private static ArrayList<CalendarEvent> createCalendarEvents(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) {
-        return null;
-    }
-
-    private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
+    private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException   {
         if(userTeams.isEmpty()){
             return null;
         }
@@ -93,7 +93,7 @@ public class DatabaseManager {
             String actionLink = "/views/TrainingsScreen.fxml";
             int teamIndex = 0;
             for (int i = 0; i < userTeams.size(); i++){
-                if(userTeams.get(i).getTeamId() == pastTraininingsResultSet.getInt("team_id")){
+                if(userTeams.get(i).getTeamId() == futureTrainingsResultSet.getInt("team_id")){
                     teamIndex = i % 5;
                 }
             }
@@ -162,21 +162,37 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(teamApplications);
     }
 
-    private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
+    private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, IOException {
         if(userTeams.isEmpty()){
             return null;
         }
         HashMap<Team, ArrayList<Gameplan>> teamGameplans = new HashMap<>();
         for( Team team : userTeams){
             ArrayList<Gameplan> gameplans = new ArrayList<>();
-            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from gameplans join team_and_gameplans tg on gameplans.gameplan_id = tg.gameplan_id and team_id = ?");
+            PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from gameplans where team_id = ?");
             prepStmt.setInt(1, team.getTeamId());
             ResultSet resultSet = prepStmt.executeQuery();
             while(resultSet.next()){
-                int gameplanId = resultSet.getInt("tg.gameplan_id");
+                int gameplanId = resultSet.getInt("gameplan_id");
                 String title = resultSet.getString("title");
                 int version = resultSet.getInt("version");
-                //TODO get pdf
+
+                System.out.println( System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
+
+                File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
+                if (!teamLinkDirectory.exists()){
+                    teamLinkDirectory.mkdir();
+                }
+
+                File theFile = new File(System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
+                FileOutputStream output = new FileOutputStream(theFile);
+
+                InputStream input = resultSet.getBinaryStream("gameplan_pdf");
+                byte[] buffer = new byte[1024];
+                while (input.read(buffer) > 0){
+                    output.write(buffer);
+                }
+
                 gameplans.add(new Gameplan(gameplanId, title, team, version ));
             }
             teamGameplans.put(team, gameplans);
@@ -201,25 +217,16 @@ public class DatabaseManager {
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
             Image profilePicture = null;
-            if(senderId == 1){
-                //TODO change according to theme selection
-                InputStream inStream = DatabaseManager.class.getResourceAsStream("/Resources/Images/app_logo.png");
-                if(inStream != null){
-                    profilePicture = new Image(inStream);
-                }
+            byte[] photoBytes = resultSet.getBytes("photo");
+            if(photoBytes != null)
+            {
+                InputStream imageFile = resultSet.getBinaryStream("photo");
+                profilePicture = new Image(imageFile);
             }
             else{
-                byte[] photoBytes = resultSet.getBytes("photo");
-                if(photoBytes != null)
-                {
-                    System.out.println("NOOO");
-                    InputStream imageFile = resultSet.getBinaryStream("photo");
-                    profilePicture = new Image(imageFile);
-                }
-                else{
-                    profilePicture = null;
-                }
+                profilePicture = null;
             }
+
             Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName, profilePicture)
                     , user ,clickAction, timeSent, isUnread, null);
             notifications.add(notification);
@@ -251,7 +258,7 @@ public class DatabaseManager {
                 int gamesLost = resultSet.getInt("games_lost");
                 int points = resultSet.getInt("points");
                 TeamStats teamStats = new TeamStats(id, gamesPlayed, gamesWon, gamesLost, gamesDrawn, placement, points);
-                if(team.getTeamId() != teamId){
+                if(team.getDatabaseTeamId() != teamId){
                     Team leagueTeam = new Team(teamId, teamName, abbrevation, teamStats);
                     teams.add(leagueTeam);
                 }
@@ -332,17 +339,8 @@ public class DatabaseManager {
                 profilePicture = null;
             }
             if( teamRole.equals("Player")){
-                boolean isCaptain = false; //TODO set it afterwards
-                String position = resultSet.getString("position");
-                ArrayList<Injury> playerInjuries = getPlayerInjuries(databaseConnection, memberId);
-                PlayerStats playerStats = null;
-                if(sportBranch.equals("Basketball")){
-                    playerStats = getBasketballStats(databaseConnection, memberId);
-                }
-                else if (sportBranch.equals("Football")){
-                    playerStats = getFootballStats(databaseConnection, memberId);
-                }
-                return new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, position, playerInjuries, playerStats, isCaptain);
+                TrainingPerformanceReport trainingPerformanceReport = getMemberTrainingPerformances(memberId, databaseConnection);
+                return new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, trainingPerformanceReport);
             }
             else{
                 return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture);
@@ -370,7 +368,6 @@ public class DatabaseManager {
             String city = teamsResultSet.getString("city");
             String ageGroup = teamsResultSet.getString("age_group");
             String teamCode = teamsResultSet.getString("team_code");
-            int captainId = teamsResultSet.getInt("captain_id");
             Image teamLogo;
             byte[] photoBytes = teamsResultSet.getBytes("team_logo");
             if(photoBytes != null)
@@ -403,17 +400,8 @@ public class DatabaseManager {
                     profilePicture = null;
                 }
                 if( teamRole.equals("Player")){
-                    boolean isCaptain = captainId == memberId;
-                    String position = membersResultSet.getString("position");
-                    ArrayList<Injury> playerInjuries = getPlayerInjuries(databaseConnection, memberId);
-                    PlayerStats playerStats = null;
-                    if(sportBranch.equals("Basketball")){
-                        playerStats = getBasketballStats(databaseConnection, memberId);
-                    }
-                    else if (sportBranch.equals("Football")){
-                        playerStats = getFootballStats(databaseConnection, memberId);
-                    }
-                    teamMembers.add(new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, position, playerInjuries, playerStats, isCaptain));
+                    TrainingPerformanceReport trainingPerformanceReport = getMemberTrainingPerformances(memberId, databaseConnection);
+                    teamMembers.add(new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, null));
                 }
                 else{
                     teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture));
@@ -435,28 +423,13 @@ public class DatabaseManager {
                 int points = leagueResultSet.getInt("points");
                 int totalRounds = leagueResultSet.getInt("total_rounds");
                 //TODO calculate training averages
-                TrainingPerformanceReport trainingPerformanceReport = null;
+                TrainingPerformanceReport trainingPerformanceReport = getTeamTrainingPerformances(teamMembers, databaseConnection);
                 //Placement will be modified in standings creation
                 teamStats = new TeamStats(statsId, gamesPlayed, gamesWon, gamesLost, gamesDrawn, points, totalRounds, trainingPerformanceReport);
             }
             userTeams.add( new Team(teamId, databaseTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city, ageGroup, teamLogo, teamStats, teamMembers));
         }
         return userTeams;
-    }
-
-    //TODO make this Work
-    private static PlayerStats getFootballStats(Connection databaseConnection, int memberId) {
-        return null;
-    }
-
-    //TODO make this Work
-    private static PlayerStats getBasketballStats(Connection databaseConnection, int memberId) {
-        return null;
-    }
-
-    //TODO make this work
-    private static ArrayList<Injury> getPlayerInjuries(Connection databaseConnection, int memberId) {
-        return null;
     }
 
     public static UserSession signUpUser(UserSession userSession, String firstName, String lastName, String email, java.sql.Date birthday, String password, String teamRole, String sportBranch, File selectedFile) throws SQLException, IOException {
@@ -501,7 +474,6 @@ public class DatabaseManager {
         return false;
     }
 
-
     public static String isTeamCodeProper(UserSession user, String teamCode) throws SQLException {
         //TODO age test, code's existence, sport_branch
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from teams where team_code = ?");
@@ -542,6 +514,7 @@ public class DatabaseManager {
         userSession.setTeamApplications(teamApplications);
         return userSession;
     }
+
     public static boolean applyTeam(UserSession user, int teamId) throws SQLException {
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_applications(applicant_id, team_id, isDeclined) VALUES (?,?, false )");
         prepStmt.setInt(1, user.getUser().getMemberId());
@@ -658,9 +631,18 @@ public class DatabaseManager {
         return "" + teamCode;
     }
 
+    //TODO
+    private static TrainingPerformanceReport getTeamTrainingPerformances(ArrayList<TeamMember> members, Connection databaseConnection) {
+        return null;
+    }
 
-    private String formatDateToMYSQL(Date date){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(date);
+    //TODO
+    private static TrainingPerformanceReport getMemberTrainingPerformances(int memberId, Connection databaseConnection) {
+        return null;
+    }
+
+    //TODO month + next 3 days
+    private static ArrayList<CalendarEvent> createCalendarEvents(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) {
+        return null;
     }
 }

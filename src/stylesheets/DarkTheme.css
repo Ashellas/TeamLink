@@ -104,11 +104,15 @@ Main background : #1f2328
     -fx-background-color: -fx-table-cell-border-color,  #2b2b2b;
 }
 
-.detailsGrid{
-    -fx-background-color:  #1f2328;
+
+.mainGrid{
+    -fx-background-color:  #3e4752;
+}
+
+.detail Line{
+    -fx-stroke   :  #a1289f;
 }
 
 .statsGrid Line {
-    -fx-stroke   :  d3d3d3;
+    -fx-stroke   :  #d3d3d3;
 }
-

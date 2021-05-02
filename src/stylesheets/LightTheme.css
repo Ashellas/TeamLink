@@ -112,10 +112,11 @@ text : #151617
     -fx-background-color: -fx-table-cell-border-color, #a9a9a9;
 }
 
-.detailsGrid{
-    -fx-background-color:  #faf9f7;
+.mainGrid{
+    -fx-background-color:  #d3d3d3;
 }
 
 .statsGrid Line {
     -fx-stroke   :  #151617;
 }
+
