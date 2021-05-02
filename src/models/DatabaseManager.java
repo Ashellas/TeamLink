@@ -682,7 +682,7 @@ public class DatabaseManager {
         return null;
     }
 
-    public static void updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
+    public static boolean updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
         prepStmt.setString(1, team.getLeagueName());
         prepStmt.setString(2, team.getDatabaseTeamName());
@@ -706,7 +706,48 @@ public class DatabaseManager {
                 prepStmt.setBlob(7, InputStream.nullInputStream());
             }
             prepStmt.setInt(8, team.getTeamId());
-            prepStmt.executeUpdate();
+            int row = prepStmt.executeUpdate();
+            if(row > 0){
+                return  true;
+            }
         }
+        return false;
+    }
+
+    public static boolean updateUser(UserSession user, File profilePhoto) throws SQLException, IOException {
+       PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE team_members t SET t.first_name = ?, t.last_name = ?, " +
+               "t.email = ?, t.birthday = ?, t.photo = ? WHERE t.member_id = ?");
+       preparedStatement.setString(1, user.getUser().getFirstName());
+       preparedStatement.setString(2, user.getUser().getLastName());
+       preparedStatement.setString(3, user.getUser().getEmail());
+       preparedStatement.setDate(4, java.sql.Date.valueOf(user.getUser().getBirthday()));
+
+        if (profilePhoto != null) {
+            FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
+            preparedStatement.setBinaryStream(5, fileInputStream, fileInputStream.available());
+        } else {
+            preparedStatement.setBlob(5, InputStream.nullInputStream());
+        }
+        preparedStatement.setInt(6, user.getUser().getMemberId());
+
+        int row = preparedStatement.executeUpdate();
+        if(row > 0){
+            return  true;
+        }
+        return false;
+    }
+
+    public static boolean passwordChange(UserSession user, String newPassword) throws SQLException {
+        PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE team_members t SET " +
+                "t.password = MD5(?) WHERE t.member_id = ?");
+
+        preparedStatement.setString(1, newPassword);
+        preparedStatement.setInt(2, user.getUser().getMemberId());
+
+        int row = preparedStatement.executeUpdate();
+        if(row > 0){
+            return  true;
+        }
+        return false;
     }
 }
