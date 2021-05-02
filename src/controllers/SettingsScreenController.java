@@ -411,6 +411,8 @@ public class SettingsScreenController extends MainTemplateController {
             // Combobox team is not selected after edit
 
             closeButtonPushed(actionEvent);
+            teamCombobox.getSelectionModel().selectFirst();
+            displayMessage(messagePane,"Changes are saved", false);
         }
     }
 
