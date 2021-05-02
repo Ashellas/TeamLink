@@ -47,7 +47,7 @@ public class CalendarScreenController extends MainTemplateController {
 
     public void initData(UserSession userSession){
         super.initData(userSession);
-        Team allTeams = new Team(99999,"all Teams",null,null);
+        Team allTeams = new Team(99999,"All Teams",null,null);
         teamSelectionCombo.getItems().add(allTeams);
         teams = user.getUserTeams();
         for (Team t: teams) {
@@ -70,6 +70,7 @@ public class CalendarScreenController extends MainTemplateController {
         monthName.setText(months[currentMonth] + " " + currentYear); //Set month name
         for (int i = 0; i < 42; i++) {
             Label day = new Label("");
+            day.setStyle("-fx-font-size: 14");
             labels.add(day);
             ListView<Button> buttonListView = new ListView<Button>();
             lists.add(buttonListView);
@@ -89,9 +90,9 @@ public class CalendarScreenController extends MainTemplateController {
             int row = (i + firstDay - 2 )/7;
             int column  =  (i + firstDay - 2)%7;
             Label l = labels.get(i + firstDay - 2);
-            l.setText(i + "");
+            l.setText("   " + i + "");
             for (CalendarEvent ce: events) {
-                if (ce.getDescription().equals(selectedTeam.getAbbrevation()) || selectedTeam.getTeamName().equals("all Teams")) {
+                if (ce.getDescription().equals(selectedTeam.getAbbrevation()) || selectedTeam.getTeamName().equals("All Teams")) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(ce.getEventDateTime());
                     if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
@@ -99,12 +100,14 @@ public class CalendarScreenController extends MainTemplateController {
                         if (ce.getActionLink() != null) {
                             try {
                                 buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
+                                buttonListView.setStyle("-fx-background-color: Transparent");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
                         else {
                             buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+                            buttonListView.setStyle("-fx-background-color: Transparent");
                         }
                     }
                 }
