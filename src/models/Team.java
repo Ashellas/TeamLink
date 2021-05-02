@@ -11,6 +11,7 @@ public class Team {
 
     private int teamId;
     private int databaseTeamId;
+    private String databaseTeamName;
     private int leagueId;
     private String teamName;
     private String abbrevation;
@@ -22,9 +23,10 @@ public class Team {
     private TeamStats teamStats;
     private ArrayList<TeamMember> teamMembers;
 
-    public Team(int teamId, int databaseTeamId, int leagueId, String teamName, String abbrevation, String teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
+    public Team(int teamId, int databaseTeamId, String databaseTeamName, int leagueId, String teamName, String abbrevation, String teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
         this.teamId = teamId;
         this.databaseTeamId = databaseTeamId;
+        this.databaseTeamName = databaseTeamName;
         this.leagueId = leagueId;
         this.teamName = teamName;
         this.abbrevation = abbrevation;
@@ -172,6 +174,10 @@ public class Team {
 
     public void setLeagueId(int leagueId) { this.leagueId = leagueId; }
 
+    public void setDatabaseTeamId(int databaseTeamId){ this.databaseTeamName = databaseTeamName;}
+
     public void setTeamLogo(ImageView teamLogo) { this.teamLogo = teamLogo; }
 
+
+    public String getDatabaseTeamName(){ return databaseTeamName;}
 }

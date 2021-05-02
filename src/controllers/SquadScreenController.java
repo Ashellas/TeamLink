@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import models.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
@@ -120,6 +121,7 @@ public class SquadScreenController extends MainTemplateController{
         setUpDetailsPane();
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
+
 
         AppManager.fadeIn(squadPane,500);
     }

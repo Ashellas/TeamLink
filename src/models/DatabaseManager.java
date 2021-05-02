@@ -435,11 +435,12 @@ public class DatabaseManager {
 
             }
 
-            prepStmt = databaseConnection.prepareStatement("select * from team_performances join leagues l on l.league_id = team_performances.league_id and league_team_id = ?");
+            prepStmt = databaseConnection.prepareStatement("select * from team_performances join leagues l on l.league_id = team_performances.league_id join league_teams lt on lt.league_team_id = team_performances.league_team_id and team_performances.league_team_id = ?;");
             prepStmt.setInt(1, databaseTeamId);
             ResultSet leagueResultSet = prepStmt.executeQuery();
             String leagueName = "";
             TeamStats teamStats = null;
+            String databaseTeamName = "";
             if(leagueResultSet.next()){
                 int statsId = leagueResultSet.getInt("id");
                 leagueName = leagueResultSet.getString("title");
@@ -449,12 +450,13 @@ public class DatabaseManager {
                 int gamesLost = leagueResultSet.getInt("games_lost");
                 int points = leagueResultSet.getInt("points");
                 int totalRounds = leagueResultSet.getInt("total_rounds");
+                databaseTeamName = leagueResultSet.getString("team_name");
                 //TODO calculate training averages
                 TrainingPerformanceReport trainingPerformanceReport = getTeamTrainingPerformances(teamMembers, databaseConnection);
                 //Placement will be modified in standings creation
                 teamStats = new TeamStats(statsId, gamesPlayed, gamesWon, gamesLost, gamesDrawn, points, totalRounds, trainingPerformanceReport);
             }
-            userTeams.add( new Team(teamId, databaseTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city, ageGroup, teamLogo, teamStats, teamMembers));
+            userTeams.add( new Team(teamId, databaseTeamId, databaseTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city, ageGroup, teamLogo, teamStats, teamMembers));
         }
         return userTeams;
     }
@@ -629,10 +631,10 @@ public class DatabaseManager {
                 }
                 teamMembers.add(user.getUser());
                 if(teamLogo != null){
-                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.toURI().toString()), null, teamMembers));
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.toURI().toString()), null, teamMembers));
                 }
                 else{
-                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers));
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers));
                 }
                 user.setUserTeams(userTeams);
             }
@@ -677,7 +679,34 @@ public class DatabaseManager {
 
     //TODO month + next 3 days
     private static ArrayList<CalendarEvent> createCalendarEvents(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) {
-
         return null;
+    }
+
+    public static void updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
+        prepStmt.setString(1, team.getLeagueName());
+        prepStmt.setString(2, team.getDatabaseTeamName());
+        ResultSet resultSet = prepStmt.executeQuery();
+        if (resultSet.next()) {
+            int leagueId = resultSet.getInt("l.league_id");
+            int leagueTeamId = resultSet.getInt("league_team_id");
+            team.setLeagueId(leagueId);
+            team.setDatabaseTeamId(leagueTeamId);
+            prepStmt = databaseConnection.prepareStatement("UPDATE teams t SET t.team_name = ?, t.abbrevation = ?, t.city = ?, t.age_group = ?, t.database_team_id = ?, t.league_id = ? , t.team_logo = ? WHERE t.team_id = ?");
+            prepStmt.setString(1, team.getTeamName());
+            prepStmt.setString(2, team.getAbbrevation());
+            prepStmt.setString(3, team.getCity());
+            prepStmt.setString(4, team.getAgeGroup());
+            prepStmt.setInt(5, leagueTeamId);
+            prepStmt.setInt(6, leagueId);
+            if (logoFile != null) {
+                FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
+                prepStmt.setBinaryStream(7, fileInputStream, fileInputStream.available());
+            } else {
+                prepStmt.setBlob(7, InputStream.nullInputStream());
+            }
+            prepStmt.setInt(8, team.getTeamId());
+            prepStmt.executeUpdate();
+        }
     }
 }

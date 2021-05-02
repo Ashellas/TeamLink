@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import models.*;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -396,7 +397,7 @@ public class SettingsScreenController extends MainTemplateController {
 
     //-------------------------Team Edit---------------------------//
 
-    public void saveChanges(ActionEvent actionEvent) throws SQLException {
+    public void saveChanges(ActionEvent actionEvent) throws SQLException, IOException {
         if (validEditInput()) {
             // TODO
             // Update team at database
@@ -408,7 +409,7 @@ public class SettingsScreenController extends MainTemplateController {
                 teamCombobox.getValue().setTeamLogo(logoChangeImage);
                 teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
             }
-
+            DatabaseManager.updateTeam(teamCombobox.getValue(),user.getDatabaseConnection(), selectedFile);
             teamCombobox.getItems().clear();
             teamCombobox.getItems().addAll(user.getUserTeams());
             // TODO
@@ -417,6 +418,7 @@ public class SettingsScreenController extends MainTemplateController {
             closeButtonPushed(actionEvent);
             teamCombobox.getSelectionModel().selectFirst();
             displayMessage(messagePane,"Changes are saved", false);
+            teamCombobox.getSelectionModel().selectPrevious();
         }
     }
 
