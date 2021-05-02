@@ -6,6 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -17,7 +21,7 @@ import java.util.List;
 
 public class DatabaseManager {
 
-    public static UserSession login( UserSession userSession, String email, String password) throws SQLException {
+    public static UserSession login( UserSession userSession, String email, String password) throws SQLException, IOException {
         Connection databaseConnection = userSession.getDatabaseConnection();
         TeamMember user = createUser(databaseConnection, email, password);
         System.out.println("user found");
@@ -158,7 +162,7 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(teamApplications);
     }
 
-    private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
+    private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, IOException {
         if(userTeams.isEmpty()){
             return null;
         }
@@ -172,7 +176,23 @@ public class DatabaseManager {
                 int gameplanId = resultSet.getInt("gameplan_id");
                 String title = resultSet.getString("title");
                 int version = resultSet.getInt("version");
-                //TODO get pdf
+
+                System.out.println( System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
+
+                File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
+                if (!teamLinkDirectory.exists()){
+                    teamLinkDirectory.mkdir();
+                }
+
+                File theFile = new File(System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
+                FileOutputStream output = new FileOutputStream(theFile);
+
+                InputStream input = resultSet.getBinaryStream("gameplan_pdf");
+                byte[] buffer = new byte[1024];
+                while (input.read(buffer) > 0){
+                    output.write(buffer);
+                }
+
                 gameplans.add(new Gameplan(gameplanId, title, team, version ));
             }
             teamGameplans.put(team, gameplans);
