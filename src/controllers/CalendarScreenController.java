@@ -100,14 +100,12 @@ public class CalendarScreenController extends MainTemplateController {
                         if (ce.getActionLink() != null) {
                             try {
                                 buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
-                                buttonListView.setStyle("-fx-background-color: Transparent");
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
                         else {
                             buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
-                            buttonListView.setStyle("-fx-background-color: Transparent");
                         }
                     }
                 }
