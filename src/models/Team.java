@@ -122,10 +122,6 @@ public class Team {
         return teamStats.getPlacement();
     }
 
-    public int getMatchesPlayed(){
-        return teamStats.getGamesPlayed();
-    }
-
     public int getMatchesLeft(){
         return teamStats.getTotalRounds();
     }
@@ -150,6 +146,11 @@ public class Team {
         return FXCollections.observableArrayList(memberList);
     }
 
+    @Override
+    public String toString() {
+        return teamName;
+    }
+
     /**
      * Compares two teams according to their id's
      * @param otherTeam the latter team that will be compared
@@ -163,5 +164,4 @@ public class Team {
             return false;
         }
     }
-
 }

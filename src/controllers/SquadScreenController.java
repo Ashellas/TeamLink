@@ -16,7 +16,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 
 
-public class SquadScreenController extends MainTemplateController implements InitializeData {
+public class SquadScreenController extends MainTemplateController{
 
     @FXML
     private ComboBox<String> teamBox;

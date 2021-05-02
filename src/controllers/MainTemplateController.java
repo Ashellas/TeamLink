@@ -97,16 +97,13 @@ public class MainTemplateController implements InitializeData {
         AppManager.changeScene(getClass().getResource("/views/SquadScreen.fxml"),actionEvent, user);
     }
 
-    public void toCalendarScreen(ActionEvent actionEvent) throws IOException {
-        AppManager.changeScene(getClass().getResource("/views/CalendarScreen.fxml"),actionEvent, user);
+    public void toCalendarScreen(ActionEvent actionEvent) {
     }
 
-    public void toGameplanScreen(ActionEvent actionEvent) throws IOException {
-        AppManager.changeScene(getClass().getResource("/views/GameplansScreen.fxml"),actionEvent, user);
+    public void toGameplanScreen(ActionEvent actionEvent) {
     }
 
-    public void toTrainingsScreen(ActionEvent actionEvent) throws IOException {
-        AppManager.changeScene(getClass().getResource("/views/TrainingsScreen.fxml"),actionEvent, user);
+    public void toTrainingsScreen(ActionEvent actionEvent) {
     }
 
     public void toLeagueScreen(ActionEvent actionEvent) throws IOException {
@@ -167,6 +164,7 @@ public class MainTemplateController implements InitializeData {
             profileIcon.setImage(new Image("/Resources/Images/black/profile_black.png"));
         }
     }
+
     /**
      * Shows the error message
      * @param message message to show

@@ -16,6 +16,7 @@ import models.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,19 +25,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class MainScreenController implements InitializeData {
-
-    @FXML
-    private ImageView profilePictureImageView;
-
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label userRoleLabel;
-
-    @FXML
-    private Label lastSyncLabel;
+public class MainScreenController extends MainTemplateController{
 
     @FXML
     private HBox notificationsEmptyHBox;
@@ -74,8 +63,6 @@ public class MainScreenController implements InitializeData {
     @FXML
     private Pane disablePane;
 
-    private UserSession user;
-
     GregorianCalendar cal; //Create calendar
 
     ArrayList<Notification> notifications = new ArrayList<>();
@@ -83,7 +70,8 @@ public class MainScreenController implements InitializeData {
     String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"};
 
     public void initData(UserSession user){
-        this.user = user;
+        super.initData(user);
+
         //userNameLabel.setText(user.getUser().getFirstName());
         //userRoleLabel.setText(user.getUser().getTeamRole());
         //profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
@@ -183,44 +171,14 @@ public class MainScreenController implements InitializeData {
     public void toMainScreen(ActionEvent actionEvent) {
     }
 
-    public void toSquadScreen(ActionEvent actionEvent) {
-    }
-
-    public void toCalendarScreen(ActionEvent actionEvent) {
-    }
-
-    public void toGameplanScreen(ActionEvent actionEvent) {
-    }
-
-    public void toTrainingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void toLeagueScreen(ActionEvent actionEvent) throws IOException {
-        AppManager.changeScene(getClass().getResource("LeagueScreen.fxml"),actionEvent, user);
-    }
-
-    public void toChatScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSettingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void logoutButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void helpButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void SynchronizeData(ActionEvent actionEvent) {
-    }
-
-
-    public void setUpNotificationsGrid(){
+    public void setUpNotificationsGrid()     {
         int notificationCount = 0;
         for(Notification notification : user.getNotifications()){
             GridPane customGrid = createCustomNotificationGridPane(notification.getTitle(), notification.getDescription());
-            if(!notification.getClickAction().equals(   "")){
+            if(notification.getClickAction().equals(   "")){
                 Button button = new Button("View");
+                button.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
+                button.getStyleClass().add("upload");
                 button.setOnAction(event -> {
                     try {
                         AppManager.changeScene(getClass().getResource(notification.getClickAction()),event, user);
@@ -230,9 +188,8 @@ public class MainScreenController implements InitializeData {
                 });
                 notificationsGrid.add(button, 2, notificationCount);
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
-            String formattedDate =  sdf.format(notification.getTimeSent());
-            GridPane senderPane = createSenderInfoGrid(notification.getSender().getProfilePhoto(), notification.getSender().getFirstName(), formattedDate);
+
+            GridPane senderPane = createSenderInfoGrid(notification);
             notificationsGrid.add(senderPane, 0, notificationCount);
             notificationsGrid.add(customGrid, 1, notificationCount);
         }
@@ -288,7 +245,45 @@ public class MainScreenController implements InitializeData {
         return gridPane;
     }
 
-    private GridPane createSenderInfoGrid(ImageView senderPhoto, String senderName, String sentDate){
+    private GridPane createSenderInfoGrid(Notification notification){
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+        String formattedDate =  sdf.format(notification.getTimeSent());
+        ImageView senderPhoto = new ImageView();
+        if(notification.getSender().getMemberId() == 1){
+            if(user.isStyleDark()) {
+                try {
+                    senderPhoto.setImage(new Image(getClass().getResource("/Resources/Images/app_logo.png").toURI().toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    senderPhoto.setImage(new Image(getClass().getResource("/Resources/Images/appLogo_Light.png").toURI().toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if(notification.getSender().getProfilePhoto() == null){
+            if(user.isStyleDark()) {
+                try {
+                    senderPhoto.setImage(new Image(getClass().getResource("/Resources/Images/white/big_profile_white.png").toURI().toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    senderPhoto.setImage(new Image(getClass().getResource("/Resources/Images/white/big_profile_black.png").toURI().toString()));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else{
+            senderPhoto.setImage(notification.getSender().getProfilePhoto().getImage());
+        }
         senderPhoto.setFitHeight(40);
         senderPhoto.setFitWidth(40);
         GridPane gridPane = new GridPane();
@@ -303,10 +298,11 @@ public class MainScreenController implements InitializeData {
         row3.setPercentHeight(20);
         row3.setMinHeight(0);
         gridPane.getRowConstraints().addAll(row1, row2, row3);
-        Label senderNameLabel = new Label(senderName);
-        Label sentDateLabel = new Label(sentDate);
+        Label senderNameLabel = new Label(notification.getSender().getFirstName());
+        Label sentDateLabel = new Label(formattedDate);
         senderNameLabel.setPrefWidth(notificationsEmptyHBox.getWidth()*0.55);
         senderNameLabel.getStyleClass().add("little");
+        sentDateLabel.setPrefWidth(notificationsEmptyHBox.getWidth()*0.55);
         sentDateLabel.getStyleClass().add("little");
         gridPane.add(imageContainer, 0,0);
         gridPane.add(senderNameLabel, 0, 1);
@@ -331,4 +327,5 @@ public class MainScreenController implements InitializeData {
         teamRoleColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("applicantTeamRole"));
         applicantsTable.setItems(appliedTeamsList);
     }
+
 }
