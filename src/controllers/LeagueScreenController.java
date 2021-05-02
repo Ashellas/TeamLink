@@ -8,27 +8,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 
+import java.io.IOException;
 
-public class LeagueScreenController implements InitializeData {
+
+public class LeagueScreenController extends MainTemplateController {
 
     //Variables
-    @FXML
-    private ImageView profilePictureImageView;
+    private final String DARK_STYLE_SHEET = getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm();
+    private final String LIGHT_STYLE_SHEET = getClass().getResource("/stylesheets/LightTheme.css").toExternalForm();
 
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label userRoleLabel;
-
-    @FXML
-    private Label lastSyncLabel;
+    final Clipboard clipboard = Clipboard.getSystemClipboard();
+    final ClipboardContent content = new ClipboardContent();
 
     @FXML
     private TableView<models.Team> standingsTableView;
@@ -171,8 +170,6 @@ public class LeagueScreenController implements InitializeData {
     @FXML
     private TableColumn<TeamMember, Button> addPlayerAddColumn;
 
-    private UserSession user;
-
     private Team teamOfCoach;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
@@ -195,10 +192,7 @@ public class LeagueScreenController implements InitializeData {
 
 
     public void initData(UserSession user){
-        this.user = user;
-        userNameLabel.setText(user.getUser().getFirstName());
-        userRoleLabel.setText(user.getUser().getTeamRole());
-        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        super.initData(user);
 
         setTeamSelectionComboBox();
         setPlayerStatisticsTable( );
@@ -557,36 +551,7 @@ public class LeagueScreenController implements InitializeData {
         playerStatisticsTable.refresh();
     }
 
-    public void toMainScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSquadScreen(ActionEvent actionEvent) {
-    }
-
-    public void toCalendarScreen(ActionEvent actionEvent) {
-    }
-
-    public void toGameplanScreen(ActionEvent actionEvent) {
-    }
-
-    public void toTrainingsScreen(ActionEvent actionEvent) {
-    }
-
+    @Override
     public void toLeagueScreen(ActionEvent actionEvent) {
-    }
-
-    public void toChatScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSettingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void logoutButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void helpButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void SynchronizeData(ActionEvent actionEvent) {
     }
 }

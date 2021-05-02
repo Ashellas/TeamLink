@@ -33,3 +33,7 @@
 .notificationButton:hover {
     -fx-background-color: #343a42;
 }
+
+.cancel .label{
+    -fx-text-fill: #d3d3d3;
+}

@@ -1,18 +1,7 @@
 .text-field {
     -fx-background-color: transparent;
     -fx-border-width: 0 0 2 0;
-    -fx-border-color: lightgrey;
     -fx-font-size: 20px;
-    -fx-text-fill: lightgrey;
-}
-.text-field:focused {
-    -fx-background-color: transparent;
-    -fx-border-width: 0 0 3 0;
-    -fx-border-color:  #a1289f;
 }
 
-.text-field:hover{
-    -fx-font-size: 21px;
-    -fx-border-color: #a1289f;
-    -fx-border-width: 0 0 3 0;
-}
+

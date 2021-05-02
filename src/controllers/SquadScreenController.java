@@ -6,25 +6,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
 
+import java.io.File;
+import java.net.URISyntaxException;
 
-public class SquadScreenController implements InitializeData {
 
-    @FXML
-    private ImageView profilePictureImageView;
-
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label userRoleLabel;
-
-    @FXML
-    private Label lastSyncLabel;
+public class SquadScreenController extends MainTemplateController implements InitializeData {
 
     @FXML
     private ComboBox<String> teamBox;
@@ -72,6 +64,9 @@ public class SquadScreenController implements InitializeData {
     private GridPane lastGameStatsGrid;
 
     @FXML
+    private GridPane squadPane;
+
+    @FXML
     private Label detailsFullNameLabel;
 
     @FXML
@@ -83,7 +78,8 @@ public class SquadScreenController implements InitializeData {
     @FXML
     private Label detailsTeamRoleLabel;
 
-    private UserSession user;
+    @FXML
+    private ImageView playerPhotoView;
 
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
 
@@ -96,13 +92,22 @@ public class SquadScreenController implements InitializeData {
     private String[] basketballGameStats = {"Pts", "Ast","Rbd","Stl","Blk"};
 
     public void initData(UserSession user){
-        this.user = user;
-        userNameLabel.setText(user.getUser().getFirstName());
-        userRoleLabel.setText(user.getUser().getTeamRole());
-        if(user.getUser().getProfilePhoto() != null){
-            profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        super.initData(user);
+
+        if(user.isStyleDark()) {
+            try {
+                darkIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
-        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
+        else {
+            try {
+                lightIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
         for(Team team : user.getUserTeams()){
             teamNames.add(team.getTeamName());
         }
@@ -114,6 +119,8 @@ public class SquadScreenController implements InitializeData {
         setUpDetailsPane();
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
+
+        AppManager.fadeIn(squadPane,500);
     }
 
     private void setUpDetailsPane() {
@@ -165,45 +172,41 @@ public class SquadScreenController implements InitializeData {
     private void showPane(TeamMember member) {
         disablePane.setVisible(true);
         detailsPane.setVisible(true);
+        if(member.getProfilePhoto() != null){
+            playerPhotoView.setImage(member.getProfilePhoto().getImage());
+        }
+        else{
+            if(user.isStyleDark()) {
+                try {
+                    darkIcons();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    lightIcons();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         detailsFullNameLabel.setText(member.getFullName());
         detailsBirthdayLabel.setText(member.getBirthdayString());
         detailsEmailLabel.setText(member.getEmail());
         detailsTeamRoleLabel.setText(member.getTeamRole());
     }
 
-    public void toMainScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSquadScreen(ActionEvent actionEvent) {
-    }
-
-    public void toCalendarScreen(ActionEvent actionEvent) {
-    }
-
-    public void toGameplanScreen(ActionEvent actionEvent) {
-    }
-
-    public void toTrainingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void toLeagueScreen(ActionEvent actionEvent) {
-    }
-
-    public void toChatScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSettingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void logoutButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void helpButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void SynchronizeData(ActionEvent actionEvent) {
-    }
-
     public void closeButtonPushed(ActionEvent event) {
+        disablePane.setVisible(false);
+        detailsPane.setVisible(false);
+    }
+
+    private void darkIcons() throws URISyntaxException {
+        playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/white/big_profile_white.png").toURI().toString()));
+    }
+
+    private void lightIcons() throws URISyntaxException {
+        playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/black/big_profile_black.png").toURI().toString()));
     }
 }

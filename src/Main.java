@@ -37,7 +37,9 @@ public class Main extends Application {
         InitializeData c2 = loader.getController();
         c2.initData(userSession);
         Parent p = loader.getRoot();
-        primaryStage.setScene(new Scene(p));
+        Scene scene = new Scene(p);
+        scene.getStylesheets().add(userSession.getStyleSheet());
+        primaryStage.setScene(scene);
         primaryStage.setTitle("TeamLink");
         primaryStage.setMaximized(true);
         primaryStage.setFullScreen(false);

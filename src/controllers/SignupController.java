@@ -76,6 +76,12 @@ public class SignupController implements InitializeData {
     private ImageView imageView;
 
     @FXML
+    private ImageView helpIcon;
+
+    @FXML
+    private ImageView backIcon;
+
+    @FXML
     private Pane errorPane;
 
     private Connection myCon;
@@ -95,6 +101,13 @@ public class SignupController implements InitializeData {
 
         roleBox.getItems().addAll(roleList);
         sportBranchBox.getItems().addAll(sportBranchList);
+
+        if(userSession.isStyleDark()) {
+            darkThemeIcons();
+        }
+        else {
+            lightThemeIcons();
+        }
     }
     /**
      * Saves the player info into database if teamCode is working and every text field is filled
@@ -232,5 +245,16 @@ public class SignupController implements InitializeData {
         snackbar.setPrefWidth(300.0);
         snackbar.getStylesheets().add("sample/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
+    }
+
+
+    public void darkThemeIcons() {
+        backIcon.setImage(new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+    }
+
+    public void lightThemeIcons() {
+        backIcon.setImage(new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
     }
 }

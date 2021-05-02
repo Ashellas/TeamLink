@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfterSignupScreenController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -115,7 +115,7 @@
                <children>
                   <VBox prefHeight="60.0" prefWidth="150.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="150.0" text="Last Sync" textFill="LIGHTGRAY">
+                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="150.0" styleClass="text" text="Last Sync" textFill="LIGHTGRAY">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -123,7 +123,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="5 mins ago" textFill="LIGHTGRAY">
+                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" styleClass="text" text="5 mins ago" textFill="LIGHTGRAY">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -135,7 +135,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button  mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -177,7 +177,7 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fx:id="notificationImageView" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="notificationIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/white/notification_white.png" />
                                  </image>
@@ -207,7 +207,7 @@
                   </Pane>
                   <VBox prefHeight="60.0" prefWidth="100.0">
                      <children>
-                        <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="User Name" textFill="LIGHTGRAY">
+                        <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="14.0" prefWidth="100.0" styleClass="text" text="User Name" textFill="LIGHTGRAY">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -215,7 +215,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="userRoleLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="Role" textFill="LIGHTGRAY">
+                        <Label fx:id="userRoleLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" styleClass="text" text="Role" textFill="LIGHTGRAY">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -234,7 +234,7 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fx:id="profilePictureImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="profileIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/white/profile_white.png" />
                                  </image>
@@ -357,7 +357,7 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fx:id="CalendarIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="calendarIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/white/calendar_white.png" />
                                  </image>
@@ -507,7 +507,7 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fx:id="settnigsIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="settingsIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/white/settings_white.png" />
                                  </image>
@@ -541,7 +541,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label alignment="CENTER" text="Welcome to TeamLink" textFill="LIGHTGRAY">
+                  <Label alignment="CENTER" styleClass="text" text="Welcome to TeamLink" textFill="LIGHTGRAY">
                      <font>
                         <Font name="Verdana Bold" size="40.0" />
                      </font>
@@ -577,7 +577,7 @@
                                     <Insets bottom="40.0" />
                                  </GridPane.margin>
                               </Pane>
-                              <Label text="Join an Existing Team" textFill="LIGHTGRAY" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BASELINE">
+                              <Label styleClass="text" text="Join an Existing Team" textFill="LIGHTGRAY" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BASELINE">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
@@ -620,7 +620,7 @@
                                  </rowConstraints>
                                  <children>
                                     <Pane maxHeight="2.0" maxWidth="270.0" minHeight="2.0" prefHeight="20.0" prefWidth="550.0" style="-fx-background-color: #a1289f;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BASELINE" />
-                                    <Label text="Create new Team" textFill="LIGHTGRAY" GridPane.halignment="CENTER">
+                                    <Label styleClass="text" text="Create new Team" textFill="LIGHTGRAY" GridPane.halignment="CENTER">
                                        <font>
                                           <Font size="32.0" />
                                        </font>
@@ -655,7 +655,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Team Applications" textFill="LIGHTGRAY" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                              <Label styleClass="text" text="Team Applications" textFill="LIGHTGRAY" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="32.0" />
                                  </font>

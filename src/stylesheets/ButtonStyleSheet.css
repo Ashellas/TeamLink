@@ -7,7 +7,6 @@
 .hyperlink{
     -fx-border-style: None;
     -fx-font-family: Verdana;
-    -fx-text-fill: lightgrey;
     -fx-border-color: transparent;
 }
 
@@ -90,14 +89,14 @@
 }
 
 
-.link:hover{
+.hyperlink:hover{
     -fx-text-fill: #a1289f;
-    -fx-font-size: 13px;
+    -fx-font-size: 15px;
 }
 
-.link:pressed{
+.hyperlink:pressed{
     -fx-text-fill: #771f76;
-    -fx-font-size: 13px;
+    -fx-font-size: 15px;
 }
 
 .menuButton{
@@ -110,7 +109,62 @@
     -fx-font-size: 15px;
 }
 
-.back:hover{
-    -fx-pref-width: 150px;
-    -fx-background-color: #343a42;
+.main {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
 }
+
+.main:hover {
+    -fx-pref-width: 150px;
+}
+
+main.buttonText{
+    -fx-alignment: center;
+}
+
+.main:hover .buttonText{
+    visibility: visible;
+}
+
+.main:hover .buttonImage{
+    -fx-translate-x: 10px
+}
+
+.mainHelp {
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-translate-x: 10px
+}
+
+.settingsEdit {
+    -fx-background-color: #a1289f;
+    -fx-font-size: 15px;
+    -fx-background-radius: 12px;
+}
+
+.settingsEdit:hover {
+    -fx-font-size: 16px;
+    -fx-background-color: #8f258d;
+}
+
+.delete {
+    -fx-background-color: #9f0202;
+    -fx-font-size: 15px;
+}
+
+.delete:hover {
+    -fx-background-color: #730000;
+    -fx-font-size: 16px;
+}
+
+.settingsLogout {
+    -fx-background-color: #d3d3d3;
+    -fx-font-size: 15px;
+    -fx-text-fill: #151617;
+}
+
+.settingsLogout:hover {
+    -fx-background-color: #a7a7a7;
+    -fx-font-size: 16px;
+}
+

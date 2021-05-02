@@ -55,6 +55,9 @@ public class LoginScreenController implements  InitializeData{
     private UserSession userSession;
 
     @FXML
+    private ImageView logo;
+
+    @FXML
     private ImageView helpIcon;
 
     @FXML
@@ -67,6 +70,7 @@ public class LoginScreenController implements  InitializeData{
     @Override
     public void initData(UserSession user) {
         userSession = user;
+
         exec = Executors.newCachedThreadPool(runnable -> {
             Thread t = new Thread(runnable);
             t.setDaemon(true);
@@ -76,6 +80,13 @@ public class LoginScreenController implements  InitializeData{
             createLoading();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if(userSession.isStyleDark()) {
+            darkThemeIcons();
+        }
+        else {
+            lightThemeIcons();
         }
         disablePane.setVisible(false);
     }
@@ -114,9 +125,6 @@ public class LoginScreenController implements  InitializeData{
      */
     public void onHelpButtonPushed(ActionEvent event) throws IOException {
         // TODO
-        makeIconsDark();
-
-        createUserSession(event);
     }
 
 
@@ -133,18 +141,20 @@ public class LoginScreenController implements  InitializeData{
         };
         userCreateTask.setOnFailed(e -> {
             userCreateTask.getException().printStackTrace();
+            // inform user of error...
         });
 
         userCreateTask.setOnSucceeded(e -> {
             if(userSession.getUser() == null) {
-                //displayError("No user found");
+                displayError("No user found");
                 System.out.println("failed");
+                displayError("No user found");
                 disablePane.setVisible(false);
             }
             else {
                 if (userSession.getUserTeams().size() != 0) {
                     try {
-                        AppManager.changeScene(getClass().getResource("/views/LeagueScreen.fxml"), event, userSession);
+                        AppManager.changeScene(getClass().getResource("/views/SquadScreen.fxml"), event, userSession);
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -157,9 +167,10 @@ public class LoginScreenController implements  InitializeData{
                 }
             }
             loading.close();
+            disablePane.setVisible(false);
             System.out.println("gg"); });
 
-                // Task.getValue() gives the value returned from call()...
+        // Task.getValue() gives the value returned from call()...
 
 
         // run the task using a thread from the thread pool:
@@ -174,25 +185,29 @@ public class LoginScreenController implements  InitializeData{
         loading.setScene(new Scene(root));
         disablePane.setOpacity(0.5);
     }
+
     /**
      * Shows the error message
      * @param errorMessage message to show
      */
     private void displayError(String errorMessage){
+        disablePane.setDisable(false);
         System.out.println(errorMessage);
         JFXSnackbar snackbar = new JFXSnackbar(errorPane);
 
         snackbar.setPrefWidth(300.0);
-        snackbar.getStylesheets().add("sample/errorSnackBar.css");
+        snackbar.getStylesheets().add("/stylesheets/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
-
     }
 
-    public void makeIconsDark() {
-        Image blackHelp = new   Image("/Resources/Images/black/help_black.png");
-        helpIcon.setImage(blackHelp);
-        System.out.println("aa");
+    public void darkThemeIcons() {
+        logo.setImage(new Image("/Resources/Images/app_logo.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
     }
 
+    public void lightThemeIcons() {
+        logo.setImage(new Image("/Resources/Images/appLogo_Light.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
+    }
 
 }
