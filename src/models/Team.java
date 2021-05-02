@@ -125,6 +125,10 @@ public class Team {
         return teamStats.getTotalRounds();
     }
 
+    public int getMatchesPlayed(){
+        return teamStats.getGamesPlayed();
+    }
+
     public ObservableList<Player> getPlayers(){
         ArrayList<Player> players = new ArrayList<>();
         for( TeamMember member : teamMembers){

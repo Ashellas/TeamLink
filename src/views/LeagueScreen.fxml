@@ -28,7 +28,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <GridPane style="-fx-background-color: #3e4752;">
+      <GridPane styleClass="topPane">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -39,14 +39,14 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#logoutButtonPushed" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#logoutButtonPushed" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="logoutIcon" fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/logout_white.png" />
                                  </image>
@@ -77,14 +77,14 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="80.0" prefWidth="120.0" styleClass="help" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="80.0" prefWidth="120.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="110.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="helpIcon" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/help_white.png" />
                                  </image>
@@ -116,7 +116,7 @@
                <children>
                   <VBox prefHeight="60.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="150.0" text="Last Sync" textFill="LIGHTGRAY">
+                        <Label alignment="CENTER" prefHeight="14.0" prefWidth="150.0" styleClass="text" text="Last Sync" textFill="LIGHTGRAY">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -124,7 +124,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="5 mins ago" textFill="LIGHTGRAY">
+                        <Label fx:id="lastSyncLabel" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" styleClass="text" text="5 mins ago" textFill="LIGHTGRAY">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -136,14 +136,14 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button fx:id="mainMenuButton22" mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button fx:id="mainMenuButton22" mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="syncIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/sync_white.png" />
                                  </image>
@@ -171,14 +171,14 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fx:id="notificationImageView" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="notificationIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/notification_white.png" />
                                  </image>
@@ -208,7 +208,7 @@
                   </Pane>
                   <VBox prefHeight="60.0" prefWidth="100.0">
                      <children>
-                        <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="14.0" prefWidth="100.0" text="User Name" textFill="LIGHTGRAY">
+                        <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="14.0" prefWidth="100.0" styleClass="text" text="User Name" textFill="LIGHTGRAY">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -216,7 +216,7 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label fx:id="userRoleLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" text="Role" textFill="LIGHTGRAY">
+                        <Label fx:id="userRoleLabel" alignment="CENTER" prefHeight="30.0" prefWidth="106.0" styleClass="text" text="Role" textFill="LIGHTGRAY">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -228,14 +228,14 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fx:id="profilePictureImageView" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="profileIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/profile_white.png" />
                                  </image>
@@ -265,7 +265,7 @@
             </HBox>
          </children>
       </GridPane>
-      <GridPane alignment="CENTER" GridPane.rowIndex="1">
+      <GridPane alignment="CENTER" styleClass="mainPane" GridPane.rowIndex="1">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" percentWidth="40.0" />
@@ -392,14 +392,14 @@
                   <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="1">
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="1">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="homeIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/home_white.png" />
                                  </image>
@@ -422,14 +422,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toSquadScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="2">
+                  <Button mnemonicParsing="false" onAction="#toSquadScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="2">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="squadIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/squad_white.png" />
                                  </image>
@@ -452,14 +452,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toCalendarScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="3">
+                  <Button mnemonicParsing="false" onAction="#toCalendarScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="3">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="calendarIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/calendar_white.png" />
                                  </image>
@@ -482,14 +482,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toGameplanScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="4">
+                  <Button mnemonicParsing="false" onAction="#toGameplanScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="4">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="gameplanIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/gameplan_white.png" />
                                  </image>
@@ -512,14 +512,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toTrainingsScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="5">
+                  <Button mnemonicParsing="false" onAction="#toTrainingsScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="5">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="trainingIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/training_white.png" />
                                  </image>
@@ -542,14 +542,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toLeagueScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="6">
+                  <Button mnemonicParsing="false" onAction="#toLeagueScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="6">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="leagueIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/league_white.png" />
                                  </image>
@@ -572,14 +572,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="7">
+                  <Button mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="7">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="chatIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/chat_white.png" />
                                  </image>
@@ -602,14 +602,14 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toSettingsScreen" prefHeight="89.0" prefWidth="40.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="8">
+                  <Button mnemonicParsing="false" onAction="#toSettingsScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.rowIndex="8">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="70.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="52.0" prefWidth="0.0">
                            <children>
-                              <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                              <ImageView fx:id="settingsIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
                                     <Image url="@../Resources/Images/settings_white.png" />
                                  </image>
@@ -846,7 +846,7 @@
             <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#onCloseDetailsButtonClicked" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.columnIndex="2">
+            <Button mnemonicParsing="false" onAction="#onCloseDetailsButtonClicked" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.columnIndex="2">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
@@ -899,7 +899,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="257.0" text="Match Details" textFill="LIGHTGRAY" GridPane.columnIndex="1">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="257.0" styleClass="text" text="Match Details" textFill="LIGHTGRAY" GridPane.columnIndex="1">
                            <font>
                               <Font size="25.0" />
                            </font>
@@ -907,34 +907,34 @@
                               <Line endX="100.0" startX="-100.0" stroke="#a1289f" strokeWidth="2.0" translateY="14.0" />
                            </graphic>
                         </Label>
-                        <Label fx:id="homeTeamLabel" alignment="CENTER" prefHeight="17.0" prefWidth="293.0" text="Home Team" textFill="LIGHTGRAY" GridPane.rowIndex="1">
+                        <Label fx:id="homeTeamLabel" alignment="CENTER" prefHeight="17.0" prefWidth="293.0" styleClass="text" text="Home Team" textFill="LIGHTGRAY" GridPane.rowIndex="1">
                            <font>
                               <Font size="32.0" />
                            </font>
                         </Label>
-                        <Label fx:id="awayTeamLabel" alignment="CENTER" prefHeight="46.0" prefWidth="258.0" text="Away Team" textFill="LIGHTGRAY" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Label fx:id="awayTeamLabel" alignment="CENTER" prefHeight="46.0" prefWidth="258.0" styleClass="text" text="Away Team" textFill="LIGHTGRAY" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font size="32.0" />
                            </font>
                         </Label>
-                        <Label fx:id="scoreLabel" alignment="CENTER" prefHeight="17.0" prefWidth="316.0" text="Score" textFill="LIGHTGRAY" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label fx:id="scoreLabel" alignment="CENTER" prefHeight="17.0" prefWidth="316.0" styleClass="text" text="Score" textFill="LIGHTGRAY" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="28.0" />
                            </font>
                         </Label>
-                        <Label fx:id="dateLabel" alignment="CENTER" prefHeight="32.0" prefWidth="276.0" text="Date" textFill="LIGHTGRAY" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label fx:id="dateLabel" alignment="CENTER" prefHeight="32.0" prefWidth="276.0" styleClass="text" text="Date" textFill="LIGHTGRAY" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="22.0" />
                            </font>
                         </Label>
                      </children>
                   </GridPane>
-                  <Label fx:id="gameLocationLabel" text="Game Location:" textFill="LIGHTGRAY" GridPane.rowIndex="1">
+                  <Label fx:id="gameLocationLabel" styleClass="text" text="Game Location:" textFill="LIGHTGRAY" GridPane.rowIndex="1">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="gameLocationLinkLabel" text="Link: " textFill="LIGHTGRAY" GridPane.rowIndex="2">
+                  <Label fx:id="gameLocationLinkLabel" styleClass="text" text="Link: " textFill="LIGHTGRAY" GridPane.rowIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -956,7 +956,7 @@
                   <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="597.0" text="Player Statistics" textFill="LIGHTGRAY">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="597.0" styleClass="text" text="Player Statistics" textFill="LIGHTGRAY">
                      <font>
                         <Font size="31.0" />
                      </font>
@@ -975,7 +975,7 @@
                         <TableColumn fx:id="playerStatisticsEnterStatisticsColumn" prefWidth="73.3" text="Enter" />
                     </columns>
                   </TableView>
-                  <Button mnemonicParsing="false" onAction="#onClickAddPlayerButton" prefHeight="38.0" prefWidth="344.0" stylesheets="@../stylesheets/Main.css" translateX="10.0" GridPane.rowIndex="2">
+                  <Button mnemonicParsing="false" onAction="#onClickAddPlayerButton" prefHeight="38.0" prefWidth="344.0" styleClass="main" stylesheets="@../stylesheets/Main.css" translateX="10.0" GridPane.rowIndex="2">
                      <graphic>
                         <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="326.0">
                            <children>
@@ -1012,7 +1012,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="416.0" text="Add Players" textFill="LIGHTGRAY" translateX="-20.0" GridPane.columnIndex="1">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="416.0" styleClass="text" text="Add Players" textFill="LIGHTGRAY" translateX="-20.0" GridPane.columnIndex="1">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -1020,7 +1020,7 @@
                         <Line endX="100.0" startX="-75.0" strokeWidth="2.0" translateY="13.0" />
                      </graphic>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#onCloseAddPlayersButtonClicked" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#onCloseAddPlayersButtonClicked" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/Main.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
