@@ -160,6 +160,9 @@ public class LeagueScreenController extends MainTemplateController {
     private Pane blackenedPane;
 
     @FXML
+    private Pane blackenedPane1;
+
+    @FXML
     private GridPane addPlayersGridPane;
 
     @FXML
@@ -554,12 +557,14 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void onClickAddPlayerButton( ActionEvent event){
         addPlayersGridPane.setVisible(true);
+        blackenedPane1.setVisible(true);
         setAddPlayersComboBox();
         setAddPlayerTable();
     }
 
     public void onCloseAddPlayersButtonClicked( ActionEvent event){
         addPlayersGridPane.setVisible(false);
+        blackenedPane1.setVisible(false);
     }
 
     public void onAddPlayersComboBoxSelection( ActionEvent event){
