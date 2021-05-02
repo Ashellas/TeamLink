@@ -646,12 +646,12 @@
                            <children>
                               <TableView fx:id="standingsTableView" maxWidth="500.0" stylesheets="@../stylesheets/tableViewStyleSheet.css">
                                 <columns>
-                                  <TableColumn fx:id="teamsColumnStandings" minWidth="-1.0" prefWidth="96.0" text="Teams" />
-                                    <TableColumn fx:id="matchesPlayedColumnStandings" prefWidth="96.0" text="MP" />
-                                  <TableColumn fx:id="winColumnStandings" prefWidth="96.0" text="W" />
-                                    <TableColumn fx:id="drawColumnStandings" prefWidth="9965.0" text="D" />
-                                    <TableColumn fx:id="losesColumnStandings" prefWidth="96.0" text="L" />
-                                    <TableColumn fx:id="pointsColumnStandings" prefWidth="96.0" text="P" />
+                                  <TableColumn fx:id="teamsColumnStandings" minWidth="-1.0" prefWidth="84.0" text="Teams" />
+                                    <TableColumn fx:id="matchesPlayedColumnStandings" prefWidth="83.0" text="MP" />
+                                  <TableColumn fx:id="winColumnStandings" prefWidth="83.0" text="W" />
+                                    <TableColumn fx:id="drawColumnStandings" prefWidth="83.0" text="D" />
+                                    <TableColumn fx:id="losesColumnStandings" prefWidth="83.0" text="L" />
+                                    <TableColumn fx:id="pointsColumnStandings" prefWidth="83.0" text="P" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
