@@ -179,6 +179,7 @@ public class DatabaseManager {
 
                 System.out.println( System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
 
+                /*
                 File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
                 if (!teamLinkDirectory.exists()){
                     teamLinkDirectory.mkdir();
@@ -192,7 +193,7 @@ public class DatabaseManager {
                 while (input.read(buffer) > 0){
                     output.write(buffer);
                 }
-
+                */
                 gameplans.add(new Gameplan(gameplanId, title, team, version ));
             }
             teamGameplans.put(team, gameplans);
@@ -228,7 +229,7 @@ public class DatabaseManager {
             }
 
             Notification notification = new Notification(id, title, message, new TeamMember(senderId, senderFirstName, senderLastName, profilePicture)
-                    , user ,clickAction, timeSent, isUnread, null);
+                    , user ,clickAction, timeSent, isUnread);
             notifications.add(notification);
         }
         return notifications;
@@ -272,6 +273,7 @@ public class DatabaseManager {
         }
         return standings;
     }
+
 
     private static HashMap<Team, ObservableList<Game>> createGamesOfTheCurrentRound(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings) throws SQLException {
         if(userTeams.isEmpty()){
@@ -592,10 +594,17 @@ public class DatabaseManager {
                 prepStmt.setInt(2, teamId);
                 row = prepStmt.executeUpdate();
                 ArrayList<TeamMember> teamMembers = new ArrayList<>();
-                ArrayList<Team> userTeams = new ArrayList<>();
+
+                ArrayList<Team> userTeams;
+                if(user.getUserTeams().size() == 0){
+                    userTeams = new ArrayList<>();
+                }
+                else{
+                    userTeams = user.getUserTeams();
+                }
                 teamMembers.add(user.getUser());
                 if(teamLogo != null){
-                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.getAbsolutePath()), null, teamMembers));
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.toURI().toString()), null, teamMembers));
                 }
                 else{
                     userTeams.add(new Team(teamId, leagueTeamId, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers));
@@ -643,6 +652,7 @@ public class DatabaseManager {
 
     //TODO month + next 3 days
     private static ArrayList<CalendarEvent> createCalendarEvents(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) {
+
         return null;
     }
 }

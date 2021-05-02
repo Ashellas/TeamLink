@@ -186,3 +186,9 @@ main.buttonText{
 .viewButton:pressed{
     -fx-background-color: #025B77;
 }
+
+
+.disabledMain {
+    -fx-background-color: transparent;
+}
+

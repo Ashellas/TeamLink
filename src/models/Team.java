@@ -167,4 +167,20 @@ public class Team {
             return false;
         }
     }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public void setAbbrevation(String abbrevation) {
+        this.abbrevation = abbrevation;
+    }
+
+    public void setCity(String city) { this.city = city; }
+
+    public void setLeagueName(String leagueName) { this.leagueName = leagueName; }
+
+    public void setLeagueId(int leagueId) { this.leagueId = leagueId; }
+
+    public void setTeamLogo(ImageView teamLogo) { this.teamLogo = teamLogo; }
 }

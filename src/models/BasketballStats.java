@@ -1,5 +1,7 @@
 package models;
 
+import java.util.HashMap;
+
 public class BasketballStats extends GameStats{
     private int points;
     private int assists;
@@ -7,8 +9,8 @@ public class BasketballStats extends GameStats{
     private int steals;
     private int blocks;
 
-    public BasketballStats(int overallRating, int points, int assists, int rebounds, int steals, int blocks) {
-        super(overallRating);
+    public BasketballStats(TeamMember player, int points, int assists, int rebounds, int steals, int blocks) {
+        super(player);
         this.points = points;
         this.assists = assists;
         this.rebounds = rebounds;
@@ -16,8 +18,10 @@ public class BasketballStats extends GameStats{
         this.blocks = blocks;
     }
 
+
     public int getPoints() {
         return points;
+
     }
 
     public int getAssists() {

@@ -77,11 +77,12 @@ public class MainScreenController extends MainTemplateController{
         //profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
         //lastSyncLabel.setText(user.getLastSync().toString()); //TODO get timeDiff in background maybe
 
+        /*
         for(int i = 0; i < 4; i ++){
             notifications.add(new Notification(i, "Title" + i, "Description" + i, null, null, "/views/SettingsScreen.fxml",new Date(),false,null));
         }
         notifications.add(new Notification(0, "Title", "Description", null, null, "/views/LoginScreen.fxml",new Date(),false,null));
-
+*/
         //sets up the gridpane after scene establishes
         Platform.runLater(() -> {
             setUpNotificationsGrid();
@@ -222,7 +223,7 @@ public class MainScreenController extends MainTemplateController{
     }
 
     private GridPane createCustomNotificationGridPane(String notTitle, String notDescription){
-        GridPane gridPane = new GridPane();
+        GridPane gridPane = new GridPane()  ;
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(10);
         row1.setMinHeight(0);

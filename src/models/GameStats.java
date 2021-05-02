@@ -1,13 +1,13 @@
 package models;
 
 public abstract class GameStats {
-    private int overallRating;
+    private TeamMember player;
 
-    public GameStats(int overallRating) {
-        this.overallRating = overallRating;
+    public GameStats(TeamMember player) {
+        this.player = player;
     }
 
-    public int getOverallRating() {
-        return overallRating;
+    public String getPlayerName(){
+        return player.getFullName();
     }
 }
