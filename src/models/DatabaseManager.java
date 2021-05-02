@@ -296,10 +296,10 @@ public class DatabaseManager {
                 Team homeTeam = null;
                 Team awayTeam = null;
                 for (Team leagueTeam : standings.get(team)){
-                    if(leagueTeam.getTeamId() == homeTeamId){
+                    if(leagueTeam.getDatabaseTeamId() == homeTeamId){
                         homeTeam = leagueTeam;
                     }
-                    if(leagueTeam.getTeamId() == awayTeamId){
+                    if(leagueTeam.getDatabaseTeamId() == awayTeamId){
                         awayTeam = leagueTeam;
                     }
                     System.out.println(leagueTeam.getTeamId());

@@ -18,6 +18,7 @@ import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 public class LeagueScreenController extends MainTemplateController {
@@ -170,6 +171,21 @@ public class LeagueScreenController extends MainTemplateController {
     @FXML
     private TableColumn<TeamMember, Button> addPlayerAddColumn;
 
+    @FXML
+    private ImageView closeDetailsButtonImage;
+
+    @FXML
+    private ImageView addPlayerButtonImage;
+
+    @FXML
+    private ImageView closeAddPlayerButtonImage;
+
+    @FXML
+    private ImageView leftButtonFixtureImage;
+
+    @FXML
+    private ImageView rightButtonFixtureImage;
+
     private Team teamOfCoach;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
@@ -193,6 +209,21 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void initData(UserSession user){
         super.initData(user);
+
+        if(user.isStyleDark()) {
+            try {
+                darkIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                lightIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
 
         setTeamSelectionComboBox();
         setPlayerStatisticsTable( );
@@ -376,7 +407,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         for( int arrayIndex = 0; arrayIndex < teamOfCoach.getTeamMembers().size(); arrayIndex++){
             if( !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Head Coach") &&
-                    !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Assistant Coach")){
+                !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Assistant Coach")){
                 userSelectedTeamMembers.add( teamOfCoach.getTeamMembers().get( arrayIndex));
             }
         }
@@ -506,9 +537,9 @@ public class LeagueScreenController extends MainTemplateController {
         gameLocationLinkLabel.setText( "Link: " + gameClicked.getGameLocationLink());
 
         if( ( user.getUser().getTeamRole().equals("Head Coach") ||
-                user.getUser().getTeamRole().equals("Assistant Coach") ) &&
-                ( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ||
-                        userSelectedTeam.get(0).equals( gameClicked.getAwayTeam()) ))
+              user.getUser().getTeamRole().equals("Assistant Coach") ) &&
+              ( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ||
+                userSelectedTeam.get(0).equals( gameClicked.getAwayTeam()) ))
         {
             if( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ){
                 teamOfCoach = gameClicked.getHomeTeam();
@@ -537,7 +568,7 @@ public class LeagueScreenController extends MainTemplateController {
         userSelectedTeamMembersAtPlayersAddComboBox.clear();
         for( int arrayIndex = 0; arrayIndex < userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().size(); arrayIndex++){
             if( !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Head Coach")
-                    && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
+                && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
             {
                 userSelectedTeamMembersAtPlayersAddComboBox.add( userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex));
             }
@@ -553,5 +584,21 @@ public class LeagueScreenController extends MainTemplateController {
 
     @Override
     public void toLeagueScreen(ActionEvent actionEvent) {
+    }
+
+    private void darkIcons() throws URISyntaxException {
+        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/close_white.png").toURI().toString()));
+        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/close_white.png").toURI().toString()));
+        addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/squad_white.png").toURI().toString()));
+        leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
+        rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
+    }
+
+    private void lightIcons() throws URISyntaxException {
+        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/close_black.png").toURI().toString()));
+        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/close_black.png").toURI().toString()));
+        addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/squad_black.png").toURI().toString()));
+        leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
+        rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
     }
 }

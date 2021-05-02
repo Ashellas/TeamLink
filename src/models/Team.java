@@ -46,8 +46,8 @@ public class Team {
     }
 
     //For teams which do not belong to user
-    public Team(int teamId, String teamName, String abbrevation, TeamStats teamStats) {
-        this.teamId = teamId;
+    public Team(int databaseTeamId, String teamName, String abbrevation, TeamStats teamStats) {
+        this.databaseTeamId = databaseTeamId;
         this.teamName = teamName;
         this.abbrevation = abbrevation;
         this.teamStats = teamStats;
@@ -119,6 +119,10 @@ public class Team {
 
     public int getPlacement(){
         return teamStats.getPlacement();
+    }
+
+    public int getMatchesPlayed(){
+        return teamStats.getGamesPlayed();
     }
 
     public int getMatchesLeft(){
