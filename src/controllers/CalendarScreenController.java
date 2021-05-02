@@ -17,31 +17,19 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class CalendarScreenController implements InitializeData{
+public class CalendarScreenController extends MainTemplateController {
 
-    @FXML
-    private ImageView profilePictureImageView;
-
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label userRoleLabel;
-
-    @FXML
-    private Label lastSyncLabel;
 
     @FXML
     private Label monthName;
-
-
     @FXML
     private GridPane calendar;
+    @FXML
+    private GridPane calendarPane;
 
     @FXML
-    private ChoiceBox<Team> teamChoiceBox;
+    private ComboBox<Team> teamSelectionCombo;
 
-    private UserSession user;
     private int realDay;
     private int realMonth;
     private int realYear;
@@ -58,18 +46,15 @@ public class CalendarScreenController implements InitializeData{
     private Team selectedTeam;
 
     public void initData(UserSession userSession){
-        this.user = userSession;
-        //userNameLabel.setText(user.getUser().getFirstName());
-        //userRoleLabel.setText(user.getUser().getTeamRole());
-        //profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        super.initData(userSession);
         Team allTeams = new Team(99999,"all Teams",null,null);
-        teamChoiceBox.getItems().add(allTeams);
+        teamSelectionCombo.getItems().add(allTeams);
         teams = user.getUserTeams();
         for (Team t: teams) {
-            teamChoiceBox.getItems().add(t);
+            teamSelectionCombo.getItems().add(t);
         }
         selectedTeam = allTeams;
-        teamChoiceBox.setValue(selectedTeam);
+        teamSelectionCombo.setValue(selectedTeam);
 
 
         GregorianCalendar cal = new GregorianCalendar(); //Create calendar
@@ -96,6 +81,7 @@ public class CalendarScreenController implements InitializeData{
         }
         events.add(e2);
         createCalendar(firstDay, maxDay, events);
+        AppManager.fadeIn(calendarPane,500);
     }
 
     public void createCalendar (int firstDay, int maxDay, ArrayList<CalendarEvent> events) {
@@ -105,7 +91,7 @@ public class CalendarScreenController implements InitializeData{
             Label l = labels.get(i + firstDay - 2);
             l.setText(i + "");
             for (CalendarEvent ce: events) {
-                if (ce.getDescription() == selectedTeam.getAbbrevation() || selectedTeam.getTeamName() == "all Teams") {
+                if (ce.getDescription().equals(selectedTeam.getAbbrevation()) || selectedTeam.getTeamName().equals("all Teams")) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(ce.getEventDateTime());
                     if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
@@ -185,43 +171,10 @@ public class CalendarScreenController implements InitializeData{
         createCalendar(firstDay, maxDay, events);
     }
 
-    public void changeButtonClicked(ActionEvent actionEvent) {
-        selectedTeam = teamChoiceBox.getValue();
+    public void teamSelection(ActionEvent actionEvent) {
+        selectedTeam = (Team) teamSelectionCombo.getValue();
         clearCalendar();
         createCalendar(firstDay, maxDay, events);
     }
 
-
-    public void toMainScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSquadScreen(ActionEvent actionEvent) {
-    }
-
-    public void toCalendarScreen(ActionEvent actionEvent) {
-    }
-
-    public void toGameplanScreen(ActionEvent actionEvent) {
-    }
-
-    public void toTrainingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void toLeagueScreen(ActionEvent actionEvent) {
-    }
-
-    public void toChatScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSettingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void logoutButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void helpButtonPushed(ActionEvent actionEvent) {
-    }
-
-    public void SynchronizeData(ActionEvent actionEvent) {
-    }
 }
