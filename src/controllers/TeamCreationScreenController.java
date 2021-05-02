@@ -84,8 +84,6 @@ public class TeamCreationScreenController implements InitializeData {
     @Override
     public void initData(UserSession userSession) {
         user = userSession;
-        cityBox.getItems().addAll(cityList);
-        ageGroupBox.getItems().addAll(ageGroupList);
 
         if(userSession.isStyleDark()) {
             darkThemeIcons();
@@ -93,6 +91,10 @@ public class TeamCreationScreenController implements InitializeData {
         else {
             lightThemeIcons();
         }
+
+        cityBox.getItems().addAll(cityList);
+        ageGroupBox.getItems().addAll(ageGroupList);
+
     }
 
 
@@ -144,9 +146,6 @@ public class TeamCreationScreenController implements InitializeData {
             }
         }
     }
-
-
-
 
     /**
      * Changes scene to the after signup screen

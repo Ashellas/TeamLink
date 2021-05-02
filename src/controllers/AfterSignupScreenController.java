@@ -32,10 +32,7 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 /**
- * @version 27.04.2021
  * Help action and error pane is missing
- * Does not connect to database
- * Team constructor problem at line 203
  */
 public class AfterSignupScreenController extends MainTemplateController implements InitializeData {
 
@@ -63,11 +60,10 @@ public class AfterSignupScreenController extends MainTemplateController implemen
     @FXML
     private GridPane createTeamPane;
 
-    private UserSession user;
-
     @Override
     public void initData(UserSession userSession) {
         super.initData(userSession);
+
         if(user.isStyleDark()) {
             //darkIcons();
         }
@@ -115,6 +111,7 @@ public class AfterSignupScreenController extends MainTemplateController implemen
      * @throws IOException
      */
     public void createTeamButtonPushed(ActionEvent event) throws IOException {
+        System.out.println(user.getUser().getFirstName());
         AppManager.changeScene(getClass().getResource("/views/TeamCreationScreen.fxml"),event,user);
     }
 

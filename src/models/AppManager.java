@@ -20,6 +20,7 @@ public class AppManager {
         loader.setLocation(fxmlfile);
         loader.load();
         InitializeData c2 = loader.getController();
+        System.out.println(userSession.getUser().getFirstName());
         c2.initData(userSession);
         Parent p = loader.getRoot();
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
