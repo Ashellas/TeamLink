@@ -16,7 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 
