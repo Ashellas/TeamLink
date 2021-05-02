@@ -554,4 +554,8 @@ public class LeagueScreenController extends MainTemplateController {
     @Override
     public void toLeagueScreen(ActionEvent actionEvent) {
     }
+
+    private void darkIcons(){
+        
+    }
 }
