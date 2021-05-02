@@ -180,7 +180,7 @@ public class MainScreenController extends MainTemplateController{
             if(notification.getClickAction().equals(   "")){
                 Button button = new Button("View");
                 button.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
-                button.getStyleClass().add("upload");
+                button.getStyleClass().add("viewButton");
                 button.setOnAction(event -> {
                     try {
                         AppManager.changeScene(getClass().getResource(notification.getClickAction()),event, user);
