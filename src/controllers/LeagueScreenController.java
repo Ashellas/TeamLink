@@ -18,6 +18,7 @@ import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 
 public class LeagueScreenController extends MainTemplateController {
@@ -170,6 +171,21 @@ public class LeagueScreenController extends MainTemplateController {
     @FXML
     private TableColumn<TeamMember, Button> addPlayerAddColumn;
 
+    @FXML
+    private ImageView closeDetailsButtonImage;
+
+    @FXML
+    private ImageView addPlayerButtonImage;
+
+    @FXML
+    private ImageView closeAddPlayerButtonImage;
+
+    @FXML
+    private ImageView leftButtonFixtureImage;
+
+    @FXML
+    private ImageView rightButtonFixtureImage;
+
     private Team teamOfCoach;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
@@ -193,6 +209,21 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void initData(UserSession user){
         super.initData(user);
+
+        if(user.isStyleDark()) {
+            try {
+                darkIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                lightIcons();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
 
         setTeamSelectionComboBox();
         setPlayerStatisticsTable( );
@@ -555,7 +586,19 @@ public class LeagueScreenController extends MainTemplateController {
     public void toLeagueScreen(ActionEvent actionEvent) {
     }
 
-    private void darkIcons(){
-        
+    private void darkIcons() throws URISyntaxException {
+        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/close_white.png").toURI().toString()));
+        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/close_white.png").toURI().toString()));
+        addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/squad_white.png").toURI().toString()));
+        leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
+        rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
+    }
+
+    private void lightIcons() throws URISyntaxException {
+        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/close_black.png").toURI().toString()));
+        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/close_black.png").toURI().toString()));
+        addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/squad_black.png").toURI().toString()));
+        leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
+        rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
     }
 }
