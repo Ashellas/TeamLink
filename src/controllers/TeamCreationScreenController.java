@@ -92,7 +92,7 @@ public class TeamCreationScreenController implements InitializeData {
             leagueBox.getItems().clear();
             ObservableList<String> leagueList = DatabaseManager.getLeagues(user, cityBox.getValue().toString(), ageGroupBox.getValue().toString());
             leagueBox.getSelectionModel().clearSelection();
-            leagueBox .setButtonCell(new ListCell<String>() {
+            leagueBox.setButtonCell(new ListCell<String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty) ;

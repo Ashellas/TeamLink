@@ -80,7 +80,9 @@ public class LeagueScreenController implements InitializeData {
         this.user = user;
         userNameLabel.setText(user.getUser().getFirstName());
         userRoleLabel.setText(user.getUser().getTeamRole());
-        profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        if(user.getUser().getProfilePhoto() != null){
+            profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        }
 
         setStandingsTable(user);
 

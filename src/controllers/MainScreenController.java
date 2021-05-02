@@ -95,7 +95,9 @@ public class MainScreenController extends MainTemplateController{
         disablePane.setVisible(false);
         applicantsPane.setVisible(false);
         setUpApplicantsTable();
-        System.out.println(user.getStandings(user.getUserTeams().get(0)).indexOf(user.getUserTeams().get(0)));
+        for(Team team : user.getStandings(user.getUserTeams().get(0))){
+            System.out.println(team.getTeamName());
+        }
     }
 
     private void setUpCalendarGrid() throws IOException {
@@ -136,8 +138,8 @@ public class MainScreenController extends MainTemplateController{
         else{
             firstTeamPlacement = userTeamplacement - 2;
         }
-
-        for(int i = firstTeamPlacement - 1; i < firstTeamPlacement + 3; i++){
+//int i = firstTeamPlacement - 1; i < firstTeamPlacement + 3; i++
+        for(int i = 2; i < 7; i++){
 
             Label placementLabel = new Label("" + (i + 1) + ".");
             placementLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
@@ -158,12 +160,12 @@ public class MainScreenController extends MainTemplateController{
             pointsLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
             pointsLabel.getStyleClass().add("standings");
 
-            standingsGrid.add(placementLabel, 0, i + 1);
-            standingsGrid.add(teamNameLabel, 1, i + 1);
-            standingsGrid.add(gamesPlayedLabel, 2, i + 1);
-            standingsGrid.add(gamesWonLabel, 3, i + 1);
-            standingsGrid.add(gamesLostLabel, 4, i + 1);
-            standingsGrid.add(pointsLabel, 5, i + 1);
+            standingsGrid.add(placementLabel, 0, i -1);
+            standingsGrid.add(teamNameLabel, 1, i - 1);
+            standingsGrid.add(gamesPlayedLabel, 2, i - 1);
+            standingsGrid.add(gamesWonLabel, 3, i - 1);
+            standingsGrid.add(gamesLostLabel, 4, i - 1);
+            standingsGrid.add(pointsLabel, 5, i - 1);
 
         }
     }

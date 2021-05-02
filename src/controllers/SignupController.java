@@ -88,7 +88,7 @@ public class SignupController implements InitializeData {
 
     private ObservableList<String> roleList = FXCollections.observableArrayList("Head Coach", "Assistant Coach", "Player");
 
-    private ObservableList<String> sportBranchList = FXCollections.observableArrayList("Football", "Basketball", "Volleyball");
+    private ObservableList<String> sportBranchList = FXCollections.observableArrayList("Football", "Basketball");
 
     private File selectedFile;
 
