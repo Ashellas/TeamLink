@@ -129,16 +129,6 @@ public class Team {
         return teamStats.getTotalRounds();
     }
 
-    public ObservableList<Player> getPlayers(){
-        ArrayList<Player> players = new ArrayList<>();
-        for( TeamMember member : teamMembers){
-            if(member.getTeamRole().equals("Player")){
-                players.add((Player) member);
-            }
-        }
-        return FXCollections.observableArrayList(players);
-    }
-
     public ObservableList<TeamMember> getMembersWithRole(String teamRole){
         ArrayList<TeamMember> memberList = new ArrayList<>();
         for( TeamMember member : teamMembers){
@@ -183,4 +173,5 @@ public class Team {
     public void setLeagueId(int leagueId) { this.leagueId = leagueId; }
 
     public void setTeamLogo(ImageView teamLogo) { this.teamLogo = teamLogo; }
+
 }

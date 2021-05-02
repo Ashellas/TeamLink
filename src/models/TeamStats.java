@@ -28,7 +28,8 @@ public class TeamStats{
         this.gamesPlayed = gamesPlayed;
         this.gamesWon = gamesWon;
         this.gamesLost = gamesLost;
-        this.gamesDrawn = gamesDrawn;        this.placement = placement;
+        this.gamesDrawn = gamesDrawn;
+        this.placement = placement;
         this.points = points;
     }
 
@@ -71,4 +72,5 @@ public class TeamStats{
     public TrainingPerformanceReport getTrainingPerformanceReport() {
         return trainingPerformanceReport;
     }
+
 }

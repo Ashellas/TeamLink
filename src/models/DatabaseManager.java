@@ -33,7 +33,7 @@ public class DatabaseManager {
         System.out.println("teams found");
         HashMap<Team, ObservableList<Team>> standings = createStandings(databaseConnection, userTeams);
         System.out.println("standings found");
-        HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = createGamesOfTheCurrentRound(databaseConnection, userTeams, standings);
+        HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = createCurrentRoundGames(databaseConnection, userTeams, standings, 0);
         System.out.println("games found");
         ArrayList<Notification> notifications = createNotifications(databaseConnection, user,0);
         System.out.println("notifications found");
@@ -177,8 +177,6 @@ public class DatabaseManager {
                 String title = resultSet.getString("title");
                 int version = resultSet.getInt("version");
 
-                System.out.println( System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
-
                 /*
                 File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
                 if (!teamLinkDirectory.exists()){
@@ -274,8 +272,41 @@ public class DatabaseManager {
         return standings;
     }
 
+    public static ObservableList<Game> getGames(Connection databaseConnection, ObservableList<Team> leagueTeams, int roundNo, int leagueId ) throws SQLException {
+        ObservableList<Game> games = FXCollections.observableArrayList();
 
-    private static HashMap<Team, ObservableList<Game>> createGamesOfTheCurrentRound(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
+                "on league_games.league_id = l.league_id and league_games.round_no = ? and l.league_id = ? ");
+        prepStmt.setInt(1, roundNo);
+        prepStmt.setInt(2, leagueId);
+        ResultSet gamesResultSet = prepStmt.executeQuery();
+        while (gamesResultSet.next()){
+            int gameId = gamesResultSet.getInt("game_id");
+            Date gameDate = gamesResultSet.getDate("game_date_time");
+            String gameLocationName = gamesResultSet.getString("game_location_name");
+            String gameLocationLink = gamesResultSet.getString("game_location_link");
+            String result = gamesResultSet.getString("final_score");
+            int homeTeamId = gamesResultSet.getInt("home_team_id");
+            int awayTeamId = gamesResultSet.getInt("away_team_id");
+            Team homeTeam = null;
+            Team awayTeam = null;
+            for (Team leagueTeam : leagueTeams){
+                if(leagueTeam.getDatabaseTeamId() == homeTeamId){
+                    homeTeam = leagueTeam;
+                }
+                if(leagueTeam.getDatabaseTeamId() == awayTeamId){
+                    awayTeam = leagueTeam;
+                }
+                System.out.println(leagueTeam.getTeamId());
+            }
+            Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result);
+            games.add(game);
+        }
+
+        return games;
+    }
+
+    private static HashMap<Team, ObservableList<Game>> createCurrentRoundGames(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings, int diffFromCurrent ) throws SQLException {
         if(userTeams.isEmpty()){
             return null;
         }
@@ -283,8 +314,9 @@ public class DatabaseManager {
         for (Team team : userTeams){
             ObservableList<Game> games = FXCollections.observableArrayList();
             PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
-                    "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? ");
-            prepStmt.setInt(1, team.getLeagueId());
+                    "on league_games.league_id = l.league_id and league_games.round_no = (l.current_round - ? )and l.league_id = ? ");
+            prepStmt.setInt(1, diffFromCurrent);
+            prepStmt.setInt(2, team.getLeagueId());
             ResultSet gamesResultSet = prepStmt.executeQuery();
             while (gamesResultSet.next()){
                 int gameId = gamesResultSet.getInt("game_id");
@@ -314,6 +346,9 @@ public class DatabaseManager {
         return gamesOfTheCurrentRound;
     }
 
+
+
+
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
         PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * FROM team_members " +
                 " where password = MD5(?) AND email = ?");
@@ -340,13 +375,7 @@ public class DatabaseManager {
             else{
                 profilePicture = null;
             }
-            if( teamRole.equals("Player")){
-                TrainingPerformanceReport trainingPerformanceReport = getMemberTrainingPerformances(memberId, databaseConnection);
-                return new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, trainingPerformanceReport);
-            }
-            else{
-                return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture);
-            }
+            return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture);
         }
         else{
             return null;
@@ -401,13 +430,9 @@ public class DatabaseManager {
                 else{
                     profilePicture = null;
                 }
-                if( teamRole.equals("Player")){
-                    TrainingPerformanceReport trainingPerformanceReport = getMemberTrainingPerformances(memberId, databaseConnection);
-                    teamMembers.add(new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, null));
-                }
-                else{
-                    teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture));
-                }
+
+                teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture));
+
             }
 
             prepStmt = databaseConnection.prepareStatement("select * from team_performances join leagues l on l.league_id = team_performances.league_id and league_team_id = ?");

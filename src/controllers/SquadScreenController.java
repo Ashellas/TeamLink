@@ -14,6 +14,7 @@ import models.*;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 
 
 public class SquadScreenController extends MainTemplateController{

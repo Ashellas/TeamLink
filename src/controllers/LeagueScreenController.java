@@ -591,16 +591,12 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     private void darkIcons() throws URISyntaxException {
-        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/close_white.png").toURI().toString()));
-        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/close_white.png").toURI().toString()));
         addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/squad_white.png").toURI().toString()));
         leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
         rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
     }
 
     private void lightIcons() throws URISyntaxException {
-        closeDetailsButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/close_black.png").toURI().toString()));
-        closeAddPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/close_black.png").toURI().toString()));
         addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/squad_black.png").toURI().toString()));
         leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
         rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
