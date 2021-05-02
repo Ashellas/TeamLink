@@ -7,18 +7,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -35,6 +34,13 @@ import java.util.prefs.Preferences;
  * Help action and error pane is missing
  */
 public class AfterSignupScreenController extends MainTemplateController implements InitializeData {
+
+    private ObservableList<String> cityList = FXCollections.observableArrayList("Istanbul", "Ankara", "İzmir");
+
+    private ObservableList<String> ageGroupList = FXCollections.observableArrayList("U18", "U16", "U14", "U12");
+
+    @FXML
+    private Pane darkPane;
 
     @FXML
     private TextField teamCodeField;
@@ -60,6 +66,38 @@ public class AfterSignupScreenController extends MainTemplateController implemen
     @FXML
     private GridPane createTeamPane;
 
+    //----------------Create Pane-----------------//
+
+    @FXML
+    private GridPane popUpCreateTeamPane;
+
+    @FXML
+    private TextField teamNameCreateField;
+
+    @FXML
+    private TextField abbrevationCreateField;
+
+    @FXML
+    private ComboBox chooseCityBoxCreate;
+
+    @FXML
+    private ComboBox chooseLeagueBoxCreate;
+
+    @FXML
+    private ComboBox<String> chooseAgeGroupCreate;
+
+    @FXML
+    private ComboBox chooseLeagueTeamBoxCreate;
+
+    @FXML
+    private ImageView logoChangeImageCreate;
+
+    @FXML
+    private Button uploadTeamLogoButtonCreate;
+
+    private File selectedFile;
+
+
     @Override
     public void initData(UserSession userSession) {
         super.initData(userSession);
@@ -80,6 +118,15 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         if(!user.getUser().getTeamRole().equals("Head Coach")){
             createTeamPane.setVisible(false);
         }
+
+        popUpCreateTeamPane.setVisible(false);
+        popUpCreateTeamPane.setDisable(true);
+        darkPane.setVisible(false);
+        darkPane.setDisable(true);
+
+        chooseCityBoxCreate.getItems().addAll(cityList);
+        chooseAgeGroupCreate.getItems().addAll(ageGroupList);
+
         lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
     }
 
@@ -111,8 +158,20 @@ public class AfterSignupScreenController extends MainTemplateController implemen
      * @throws IOException
      */
     public void createTeamButtonPushed(ActionEvent event) throws IOException {
-        System.out.println(user.getUser().getFirstName());
-        AppManager.changeScene(getClass().getResource("/views/TeamCreationScreen.fxml"),event,user);
+        popUpCreateTeamPane.setDisable(false);
+        popUpCreateTeamPane.setVisible(true);
+        darkPane.setDisable(false);
+        darkPane.setVisible(true);
+
+        teamNameCreateField.setText("");
+        abbrevationCreateField.setText("");
+        chooseCityBoxCreate.getSelectionModel().clearSelection();
+        chooseLeagueBoxCreate.getSelectionModel().clearSelection();
+        chooseAgeGroupCreate.getSelectionModel().clearSelection();
+        chooseLeagueTeamBoxCreate.getSelectionModel().clearSelection();
+
+        chooseLeagueBoxCreate.setDisable(true);
+        chooseLeagueTeamBoxCreate.setDisable(true);
     }
 
     @Override
@@ -134,5 +193,112 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         teamApplicationTable.setItems(appliedTeamsList);
     }
 
+    //------------------Team Create------------------------//
 
+    public void createTeamLogo(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Picture Chooser");
+        // Sets up the initial directory as user folder when filechooser is opened
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        // Sets the file type options
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
+
+        selectedFile = fileChooser.showOpenDialog(null);
+
+        if(selectedFile != null)
+        {
+            // Upload button's text is changed and the display image is changed to the selected image
+            uploadTeamLogoButtonCreate.setText("Change Photo");
+            logoChangeImageCreate.setImage(new Image(selectedFile.toURI().toString()));
+        }
+    }
+
+    public void createTeam(ActionEvent actionEvent) throws IOException, SQLException {
+        int currentTeams = user.getUserTeams().size();
+        if (validCreateInput()) {
+            user = DatabaseManager.createTeam(user, teamNameCreateField.getText(), abbrevationCreateField.getText(), chooseCityBoxCreate.getValue().toString(),
+                    chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), selectedFile);
+
+            createPaneClose(actionEvent);
+            displayMessage(messagePane, "Team created", false);
+        }
+    }
+
+    public void onSelectionCreate(ActionEvent event) throws SQLException {
+        //TODO think about creating league model class to get id easily
+        if(chooseAgeGroupCreate.getValue() != null && chooseCityBoxCreate.getValue() != null){
+            chooseLeagueBoxCreate.setDisable(false);
+            chooseLeagueTeamBoxCreate.getItems().clear();
+            chooseLeagueBoxCreate.getItems().clear();
+            ObservableList<String> leagueList = DatabaseManager.getLeagues(user, chooseCityBoxCreate.getValue().toString(), chooseAgeGroupCreate.getValue());
+            chooseLeagueBoxCreate.getSelectionModel().clearSelection();
+            chooseLeagueBoxCreate .setButtonCell(new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (empty || item == null) {
+                        setText("Choose League");
+                    } else {
+                        setText(item);
+                    }
+                }
+            });
+            if(leagueList.size() != 0){
+                chooseLeagueBoxCreate.getItems().addAll(leagueList);
+            }
+        }
+    }
+
+    public void onLeagueSelectionCreate(ActionEvent actionEvent) throws SQLException {
+        if(chooseLeagueBoxCreate.getValue() != null){
+            chooseLeagueTeamBoxCreate.setDisable(false);
+            ObservableList<String> teamList = DatabaseManager.getLeagueTeams(user, chooseCityBoxCreate.getValue().toString(), chooseAgeGroupCreate.getValue().toString(), chooseLeagueBoxCreate.getValue().toString());
+            chooseLeagueTeamBoxCreate.getSelectionModel().clearSelection();
+            chooseLeagueTeamBoxCreate.setButtonCell(new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (empty || item == null) {
+                        setText("Choose Team");
+                    } else {
+                        setText(item);
+                    }
+                }
+            });
+            if(teamList.size() != 0){
+                chooseLeagueTeamBoxCreate.getItems().addAll(teamList);
+            }
+        }
+    }
+
+    public void createPaneClose(ActionEvent actionEvent) {
+        popUpCreateTeamPane.setDisable(true);
+        popUpCreateTeamPane.setVisible(false);
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        logoChangeImageCreate.setImage(new Image("/Resources/Images/emptyTeamLogo.png"));
+    }
+
+    private boolean validCreateInput() throws SQLException {
+        // Checks if any of the fields is empty
+        if(teamNameCreateField.getText().equals("") || abbrevationCreateField.getText().equals("")
+                || chooseCityBoxCreate.getValue() == null || chooseLeagueBoxCreate.getValue() == null
+                || chooseAgeGroupCreate.getValue() == null || chooseLeagueTeamBoxCreate.getValue() == null){
+            displayMessage(messagePane,"Please fill all the fields",true);
+            return false;
+        }
+        // Checks the abbrevation length
+        else if(abbrevationCreateField.getText().length() > 3)
+        {
+            displayMessage(messagePane,"Abbrevations must be at most 3 characters",true);
+            return false;
+        }
+        // Checks team name length
+        else if (teamNameCreateField.getText().length() > 30){
+            displayMessage(messagePane,"Team Names must be smaller than 30 characters",true);
+            return false;
+        }
+        return true;
+    }
 }

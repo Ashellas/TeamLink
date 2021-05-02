@@ -138,6 +138,19 @@ public class SettingsScreenController extends MainTemplateController {
     @FXML
     private Button uploadTeamLogoButtonCreate;
 
+    //----------------------Visible to head coach-------------------//
+
+    @FXML
+    private Button openCreationPaneButton;
+
+    @FXML
+    private Button openEditPaneButton;
+
+    @FXML
+    private Button deleteTeamButton;
+
+
+
     @Override
     public void initData(UserSession user){
         super.initData(user);
@@ -184,6 +197,15 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setDisable(true);
         darkPane.setVisible(false);
 
+        // Coach buttons
+        if(!user.getUser().getTeamRole().equals("Head Coach")){
+            openCreationPaneButton.setVisible(false);
+            openCreationPaneButton.setDisable(true);
+            openEditPaneButton.setVisible(false);
+            openEditPaneButton.setDisable(true);
+            deleteTeamButton.setVisible(false);
+            deleteTeamButton.setDisable(true);
+        }
 
         chooseCityBoxCreate.getItems().addAll(cityList);
         chooseAgeGroupCreate.getItems().addAll(ageGroupList);

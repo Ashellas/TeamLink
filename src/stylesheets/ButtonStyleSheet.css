@@ -168,3 +168,7 @@ main.buttonText{
     -fx-font-size: 16px;
 }
 
+.disabledMain {
+    -fx-background-color: transparent;
+}
+
