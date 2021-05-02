@@ -170,6 +170,10 @@ public class SettingsScreenController extends MainTemplateController {
         emailField.setText(user.getUser().getEmail());
         datePicker.setValue(user.getUser().getBirthday());
 
+        if (user.getUser().getProfilePhoto() != null) {
+            accountPhoto.setImage(user.getUser().getProfilePhoto().getImage());
+        }
+
         // Filling team combo box
         for(Team team : user.getUserTeams()){
             teamCombobox.getItems().add(team);
