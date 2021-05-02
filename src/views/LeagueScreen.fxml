@@ -334,7 +334,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ComboBox fx:id="teamSelectionComboBox" onAction="#onTeamSelection" prefWidth="150.0" />
+                        <ComboBox fx:id="teamSelectionComboBox" onAction="#onTeamSelection" prefWidth="150.0" stylesheets="@../stylesheets/comboBoxStyleSheet.css" />
                      </children>
                   </GridPane>
                   <GridPane GridPane.rowIndex="3">
@@ -1052,7 +1052,7 @@
                   </Button>
                </children>
             </GridPane>
-            <ComboBox fx:id="addPlayersComboBox" onAction="#onAddPlayersComboBoxSelection" prefWidth="150.0" promptText="Select Team" GridPane.rowIndex="1" />
+            <ComboBox fx:id="addPlayersComboBox" onAction="#onAddPlayersComboBoxSelection" prefWidth="150.0" promptText="Select Team" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.rowIndex="1" />
             <TableView fx:id="addPlayerTable" prefHeight="200.0" prefWidth="200.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="2">
               <columns>
                 <TableColumn fx:id="addPlayerNameColumn" prefWidth="160.0" text="Name" />
