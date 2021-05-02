@@ -409,7 +409,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         for( int arrayIndex = 0; arrayIndex < teamOfCoach.getTeamMembers().size(); arrayIndex++){
             if( !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Head Coach") &&
-                !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Assistant Coach")){
+                    !teamOfCoach.getTeamMembers().get( arrayIndex).getTeamRole().equals( "Assistant Coach")){
                 userSelectedTeamMembers.add( teamOfCoach.getTeamMembers().get( arrayIndex));
             }
         }
@@ -539,9 +539,9 @@ public class LeagueScreenController extends MainTemplateController {
         gameLocationLinkLabel.setText( "Link: " + gameClicked.getGameLocationLink());
 
         if( ( user.getUser().getTeamRole().equals("Head Coach") ||
-              user.getUser().getTeamRole().equals("Assistant Coach") ) &&
-              ( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ||
-                userSelectedTeam.get(0).equals( gameClicked.getAwayTeam()) ))
+                user.getUser().getTeamRole().equals("Assistant Coach") ) &&
+                ( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ||
+                        userSelectedTeam.get(0).equals( gameClicked.getAwayTeam()) ))
         {
             if( userSelectedTeam.get(0).equals( gameClicked.getHomeTeam()) ){
                 teamOfCoach = gameClicked.getHomeTeam();
@@ -572,7 +572,7 @@ public class LeagueScreenController extends MainTemplateController {
         userSelectedTeamMembersAtPlayersAddComboBox.clear();
         for( int arrayIndex = 0; arrayIndex < userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().size(); arrayIndex++){
             if( !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Head Coach")
-                && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
+                    && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
             {
                 userSelectedTeamMembersAtPlayersAddComboBox.add( userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex));
             }

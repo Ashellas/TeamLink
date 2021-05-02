@@ -686,7 +686,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" onAction="#viewTeamApplicationsButtonPushed" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="View" GridPane.columnIndex="1">
+                              <Button mnemonicParsing="false" onAction="#viewTeamApplicationsButtonPushed" styleClass="viewButton" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="View" GridPane.columnIndex="1">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -750,7 +750,7 @@
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                     <Pane layoutX="176.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <Pane layoutX="93.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <Button mnemonicParsing="false" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="View" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <Button mnemonicParsing="false" styleClass="viewButton" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="View" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -822,7 +822,7 @@
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                                     <Pane layoutX="176.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Pane layoutX="93.0" layoutY="44.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: a1289f;" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <Button mnemonicParsing="false" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="View" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <Button mnemonicParsing="false" styleClass="viewButton" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="View" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>

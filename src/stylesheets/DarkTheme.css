@@ -19,6 +19,9 @@ Main background : #1f2328
 .label{
     -fx-text-fill: #d3d3d3;
 }
+.list-view {
+    -fx-background-color: transparent;
+}
 
 .text-field {
     -fx-border-color: #d3d3d3;

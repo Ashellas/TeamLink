@@ -65,6 +65,11 @@
     -fx-font-size: 16px;
 }
 
+.upload{
+    -fx-background-radius: 15px;
+    -fx-background-color:  #007A9F;
+    -fx-font-size: 14px;
+}
 .upload:hover{
     -fx-background-color: #046f91;
     -fx-font-size: 15px;
@@ -168,3 +173,16 @@ main.buttonText{
     -fx-font-size: 16px;
 }
 
+
+.viewButton{
+    -fx-background-radius: 10px;
+    -fx-background-color:  #007A9F;
+    -fx-font-size: 14px;
+}
+.viewButton:hover{
+    -fx-background-color: #046f91;
+}
+
+.viewButton:pressed{
+    -fx-background-color: #025B77;
+}
