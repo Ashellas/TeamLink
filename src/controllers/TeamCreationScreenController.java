@@ -154,13 +154,7 @@ public class TeamCreationScreenController implements InitializeData {
      * @throws IOException
      */
     public void backButtonPushed(ActionEvent event) throws IOException {
-        // TODO if he has teams go to settings if not go to aftersign up
-        if(user.getUserTeams().size() != 0){
-            AppManager.changeScene(getClass().getResource("/views/SettingsScreen.fxml"),event, user);
-        }
-        else{
-            AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"),event, user);
-        }
+        AppManager.changeScene(getClass().getResource("/views/AfterSignupScreen.fxml"),event, user);
     }
 
     /**

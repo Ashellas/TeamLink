@@ -122,11 +122,9 @@ public class MainTemplateController implements InitializeData {
     }
 
     public void helpButtonPushed(ActionEvent actionEvent){
-        displayMessage(messagePane,"aaaa",true);
     }
 
     public void SynchronizeData(ActionEvent actionEvent) {
-        displayMessage(messagePane,"aaaa",false);
     }
 
     public final void darkThemeIcons() {

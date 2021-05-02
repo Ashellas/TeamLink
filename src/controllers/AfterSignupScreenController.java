@@ -21,6 +21,7 @@ import org.controlsfx.control.spreadsheet.Grid;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,25 +37,13 @@ import java.util.prefs.Preferences;
  * Does not connect to database
  * Team constructor problem at line 203
  */
-public class AfterSignupScreenController implements InitializeData {
+public class AfterSignupScreenController extends MainTemplateController implements InitializeData {
 
     @FXML
     private TextField teamCodeField;
 
     @FXML
-    private ImageView profilePictureImageView;
-
-    @FXML
-    private Label userNameLabel;
-
-    @FXML
-    private Label userRoleLabel;
-
-    @FXML
-    private Label lastSyncLabel;
-
-    @FXML
-        private Pane messagePane;
+    private Pane messagePane;
 
     @FXML
     private TableView<TeamApplication> teamApplicationTable;
@@ -78,12 +67,14 @@ public class AfterSignupScreenController implements InitializeData {
 
     @Override
     public void initData(UserSession userSession) {
-        user = userSession;
-        userNameLabel.setText(user.getUser().getFirstName());
-        userRoleLabel.setText(user.getUser().getTeamRole());
-        if(user.getUser().getProfilePhoto() != null){
-            profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
+        super.initData(userSession);
+        if(user.isStyleDark()) {
+            //darkIcons();
         }
+        else {
+            //lightIcons();
+        }
+
         try{
             updateApplicationTable();
         }
@@ -127,50 +118,9 @@ public class AfterSignupScreenController implements InitializeData {
         AppManager.changeScene(getClass().getResource("/views/TeamCreationScreen.fxml"),event,user);
     }
 
-    /**
-     * Opens settings screen
-     * @param event settings button or the profile photo pushed
-     * @throws IOException
-     */
-    public void settingsButtonPushed(ActionEvent event) throws IOException {
-        AppManager.changeScene(getClass().getResource("/views/SettingsScreen.fxml"),event, user);
-    }
-
-    public void synchronizeData(ActionEvent event) throws IOException {
+    @Override
+    public void helpButtonPushed(ActionEvent event) {
         // TODO
-    }
-
-    public void helpButtonPushed(ActionEvent event) throws IOException {
-        // TODO
-    }
-
-    /**
-     * Opens the login screen
-     * @param event logout button pushed
-     * @throws IOException
-     */
-    public void logoutButtonPushed(ActionEvent event) throws IOException{
-        //removes user details from the userSession and keeps the database connection
-        user = new UserSession(user.getDatabaseConnection());
-        AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"), event, user);
-    }
-
-    /**
-     * Shows the message
-     * @param message message to show
-     */
-    private void displayMessage(String message, boolean isError){
-        System.out.println(message);
-        JFXSnackbar snackbar = new JFXSnackbar(messagePane);
-        snackbar.setPrefWidth(300.0);
-        if(isError){
-            snackbar.getStylesheets().add("sample/errorSnackBar.css");
-        }
-        else{
-            snackbar.getStylesheets().add("sample/messageSnackBar.css");
-        }
-        snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(message)));
-
     }
 
     /**
@@ -187,31 +137,5 @@ public class AfterSignupScreenController implements InitializeData {
         teamApplicationTable.setItems(appliedTeamsList);
     }
 
-    public void toSettingsScreen(ActionEvent actionEvent) {
-    }
 
-    public void toChatScreen(ActionEvent actionEvent) {
-    }
-
-    public void toLeagueScreen(ActionEvent actionEvent) {
-    }
-
-    public void toTrainingsScreen(ActionEvent actionEvent) {
-    }
-
-    public void toGameplanScreen(ActionEvent actionEvent) {
-    }
-
-    public void toCalendarScreen(ActionEvent actionEvent) {
-    }
-
-    public void toSquadScreen(ActionEvent actionEvent) {
-    }
-
-    public void toMainScreen(ActionEvent actionEvent) {
-    }
-
-    public void SynchronizeData(ActionEvent actionEvent) {
-        lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
-    }
 }
