@@ -5,15 +5,14 @@ import java.util.ArrayList;
 public class Gameplan {
     private int gameplanId;
     private String title;
-    private ArrayList<Team> teams;
+    private Team team;
     private String filePath;
     private int version;
 
     public Gameplan(int gameplanId, String title, Team team, int version) {
         this.gameplanId = gameplanId;
         this.title = title;
-        teams = new ArrayList<>();
-        teams.add(team);
+        this.team = team;
         this.version = version;
         filePath = title + "_" + version + ".pdf";
     }
@@ -26,8 +25,8 @@ public class Gameplan {
         return title;
     }
 
-    public ArrayList<Team> getTeams() {
-        return teams;
+    public Team getTeams() {
+        return team;
     }
 
     public String getFilePath() {
@@ -38,11 +37,4 @@ public class Gameplan {
         return version;
     }
 
-    public void addTeam(Team team){
-        teams.add(team);
-    }
-
-    public void setTeams(ArrayList<Team> teams){
-        this.teams = teams;
-    }
 }

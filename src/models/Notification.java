@@ -16,7 +16,7 @@ public class Notification {
     private boolean isUnread; //TODO how can this be functional
     private ImageView senderProfilePhoto;
 
-    public Notification(int notificationId, String title, String description, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread, Image senderProfilePhoto) {
+    public Notification(int notificationId, String title, String description, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread) {
         this.notificationId = notificationId;
         this.title = title;
         this.description = description;
@@ -25,8 +25,19 @@ public class Notification {
         this.clickAction = clickAction;
         this.timeSent = timeSent;
         this.isUnread = isUnread;
-        this.senderProfilePhoto = new ImageView(senderProfilePhoto);
+        this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
     }
+    public Notification(String title, String description, TeamMember sender, TeamMember recipient, String clickAction) {
+        this.title = title;
+        this.description = description;
+        this.sender = sender;
+        this.recipient = recipient;
+        this.clickAction = clickAction;
+        this.isUnread = true;
+        this.timeSent = new Date();
+    }
+
+
 
     public int getNotificationId() {
         return notificationId;

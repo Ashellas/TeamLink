@@ -7,11 +7,7 @@ public abstract class GameStats {
         this.player = player;
     }
 
-    public String getPlayerFullName() {
+    public String getPlayerName(){
         return player.getFullName();
-    }
-
-    public TeamMember getPlayer(){
-        return player;
     }
 }
