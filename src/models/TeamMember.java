@@ -109,6 +109,10 @@ public class TeamMember {
         this.birthday = birthday;
     }
 
+    public String getPointsOrGoalsScored(){
+        return pointsOrGoalsScored;
+    }
+
     public void setPointsOrGoalsScored( String pointsOrGoalsScored){
         this.pointsOrGoalsScored = pointsOrGoalsScored;
     }
