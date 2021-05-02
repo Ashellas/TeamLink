@@ -9,8 +9,8 @@ public class FootballStats extends GameStats{
 
     //TODO think about yellow and red cards
 
-    public FootballStats(int overallRating, int goalsScored, int assitsMade, int savesMade, boolean yellowCard, boolean redCard) {
-        super(overallRating);
+    public FootballStats(TeamMember player, int goalsScored, int assitsMade, int savesMade, boolean yellowCard, boolean redCard) {
+        super(player);
         this.goalsScored = goalsScored;
         this.assitsMade = assitsMade;
         this.savesMade = savesMade;

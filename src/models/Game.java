@@ -52,4 +52,13 @@ public class Game extends CalendarEvent{
     public String getAwayTeamName(){
         return awayTeam.getTeamName();
     }
+
+    public boolean isPlayed(){
+        if( getResult() == null){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 }
