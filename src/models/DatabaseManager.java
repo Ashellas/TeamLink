@@ -323,17 +323,8 @@ public class DatabaseManager {
                 profilePicture = null;
             }
             if( teamRole.equals("Player")){
-                boolean isCaptain = false; //TODO set it afterwards
-                String position = resultSet.getString("position");
-                ArrayList<Injury> playerInjuries = getPlayerInjuries(databaseConnection, memberId);
-                PlayerStats playerStats = null;
-                if(sportBranch.equals("Basketball")){
-                    playerStats = getBasketballStats(databaseConnection, memberId);
-                }
-                else if (sportBranch.equals("Football")){
-                    playerStats = getFootballStats(databaseConnection, memberId);
-                }
-                return new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, position, playerInjuries, playerStats, isCaptain);
+                TrainingPerformanceReport trainingPerformanceReport = getMemberTrainingPerformances(memberId, databaseConnection);
+                return new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, trainingPerformanceReport);
             }
             else{
                 return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture);
@@ -342,6 +333,14 @@ public class DatabaseManager {
         else{
             return null;
         }
+    }
+
+    private static TrainingPerformanceReport getTeamTrainingPerformances(ArrayList<TeamMember> members, Connection databaseConnection) {
+        return null;
+    }
+
+    private static TrainingPerformanceReport getMemberTrainingPerformances(int memberId, Connection databaseConnection) {
+        return null;
     }
 
     private static ArrayList<Team> createUserTeams(TeamMember user, Connection databaseConnection) throws SQLException {
@@ -394,17 +393,8 @@ public class DatabaseManager {
                     profilePicture = null;
                 }
                 if( teamRole.equals("Player")){
-                    boolean isCaptain = captainId == memberId;
-                    String position = membersResultSet.getString("position");
-                    ArrayList<Injury> playerInjuries = getPlayerInjuries(databaseConnection, memberId);
-                    PlayerStats playerStats = null;
-                    if(sportBranch.equals("Basketball")){
-                        playerStats = getBasketballStats(databaseConnection, memberId);
-                    }
-                    else if (sportBranch.equals("Football")){
-                        playerStats = getFootballStats(databaseConnection, memberId);
-                    }
-                    teamMembers.add(new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, position, playerInjuries, playerStats, isCaptain));
+                    TrainingPerformanceReport trainingPerformanceReport = getMemberTrainingPerformances(memberId, databaseConnection);
+                    teamMembers.add(new Player(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, null));
                 }
                 else{
                     teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture));
@@ -426,7 +416,7 @@ public class DatabaseManager {
                 int points = leagueResultSet.getInt("points");
                 int totalRounds = leagueResultSet.getInt("total_rounds");
                 //TODO calculate training averages
-                TrainingPerformanceReport trainingPerformanceReport = null;
+                TrainingPerformanceReport trainingPerformanceReport = getTeamTrainingPerformances(teamMembers, databaseConnection);
                 //Placement will be modified in standings creation
                 teamStats = new TeamStats(statsId, gamesPlayed, gamesWon, gamesLost, gamesDrawn, points, totalRounds, trainingPerformanceReport);
             }
@@ -435,20 +425,7 @@ public class DatabaseManager {
         return userTeams;
     }
 
-    //TODO make this Work
-    private static PlayerStats getFootballStats(Connection databaseConnection, int memberId) {
-        return null;
-    }
 
-    //TODO make this Work
-    private static PlayerStats getBasketballStats(Connection databaseConnection, int memberId) {
-        return null;
-    }
-
-    //TODO make this work
-    private static ArrayList<Injury> getPlayerInjuries(Connection databaseConnection, int memberId) {
-        return null;
-    }
 
     public static UserSession signUpUser(UserSession userSession, String firstName, String lastName, String email, java.sql.Date birthday, String password, String teamRole, String sportBranch, File selectedFile) throws SQLException, IOException {
         PreparedStatement predStmt = userSession.getDatabaseConnection().prepareStatement("INSERT INTO team_members( first_name, last_name, email, " +
