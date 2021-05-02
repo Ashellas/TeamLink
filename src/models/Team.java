@@ -149,4 +149,18 @@ public class Team {
     public String toString() {
         return teamName;
     }
+
+    /**
+     * Compares two teams according to their id's
+     * @param otherTeam the latter team that will be compared
+     * @return true if the id's of the both teams are the same
+     */
+    public boolean equals( Team otherTeam){
+        if( this.getTeamId() == otherTeam.getTeamId() ){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
