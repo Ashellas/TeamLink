@@ -86,6 +86,26 @@ public class TeamMember {
 
     public String getFullName(){ return firstName + " " + lastName;}
 
+    public void setName(String name) {
+        int spaceIndex;
+        spaceIndex = 0;
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) == ' ') {
+                spaceIndex = i;
+            }
+        }
+        firstName = name.substring(0,spaceIndex);
+        lastName = name.substring(spaceIndex + 1);
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
     public String getPointsOrGoalsScored(){
         return pointsOrGoalsScored;
     }

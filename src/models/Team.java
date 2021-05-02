@@ -37,7 +37,6 @@ public class Team {
         this.teamMembers = teamMembers;
     }
 
-
     public Team(int teamId, String teamName, String city, String ageGroup, Image teamLogo) {
         this.teamId = teamId;
         this.teamName = teamName;
