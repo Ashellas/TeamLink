@@ -679,7 +679,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TableView fx:id="teamApplicationTable" prefHeight="200.0" prefWidth="415.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <TableView fx:id="teamApplicationTable" prefHeight="200.0" prefWidth="415.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <columns>
                                           <TableColumn fx:id="teamNameColumn" prefWidth="188.00006103515625" text="Team Name" />
                                           <TableColumn fx:id="ageGroupColumn" minWidth="0.0" prefWidth="67.99993896484375" text="Age Group" />
