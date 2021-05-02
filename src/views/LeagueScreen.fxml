@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" style="-fx-background-color: #1f2328;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
@@ -703,7 +703,7 @@
                                  <graphic>
                                     <HBox prefHeight="75.0" prefWidth="100.0">
                                        <children>
-                                          <ImageView fitHeight="67.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="leftButtonFixtureImage" fitHeight="67.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../Resources/Images/white/outline_arrow_back_ios_white_24dp.png" />
                                              </image>
@@ -728,7 +728,7 @@
                                  <graphic>
                                     <HBox prefHeight="67.0" prefWidth="61.0">
                                        <children>
-                                          <ImageView fitHeight="67.0" fitWidth="88.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="rightButtonFixtureImage" fitHeight="67.0" fitWidth="88.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../Resources/Images/white/outline_arrow_back_ios_white_24dp.png" />
                                              </image>
@@ -860,7 +860,7 @@
                <graphic>
                   <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                      <children>
-                        <ImageView fx:id="syncIcon1" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="closeDetailsButtonImage" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../Resources/Images/white/close_white.png" />
                            </image>
@@ -993,7 +993,7 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="28.0" prefWidth="326.0">
                            <children>
-                              <ImageView fitHeight="28.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="addPlayerButtonImage" fitHeight="28.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/white/squad_white.png" />
                                  </image>
@@ -1045,7 +1045,7 @@
                      <graphic>
                         <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
                            <children>
-                              <ImageView fx:id="syncIcon11" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="closeAddPlayerButtonImage" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../Resources/Images/white/close_white.png" />
                                  </image>
