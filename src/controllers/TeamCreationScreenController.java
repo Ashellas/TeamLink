@@ -62,6 +62,12 @@ public class TeamCreationScreenController implements InitializeData {
     private ComboBox teamBox;
 
     @FXML
+    private ImageView helpIcon;
+
+    @FXML
+    private ImageView backIcon;
+
+    @FXML
     private Pane errorPane;
 
     private File selectedFile;
@@ -80,6 +86,13 @@ public class TeamCreationScreenController implements InitializeData {
         user = userSession;
         cityBox.getItems().addAll(cityList);
         ageGroupBox.getItems().addAll(ageGroupList);
+
+        if(userSession.isStyleDark()) {
+            darkThemeIcons();
+        }
+        else {
+            lightThemeIcons();
+        }
     }
 
 
@@ -239,5 +252,15 @@ public class TeamCreationScreenController implements InitializeData {
         snackbar.setPrefWidth(300.0);
         snackbar.getStylesheets().add("sample/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
+    }
+
+    public void darkThemeIcons() {
+        backIcon.setImage(new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+    }
+
+    public void lightThemeIcons() {
+        backIcon.setImage(new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
     }
 }
