@@ -37,6 +37,7 @@ public class Team {
         this.teamMembers = teamMembers;
     }
 
+
     public Team(int teamId, String teamName, String city, String ageGroup, Image teamLogo) {
         this.teamId = teamId;
         this.teamName = teamName;
@@ -149,4 +150,21 @@ public class Team {
     public String toString() {
         return teamName;
     }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public void setAbbrevation(String abbrevation) {
+        this.abbrevation = abbrevation;
+    }
+
+    public void setCity(String city) { this.city = city; }
+
+    public void setLeagueName(String leagueName) { this.leagueName = leagueName; }
+
+    public void setLeagueId(int leagueId) { this.leagueId = leagueId; }
+
+    public void setTeamLogo(ImageView teamLogo) { this.teamLogo = teamLogo; }
+
 }

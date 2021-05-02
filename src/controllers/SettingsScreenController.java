@@ -90,13 +90,16 @@ public class SettingsScreenController extends MainTemplateController {
     private TextField abbrevationEditField;
 
     @FXML
-    private ComboBox<String> chooseCityBox;
+    private ComboBox chooseCityBox;
 
     @FXML
-    private ComboBox<Team> chooseLeagueBox;
+    private ComboBox chooseLeagueBox;
 
     @FXML
-    private ComboBox<String> chooseLeagueTeamBox;
+    private ComboBox<String> chooseAgeGroup;
+
+    @FXML
+    private ComboBox chooseLeagueTeamBox;
 
     @FXML
     private ImageView logoChangeImage;
@@ -181,8 +184,12 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setDisable(true);
         darkPane.setVisible(false);
 
+
         chooseCityBoxCreate.getItems().addAll(cityList);
         chooseAgeGroupCreate.getItems().addAll(ageGroupList);
+
+        chooseCityBox.getItems().addAll(cityList);
+        chooseAgeGroup.getItems().addAll(ageGroupList);
 
 
         // Fade in
@@ -285,6 +292,13 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setDisable(false);
         darkPane.setVisible(true);
 
+        teamNameCreateField.setText("");
+        abbrevationCreateField.setText("");
+        chooseCityBoxCreate.getSelectionModel().clearSelection();
+        chooseLeagueBoxCreate.getSelectionModel().clearSelection();
+        chooseAgeGroupCreate.getSelectionModel().clearSelection();
+        chooseLeagueTeamBoxCreate.getSelectionModel().clearSelection();
+
         chooseLeagueBoxCreate.setDisable(true);
         chooseLeagueTeamBoxCreate.setDisable(true);
     }
@@ -292,6 +306,9 @@ public class SettingsScreenController extends MainTemplateController {
     public void editTeam(ActionEvent actionEvent) throws IOException, SQLException {
         teamNameEditField.setText(teamCombobox.getValue().getTeamName());
         abbrevationEditField.setText(teamCombobox.getValue().getAbbrevation());
+
+        chooseAgeGroup.getSelectionModel().select(teamCombobox.getValue().getAgeGroup());
+        chooseCityBox.getSelectionModel().select(teamCombobox.getValue().getCity());
 
         if (teamCombobox.getValue().getTeamLogo() != null) {
             logoChangeImage.setImage(teamCombobox.getValue().getTeamLogo().getImage());
@@ -302,7 +319,49 @@ public class SettingsScreenController extends MainTemplateController {
         editTeamPane.setVisible(true);
         darkPane.setDisable(false);
         darkPane.setVisible(true);
+
+        chooseLeagueTeamBox.getItems().clear();
+        chooseLeagueBox.getItems().clear();
+
+        ObservableList<String> leagueList = DatabaseManager.getLeagues(user, chooseCityBox.getValue().toString(), chooseAgeGroup.getValue());
+        chooseLeagueBox.getSelectionModel().clearSelection();
+        chooseLeagueBox .setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty) ;
+                if (empty || item == null) {
+                    setText("Choose League");
+                } else {
+                    setText(item);
+                }
+            }
+        });
+        if(leagueList.size() != 0){
+            chooseLeagueBox.getItems().addAll(leagueList);
+        }
+
+        chooseLeagueBox.getSelectionModel().select(teamCombobox.getValue().getLeagueName());
+
+        ObservableList<String> teamList = DatabaseManager.getLeagueTeams(user, chooseCityBox.getValue().toString(), chooseAgeGroup.getValue(), chooseLeagueBox.getValue().toString());
+        chooseLeagueTeamBox.getSelectionModel().clearSelection();
+        chooseLeagueTeamBox.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty) ;
+                if (empty || item == null) {
+                    setText("Choose Team");
+                } else {
+                    setText(item);
+                }
+            }
+        });
+        if(teamList.size() != 0){
+            chooseLeagueTeamBox.getItems().addAll(teamList);
+        }
+        //chooseLeagueTeamBox.getSelectionModel().select();
+        // TODO
     }
+
 
     @Override
     public void helpButtonPushed(ActionEvent actionEvent){
@@ -311,7 +370,27 @@ public class SettingsScreenController extends MainTemplateController {
 
     //-------------------------Team Edit---------------------------//
 
-    public void saveChanges(ActionEvent actionEvent) {}
+    public void saveChanges(ActionEvent actionEvent) throws SQLException {
+        if (validEditInput()) {
+            // TODO
+            // Update team at database
+            teamCombobox.getValue().setTeamName(teamNameEditField.getText());
+            teamCombobox.getValue().setCity(chooseCityBox.getValue().toString());
+            teamCombobox.getValue().setAbbrevation(abbrevationEditField.getText());
+            teamCombobox.getValue().setLeagueName(chooseLeagueBox.getValue().toString());
+            if (logoChangeImage != null) {
+                teamCombobox.getValue().setTeamLogo(logoChangeImage);
+                teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
+            }
+
+            teamCombobox.getItems().clear();
+            teamCombobox.getItems().addAll(user.getUserTeams());
+            // TODO
+            // Combobox team is not selected after edit
+
+            closeButtonPushed(actionEvent);
+        }
+    }
 
     public void closeButtonPushed(ActionEvent actionEvent) {
         editTeamPane.setDisable(true);
@@ -365,13 +444,9 @@ public class SettingsScreenController extends MainTemplateController {
         if (validCreateInput()) {
             user = DatabaseManager.createTeam(user, teamNameCreateField.getText(), abbrevationCreateField.getText(), chooseCityBoxCreate.getValue().toString(),
                     chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), selectedFile);
-            if (user.getUserTeams().size() > currentTeams){
-                createPaneClose(actionEvent);
-                displayMessage(messagePane, "Team created", false);
-            }
-            else {
-                displayMessage(messagePane, "An Error Occured", true);
-            }
+
+            createPaneClose(actionEvent);
+            displayMessage(messagePane, "Team created", false);
         }
     }
 

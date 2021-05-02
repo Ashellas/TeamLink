@@ -1002,7 +1002,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <ComboBox disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="Choose Age Group" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <ComboBox fx:id="chooseAgeGroup" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" promptText="Choose Age Group" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -1431,7 +1431,7 @@
             </GridPane>
             <Pane fx:id="messagePane" disable="true" maxHeight="100.0" maxWidth="300.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.valignment="BOTTOM">
                <GridPane.margin>
-                  <Insets bottom="25.0" />
+                  <Insets bottom="100.0" />
                </GridPane.margin>
             </Pane>
          </children>
