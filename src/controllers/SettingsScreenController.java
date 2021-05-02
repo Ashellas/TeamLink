@@ -181,6 +181,10 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setDisable(true);
         darkPane.setVisible(false);
 
+        chooseCityBoxCreate.getItems().addAll(cityList);
+        chooseAgeGroupCreate.getItems().addAll(ageGroupList);
+
+
         // Fade in
         AppManager.fadeIn(settingsPane,500);
     }
@@ -280,8 +284,6 @@ public class SettingsScreenController extends MainTemplateController {
         createTeamPane.setVisible(true);
         darkPane.setDisable(false);
         darkPane.setVisible(true);
-        chooseCityBoxCreate.getItems().addAll(cityList);
-        chooseAgeGroupCreate.getItems().addAll(ageGroupList);
 
         chooseLeagueBoxCreate.setDisable(true);
         chooseLeagueTeamBoxCreate.setDisable(true);
