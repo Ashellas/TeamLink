@@ -569,7 +569,6 @@ public class TrainingsScreenController extends MainTemplateController
                                 playersToRate.add( member );
                         }
                         playersToRate.addAll( DatabaseManager.getOtherPlayers( training) ); //???
-
                         for ( TeamMember member: playersToRate )
                         {
                             RateHBox box = new RateHBox( member );
