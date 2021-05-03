@@ -33,7 +33,7 @@ public class GameplanScreenController extends MainTemplateController {
     private GridPane gameplansGrid;
 
     @FXML
-    private ComboBox teamBox;
+    private ComboBox<String> teamBox;
 
     @FXML
     private Label fileNamelabel;
