@@ -718,8 +718,7 @@ public class DatabaseManager {
         return null;
     }
 
-    //TODO COLOR CODES
-    private static HashMap<Team, ArrayList<CalendarEvent>> createCurrentCalendarEvents(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) throws SQLException {
+    private static HashMap<Team, ArrayList<CalendarEvent>> createCurrentCalendarEvents(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
         HashMap<Team, ArrayList<CalendarEvent>> teamsAndEvents = new HashMap<>();
         ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where event_date_time < NOW() + interval 5 day and " +
@@ -732,7 +731,7 @@ public class DatabaseManager {
             String title = calendarEventsResultSet.getString("title");
             Date eventDate = calendarEventsResultSet.getDate("event_date_time");
             String actionLink = calendarEventsResultSet.getString("action_link");
-            calendarEvents.add(new CalendarEvent(eventId, title, eventDate, actionLink, "red"));
+            calendarEvents.add(new CalendarEvent(eventId, title, eventDate, actionLink, "calendarEvent"));
         }
 
         for( Team team : userTeams){
@@ -753,7 +752,7 @@ public class DatabaseManager {
                 String title = "VS " + gamesResultSet.getString("abbrevation");
                 Date eventDate = gamesResultSet.getDate("game_date_time");
                 String actionLink = "/views/LeagueScreen.fxml";
-                teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "blue"));
+                teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
             }
 
             preparedStatement = databaseConnection.prepareStatement("select * from trainings where training_date_time < NOW() + " +
@@ -767,11 +766,59 @@ public class DatabaseManager {
                 String title = trainingsResultSet.getString("title");
                 Date eventDate = trainingsResultSet.getDate("training_date_time");
                 String actionLink = "/views/TrainingsScreen.fxml";
-                teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "green"));
+                teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "training"));
             }
             teamsAndEvents.put(team, teamEvents);
         }
         return teamsAndEvents;
+    }
+
+    public static ArrayList<CalendarEvent> getCalendarEventsByIndex(Connection databaseConnection, Team team, Date date) throws SQLException {
+        ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where DATE_FORMAT(event_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\"))");
+        java.sql.Date monthYear = new java.sql.Date(date.getTime());
+        preparedStatement.setDate(1, monthYear);
+        ResultSet calendarEventsResultSet = preparedStatement.executeQuery();
+
+        //same for every team
+        while (calendarEventsResultSet.next()){
+            int eventId = calendarEventsResultSet.getInt("id");
+            String title = calendarEventsResultSet.getString("title");
+            Date eventDate = calendarEventsResultSet.getDate("event_date_time");
+            String actionLink = calendarEventsResultSet.getString("action_link");
+            calendarEvents.add(new CalendarEvent(eventId, title, eventDate, actionLink, "calendarEvent"));
+        }
+
+
+        preparedStatement = databaseConnection.prepareStatement("select * from league_games " +
+                "where DATE_FORMAT(game_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\"))" +
+                " and (home_team_id = ? or away_team_id = ?)");
+        preparedStatement.setDate(1, monthYear);
+        preparedStatement.setInt(2, team.getDatabaseTeamId());
+        preparedStatement.setInt(3, team.getDatabaseTeamId());
+        ResultSet gamesResultSet = preparedStatement.executeQuery();
+
+        while (gamesResultSet.next()){
+            int gameId = gamesResultSet.getInt("game_id");
+            String title = "VS " + gamesResultSet.getString("abbrevation");
+            Date eventDate = gamesResultSet.getDate("game_date_time");
+            String actionLink = "/views/LeagueScreen.fxml";
+            calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
+        }
+
+        preparedStatement = databaseConnection.prepareStatement("select * from trainings where " +
+                "DATE_FORMAT(training_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and team_id = ?");
+        preparedStatement.setDate(1, monthYear);
+        preparedStatement.setInt(2, team.getTeamId());
+        ResultSet trainingsResultSet = preparedStatement.executeQuery();
+        while (trainingsResultSet.next()){
+            int gameId = trainingsResultSet.getInt("training_id");
+            String title = trainingsResultSet.getString("title");
+            Date eventDate = trainingsResultSet.getDate("training_date_time");
+            String actionLink = "/views/TrainingsScreen.fxml";
+            calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "green"));
+        }
+        return calendarEvents;
     }
 
     public static void updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
@@ -1065,6 +1112,42 @@ public class DatabaseManager {
         else{
             return false;
         }
+    }
+
+    public static Announcement getAnnouncementsByIndex( Connection databaseConnection, Team team, int AnnouncementIndex) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from announcements " +
+                "join team_members tm on tm.member_id = announcements.sender_id and team_id = ? join file_storage fs on " +
+                "fs.id = tm.file_id order by time_sent asc LIMIT ?,1 ");
+        prepStmt.setInt(1, team.getTeamId());
+        prepStmt.setInt(2, AnnouncementIndex);
+
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+            int id = resultSet.getInt("id");
+            String title = resultSet.getString("title");
+            String message = resultSet.getString("message");
+            Date timeSent = resultSet.getDate("time_sent");
+            int senderId = resultSet.getInt("sender_id");
+
+            String firstName = resultSet.getString("first_name");
+            String lastName = resultSet.getString("last_name");
+
+            Image profilePicture;
+            byte[] photoBytes = resultSet.getBytes("file");
+            if(photoBytes != null)
+            {
+                InputStream imageFile = resultSet.getBinaryStream("file");
+                profilePicture = new Image(imageFile);
+            }
+            else{
+                profilePicture = null;
+            }
+
+            TeamMember member = new TeamMember(senderId, firstName, lastName, profilePicture);
+
+           return new Announcement(id, title, message, member, timeSent);
+        }
+        return null;
     }
 
 }
