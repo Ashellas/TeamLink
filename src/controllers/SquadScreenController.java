@@ -123,6 +123,9 @@ public class SquadScreenController extends MainTemplateController{
         detailsPane.setVisible(false);
 
 
+        for(CalendarEvent calendarEvent : user.getCalendarEvents(user.getUserTeams().get(0))) {
+            System.out.println(calendarEvent.getEventTitle() + " " + calendarEvent.getEventDateTime());
+        }
         AppManager.fadeIn(squadPane,500);
     }
 

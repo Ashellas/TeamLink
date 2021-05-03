@@ -7,12 +7,13 @@ public class Training extends CalendarEvent{
     private String trainingLocationName;
     private String trainingLocationLink;
     private Team team;
-
+    private String description;
     //I deleted TrainingPerformance from here
 
 
     public Training(int calendarEventId, String eventTitle, Date eventDateTime, String description, String actionLink, String colorCode, String trainingLocationName, String trainingLocationLink, Team team) {
-        super(calendarEventId, eventTitle, eventDateTime, description, actionLink, colorCode);
+        super(calendarEventId, eventTitle, eventDateTime, actionLink, colorCode);
+        this.description = description;
         this.trainingLocationName = trainingLocationName;
         this.trainingLocationLink = trainingLocationLink;
         this.team = team;

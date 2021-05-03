@@ -20,7 +20,7 @@ public class UserSession {
     private HashMap<Team,ObservableList<Game>> gamesOfTheCurrentRound;
     private HashMap<Team,ObservableList<Team>> standings;//It can be designed better
     private ArrayList<Notification> notifications;
-    private ArrayList<CalendarEvent> calendarEvents;
+    private HashMap<Team, ArrayList<CalendarEvent>> calendarEvents;
     private ObservableList<Training> trainings;
     private Connection databaseConnection;
     private ObservableList<TeamApplication> teamApplications;
@@ -28,7 +28,7 @@ public class UserSession {
     private Date lastSync;
     private String styleSheet;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, HashMap<Team, ArrayList<CalendarEvent>> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -68,8 +68,8 @@ public class UserSession {
         return notifications;
     }
 
-    public ArrayList<CalendarEvent> getCalendarEvents() {
-        return calendarEvents;
+    public ArrayList<CalendarEvent> getCalendarEvents(Team team) {
+        return calendarEvents.get(team);
     }
 
     public ObservableList<Training> getTrainings() {
@@ -115,10 +115,6 @@ public class UserSession {
 
     public void setNotifications(ArrayList<Notification> notifications) {
         this.notifications = notifications;
-    }
-
-    public void setCalendarEvents(ArrayList<CalendarEvent> calendarEvents) {
-        this.calendarEvents = calendarEvents;
     }
 
     public void setTrainings(ObservableList<Training> trainings) {

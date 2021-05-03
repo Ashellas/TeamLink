@@ -11,7 +11,7 @@ public class Game extends CalendarEvent{
     private String result;
 
     public Game(int calendarEventId, String eventTitle, Date eventDateTime, String description, String actionLink, String colorCode, int roundNumber, Team homeTeam, Team awayTeam, String gameLocationName, String gameLocationLink, String result) {
-        super(calendarEventId, eventTitle, eventDateTime, description, actionLink, colorCode);
+        super(calendarEventId, eventTitle, eventDateTime, actionLink, colorCode);
         this.roundNumber = roundNumber;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
