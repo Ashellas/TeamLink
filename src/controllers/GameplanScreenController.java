@@ -22,7 +22,9 @@ import models.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 public class GameplanScreenController extends MainTemplateController {
@@ -42,74 +44,109 @@ public class GameplanScreenController extends MainTemplateController {
     @FXML
     private GridPane addGrid;
 
+    private ArrayList<GridPane> gameplanViewsGrids;
+
     @FXML
     private HBox emptyHBox;
 
+    private double emptyHBoxWidth;
 
     public void initData(UserSession user){
+        gameplanViewsGrids = new ArrayList<>();
         super.initData(user);
-        setGameplansGrid();
+
 
         Platform.runLater(() -> {
-            setGameplansGrid();
+            emptyHBoxWidth = emptyHBox.getWidth();
+            try {
+                setGameplansGrid();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         });
 
         addGrid.setVisible(false);
     }
 
 
-    private void setGameplansGrid(){
+    private void setGameplansGrid() throws URISyntaxException {
         int gridCounter = 0;
         for( Gameplan gameplan : user.getGameplans(user.getUserTeams().get(0))){
             int row = 1 + ((int) gridCounter/ 8) * 2;
             int column = (1 + gridCounter) % 8;
-            gameplansGrid.add(createAGameplan(gameplan), column, row);
+            GridPane gameplanViewgrid = createAGameplan(gameplan);
+            gameplansGrid.add(gameplanViewgrid, column, row);
+            gameplanViewsGrids.add(gameplanViewgrid);
             gridCounter += 2;
         }
     }
 
-    private GridPane createAGameplan(Gameplan gameplan){
+    private GridPane createAGameplan(Gameplan gameplan) throws URISyntaxException {
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().addAll("gameplan");
         RowConstraints row1 = new RowConstraints();
-        row1.setPercentHeight(5);
+        row1.setPercentHeight(10);
         row1.setMinHeight(0);
         RowConstraints row2 = new RowConstraints();
-        row2.setPercentHeight(30);
+        row2.setPercentHeight(20);
         row2.setMinHeight(0);
         RowConstraints row3 = new RowConstraints();
-        row3.setPercentHeight(30);
+        row3.setPercentHeight(20);
         row3.setMinHeight(0);
         RowConstraints row4 = new RowConstraints();
-        row4.setPercentHeight(30);
+        row4.setPercentHeight(20);
         row4.setMinHeight(0);
         RowConstraints row5 = new RowConstraints();
-        row5.setPercentHeight(5);
+        row5.setPercentHeight(20);
         row5.setMinHeight(0);
-        gridPane.getRowConstraints().addAll(row1, row2, row3, row4, row5);
+        RowConstraints row6 = new RowConstraints();
+        row6.setPercentHeight(10);
+        row6.setMinHeight(0);
+        gridPane.getRowConstraints().addAll(row1, row2, row3, row4, row5,row6);
         Label gameplanTitle = new Label(gameplan.getTitle());
-        gameplanTitle.setPrefWidth(emptyHBox.getWidth());
+        gameplanTitle.setPrefWidth(emptyHBoxWidth);
 
         File file = new File(gameplan.getFilePath());
 
-        Button firstButton;
+        Button firstButton = new Button();
+        Button uninstallButton = new Button("Uninstall");
+
+
+        firstButton.getStyleClass().add("viewGameplan");
+        uninstallButton.getStyleClass().add("uninstall");
         if(file.exists()){
-            firstButton = new Button("View");
+            firstButton.setText("View");
+            uninstallButton.setDisable(false);
         }
         else{
-            firstButton = new Button("Download");
+            firstButton.setText("Download");
+            uninstallButton.setDisable(true);
         }
         Button deleteButton = new Button("Delete");
-        deleteButton.setPrefWidth(emptyHBox.getWidth() * 0.4);
+        deleteButton.getStyleClass().add("deleteGameplan");
+        deleteButton.setPrefWidth(emptyHBoxWidth * 0.4);
         deleteButton.setOnAction(event -> {
 
-            if(file.delete()){
                 user.getGameplans(user.getUserTeams().get(0)).remove(gameplan);
-                deleteAllViews();
+                System.out.println();
+                for(GridPane grid : gameplanViewsGrids){
+                    gameplansGrid.getChildren().remove(grid);
+                }
+            try {
                 setGameplansGrid();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
         });
-        firstButton.setPrefWidth(emptyHBox.getWidth() * 0.4);
+
+        uninstallButton.setPrefWidth(emptyHBoxWidth * 0.4);
+        uninstallButton.setOnAction(event -> {
+            file.delete();
+            firstButton.setText("Download");
+            uninstallButton.setDisable(true);
+        });
+
+        firstButton.setPrefWidth(emptyHBoxWidth * 0.4);
         firstButton.setOnAction(event -> {
             if(file.exists()){
                 if (Desktop.isDesktopSupported()) {
@@ -131,53 +168,30 @@ public class GameplanScreenController extends MainTemplateController {
                     e.printStackTrace();
                 }
                 firstButton.setText("View");
+                uninstallButton.setDisable(false);
             }
         });
-
-
 
         GridPane.setHalignment(gameplanTitle, HPos.CENTER);
         GridPane.setHalignment(deleteButton, HPos.CENTER);
         GridPane.setHalignment(firstButton, HPos.CENTER);
+        GridPane.setHalignment(uninstallButton, HPos.CENTER);
 
         gameplanTitle.getStyleClass().add("title");
+        firstButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
+        uninstallButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
+        deleteButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
+
+
+
         gridPane.add(gameplanTitle, 0,1);
         gridPane.add(firstButton, 0, 2);
-        gridPane.add(deleteButton, 0, 3);
+        gridPane.add(uninstallButton,0, 3);
+        gridPane.add(deleteButton, 0, 4);
         return gridPane;
     }
 
-    private void deleteAllViews() {
-        ObservableList<Node> childrens = gameplansGrid.getChildren();
-
-        for (Node node : childrens) {
-            if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 1) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 3) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 5) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 7) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 1) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 3) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 5) {
-                gameplansGrid.getChildren().remove(node);
-            }
-            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 7) {
-                gameplansGrid.getChildren().remove(node);
-            }
-        }
-    }
-
+    //TODO set it to background
     private void downloadPDF(int fileId, String filePath) throws SQLException, IOException {
         DatabaseManager.downloadGameplan(user.getDatabaseConnection(), fileId, filePath);
     }

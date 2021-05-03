@@ -173,17 +173,53 @@ main.buttonText{
     -fx-font-size: 16px;
 }
 
-
+.gameplan{
+    -fx-font-size: 12px;
+    -fx-background-radius: 5px;
+}
 .viewButton{
-    -fx-background-radius: 10px;
     -fx-background-color:  #007A9F;
-    -fx-font-size: 14px;
 }
 .viewButton:hover{
     -fx-background-color: #046f91;
 }
 
 .viewButton:pressed{
+    -fx-background-color: #025B77;
+}
+
+.uninstall {
+    -fx-background-color: #a1289f;
+}
+
+.uninstall:hover {
+    -fx-background-color: #8f258d;
+}
+
+.uninstall:pressed{
+    -fx-background-color: #771f76;
+}
+
+.deleteGameplan {
+    -fx-background-color: #9f0202;
+}
+
+.deleteGameplan:hover {
+    -fx-background-color: #730000;
+}
+
+.deleteGameplan:pressed {
+    -fx-background-color: #5f0101;
+}
+
+.viewGameplan{
+    -fx-background-color:  #007A9F;
+}
+.viewGameplan:hover{
+    -fx-background-color: #046f91;
+}
+
+.viewGameplan:pressed{
     -fx-background-color: #025B77;
 }
 

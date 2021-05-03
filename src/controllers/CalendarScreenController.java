@@ -157,12 +157,12 @@ public class CalendarScreenController extends MainTemplateController {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team: t) {
-                allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
             }
             createCalendar(firstDay, maxDay, allEvents);
         }
         else {
-            events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
             createCalendar(firstDay, maxDay, events);
         }
 
@@ -193,12 +193,12 @@ public class CalendarScreenController extends MainTemplateController {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team: t) {
-                allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
             }
             createCalendar(firstDay, maxDay, allEvents);
         }
         else {
-            events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
             createCalendar(firstDay, maxDay, events);
         }
     }
