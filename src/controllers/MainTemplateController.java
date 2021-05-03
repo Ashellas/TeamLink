@@ -14,7 +14,9 @@ import models.UserSession;
 
 import java.io.IOException;
 
-
+/**
+ * Controls the main template including the top and left pane buttons
+ */
 public class MainTemplateController implements InitializeData {
 
     @FXML
@@ -86,53 +88,108 @@ public class MainTemplateController implements InitializeData {
             profileIcon.setImage(user.getUser().getProfilePhoto().getImage());
         }
         lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
-
     }
 
+    /**
+     * Opens main screen
+     * @param actionEvent main button pushed
+     * @throws IOException
+     */
     public void toMainScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/MainScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens squad screen
+     * @param actionEvent main button pushed
+     * @throws IOException
+     */
     public void toSquadScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/SquadScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens calendar screen
+     * @param actionEvent calendar button pushed
+     * @throws IOException
+     */
     public void toCalendarScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/CalendarScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens gameplan screen
+     * @param actionEvent gameplan button pushed
+     * @throws IOException
+     */
     public void toGameplanScreen(ActionEvent actionEvent) throws  IOException {
         AppManager.changeScene(getClass().getResource("/views/GameplanScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens trainings screen
+     * @param actionEvent trainings button pushed
+     * @throws IOException
+     */
     public void toTrainingsScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/TrainingsScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens league screen
+     * @param actionEvent league button pushed
+     * @throws IOException
+     */
     public void toLeagueScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/LeagueScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens chat screen
+     * @param actionEvent chat button pushed
+     * @throws IOException
+     */
     public void toChatScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/ChatScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Opens settings screen
+     * @param actionEvent settings button pushed
+     * @throws IOException
+     */
     public void toSettingsScreen(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/SettingsScreen.fxml"),actionEvent, user);
     }
 
+    /**
+     * Logs out from account and returns to login screen
+     * @param actionEvent logout button pushed
+     * @throws IOException
+     */
     public void logoutButtonPushed(ActionEvent actionEvent) throws IOException {
         AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"),actionEvent, user);
     }
 
-    public void helpButtonPushed(ActionEvent actionEvent){
-        displayMessage(messagePane,"aaaa",true);
-    }
+    /**
+     * Shows help information of scenes
+     * @param actionEvent help button pushed
+     * @throws IOException
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){}
 
+    /**
+     * Synchronises data and updates label
+     * @param actionEvent synchronize data button pushed
+     * @throws IOException
+     */
     public void SynchronizeData(ActionEvent actionEvent) {
         displayMessage(messagePane,"aaaa",false);
     }
 
+    /**
+     * Helps initialising the scene with icons according to the chosen theme
+     */
     public final void darkThemeIcons() {
         helpIcon.setImage(new Image("/Resources/Images/white/help_white.png"));
         squadIcon.setImage(new Image("/Resources/Images/white/squad_white.png"));
@@ -151,6 +208,9 @@ public class MainTemplateController implements InitializeData {
         }
     }
 
+    /**
+     * Helps initialising the scene with icons according to the chosen theme
+     */
     public final void lightThemeIcons() {
         helpIcon.setImage(new Image("/Resources/Images/black/help_black.png"));
         squadIcon.setImage(new Image("/Resources/Images/black/squad_black.png"));
@@ -171,7 +231,9 @@ public class MainTemplateController implements InitializeData {
 
     /**
      * Shows the error message
+     * @param pane pane that the message will be displayed on
      * @param message message to show
+     * @param error true if the message is an error message
      */
     protected void displayMessage(Pane pane, String message, boolean error){
         System.out.println(message);

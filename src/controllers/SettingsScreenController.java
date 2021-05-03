@@ -18,7 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
+/**
+ * Controls the settings scene and all its functions
+ */
 public class SettingsScreenController extends MainTemplateController {
     private final String DARK_STYLE_SHEET = getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm();
     private final String LIGHT_STYLE_SHEET = getClass().getResource("/stylesheets/LightTheme.css").toExternalForm();
@@ -844,5 +846,5 @@ public class SettingsScreenController extends MainTemplateController {
      * Deactivates the settings button on the left pane
      */
     public void toSettingsScreen(ActionEvent actionEvent) throws IOException {}
-    
+
 }
