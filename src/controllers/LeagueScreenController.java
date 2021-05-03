@@ -515,14 +515,19 @@ public class LeagueScreenController extends MainTemplateController {
         playerStatisticsEnterStatisticsColumn.setText( "Remove");
 
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Remove", (TeamMember player) -> {
-            if( addedPlayers.get( gameClicked).contains( player) ){
-                userSelectedTeamMembers.remove( player);
-                addedPlayers.get( gameClicked).remove( player);
-                playerStatisticsTable.refresh();
-                super.displayMessage( messagePane, "The player has been removed", false);
-            }
-            else if( !addedPlayers.get( gameClicked).contains( player) ){
+            if( !addedPlayers.containsKey( gameClicked)){
                 super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
+            }
+            else{
+                if( addedPlayers.get( gameClicked).contains( player) ){
+                    userSelectedTeamMembers.remove( player);
+                    addedPlayers.get( gameClicked).remove( player);
+                    playerStatisticsTable.refresh();
+                    super.displayMessage( messagePane, "The player has been removed", false);
+                }
+                else if( !addedPlayers.get( gameClicked).contains( player) ){
+                    super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
+                }
             }
             return player;
         }));
@@ -567,6 +572,9 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
                 }
             }
+            else if( player.getSportBranch().equals("Basketball") && ( Integer.parseInt( player.getStealsOrYellowCard() ) > 2 ) ){
+                super.displayMessage( messagePane, "A player cannot get more than 2 yellow cards", true);
+            }
             else if( player.getBlocksOrRedCard() == null || !player.getBlocksOrRedCard().matches("[0-9]+") || player.getBlocksOrRedCard().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
                     super.displayMessage( messagePane, "The value you entered for blocks column of " + player.getFullName() + " is invalid", true);
@@ -577,6 +585,9 @@ public class LeagueScreenController extends MainTemplateController {
                 else{
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
                 }
+            }
+            else if( player.getSportBranch().equals("Football") && ( Integer.parseInt( player.getBlocksOrRedCard() ) > 1 ) ){
+                super.displayMessage( messagePane, "A player cannot get more than 1 red card", true);
             }
             else{
                 if( player.getSportBranch().equals("Basketball")){
