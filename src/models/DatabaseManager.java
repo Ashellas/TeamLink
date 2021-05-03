@@ -621,16 +621,16 @@ public class DatabaseManager {
 
 
     public static Image getProfilePhoto(Connection databaseConnection, int memberId) throws SQLException {
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select photo from team_members where member_id = ?");
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_members join file_storage fs on fs.id = team_members.file_id and member_id = ?");
         prepStmt.setInt(1, memberId);
         ResultSet resultSet = prepStmt.executeQuery();
 
         if(resultSet.next()){
-            byte[] photoBytes = resultSet.getBytes("photo");
+            byte[] photoBytes = resultSet.getBytes("file");
             if(photoBytes != null)
             {
                 System.out.println("NOOO");
-                InputStream imageFile = resultSet.getBinaryStream("photo");
+                InputStream imageFile = resultSet.getBinaryStream("file");
                 return new Image(imageFile);
             }
         }
