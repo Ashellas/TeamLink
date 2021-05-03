@@ -1,13 +1,8 @@
 package models;
 
-import javafx.collections.ObservableList;
-
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Date;;
 
 public class Game extends CalendarEvent{
-
-    public static HashMap<Game, ObservableList<TeamMember>> playedGamesWithStats = new HashMap<Game, ObservableList<TeamMember>>();
 
     private int roundNumber;
     private Team homeTeam;
