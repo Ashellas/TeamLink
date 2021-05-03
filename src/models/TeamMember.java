@@ -114,6 +114,12 @@ public class TeamMember {
         lastName = name.substring(spaceIndex + 1);
     }
 
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
+
+
     public void setEmail(String email) {
         this.email = email;
     }

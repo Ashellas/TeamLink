@@ -172,6 +172,10 @@ public class Team {
         }
     }
 
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }

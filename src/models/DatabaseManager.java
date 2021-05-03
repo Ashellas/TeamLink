@@ -769,10 +769,16 @@ public class DatabaseManager {
 
 
             if(team.getFileId() == 1 && logoFile != null){
-                prepStmt = databaseConnection.prepareStatement("INSERT INTO file_storage(file) values(?)");
+                prepStmt = databaseConnection.prepareStatement("INSERT INTO file_storage(file) values(?)",Statement.RETURN_GENERATED_KEYS);
                 FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
                 prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
                 prepStmt.setBlob(1, InputStream.nullInputStream());
+                ResultSet rs = prepStmt.getGeneratedKeys();
+                if(rs.next())
+                {
+                    int fileId = rs.getInt(1);
+                    team.setFileId(fileId);
+                }
             }
             else{
                 prepStmt = databaseConnection.prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
@@ -803,10 +809,16 @@ public class DatabaseManager {
         int row = preparedStatement.executeUpdate();
 
         if(user.getUser().getFileId() == 1 && profilePhoto != null){
-            preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)");
+            preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)", Statement.RETURN_GENERATED_KEYS);
             FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
             preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
             preparedStatement.setBlob(1, InputStream.nullInputStream());
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if(rs.next())
+            {
+                int fileId = rs.getInt(1);
+                user.getUser().setFileId(fileId);
+            }
         }
         else{
             preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
