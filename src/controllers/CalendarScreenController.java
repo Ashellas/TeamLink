@@ -83,7 +83,7 @@ public class CalendarScreenController extends MainTemplateController {
         }
         events = userSession.getCalendarEvents(selectedTeam);
         allEvents = userSession.getAllEvents();
-        createCalendar(firstDay, maxDay, events);
+        createCalendar(firstDay, maxDay, allEvents);
         AppManager.fadeIn(calendarPane,500);
     }
 
@@ -206,7 +206,16 @@ public class CalendarScreenController extends MainTemplateController {
     public void teamSelection(ActionEvent actionEvent) {
         selectedTeam = (Team) teamSelectionCombo.getValue();
         clearCalendar();
-        createCalendar(firstDay, maxDay, events);
+        if (selectedTeam.getTeamName().equals("All Teams")) {
+            allEvents.clear();
+            ArrayList<Team> t = user.getUserTeams();
+            for (Team team : t) {
+                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+            }
+            createCalendar(firstDay, maxDay, allEvents);
+        } else {
+            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+            createCalendar(firstDay, maxDay, events);
+        }
     }
-
 }
