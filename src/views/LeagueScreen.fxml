@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
@@ -49,7 +49,7 @@
                            <children>
                               <ImageView fx:id="logoutIcon" fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/logout_white.png" />
+                                    <Image url="@../Resources/Images/white/logout_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -87,7 +87,7 @@
                            <children>
                               <ImageView fx:id="helpIcon" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/help_white.png" />
+                                    <Image url="@../Resources/Images/white/help_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -146,7 +146,7 @@
                            <children>
                               <ImageView fx:id="syncIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/sync_white.png" />
+                                    <Image url="@../Resources/Images/white/sync_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -181,7 +181,7 @@
                            <children>
                               <ImageView fx:id="notificationIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/notification_white.png" />
+                                    <Image url="@../Resources/Images/white/notification_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -238,7 +238,7 @@
                            <children>
                               <ImageView fx:id="profileIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../Resources/Images/profile_white.png" />
+                                    <Image url="@../Resources/Images/white/profile_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -301,7 +301,7 @@
                            <children>
                               <ImageView fx:id="homeIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/home_white.png" />
+                                    <Image url="@../Resources/Images/white/home_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -331,7 +331,7 @@
                            <children>
                               <ImageView fx:id="squadIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/squad_white.png" />
+                                    <Image url="@../Resources/Images/white/squad_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -361,7 +361,7 @@
                            <children>
                               <ImageView fx:id="calendarIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/calendar_white.png" />
+                                    <Image url="@../Resources/Images/white/calendar_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -391,7 +391,7 @@
                            <children>
                               <ImageView fx:id="gameplanIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/gameplan_white.png" />
+                                    <Image url="@../Resources/Images/white/gameplan_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -421,7 +421,7 @@
                            <children>
                               <ImageView fx:id="trainingIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/training_white.png" />
+                                    <Image url="@../Resources/Images/white/training_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -451,7 +451,7 @@
                            <children>
                               <ImageView fx:id="leagueIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/league_white.png" />
+                                    <Image url="@../Resources/Images/white/league_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -481,7 +481,7 @@
                            <children>
                               <ImageView fx:id="chatIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/chat_white.png" />
+                                    <Image url="@../Resources/Images/white/chat_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -511,7 +511,7 @@
                            <children>
                               <ImageView fx:id="settingsIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../Resources/Images/settings_white.png" />
+                                    <Image url="@../Resources/Images/white/settings_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -652,9 +652,10 @@
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="60.0" percentHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="450.0" percentHeight="55.0" prefHeight="450.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="60.0" minHeight="10.0" percentHeight="4.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="450.0" percentHeight="58.0" prefHeight="450.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="60.0" percentHeight="8.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="27.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <GridPane>
@@ -675,7 +676,7 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <GridPane maxHeight="450.0" maxWidth="726.0" prefHeight="500.0" prefWidth="653.0" GridPane.rowIndex="1">
+                        <GridPane maxHeight="450.0" maxWidth="726.0" prefHeight="500.0" prefWidth="653.0" GridPane.rowIndex="2">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" percentWidth="13.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="526.0" minWidth="10.0" percentWidth="74.0" prefWidth="526.0" />
@@ -748,16 +749,15 @@
                               </GridPane>
                            </children>
                         </GridPane>
-                        <GridPane maxHeight="50.0" GridPane.rowIndex="2">
+                        <GridPane maxHeight="50.0" GridPane.rowIndex="3">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label contentDisplay="CENTER" text="Team Overview" textFill="LIGHTGRAY">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="664.0" text="Team Overview" textFill="LIGHTGRAY">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
@@ -767,82 +767,87 @@
                               </Label>
                            </children>
                         </GridPane>
-                        <GridPane gridLinesVisible="true" styleClass="statsGrid" stylesheets="@../stylesheets/gridPaneStyleSheet.css" GridPane.rowIndex="3">
+                        <GridPane gridLinesVisible="true" styleClass="statsGrid" stylesheets="@../stylesheets/gridPaneStyleSheet.css" translateX="55.0" GridPane.rowIndex="4">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints maxHeight="42.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="150.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="42.0" minHeight="10.0" percentHeight="12.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="80.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="141.0" text="Placement" textFill="LIGHTGRAY">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="133.0" text="Wins" textFill="LIGHTGRAY" GridPane.columnIndex="1">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                               <Label fx:id="drawsNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="129.0" text="Draws" textFill="LIGHTGRAY" GridPane.columnIndex="2">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                               <Label fx:id="losesNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="137.0" text="Loses" textFill="LIGHTGRAY" GridPane.columnIndex="3">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                               <Label fx:id="pointsNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="137.0" text="Points" textFill="LIGHTGRAY" GridPane.columnIndex="4">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                               <Label fx:id="matchesLeftNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="127.0" text="Matches Left" textFill="LIGHTGRAY" GridPane.columnIndex="5">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                               <Label fx:id="placementLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="123.0" prefWidth="123.0" text="No" textFill="#a1289f" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="40.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                               <Label fx:id="winsLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="123.0" prefWidth="123.0" text="No" textFill="#a1289f" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="40.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                               <Label fx:id="drawsLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="123.0" prefWidth="123.0" text="No" textFill="#a1289f" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="40.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                               <Label fx:id="losesLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="123.0" prefWidth="123.0" text="No" textFill="#a1289f" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="40.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                               <Label fx:id="pointsLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="123.0" prefWidth="123.0" text="No" textFill="#a1289f" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="40.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                               <Label fx:id="matchesLeftLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="123.0" prefWidth="123.0" text="No" textFill="#a1289f" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                  <font>
-                                    <Font size="40.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                            </children>
                         </GridPane>
+                        <Label fx:id="roundNoLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="624.0" text="Round: " textFill="LIGHTGRAY" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
                      </children>
                   </GridPane>
                </children>

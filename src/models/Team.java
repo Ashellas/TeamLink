@@ -150,7 +150,7 @@ public class Team {
      * @return true if the id's of the both teams are the same
      */
     public boolean equals( Team otherTeam){
-        if( this.getTeamId() == otherTeam.getTeamId() ){
+        if( this.getDatabaseTeamId() == otherTeam.getDatabaseTeamId() ){
             return true;
         }
         else{

@@ -18,6 +18,7 @@ import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -167,6 +168,9 @@ public class LeagueScreenController extends MainTemplateController {
     private GridPane addPlayersGridPane;
 
     @FXML
+    private Label roundNoLabel;
+
+    @FXML
     private TableColumn<TeamMember, String> addPlayerNameColumn;
 
     @FXML
@@ -193,9 +197,19 @@ public class LeagueScreenController extends MainTemplateController {
     @FXML
     private Pane messagePane;
 
+    @FXML
+    private Button rightButtonFixture;
+
+    @FXML
+    private Button leftButtonFixture;
+
     private Team teamOfCoach;
 
     private Game gameClicked;
+
+    private int roundNo;
+
+    private final int FIRST_ROUND = 1;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
 
@@ -214,6 +228,8 @@ public class LeagueScreenController extends MainTemplateController {
     private ObservableList<TeamMember> userSelectedTeamMembers = FXCollections.observableArrayList();
 
     private ObservableList<TeamMember> userSelectedTeamMembersAtPlayersAddComboBox = FXCollections.observableArrayList();
+
+    private ObservableList<Game> gamesOfTheRound = FXCollections.observableArrayList();
 
     private HashMap<Game, ArrayList<TeamMember>> addedPlayers = new HashMap<Game, ArrayList<TeamMember>>();
 
@@ -382,7 +398,11 @@ public class LeagueScreenController extends MainTemplateController {
         scoreColumn.setCellValueFactory( new PropertyValueFactory<>("result"));
         awayColumn.setCellValueFactory( new PropertyValueFactory<>( "awayTeamName"));
 
-        fixtureTable.setItems( user.getGamesOfTheCurrentRound( userSelectedTeam.get(0)));
+        gamesOfTheRound = user.getGamesOfTheCurrentRound( userSelectedTeam.get(0) );
+
+        fixtureTable.setItems( gamesOfTheRound);
+
+        setFixtureButtonsAndLabel();
 
         //Add view buttons and its listener so user can reach to the details of the clicked match
         detailsColumn.setCellFactory( ButtonTableCell.<Game>forTableColumn("View", (Game gameClicked) -> {
@@ -524,18 +544,46 @@ public class LeagueScreenController extends MainTemplateController {
      */
     public void onTeamSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
+        teams = user.getStandings( userSelectedTeam.get(0));
+        gamesOfTheRound = user.getGamesOfTheCurrentRound( userSelectedTeam.get(0) );
         updateTeamOverviewTable();
         standingsTableView.refresh();
         fixtureTable.refresh();
+        setFixtureButtonsAndLabel();
+    }
+
+    public void setFixtureButtonsAndLabel(){
+        roundNo = gamesOfTheRound.get(0).getRoundNumber();
+
+        roundNoLabel.setText( "Round: " + roundNo);
+
+        if( roundNo >= userSelectedTeam.get(0).getTeamStats().getTotalRounds() ){
+            rightButtonFixture.setVisible( false);
+        }
+        else{
+            rightButtonFixture.setVisible( true);
+        }
+
+        if( roundNo <= FIRST_ROUND)
+        {
+            leftButtonFixture.setVisible( false);
+        }
+        else{
+            leftButtonFixture.setVisible( true);
+        }
     }
 
 
-    public void rightButtonFixtureClicked( ActionEvent event){
-
+    public void rightButtonFixtureClicked( ActionEvent event) throws SQLException {
+        gamesOfTheRound = DatabaseManager.getGames(user.getDatabaseConnection(), user.getStandings( userSelectedTeam.get(0) ), roundNo + 1, userSelectedTeam.get(0).getLeagueId() );
+        fixtureTable.refresh();
+        setFixtureButtonsAndLabel();
     }
 
-    public void leftButtonFixtureClicked( ActionEvent event){
-
+    public void leftButtonFixtureClicked( ActionEvent event) throws SQLException {
+        gamesOfTheRound = DatabaseManager.getGames(user.getDatabaseConnection(), user.getStandings( userSelectedTeam.get(0) ), roundNo - 1, userSelectedTeam.get(0).getLeagueId() );
+        fixtureTable.refresh();
+        setFixtureButtonsAndLabel();
     }
 
     public void onCloseDetailsButtonClicked( ActionEvent event){
