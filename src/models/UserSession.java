@@ -14,10 +14,10 @@ public class UserSession {
 
     private final Preferences preferences = Preferences.userRoot();
 
-
     private TeamMember user;
     private ArrayList<Team> userTeams;
     private HashMap<Team,ObservableList<Game>> gamesOfTheCurrentRound;
+    private HashMap<Team,ObservableList<Announcement>> announcements;
     private HashMap<Team,ObservableList<Team>> standings;//It can be designed better
     private ArrayList<Notification> notifications;
     private ArrayList<CalendarEvent> calendarEvents;
@@ -28,7 +28,8 @@ public class UserSession {
     private Date lastSync;
     private String styleSheet;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, ArrayList<CalendarEvent> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync, HashMap<Team,ObservableList<Announcement>> announcements) {
+        this.announcements = announcements;
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -151,5 +152,9 @@ public class UserSession {
             return true;
         }
         return false;
+    }
+
+    public ObservableList<Announcement> getAnnouncements(Team team) {
+        return announcements.get(team);
     }
 }

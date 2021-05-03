@@ -195,6 +195,7 @@ public class MainScreenController extends MainTemplateController{
             GridPane senderPane = createSenderInfoGrid(notification);
             notificationsGrid.add(senderPane, 0, notificationCount);
             notificationsGrid.add(customGrid, 1, notificationCount);
+
         }
         /*
         for(int i = 0; i < 5; i++){

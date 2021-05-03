@@ -9,19 +9,15 @@ public class Announcement {
     private String title;
     private String description;
     private TeamMember sender;
-    private Team team;
-    private String clickAction;
     private Date timeSent;
     private boolean isUnread; //TODO how can this be functional
     private ImageView senderProfilePhoto;
 
-    public Announcement(int announcementId, String title, String description, TeamMember sender, Team team, String clickAction, Date timeSent, boolean isUnread) {
+    public Announcement(int announcementId, String title, String description, TeamMember sender, Date timeSent, boolean isUnread) {
         this.announcementId = announcementId;
         this.title = title;
         this.description = description;
         this.sender = sender;
-        this.team = team;
-        this.clickAction = clickAction;
         this.timeSent = timeSent;
         this.isUnread = isUnread;
         if (sender.getProfilePhoto() != null) {
@@ -29,12 +25,10 @@ public class Announcement {
         }
     }
 
-    public Announcement(String title, String description, TeamMember sender, Team team, String clickAction) {
+    public Announcement(String title, String description, TeamMember sender) {
         this.title = title;
         this.description = description;
         this.sender = sender;
-        this.team = team;
-        this.clickAction = clickAction;
         this.timeSent = new Date();
         this.isUnread = true;
         if (sender.getProfilePhoto() != null) {
@@ -58,14 +52,6 @@ public class Announcement {
         return sender;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public String getClickAction() {
-        return clickAction;
-    }
-
     public Date getTimeSent() {
         return timeSent;
     }
@@ -79,7 +65,7 @@ public class Announcement {
     }
 }
 
-}
+
 
 
 
