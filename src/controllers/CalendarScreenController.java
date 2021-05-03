@@ -193,7 +193,7 @@ public class CalendarScreenController extends MainTemplateController {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team: t) {
-                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+                //allEvents.addAll  (DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
             }
             createCalendar(firstDay, maxDay, allEvents);
         }
