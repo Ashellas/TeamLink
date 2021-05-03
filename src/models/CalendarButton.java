@@ -26,10 +26,11 @@ public class CalendarButton extends Button {
         this.getStylesheets().add("/stylesheets/CalendarButton.css");
         this.setCursor(Cursor.HAND);
         this.getStyleClass().add(colorCode);
+
     }
     public CalendarButton (String title, String colorCode, UserSession user) {
         this.setText(title);
-        this.setStyle("-fx-background-color: " + colorCode);
+        this.getStyleClass().add(colorCode);
         this.user = user;
     }
 }

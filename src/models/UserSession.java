@@ -1,6 +1,7 @@
 package models;
 
 import javafx.application.HostServices;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
@@ -158,6 +159,24 @@ public class UserSession {
         return false;
     }
 
+    public ObservableList<TeamMember> getAdditionalPlayers( Team team )
+    {
+        ObservableList<TeamMember> playerList = FXCollections.observableArrayList();
+        for ( Team userTeam: userTeams )
+        {
+            if ( userTeam != team )
+            {
+                for ( TeamMember userTeamMember : userTeam.getTeamMembers() )
+                {
+                    if ( userTeamMember.getTeamRole().equals( "Player" ) )
+                    {
+                        playerList.add( userTeamMember );
+                    }
+                }
+            }
+        }
+        return  playerList;
+    }
     public ArrayList<CalendarEvent> getAllEvents() {
         ArrayList<CalendarEvent> result = new ArrayList<>();
         for (Team t: userTeams) {
@@ -166,4 +185,5 @@ public class UserSession {
         }
         return result;
     }
+
 }

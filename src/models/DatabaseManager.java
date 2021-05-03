@@ -792,11 +792,10 @@ public class DatabaseManager {
 
 
         preparedStatement = databaseConnection.prepareStatement("select * from league_games " +
-                "where DATE_FORMAT(game_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\"))" +
-                " and (home_team_id = ? or away_team_id = ?)");
+                "where DATE_FORMAT(game_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and (home_team_id = ? or away_team_id = ?)");
         preparedStatement.setDate(1, monthYear);
-        preparedStatement.setInt(2, team.getDatabaseTeamId());
-        preparedStatement.setInt(3, team.getDatabaseTeamId());
+        preparedStatement.setInt(2, team.getTeamId());
+        preparedStatement.setInt(3, team.getTeamId());
         ResultSet gamesResultSet = preparedStatement.executeQuery();
 
         while (gamesResultSet.next()){

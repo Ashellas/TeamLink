@@ -500,7 +500,7 @@ public class TrainingsScreenController extends MainTemplateController
                     {
                         for ( int i = 0; i < 3; i++ )
                         {
-                            RateHBox box = new RateHBox( ( user.getUserTeams().get( 0 ).getTeamPlayers().get( i + 7 ) ) );
+                            RateHBox box = new RateHBox( ( user.getUserTeams().get( 0 ).getMembersWithRole("Player").get( i + 7 ) ) );
 
                             box.setStyle( "-fx-padding: 20" );
                             rateListView.getItems().add( box );
