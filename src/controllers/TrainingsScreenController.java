@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +22,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -70,7 +72,7 @@ public class TrainingsScreenController extends MainTemplateController
     @FXML
     private CheckBox addOtherCheck;
 
-    // status of user panel
+    // status of the team panel
     @FXML
     private GridPane statsPane;
     @FXML
@@ -86,7 +88,7 @@ public class TrainingsScreenController extends MainTemplateController
     @FXML
     private Label overallAverage;
 
-    // rating screen
+    // training rating screen
     @FXML
     private GridPane ratingsPane;
     @FXML
@@ -96,7 +98,7 @@ public class TrainingsScreenController extends MainTemplateController
     @FXML
     private Button submitRatingButton;
 
-    // additional
+    // additional components
     @FXML
     private Button createTraining;
     @FXML
@@ -109,7 +111,7 @@ public class TrainingsScreenController extends MainTemplateController
 
     private Hyperlink link;
 
-    // trainings showing
+    // view trainings panel
     @FXML
     private GridPane trainingsGrid;
     @FXML
@@ -120,36 +122,42 @@ public class TrainingsScreenController extends MainTemplateController
     private Button backButton;
     @FXML
     private Button nextButton;
+    private double emptyHBoxWidth;
+    private Training trainingToRate;
 
     /**
-     * This method
+     * This method initializes the screen
+     * It gets the useful data from userSession and sets the properties of the page accordingly
      * @param userSession
      */
     @Override
     public void initData( UserSession userSession )
     {
+        // calls the super class' constructor
         super.initData( userSession );
-        trainingHolder = user.getTrainings();
 
-        trainingViewHolder = new ArrayList<>();
+        // gets the current trainings of the user
+        trainingHolder = user.getTrainings(); // holds the information of trainings
 
-        trainingCounter = 0;
+        // initializes and declares useful data
+        trainingViewHolder = new ArrayList<>(); // holds viewable trainings
+        ArrayList<Team> teamsOfUser = user.getUserTeams(); // gets the team of the user
+        trainingCounter = 0; // useful for the next training button
+        TeamStats t1; // get current team' stats
 
-        /**
+        // if there are more than 6 trainings to show
         if ( trainingHolder.size() > 6 )
         {
             nextButton.setDisable( false );
         }
-        */
 
-        // first, we will show players' stats and make other panes invisible
+        // to show players' stats and make other panes invisible
         createTrainingPane.setVisible( false );
         ratingsPane.setVisible( false );
         statsPane.setVisible( true );
         messageGridPane.setVisible( false );
 
-        // get current team' stats
-        TeamStats t1;
+        // adjust the dark & light theme
         if ( userSession.isStyleDark() )
         {
             darkThemeIcons();
@@ -158,21 +166,27 @@ public class TrainingsScreenController extends MainTemplateController
         {
             lightThemeIcons();
         }
+
+        // adjust the buttons
         if ( userSession.getUser().getTeamRole().equals( "Player" ) )
         {
             createTraining.setVisible( false ); // players cannot create trainings, hence it is not visible
         }
 
-        ArrayList<Team> teamsOfUser = user.getUserTeams();
+        // to make trainings viewable accordingly
+        Platform.runLater(() -> {
+            emptyHBoxWidth = emptyHBox.getWidth();
+            viewTrainings( trainingHolder );
+        });
 
-        // a player can choose between its teams
+        // a player can choose between teams
         for ( Team team: teamsOfUser )
         {
             chooseBetweenTeams.getItems().add( team );
         }
-        chooseBetweenTeams.setValue( user.getUserTeams().get( 0 ) );
+        chooseBetweenTeams.setValue( user.getUserTeams().get( 0 ) ); // chooses the first team manually
 
-        t1 = chooseBetweenTeams.getValue().getTeamStats();
+        t1 = chooseBetweenTeams.getValue().getTeamStats(); // gets the team selection
 
         // show team's stats in line chart and labels
         /**
@@ -198,13 +212,13 @@ public class TrainingsScreenController extends MainTemplateController
 
         // add items to the time picker components for training creation
         minuteChoice.getItems().addAll(00, 15, 30, 45);
-        hourChoice.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        hourChoice.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 );
         amPmChoice.getItems().addAll("AM", "PM");
 
+        // add items to the time picker components for training creation
         teamsList = FXCollections.observableArrayList( user.getUserTeams() );
         teamsBox.getItems().addAll( teamsList );
 
-        viewTrainings( trainingHolder );
     }
 
 
@@ -214,14 +228,13 @@ public class TrainingsScreenController extends MainTemplateController
      */
     public void newTraining( ActionEvent actionEvent ) {
         // makes the create training button invisible
-
         createTraining.setVisible( false );
 
         // adds training creation components to the page
         otherPlayersBox = new CheckComboBox<TeamMember>();
         otherPlayersBox.setVisible( false );
 
-        // get all players from the database
+        // get other players from the user
         ObservableList<TeamMember> otherPlayersList = user.getAdditionalPlayers( ( Team ) teamsBox.getValue() );
 
         // add the players to the box, and add the box to the pane
@@ -236,18 +249,21 @@ public class TrainingsScreenController extends MainTemplateController
 
     /**
      * This method submits the training and creates a training object
-     * it also makes training's properties visible on tableview
+     * it also makes training's properties viewable
      * @param actionEvent
      */
-    public void submitTrainingPushed( ActionEvent actionEvent )
-    {
+    public void submitTrainingPushed( ActionEvent actionEvent ) throws SQLException {
+
+        // checks if the submission is valid
         if ( isSubmitValid() )
         {
-            // messagePane.setVisible( true );
+            messagePane.setVisible( true );
             displayMessage( messagePane, "There is an error", true );
         }
+        // if every information is correct.
         else
         {
+            // creates a calendar object
             Calendar calendar = Calendar.getInstance();
             calendar.clear();
 
@@ -256,10 +272,10 @@ public class TrainingsScreenController extends MainTemplateController
             int minutes = minuteChoice.getValue();
             if ( amPmChoice.getValue().equals( "PM" ) )
             {
-                hours = hours + 12;
+                hours = hours + 12; // if the user choose pm we add +12 hours
             }
 
-            // create date object
+            // create the date object
             calendar.set(datePicker.getValue().getYear(), datePicker.getValue().getMonthValue() - 1, datePicker.getValue().getDayOfMonth(),
                     hours, minutes, 0);
             Date trainingDate = calendar.getTime();
@@ -268,42 +284,33 @@ public class TrainingsScreenController extends MainTemplateController
             Training training = new Training( nameHolder.getText(), trainingDate
                     , locationHolder.getText(), locationUrlHolder.getText(), ( Team ) teamsBox.getValue(), false );
 
+            // adds the training to the list of trainings and to the view
             trainingHolder.add( training );
             viewTrainings( trainingHolder );
 
             // adds new training to tableview's data
             data.add( training );
-            link = new Hyperlink( locationUrlHolder.getText() );
 
-            link.setOnAction( evt -> {
-                // add hyperlink
-                Runtime rt = Runtime.getRuntime();
-                String urlAddress = locationUrlHolder.getText();
-                try {
-                    rt.exec("rund1132 url.dll,FileProtocolHandler " + urlAddress);
-                } catch ( IOException e ) {
-                    e.printStackTrace();
-                }
-            });
-
-            // ToDo gönderiyo
+            // sends the additional players and the training to the database
             ObservableList<TeamMember> otherPlayersCheckedList = otherPlayersBox.getCheckModel().getCheckedItems();
-            // DatabaseManager.createTraining( user.getDatabaseConnection(), training, otherPlayersCheckedList );
+            DatabaseManager.createNewTraining( user.getDatabaseConnection(), training, ( ArrayList<TeamMember> ) otherPlayersCheckedList );
 
             // remove training pane and add stats pane again
             createTrainingPane.setVisible( false );
             generateView( training );
             refreshCreation();
             statsPane.setVisible( true );
+
+            // makes the create new training button visible again if the user is not a player
             if ( !(user.getUser().getTeamRole().equals( "Player") ) )
                 createTraining.setVisible( true );
 
+            // enables the button
             if ( trainingHolder.size() > 6 )
             {
                 nextButton.setDisable( false );
             }
         }
-
     }
 
     /**
@@ -318,37 +325,44 @@ public class TrainingsScreenController extends MainTemplateController
     }
 
     /**
-     * This method refreshes the text fields
+     * This method refreshes the text fields and combo boxes of the training creation panel
      */
     public void refreshCreation()
     {
+        // name holder
         nameHolder.setText( null );
         nameHolder.setPromptText( "Training name" );
 
+        // location holder
         locationHolder.setText( null );
         locationHolder.setPromptText( "Location address" );
 
+        // location URL
         locationUrlHolder.setText( null );
         locationUrlHolder.setPromptText( "Location URL" );
 
+        // date picker
         datePicker.setValue( null );
         datePicker.setPromptText( "Select date" );
 
+        // check box
         addOtherCheck.setDisable( true );
         addOtherCheck.setSelected( false );
 
+        // time picker
         amPmChoice.setValue( null );
         minuteChoice.setValue( null );
         hourChoice.setValue( null );
 
+        // team selection box
         teamsBox.setValue( null );
 
+        // choice combo box
         otherPlayersBox.setVisible( false );
         otherPlayersBox.getItems().clear();
-        // get all players from the database
-        ObservableList<TeamMember> otherPlayersList = user.getAdditionalPlayers( ( Team ) teamsBox.getValue() );
 
-        // add the players to the box, and add the box to the pane
+        // get all players from the user, add the players to the box, and add the box to the pane
+        ObservableList<TeamMember> otherPlayersList = user.getAdditionalPlayers( ( Team ) teamsBox.getValue() );
         otherPlayersBox.getItems().addAll( otherPlayersList );
     }
 
@@ -358,6 +372,7 @@ public class TrainingsScreenController extends MainTemplateController
      */
     public void cancelButtonPushed( ActionEvent actionEvent )
     {
+        // makes panes visible again
         createTrainingPane.setVisible( false );
         statsPane.setVisible( true );
         createTraining.setVisible( true );
@@ -370,22 +385,23 @@ public class TrainingsScreenController extends MainTemplateController
      */
     public void CancelRatingButtonPushed(ActionEvent actionEvent)
     {
+        // makes panes visible again
         ratingsPane.setVisible( false );
         statsPane.setVisible( true );
         cancelRatingButton.setVisible( false );
     }
 
     /**
-     * This method submits the ratings and sends the HashMap to the database
+     * This method submits the ratings and sends the information of the ratings to the database
      * @param actionEvent
      */
-    public void SubmitRatingButtonPushed(ActionEvent actionEvent)
-    {
-        ArrayList<RateHBox> trainingRatingHolder = new ArrayList<>();
+    public void SubmitRatingButtonPushed(ActionEvent actionEvent) throws SQLException {
+        ArrayList<RateHBox> trainingRatingHolder = new ArrayList<>(); // to hold ratings
 
         for ( RateHBox playersRatingBox: rateListView.getItems() )
-                trainingRatingHolder.add( playersRatingBox );
-        // ToDo: db'e yolla
+            trainingRatingHolder.add( playersRatingBox );
+        // send the RatingHBox to the database
+        DatabaseManager.savePlayerRatings( user.getDatabaseConnection(), trainingToRate, trainingRatingHolder );
     }
 
     /**
@@ -393,40 +409,59 @@ public class TrainingsScreenController extends MainTemplateController
      * @param actionEvent
      */
     public void addOtherCheckPushed(ActionEvent actionEvent) {
-        otherPlayersBox.setVisible( true );
+        otherPlayersBox.setVisible( true ); // makes choice combo box visible
     }
 
+    /**
+     * This method creates a new GridPane to view trainings
+     * The pane will show trainings' properties, and locationURL as an hyperlink
+     * If the user is a coach, it will have delete and rate buttons with their action events
+     * @param training
+     * @return the GridPane
+     */
     private GridPane generateView( Training training )
     {
+        // creates a new grid pane
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().addAll("mainGrid" );
 
+        // adds new rows and adjusted the rows
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight( 3 );
         row1.setMinHeight( 0 );
+
         RowConstraints row2 = new RowConstraints();
         row2.setPercentHeight( 20 );
         row2.setMinHeight( 0 );
+
         RowConstraints row3 = new RowConstraints();
         row3.setPercentHeight( 20 );
         row3.setMinHeight( 0 );
+
         RowConstraints row4 = new RowConstraints();
         row4.setPercentHeight( 18 );
         row4.setMinHeight( 0 );
+
         RowConstraints row5 = new RowConstraints();
         row5.setPercentHeight( 18 );
         row5.setMinHeight( 0 );
+
         RowConstraints row6 = new RowConstraints();
         row6.setPercentHeight( 18 );
         row6.setMinHeight( 0 );
+
         RowConstraints row7 = new RowConstraints();
         row7.setPercentHeight( 3 );
         row7.setMinHeight( 0 );
+
+        // adds it all to the grid
         gridPane.getRowConstraints().addAll( row1, row2, row3, row4, row5, row6, row7 );
 
+        // creates a button holder HBox
         HBox buttonHolder = new HBox();
         buttonHolder.setStyle( "-fx-alignment: CENTER" );
 
+        // creates labels to hold information of the training
         Label trainingName = new Label( training.getEventTitle() );
         trainingName.setPrefWidth( emptyHBox.getWidth() );
 
@@ -436,9 +471,11 @@ public class TrainingsScreenController extends MainTemplateController
         Label trainingLocation = new Label( training.getTrainingLocationName() );
         trainingLocation.setPrefWidth( emptyHBox.getWidth() );
 
+        // adds hyperlink to the locationURL
         Hyperlink trainingURL = new Hyperlink( "Open Training Location" );
         trainingURL.setPrefWidth( emptyHBox.getWidth() );
 
+        // catches some exceptions
         trainingURL.setOnAction( e -> {
             try {
                 Desktop.getDesktop().browse( new URL( training.getTrainingLocationLink() ).toURI());
@@ -449,20 +486,28 @@ public class TrainingsScreenController extends MainTemplateController
             }
         });
 
+        // creates the buttons
         Button deleteButton = new Button("Delete");
         deleteButton.setPrefWidth( emptyHBox.getWidth() * 0.35 );
         Button rateButton = new Button("Rate");
         rateButton.setPrefWidth( emptyHBox.getWidth() * 0.35 );
+        if ( training.getIsRated() )
+        {
+            // sets the texts
+            rateButton.setText( "Edit" );
+        }
 
         buttonHolder.getChildren().addAll( rateButton, deleteButton );
         buttonHolder.setSpacing( emptyHBox.getWidth() * 0.10 );
 
+        // sets the alignments
         GridPane.setHalignment( trainingName, HPos.CENTER);
         GridPane.setHalignment( trainingDateTime, HPos.CENTER );
         GridPane.setHalignment( trainingLocation, HPos.CENTER );
         GridPane.setHalignment( trainingURL, HPos.CENTER );
         GridPane.setHalignment( buttonHolder, HPos.CENTER );
 
+        // adds some styles
         trainingName.getStyleClass().add( "title" );
         trainingName.setStyle( "-fx-alignment: CENTER" );
         trainingDateTime.getStyleClass().add( "title" );
@@ -472,57 +517,74 @@ public class TrainingsScreenController extends MainTemplateController
         trainingURL.getStyleClass().add( "title" );
         trainingURL.setStyle( "-fx-alignment: CENTER" );
 
+        // adds the components to the pane
         gridPane.add( trainingName, 0,1 );
         gridPane.add( trainingDateTime, 0, 2 );
         gridPane.add( trainingLocation, 0, 3 );
         gridPane.add( trainingURL, 0, 4 );
 
+        // if the user is a coach, adds the buttons to the pane
         if ( !( user.getUser().getTeamRole().equals( "Player" ) ) )
             gridPane.add( buttonHolder, 0, 5 );
 
+        // sets the action of hte rate button:
         rateButton.setOnAction(
-                // TODO send rated players and their ratings to database
 
                 event -> {
+                    // refreshes the variables and makes the rating pane visible
+                    trainingToRate = training;
                     rateListView.getItems().clear();
                     cancelRatingButton.setVisible( true );
                     statsPane.setVisible( false );
                     createTrainingPane.setVisible( false );
                     ratingsPane.setVisible( true );
+
+                    // if the training is already rated:
                     if ( training.getIsRated() )
                     {
+                        // sets the texts
                         rateButton.setText( "Edit" );
                         submitRatingButton.setText( "Save changes" );
 
-                        // rateListView.getItems().add( ) );//ToDo db'den RateHBox gelecek arrayi
+                        // creates an array to get older player ratings
+                        ArrayList<RateHBox> oldPlayerRatings = new ArrayList<>();
+                        try {
+                            oldPlayerRatings = DatabaseManager.getPlayerRatings( user.getDatabaseConnection(), training );
+                            for ( RateHBox rateValue: oldPlayerRatings )
+                            {
+                                rateValue.setStyle( "-fx-padding: 20" );
+                                rateListView.getItems().add( rateValue );
+                            }
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
                     }
-                    else
+                    else // if it is the first time rating:
                     {
-                        for ( int i = 0; i < 3; i++ )
+                        ArrayList<TeamMember> playersToRate = new ArrayList<>();
+                        for ( TeamMember member: training.getTeam().getTeamMembers() )
                         {
-                            RateHBox box = new RateHBox( ( user.getUserTeams().get( 0 ).getMembersWithRole("Player").get( i + 7 ) ) );
+                            if ( member.getTeamRole().equals( "Player" ) )
+                                playersToRate.add( member );
+                        }
+                        playersToRate.addAll( DatabaseManager.getOtherPlayers( training) ); //???
+
+                        for ( TeamMember member: playersToRate )
+                        {
+                            RateHBox box = new RateHBox( member );
 
                             box.setStyle( "-fx-padding: 20" );
                             rateListView.getItems().add( box );
                         }
                     }
-                    // ObservableList<TeamMember> ratingList = FXCollections.observableArrayList();
-                    /**
-                     ObservableList<TeamMember> players =
-                     for (  )
-                     {
-                     rateHBox box = new rateHBox( ( "Player" ) );
-                     rateListView.getItems().add( box );
-                     }
-                     */
 
-
-                     System.out.println("HAHAha");
-                     }
-                     );
+                }
+        );
+        // sets the action of the delete button
         deleteButton.setOnAction(
                 event -> {
-
+                    // clears the viewing and removes the training from the list
                     clearViewTrainings();
                     trainingHolder.remove( training );
 
@@ -537,17 +599,19 @@ public class TrainingsScreenController extends MainTemplateController
         return gridPane;
     }
 
-    public void adjustAlignments()
-    {
-
-    }
+    /**
+     * Adds the viewable training objects to the grid pane's correct row and column
+     * @param list
+     */
     public void viewTrainings( ObservableList<Training> list )
     {
         for ( int i = 1; i < 7; i++ )
         {
+            // calculate the row and column
             int row = ( ( i / 4 ) + 1 ) * 2 - 1;
             int column = ( 2 * i - 1 ) % 6;
 
+            // checks if there are more trainings
             if ( list.size() >= i + trainingCounter )
             {
                 Training training = list.get(i + trainingCounter - 1);
@@ -558,6 +622,7 @@ public class TrainingsScreenController extends MainTemplateController
             }
             else
             {
+                // if there are nı trainings to show, it will show empty panes
                 GridPane grid = new GridPane();
                 grid.getStyleClass().addAll("mainGrid");
                 trainingsGrid.add( grid, column, row );
@@ -566,19 +631,29 @@ public class TrainingsScreenController extends MainTemplateController
         }
     }
 
+    /**
+     * Clears the training view holder (helpful when a training was deleted)
+     */
     public void clearViewTrainings()
     {
         trainingViewHolder.clear();
     }
 
+    /**
+     * Makes the choose from other teams check enable (helpful for training creation page)
+     */
     public void mainTeamBoxSelected()
     {
         addOtherCheck.setDisable( false );
     }
 
+    /**
+     * Shows the previous training
+     * @param actionEvent
+     */
     public void backButtonPushed( ActionEvent actionEvent )
     {
-        if ( trainingCounter > 0 )
+        if ( trainingCounter > 0 ) // checks if there is one
         {
             trainingCounter--;
             if ( trainingCounter == 0 ) {
@@ -593,17 +668,20 @@ public class TrainingsScreenController extends MainTemplateController
         viewTrainings( trainingHolder );
     }
 
-
+    /**
+     * Shows the next training
+     * @param actionEvent
+     */
     public void nextButtonPushed( ActionEvent actionEvent )
     {
         trainingCounter++;
         if ( trainingHolder.size() < trainingCounter + 7 )
         {
-            nextButton.setDisable(true);
+            nextButton.setDisable( true ); // if there is nothing more to show
         }
 
         backButton.setDisable( false );
-        clearViewTrainings();
-        viewTrainings( trainingHolder );
+        clearViewTrainings(); // removes the last training
+        viewTrainings( trainingHolder ); // shows the next training
     }
 }
