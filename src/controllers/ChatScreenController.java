@@ -87,18 +87,19 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     public void setUpAnnouncementsGrid() {
         Announcement announcement;
-        int extraAnnouncementIndex;
+        int extraAnnouncement;
         int extras;
 
-        extraAnnouncementIndex = currentIndex - 1;
+        extraAnnouncement = currentIndex;
         extras = 0;
 
-        for (int i = 5; i > 0; i--) {
-            if (extraAnnouncementIndex >= 0) {
-                //announcement  = DatabaseManager.getAnnouncement(user.getDatabaseConnection(), teamBox.getValue(), extraAnnouncementIndex);
+        for (int i = 0; i < 5; i--) {
+            if (currentIndex < 5 && extraAnnouncement < 5) {
+                announcement = user.getAnnouncements(teamBox.getValue()).get(extraAnnouncement);
+
             }
             else {
-                announcement = user.getAnnouncements(teamBox.getValue()).get(5-extras);
+                //announcement  = DatabaseManager.getAnnouncement(user.getDatabaseConnection(), teamBox.getValue(), extras);
                 extras++;
             }
             //GridPane customGrid = createCustomAnnouncementGridPane(announcement.getTitle(), announcement.getDescription());
@@ -106,7 +107,7 @@ public class ChatScreenController extends MainTemplateController implements Init
             //announcementsGrid.add(senderPane, 0, i-1);
             //announcementsGrid.add(customGrid, 1, i-1);
 
-            extraAnnouncementIndex--;
+            extraAnnouncement++;
         }
     }
 
