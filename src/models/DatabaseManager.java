@@ -863,7 +863,7 @@ public class DatabaseManager {
     }
 
 
-    public static void saveBasketballStats(UserSession user, TeamMember player, BasketballStats basketballStats, Game game) throws SQLException {
+    public static boolean saveBasketballStats(UserSession user, TeamMember player, BasketballStats basketballStats, Game game) throws SQLException {
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO basketball_game_stats(points, assists, rebounds, steals, blocks,member_id,game_id)" +
                 "values (?,?,?,?,?,?,?) ");
         prepStmt.setInt(1, basketballStats.getPoints());
@@ -874,10 +874,14 @@ public class DatabaseManager {
         prepStmt.setInt(6, player.getMemberId());
         prepStmt.setInt(7, game.getCalendarEventId());
 
-        prepStmt.executeUpdate();
+        int row = prepStmt.executeUpdate();
+        if(row > 0){
+            return true;
+        }
+        return false;
     }
 
-    public static void saveFootball(UserSession user, TeamMember player, FootballStats basketballStats, Game game) throws SQLException {
+    public static boolean saveFootball(UserSession user, TeamMember player, FootballStats basketballStats, Game game) throws SQLException {
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO football_game_stats(goals, assists, saves, yellowcard, redcard, member_id, game_id)" +
                 "values (?,?,?,?,?,?,?) ");
         prepStmt.setInt(1, basketballStats.getGoalsScored());
@@ -888,6 +892,10 @@ public class DatabaseManager {
         prepStmt.setInt(6, player.getMemberId());
         prepStmt.setInt(7, game.getCalendarEventId());
 
-        prepStmt.executeUpdate();
+        int row = prepStmt.executeUpdate();
+        if(row > 0){
+            return true;
+        }
+        return false;
     }
 }

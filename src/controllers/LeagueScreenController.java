@@ -509,11 +509,6 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void setStatisticEnterButtonsOfPlayerStatistics(){
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
-            System.out.println( player.getPointsOrGoalsScored());
-            System.out.println( player.getAssists());
-            System.out.println( player.getReboundsOrSavesMade());
-            System.out.println( player.getStealsOrYellowCard());
-            System.out.println( player.getBlocksOrRedCard());
 
             if( player.getPointsOrGoalsScored() == null || !player.getPointsOrGoalsScored().matches("[0-9]+") || player.getPointsOrGoalsScored().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
