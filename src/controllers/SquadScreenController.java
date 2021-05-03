@@ -170,16 +170,23 @@ public class SquadScreenController extends MainTemplateController{
         }
 
         detailedViewColumn.setCellFactory(ButtonTableCell.<TeamMember>forTableColumn("View", (TeamMember p) -> {
-            showPane(p);
+            try {
+                showPane(p);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             return p;
         }));
     }
 
-    private void showPane(TeamMember member) {
+    private void showPane(TeamMember member) throws SQLException {
         disablePane.setVisible(true);
         detailsPane.setVisible(true);
-        if(member.getProfilePhoto() != null){
-            playerPhotoView.setImage(member.getProfilePhoto().getImage());
+
+
+        Image photo = DatabaseManager.getProfilePhoto(user.getDatabaseConnection(), member.getMemberId());
+        if( photo != null){
+            playerPhotoView.setImage(photo);
         }
         else{
             if(user.isStyleDark()) {

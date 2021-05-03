@@ -893,767 +893,867 @@ teamlink|schema||atak||grant option|G</Grants>
     <user id="276" parent="1" name="atak"/>
     <table id="277" parent="3" name="basketball_game_stats"/>
     <table id="278" parent="3" name="calendar_events"/>
-    <table id="279" parent="3" name="football_game_stats"/>
-    <table id="280" parent="3" name="gameplans"/>
-    <table id="281" parent="3" name="league_games"/>
-    <table id="282" parent="3" name="league_teams"/>
-    <table id="283" parent="3" name="leagues"/>
-    <table id="284" parent="3" name="notifications"/>
-    <table id="285" parent="3" name="team_and_members"/>
-    <table id="286" parent="3" name="team_applications"/>
-    <table id="287" parent="3" name="team_members"/>
-    <table id="288" parent="3" name="team_performances"/>
-    <table id="289" parent="3" name="teams"/>
-    <table id="290" parent="3" name="training_additional_players"/>
-    <table id="291" parent="3" name="training_performances"/>
-    <table id="292" parent="3" name="trainings"/>
-    <column id="293" parent="277" name="id">
+    <table id="279" parent="3" name="file_storage"/>
+    <table id="280" parent="3" name="football_game_stats"/>
+    <table id="281" parent="3" name="gameplans"/>
+    <table id="282" parent="3" name="league_games"/>
+    <table id="283" parent="3" name="league_teams"/>
+    <table id="284" parent="3" name="leagues"/>
+    <table id="285" parent="3" name="notifications"/>
+    <table id="286" parent="3" name="team_and_gameplans"/>
+    <table id="287" parent="3" name="team_and_members"/>
+    <table id="288" parent="3" name="team_applications"/>
+    <table id="289" parent="3" name="team_members"/>
+    <table id="290" parent="3" name="team_performances"/>
+    <table id="291" parent="3" name="teams"/>
+    <table id="292" parent="3" name="training_additional_players"/>
+    <table id="293" parent="3" name="training_performances"/>
+    <table id="294" parent="3" name="trainings"/>
+    <column id="295" parent="277" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="294" parent="277" name="member_id">
+    <column id="296" parent="277" name="member_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="295" parent="277" name="game_id">
+    <column id="297" parent="277" name="game_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="296" parent="277" name="points">
+    <column id="298" parent="277" name="points">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="297" parent="277" name="assists">
+    <column id="299" parent="277" name="assists">
       <Position>5</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="298" parent="277" name="rebounds">
+    <column id="300" parent="277" name="rebounds">
       <Position>6</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="299" parent="277" name="blocks">
+    <column id="301" parent="277" name="blocks">
       <Position>7</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="300" parent="277" name="steals">
+    <column id="302" parent="277" name="steals">
       <Position>8</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="301" parent="277" name="member_id">
+    <index id="303" parent="277" name="member_id">
       <ColNames>member_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="302" parent="277" name="game_id">
+    <index id="304" parent="277" name="game_id">
       <ColNames>game_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="303" parent="277" name="PRIMARY">
+    <key id="305" parent="277" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="304" parent="277" name="basketball_game_stats_ibfk_1">
+    <foreign-key id="306" parent="277" name="basketball_game_stats_ibfk_1">
       <ColNames>member_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="305" parent="277" name="basketball_game_stats_ibfk_2">
+    <foreign-key id="307" parent="277" name="basketball_game_stats_ibfk_2">
       <ColNames>game_id</ColNames>
       <RefTableName>league_games</RefTableName>
       <RefColNames>game_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="306" parent="278" name="id">
+    <column id="308" parent="278" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="307" parent="278" name="title">
+    <column id="309" parent="278" name="title">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="308" parent="278" name="event_date_time">
+    <column id="310" parent="278" name="event_date_time">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="309" parent="278" name="action_link">
+    <column id="311" parent="278" name="action_link">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <key id="310" parent="278" name="PRIMARY">
+    <key id="312" parent="278" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="311" parent="279" name="id">
+    <column id="313" parent="279" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="312" parent="279" name="member_id">
+    <column id="314" parent="279" name="file">
       <Position>2</Position>
-      <DataType>int|0s</DataType>
+      <DataType>mediumblob|0s</DataType>
     </column>
-    <column id="313" parent="279" name="game_id">
-      <Position>3</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="314" parent="279" name="goals">
-      <Position>4</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="315" parent="279" name="assists">
-      <Position>5</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="316" parent="279" name="saves">
-      <Position>6</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="317" parent="279" name="yellowcard">
-      <Position>7</Position>
-      <DataType>tinyint(1)|0s</DataType>
-    </column>
-    <column id="318" parent="279" name="redcard">
-      <Position>8</Position>
-      <DataType>tinyint(1)|0s</DataType>
-    </column>
-    <index id="319" parent="279" name="member_id">
-      <ColNames>member_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="320" parent="279" name="game_id">
-      <ColNames>game_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="321" parent="279" name="PRIMARY">
+    <key id="315" parent="279" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="322" parent="279" name="football_game_stats_ibfk_1">
+    <column id="316" parent="280" name="id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="317" parent="280" name="member_id">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="318" parent="280" name="game_id">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="319" parent="280" name="goals">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="320" parent="280" name="assists">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="321" parent="280" name="saves">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="322" parent="280" name="yellowcard">
+      <Position>7</Position>
+      <DataType>tinyint(1)|0s</DataType>
+    </column>
+    <column id="323" parent="280" name="redcard">
+      <Position>8</Position>
+      <DataType>tinyint(1)|0s</DataType>
+    </column>
+    <index id="324" parent="280" name="member_id">
+      <ColNames>member_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="325" parent="280" name="game_id">
+      <ColNames>game_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="326" parent="280" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="327" parent="280" name="football_game_stats_ibfk_1">
       <ColNames>member_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="323" parent="279" name="football_game_stats_ibfk_2">
+    <foreign-key id="328" parent="280" name="football_game_stats_ibfk_2">
       <ColNames>game_id</ColNames>
       <RefTableName>league_games</RefTableName>
       <RefColNames>game_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="324" parent="280" name="gameplan_id">
+    <column id="329" parent="281" name="gameplan_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="325" parent="280" name="title">
+    <column id="330" parent="281" name="title">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="326" parent="280" name="version">
+    <column id="331" parent="281" name="version">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="327" parent="280" name="gameplan_pdf">
+    <column id="332" parent="281" name="team_id">
       <Position>4</Position>
-      <DataType>mediumblob|0s</DataType>
+      <DataType>int|0s</DataType>
     </column>
-    <column id="328" parent="280" name="team_id">
+    <column id="333" parent="281" name="file_id">
       <Position>5</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="329" parent="280" name="team_id">
+    <index id="334" parent="281" name="team_id">
       <ColNames>team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="330" parent="280" name="PRIMARY">
+    <index id="335" parent="281" name="file_id">
+      <ColNames>file_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="336" parent="281" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>gameplan_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="331" parent="280" name="gameplans_ibfk_1">
+    <foreign-key id="337" parent="281" name="gameplans_ibfk_2">
       <ColNames>team_id</ColNames>
       <RefTableName>teams</RefTableName>
       <RefColNames>team_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="332" parent="281" name="game_id">
+    <foreign-key id="338" parent="281" name="gameplans_ibfk_1">
+      <ColNames>file_id</ColNames>
+      <RefTableName>file_storage</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="339" parent="282" name="game_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="333" parent="281" name="league_id">
+    <column id="340" parent="282" name="league_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="334" parent="281" name="home_team_id">
+    <column id="341" parent="282" name="home_team_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="335" parent="281" name="away_team_id">
+    <column id="342" parent="282" name="away_team_id">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="336" parent="281" name="round_no">
+    <column id="343" parent="282" name="round_no">
       <Position>5</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="337" parent="281" name="game_date_time">
+    <column id="344" parent="282" name="game_date_time">
       <Position>6</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="338" parent="281" name="game_location_name">
+    <column id="345" parent="282" name="game_location_name">
       <Position>7</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="339" parent="281" name="game_location_link">
+    <column id="346" parent="282" name="game_location_link">
       <Position>8</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="340" parent="281" name="final_score">
+    <column id="347" parent="282" name="final_score">
       <Position>9</Position>
       <DataType>varchar(10)|0s</DataType>
     </column>
-    <index id="341" parent="281" name="league_id">
+    <column id="348" parent="282" name="file_id">
+      <Position>10</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <index id="349" parent="282" name="league_id">
       <ColNames>league_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="342" parent="281" name="home_team_id">
+    <index id="350" parent="282" name="home_team_id">
       <ColNames>home_team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="343" parent="281" name="away_team_id">
+    <index id="351" parent="282" name="away_team_id">
       <ColNames>away_team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="344" parent="281" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>game_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="345" parent="281" name="league_games_ibfk_1">
-      <ColNames>league_id</ColNames>
-      <RefTableName>leagues</RefTableName>
-      <RefColNames>league_id</RefColNames>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <foreign-key id="346" parent="281" name="league_games_ibfk_2">
-      <ColNames>home_team_id</ColNames>
-      <RefTableName>league_teams</RefTableName>
-      <RefColNames>league_team_id</RefColNames>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <foreign-key id="347" parent="281" name="league_games_ibfk_3">
-      <ColNames>away_team_id</ColNames>
-      <RefTableName>league_teams</RefTableName>
-      <RefColNames>league_team_id</RefColNames>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <column id="348" parent="282" name="league_team_id">
-      <Position>1</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>null</SequenceIdentity>
-    </column>
-    <column id="349" parent="282" name="league_id">
-      <Position>2</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="350" parent="282" name="team_name">
-      <Position>3</Position>
-      <DataType>varchar(30)|0s</DataType>
-    </column>
-    <column id="351" parent="282" name="abbrevation">
-      <Position>4</Position>
-      <DataType>varchar(3)|0s</DataType>
-    </column>
-    <index id="352" parent="282" name="league_id">
-      <ColNames>league_id</ColNames>
+    <index id="352" parent="282" name="file_id">
+      <ColNames>file_id</ColNames>
       <Type>btree</Type>
     </index>
     <key id="353" parent="282" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>league_team_id</ColNames>
+      <ColNames>game_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="354" parent="282" name="league_teams_ibfk_1">
+    <foreign-key id="354" parent="282" name="league_games_ibfk_2">
       <ColNames>league_id</ColNames>
       <RefTableName>leagues</RefTableName>
       <RefColNames>league_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="355" parent="283" name="league_id">
+    <foreign-key id="355" parent="282" name="league_games_ibfk_3">
+      <ColNames>home_team_id</ColNames>
+      <RefTableName>league_teams</RefTableName>
+      <RefColNames>league_team_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="356" parent="282" name="league_games_ibfk_4">
+      <ColNames>away_team_id</ColNames>
+      <RefTableName>league_teams</RefTableName>
+      <RefColNames>league_team_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="357" parent="282" name="league_games_ibfk_1">
+      <ColNames>file_id</ColNames>
+      <RefTableName>file_storage</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="358" parent="283" name="league_team_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="356" parent="283" name="city">
+    <column id="359" parent="283" name="league_id">
       <Position>2</Position>
-      <DataType>varchar(20)|0s</DataType>
+      <DataType>int|0s</DataType>
     </column>
-    <column id="357" parent="283" name="title">
+    <column id="360" parent="283" name="team_name">
       <Position>3</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="358" parent="283" name="current_round">
+    <column id="361" parent="283" name="abbrevation">
+      <Position>4</Position>
+      <DataType>varchar(3)|0s</DataType>
+    </column>
+    <index id="362" parent="283" name="league_id">
+      <ColNames>league_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="363" parent="283" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>league_team_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="364" parent="283" name="league_teams_ibfk_1">
+      <ColNames>league_id</ColNames>
+      <RefTableName>leagues</RefTableName>
+      <RefColNames>league_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="365" parent="284" name="league_id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="366" parent="284" name="city">
+      <Position>2</Position>
+      <DataType>varchar(20)|0s</DataType>
+    </column>
+    <column id="367" parent="284" name="title">
+      <Position>3</Position>
+      <DataType>varchar(30)|0s</DataType>
+    </column>
+    <column id="368" parent="284" name="current_round">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="359" parent="283" name="age_group">
+    <column id="369" parent="284" name="age_group">
       <Position>5</Position>
       <DataType>varchar(10)|0s</DataType>
     </column>
-    <column id="360" parent="283" name="total_rounds">
+    <column id="370" parent="284" name="total_rounds">
       <Position>6</Position>
       <DataType>int|0s</DataType>
     </column>
-    <key id="361" parent="283" name="PRIMARY">
+    <key id="371" parent="284" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>league_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="362" parent="284" name="id">
+    <column id="372" parent="285" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="363" parent="284" name="recipent_id">
+    <column id="373" parent="285" name="recipent_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="364" parent="284" name="sender_id">
+    <column id="374" parent="285" name="sender_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="365" parent="284" name="title">
+    <column id="375" parent="285" name="title">
       <Position>4</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="366" parent="284" name="message">
+    <column id="376" parent="285" name="message">
       <Position>5</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="367" parent="284" name="is_unread">
+    <column id="377" parent="285" name="is_unread">
       <Position>6</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="368" parent="284" name="time_sent">
+    <column id="378" parent="285" name="time_sent">
       <Position>7</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="369" parent="284" name="click_action">
+    <column id="379" parent="285" name="click_action">
       <Position>8</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <index id="370" parent="284" name="recipent_id">
+    <index id="380" parent="285" name="recipent_id">
       <ColNames>recipent_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="371" parent="284" name="sender_id">
+    <index id="381" parent="285" name="sender_id">
       <ColNames>sender_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="372" parent="284" name="PRIMARY">
+    <key id="382" parent="285" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="373" parent="284" name="notifications_ibfk_1">
+    <foreign-key id="383" parent="285" name="notifications_ibfk_1">
       <ColNames>recipent_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="374" parent="284" name="notifications_ibfk_2">
+    <foreign-key id="384" parent="285" name="notifications_ibfk_2">
       <ColNames>sender_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="375" parent="285" name="id">
+    <column id="385" parent="286" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="376" parent="285" name="team_member_id">
+    <column id="386" parent="286" name="gameplan_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="377" parent="285" name="team_id">
+    <column id="387" parent="286" name="team_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="378" parent="285" name="team_member_id">
-      <ColNames>team_member_id</ColNames>
+    <index id="388" parent="286" name="gameplan_id">
+      <ColNames>gameplan_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="379" parent="285" name="team_id">
+    <index id="389" parent="286" name="team_id">
       <ColNames>team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="380" parent="285" name="PRIMARY">
+    <key id="390" parent="286" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="381" parent="285" name="team_and_members_ibfk_1">
-      <ColNames>team_member_id</ColNames>
-      <RefTableName>team_members</RefTableName>
-      <RefColNames>member_id</RefColNames>
+    <foreign-key id="391" parent="286" name="team_and_gameplans_ibfk_1">
+      <ColNames>gameplan_id</ColNames>
+      <RefTableName>gameplans</RefTableName>
+      <RefColNames>gameplan_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="382" parent="285" name="team_and_members_ibfk_2">
+    <foreign-key id="392" parent="286" name="team_and_gameplans_ibfk_2">
       <ColNames>team_id</ColNames>
       <RefTableName>teams</RefTableName>
       <RefColNames>team_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="383" parent="286" name="id">
+    <column id="393" parent="287" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="384" parent="286" name="isDeclined">
+    <column id="394" parent="287" name="team_member_id">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="395" parent="287" name="team_id">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <index id="396" parent="287" name="team_member_id">
+      <ColNames>team_member_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="397" parent="287" name="team_id">
+      <ColNames>team_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="398" parent="287" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="399" parent="287" name="team_and_members_ibfk_1">
+      <ColNames>team_member_id</ColNames>
+      <RefTableName>team_members</RefTableName>
+      <RefColNames>member_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="400" parent="287" name="team_and_members_ibfk_2">
+      <ColNames>team_id</ColNames>
+      <RefTableName>teams</RefTableName>
+      <RefColNames>team_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="401" parent="288" name="id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="402" parent="288" name="isDeclined">
       <Position>2</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="385" parent="286" name="applicant_id">
+    <column id="403" parent="288" name="applicant_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="386" parent="286" name="team_id">
+    <column id="404" parent="288" name="team_id">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="387" parent="286" name="applicant_id">
+    <index id="405" parent="288" name="applicant_id">
       <ColNames>applicant_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="388" parent="286" name="team_id">
+    <index id="406" parent="288" name="team_id">
       <ColNames>team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="389" parent="286" name="PRIMARY">
+    <key id="407" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="390" parent="286" name="team_applications_ibfk_1">
+    <foreign-key id="408" parent="288" name="team_applications_ibfk_1">
       <ColNames>applicant_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="391" parent="286" name="team_applications_ibfk_2">
+    <foreign-key id="409" parent="288" name="team_applications_ibfk_2">
       <ColNames>team_id</ColNames>
       <RefTableName>teams</RefTableName>
       <RefColNames>team_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="392" parent="287" name="member_id">
+    <column id="410" parent="289" name="member_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="393" parent="287" name="first_name">
+    <column id="411" parent="289" name="first_name">
       <Position>2</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="394" parent="287" name="last_name">
+    <column id="412" parent="289" name="last_name">
       <Position>3</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="395" parent="287" name="password">
+    <column id="413" parent="289" name="password">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="396" parent="287" name="birthday">
+    <column id="414" parent="289" name="birthday">
       <Position>5</Position>
       <DataType>date|0s</DataType>
     </column>
-    <column id="397" parent="287" name="team_role">
+    <column id="415" parent="289" name="team_role">
       <Position>6</Position>
       <DataType>varchar(15)|0s</DataType>
     </column>
-    <column id="398" parent="287" name="sport_branch">
+    <column id="416" parent="289" name="sport_branch">
       <Position>7</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="399" parent="287" name="email">
+    <column id="417" parent="289" name="email">
       <Position>8</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="400" parent="287" name="photo">
+    <column id="418" parent="289" name="file_id">
       <Position>9</Position>
-      <DataType>mediumblob|0s</DataType>
+      <DataType>int|0s</DataType>
     </column>
-    <key id="401" parent="287" name="PRIMARY">
+    <index id="419" parent="289" name="file_id">
+      <ColNames>file_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="420" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>member_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="402" parent="288" name="id">
+    <foreign-key id="421" parent="289" name="team_members_ibfk_1">
+      <ColNames>file_id</ColNames>
+      <RefTableName>file_storage</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="422" parent="290" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="403" parent="288" name="league_id">
+    <column id="423" parent="290" name="league_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="404" parent="288" name="league_team_id">
+    <column id="424" parent="290" name="league_team_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="405" parent="288" name="games_played">
+    <column id="425" parent="290" name="games_played">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="406" parent="288" name="games_won">
+    <column id="426" parent="290" name="games_won">
       <Position>5</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="407" parent="288" name="games_drawn">
+    <column id="427" parent="290" name="games_drawn">
       <Position>6</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="408" parent="288" name="games_lost">
+    <column id="428" parent="290" name="games_lost">
       <Position>7</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="409" parent="288" name="points">
+    <column id="429" parent="290" name="points">
       <Position>8</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="410" parent="288" name="league_id">
+    <index id="430" parent="290" name="league_id">
       <ColNames>league_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="411" parent="288" name="league_team_id">
+    <index id="431" parent="290" name="league_team_id">
       <ColNames>league_team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="412" parent="288" name="PRIMARY">
+    <key id="432" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="413" parent="288" name="team_performances_ibfk_2">
+    <foreign-key id="433" parent="290" name="team_performances_ibfk_2">
       <ColNames>league_id</ColNames>
       <RefTableName>leagues</RefTableName>
       <RefColNames>league_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="414" parent="288" name="team_performances_ibfk_1">
+    <foreign-key id="434" parent="290" name="team_performances_ibfk_1">
       <ColNames>league_team_id</ColNames>
       <RefTableName>league_teams</RefTableName>
       <RefColNames>league_team_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="415" parent="289" name="team_id">
+    <column id="435" parent="291" name="team_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="416" parent="289" name="database_team_id">
+    <column id="436" parent="291" name="database_team_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="417" parent="289" name="league_id">
+    <column id="437" parent="291" name="league_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="418" parent="289" name="team_name">
+    <column id="438" parent="291" name="team_name">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="419" parent="289" name="city">
+    <column id="439" parent="291" name="city">
       <Position>5</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="420" parent="289" name="abbrevation">
+    <column id="440" parent="291" name="abbrevation">
       <Position>6</Position>
       <DataType>varchar(3)|0s</DataType>
     </column>
-    <column id="421" parent="289" name="team_code">
+    <column id="441" parent="291" name="team_code">
       <Position>7</Position>
       <DataType>varchar(8)|0s</DataType>
     </column>
-    <column id="422" parent="289" name="age_group">
+    <column id="442" parent="291" name="age_group">
       <Position>8</Position>
       <DataType>varchar(5)|0s</DataType>
     </column>
-    <column id="423" parent="289" name="sport_branch">
+    <column id="443" parent="291" name="sport_branch">
       <Position>9</Position>
       <DataType>varchar(20)|0s</DataType>
     </column>
-    <column id="424" parent="289" name="team_logo">
+    <column id="444" parent="291" name="file_id">
       <Position>10</Position>
-      <DataType>mediumblob|0s</DataType>
+      <DataType>int|0s</DataType>
     </column>
-    <index id="425" parent="289" name="database_team_id">
+    <index id="445" parent="291" name="database_team_id">
       <ColNames>database_team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="426" parent="289" name="league_id">
+    <index id="446" parent="291" name="league_id">
       <ColNames>league_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="427" parent="289" name="PRIMARY">
+    <index id="447" parent="291" name="file_id">
+      <ColNames>file_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="448" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>team_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="428" parent="289" name="teams_ibfk_2">
+    <foreign-key id="449" parent="291" name="teams_ibfk_3">
       <ColNames>database_team_id</ColNames>
       <RefTableName>league_teams</RefTableName>
       <RefColNames>league_team_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="429" parent="289" name="teams_ibfk_1">
+    <foreign-key id="450" parent="291" name="teams_ibfk_2">
       <ColNames>league_id</ColNames>
       <RefTableName>leagues</RefTableName>
       <RefColNames>league_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="430" parent="290" name="id">
+    <foreign-key id="451" parent="291" name="teams_ibfk_1">
+      <ColNames>file_id</ColNames>
+      <RefTableName>file_storage</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="452" parent="292" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="431" parent="290" name="training_id">
+    <column id="453" parent="292" name="training_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="432" parent="290" name="member_id">
+    <column id="454" parent="292" name="member_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="433" parent="290" name="training_id">
+    <index id="455" parent="292" name="training_id">
       <ColNames>training_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="434" parent="290" name="member_id">
+    <index id="456" parent="292" name="member_id">
       <ColNames>member_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="435" parent="290" name="PRIMARY">
+    <key id="457" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="436" parent="290" name="training_additional_players_ibfk_1">
+    <foreign-key id="458" parent="292" name="training_additional_players_ibfk_1">
       <ColNames>training_id</ColNames>
       <RefTableName>trainings</RefTableName>
       <RefColNames>training_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="437" parent="290" name="training_additional_players_ibfk_2">
+    <foreign-key id="459" parent="292" name="training_additional_players_ibfk_2">
       <ColNames>member_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="438" parent="291" name="id">
+    <column id="460" parent="293" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="439" parent="291" name="training_id">
+    <column id="461" parent="293" name="training_id">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="440" parent="291" name="member_id">
+    <column id="462" parent="293" name="member_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="441" parent="291" name="rating">
+    <column id="463" parent="293" name="rating">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="442" parent="291" name="training_id">
+    <index id="464" parent="293" name="training_id">
       <ColNames>training_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="443" parent="291" name="member_id">
+    <index id="465" parent="293" name="member_id">
       <ColNames>member_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="444" parent="291" name="PRIMARY">
+    <key id="466" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="445" parent="291" name="training_performances_ibfk_1">
+    <foreign-key id="467" parent="293" name="training_performances_ibfk_1">
       <ColNames>training_id</ColNames>
       <RefTableName>trainings</RefTableName>
       <RefColNames>training_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="446" parent="291" name="training_performances_ibfk_2">
+    <foreign-key id="468" parent="293" name="training_performances_ibfk_2">
       <ColNames>member_id</ColNames>
       <RefTableName>team_members</RefTableName>
       <RefColNames>member_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="447" parent="292" name="training_id">
+    <column id="469" parent="294" name="training_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="448" parent="292" name="title">
+    <column id="470" parent="294" name="title">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="449" parent="292" name="training_date_time">
+    <column id="471" parent="294" name="training_date_time">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <column id="450" parent="292" name="training_description">
+    <column id="472" parent="294" name="training_description">
       <Position>4</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="451" parent="292" name="location_name">
+    <column id="473" parent="294" name="location_name">
       <Position>5</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <column id="452" parent="292" name="location_link">
+    <column id="474" parent="294" name="location_link">
       <Position>6</Position>
       <DataType>varchar(100)|0s</DataType>
     </column>
-    <column id="453" parent="292" name="team_id">
+    <column id="475" parent="294" name="team_id">
       <Position>7</Position>
       <DataType>int|0s</DataType>
     </column>
-    <index id="454" parent="292" name="team_id">
+    <index id="476" parent="294" name="team_id">
       <ColNames>team_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="455" parent="292" name="PRIMARY">
+    <key id="477" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>training_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="456" parent="292" name="trainings_ibfk_1">
+    <foreign-key id="478" parent="294" name="trainings_ibfk_1">
       <ColNames>team_id</ColNames>
       <RefTableName>teams</RefTableName>
       <RefColNames>team_id</RefColNames>

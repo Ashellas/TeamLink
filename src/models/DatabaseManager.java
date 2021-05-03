@@ -118,18 +118,7 @@ public class DatabaseManager {
                     String email = resultSet.getString("email");
                     LocalDate birthday = resultSet.getDate("birthday").toLocalDate();
                     String teamRole = resultSet.getString("team_role");
-                    //TODO get Image
-                    Image profilePicture;
-                    byte[] photoBytes = resultSet.getBytes("photo");
-                    if(photoBytes != null)
-                    {
-                        InputStream imageFile = resultSet.getBinaryStream("photo");
-                        profilePicture = new Image(imageFile);
-                    }
-                    else{
-                        profilePicture = null;
-                    }
-                    TeamMember applicant = new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, user.getSportBranch(), profilePicture);
+                    TeamMember applicant = new TeamMember(memberId, firstName, lastName, birthday, teamRole, email);
                     teamApplications.add(new TeamApplication(applicationId, applicant, team, false));
                 }
             }
@@ -145,17 +134,7 @@ public class DatabaseManager {
                     String teamName = resultSet.getString("team_name");
                     String city = resultSet.getString("city");
                     String ageGroup = resultSet.getString("age_group");
-                    Image teamLogo;
-                    byte[] photoBytes = resultSet.getBytes("team_logo");
-                    if(photoBytes != null)
-                    {
-                        InputStream imageFile = resultSet.getBinaryStream("team_logo");
-                        teamLogo = new Image(imageFile);
-                    }
-                    else{
-                        teamLogo = null;
-                    }
-                    Team appliedTeam = new Team(teamId, teamName, city, ageGroup, teamLogo);
+                    Team appliedTeam = new Team(teamId, teamName, city, ageGroup);
                     teamApplications.add(new TeamApplication(applicationId, user, appliedTeam , isDeclined));
             }
         }
@@ -163,6 +142,7 @@ public class DatabaseManager {
     }
 
     private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, IOException {
+
         if(userTeams.isEmpty()){
             return null;
         }
@@ -176,7 +156,8 @@ public class DatabaseManager {
                 int gameplanId = resultSet.getInt("gameplan_id");
                 String title = resultSet.getString("title");
                 int version = resultSet.getInt("version");
-
+                int file_id = resultSet.getInt("file_id");
+                //TODO download gameplan
                 /*
                 File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
                 if (!teamLinkDirectory.exists()){
@@ -192,7 +173,7 @@ public class DatabaseManager {
                     output.write(buffer);
                 }
                 */
-                gameplans.add(new Gameplan(gameplanId, title, team, version ));
+                gameplans.add(new Gameplan(gameplanId, title, team, version,file_id ));
             }
             teamGameplans.put(team, gameplans);
         }
@@ -201,12 +182,14 @@ public class DatabaseManager {
 
     public static ArrayList<Notification> createNotifications(Connection databaseConnection, TeamMember user, int pageNumber) throws SQLException {
         ArrayList<Notification> notifications = new ArrayList<>();
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm on tm.member_id = notifications.sender_id and recipent_id = ? LIMIT ?,8");
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm" +
+                " on tm.member_id = notifications.recipent_id join file_storage fs on " +
+                "fs.id = tm.file_id and member_id = ? LIMIT ?, 8");
         prepStmt.setInt(1, user.getMemberId());
         prepStmt.setInt(2,pageNumber * 8);
         ResultSet resultSet = prepStmt.executeQuery();
         while (resultSet.next()){
-            int id = resultSet.getInt("id");
+            int id = resultSet.getInt("notifications.id");
             int senderId = resultSet.getInt("sender_id");
             String senderFirstName = resultSet.getString("first_name");
             String senderLastName = resultSet.getString("last_name");
@@ -216,10 +199,10 @@ public class DatabaseManager {
             Date timeSent = resultSet.getDate("time_sent");
             String clickAction = resultSet.getString("click_action");
             Image profilePicture = null;
-            byte[] photoBytes = resultSet.getBytes("photo");
+            byte[] photoBytes = resultSet.getBytes("file");
             if(photoBytes != null)
             {
-                InputStream imageFile = resultSet.getBinaryStream("photo");
+                InputStream imageFile = resultSet.getBinaryStream("file");
                 profilePicture = new Image(imageFile);
             }
             else{
@@ -288,6 +271,7 @@ public class DatabaseManager {
             String result = gamesResultSet.getString("final_score");
             int homeTeamId = gamesResultSet.getInt("home_team_id");
             int awayTeamId = gamesResultSet.getInt("away_team_id");
+            int fileId = gamesResultSet.getInt("file_id");
             Team homeTeam = null;
             Team awayTeam = null;
             for (Team leagueTeam : leagueTeams){
@@ -298,7 +282,7 @@ public class DatabaseManager {
                     awayTeam = leagueTeam;
                 }
             }
-            Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result);
+            Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result, fileId);
             games.add(game);
         }
 
@@ -326,6 +310,7 @@ public class DatabaseManager {
                 String result = gamesResultSet.getString("final_score");
                 int homeTeamId = gamesResultSet.getInt("home_team_id");
                 int awayTeamId = gamesResultSet.getInt("away_team_id");
+                int fileId = gamesResultSet.getInt("file_id");
                 Team homeTeam = null;
                 Team awayTeam = null;
                 for (Team leagueTeam : standings.get(team)){
@@ -336,7 +321,7 @@ public class DatabaseManager {
                         awayTeam = leagueTeam;
                     }
                 }
-                Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result);
+                Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result, fileId);
                 games.add(game);
             }
             gamesOfTheCurrentRound.put(team, games);
@@ -345,14 +330,11 @@ public class DatabaseManager {
     }
 
 
-
-
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * FROM team_members " +
-                " where password = MD5(?) AND email = ?");
-
-        prepStmt.setString(1,password);
-        prepStmt.setString(2,email);
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_members join file_storage fs on " +
+                "fs.id = team_members.file_id and email = ? and password = MD5(?)");
+        prepStmt.setString(1,email);
+        prepStmt.setString(2,password);
 
         ResultSet resultSet = prepStmt.executeQuery();
         if(resultSet.next()){
@@ -362,18 +344,18 @@ public class DatabaseManager {
             LocalDate birthday = resultSet.getDate("birthday").toLocalDate();
             String teamRole = resultSet.getString("team_role");
             String sportBranch = resultSet.getString("sport_branch");
+            int fileId = resultSet.getInt("file_id");
             Image profilePicture;
-            byte[] photoBytes = resultSet.getBytes("photo");
+            byte[] photoBytes = resultSet.getBytes("file");
             if(photoBytes != null)
             {
-                System.out.println("NOOO");
-                InputStream imageFile = resultSet.getBinaryStream("photo");
+                InputStream imageFile = resultSet.getBinaryStream("file");
                 profilePicture = new Image(imageFile);
             }
             else{
                 profilePicture = null;
             }
-            return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture);
+            return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, fileId);
         }
         else{
             return null;
@@ -382,9 +364,9 @@ public class DatabaseManager {
 
     private static ArrayList<Team> createUserTeams(TeamMember user, Connection databaseConnection) throws SQLException {
         ArrayList<Team> userTeams = new ArrayList<>();
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_and_members JOIN team_members tm " +
-                "on tm.member_id = team_and_members.team_member_id and tm.member_id = ? " +
-                "join teams t on t.team_id = team_and_members.team_id;");
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_and_members JOIN team_members tm on " +
+                "tm.member_id = team_and_members.team_member_id and tm.member_id = ? " +
+                "join teams t on t.team_id = team_and_members.team_id join file_storage fs on fs.id = tm.file_id;");
         prepStmt.setInt(1, user.getMemberId());
         ResultSet teamsResultSet = prepStmt.executeQuery();
         while(teamsResultSet.next()){
@@ -397,17 +379,19 @@ public class DatabaseManager {
             String city = teamsResultSet.getString("city");
             String ageGroup = teamsResultSet.getString("age_group");
             String teamCode = teamsResultSet.getString("team_code");
+            int teamFileıd = teamsResultSet.getInt("file_id");
             Image teamLogo;
-            byte[] photoBytes = teamsResultSet.getBytes("team_logo");
+            byte[] photoBytes = teamsResultSet.getBytes("file");
             if(photoBytes != null)
             {
-                InputStream imageFile = teamsResultSet.getBinaryStream("team_logo");
+                InputStream imageFile = teamsResultSet.getBinaryStream("file");
                 teamLogo = new Image(imageFile);
             }
             else{
                 teamLogo = null;
             }
-            prepStmt = databaseConnection.prepareStatement("select * from team_and_members join team_members tm on tm.member_id = team_and_members.team_member_id and team_id = ?");
+            prepStmt = databaseConnection.prepareStatement("select * from team_and_members join team_members tm on tm.member_id = " +
+                    "team_and_members.team_member_id and team_id = ?");
             prepStmt.setInt(1, teamId);
             ResultSet membersResultSet = prepStmt.executeQuery();
             while(membersResultSet.next()){
@@ -418,19 +402,13 @@ public class DatabaseManager {
                 LocalDate birthday = membersResultSet.getDate("birthday").toLocalDate();
                 String teamRole = membersResultSet.getString("team_role");
                 String sportBranch = membersResultSet.getString("sport_branch");
-                Image profilePicture;
-                byte[] profilePhotoBytes = membersResultSet.getBytes("photo");
-                if(profilePhotoBytes != null)
-                {
-                    InputStream imageFile = membersResultSet.getBinaryStream("photo");
-                    profilePicture = new Image(imageFile);
+                int memberFileId = membersResultSet.getInt("tm.file_id");
+                if(user.getMemberId() == memberId){
+                    teamMembers.add(user);
                 }
                 else{
-                    profilePicture = null;
+                    teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, null, memberFileId));
                 }
-
-                teamMembers.add(new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture));
-
             }
 
             prepStmt = databaseConnection.prepareStatement("select * from team_performances join leagues l on l.league_id = team_performances.league_id join league_teams lt on lt.league_team_id = team_performances.league_team_id and team_performances.league_team_id = ?;");
@@ -454,7 +432,7 @@ public class DatabaseManager {
                 //Placement will be modified in standings creation
                 teamStats = new TeamStats(statsId, gamesPlayed, gamesWon, gamesLost, gamesDrawn, points, totalRounds, trainingPerformanceReport);
             }
-            userTeams.add( new Team(teamId, databaseTeamId, databaseTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city, ageGroup, teamLogo, teamStats, teamMembers));
+            userTeams.add( new Team(teamId, databaseTeamId, databaseTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city, ageGroup, teamLogo, teamStats, teamMembers, teamFileıd));
         }
         return userTeams;
     }
@@ -629,10 +607,11 @@ public class DatabaseManager {
                 }
                 teamMembers.add(user.getUser());
                 if(teamLogo != null){
-                    userTeams.add(new Team(teamId, leagueTeamId, leagueTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.toURI().toString()), null, teamMembers));
+                    //TODO create fileID
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, new Image(teamLogo.toURI().toString()), null, teamMembers,1));
                 }
                 else{
-                    userTeams.add(new Team(teamId, leagueTeamId, leagueTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers));
+                    userTeams.add(new Team(teamId, leagueTeamId, leagueTeamName, leagueId, teamName, abbrevation, teamCode, leagueName, city,  ageGroup, null, null, teamMembers, 1));
                 }
                 user.setUserTeams(userTeams);
             }
@@ -640,6 +619,23 @@ public class DatabaseManager {
         return user;
     }
 
+
+    public static Image getProfilePhoto(Connection databaseConnection, int memberId) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select photo from team_members where member_id = ?");
+        prepStmt.setInt(1, memberId);
+        ResultSet resultSet = prepStmt.executeQuery();
+
+        if(resultSet.next()){
+            byte[] photoBytes = resultSet.getBytes("photo");
+            if(photoBytes != null)
+            {
+                System.out.println("NOOO");
+                InputStream imageFile = resultSet.getBinaryStream("photo");
+                return new Image(imageFile);
+            }
+        }
+        return null;
+    }
 
     /**
      * Creates a unique 8 digit code for the team

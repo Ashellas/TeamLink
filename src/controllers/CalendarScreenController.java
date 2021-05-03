@@ -47,7 +47,7 @@ public class CalendarScreenController extends MainTemplateController {
 
     public void initData(UserSession userSession){
         super.initData(userSession);
-        Team allTeams = new Team(99999,"All Teams",null,null);
+        Team allTeams = new Team(99999,"All Teams","",  "");
         teamSelectionCombo.getItems().add(allTeams);
         teams = user.getUserTeams();
         for (Team t: teams) {

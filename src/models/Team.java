@@ -22,8 +22,9 @@ public class Team {
     private ImageView teamLogo;
     private TeamStats teamStats;
     private ArrayList<TeamMember> teamMembers;
+    private int fileId;
 
-    public Team(int teamId, int databaseTeamId, String databaseTeamName, int leagueId, String teamName, String abbrevation, String teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers) {
+    public Team(int teamId, int databaseTeamId, String databaseTeamName, int leagueId, String teamName, String abbrevation, String teamCode, String leagueName, String city, String ageGroup, Image teamLogo, TeamStats teamStats, ArrayList<TeamMember> teamMembers, int fileId) {
         this.teamId = teamId;
         this.databaseTeamId = databaseTeamId;
         this.databaseTeamName = databaseTeamName;
@@ -34,9 +35,20 @@ public class Team {
         this.leagueName = leagueName;
         this.city = city;
         this.ageGroup = ageGroup;
-        this.teamLogo = new ImageView(teamLogo);
+        if(teamLogo != null){
+            this.teamLogo = new ImageView(teamLogo);
+        }
         this.teamStats = teamStats;
         this.teamMembers = teamMembers;
+        this.fileId = fileId;
+    }
+
+    //for applications
+    public Team(int teamId, String teamName, String city, String ageGroup) {
+        this.teamId = teamId;
+        this.teamName = teamName;
+        this.city = city;
+        this.ageGroup = ageGroup;
     }
 
     public Team(int teamId, String teamName, String city, String ageGroup, Image teamLogo) {
@@ -180,4 +192,8 @@ public class Team {
 
 
     public String getDatabaseTeamName(){ return databaseTeamName;}
+
+    public int getFileId() {
+        return fileId;
+    }
 }
