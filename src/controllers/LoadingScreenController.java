@@ -12,6 +12,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Controls the loading window and its animation
+ */
 public class LoadingScreenController implements Initializable {
 
     @FXML
@@ -47,6 +50,13 @@ public class LoadingScreenController implements Initializable {
 
     }
 
+    /**
+     * Creates rotation animation
+     * @param startAngle angle that the image starts rotating
+     * @param finalAngle angle that the images finished rotating
+     * @param duration time for one whole rotation as miliseconds
+     * @param node image that will rotate
+     */
     private void rotate(int startAngle, int finalAngle, int duration, ImageView node) {
         RotateTransition rt = new RotateTransition(Duration.seconds(duration), node);
         rt.setFromAngle(startAngle);
