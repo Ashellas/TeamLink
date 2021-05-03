@@ -39,6 +39,7 @@ public class CalendarScreenController extends MainTemplateController {
     String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     private int maxDay;
     private int firstDay;
+    Date localDate;
 
     //Declaring calendar view related variables
     private ArrayList<Label> labels = new ArrayList<Label>();;
@@ -166,15 +167,21 @@ public class CalendarScreenController extends MainTemplateController {
 
         monthName.setText(months[currentMonth] + " " + currentYear);
         GregorianCalendar gc1 = new GregorianCalendar(currentYear, currentMonth, 1);
+        localDate = gc1.getTime();
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
-        if (selectedTeam.getTeamName().equals("All Teams"))
+        if (selectedTeam.getTeamName().equals("All Teams")) {
+            allEvents.clear();
+            ArrayList<Team> t = user.getUserTeams();
+            for (Team team : t) {
+                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, team));
+            }
             createCalendar(firstDay, maxDay, allEvents);
-        else
+        } else {
+            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, selectedTeam);
             createCalendar(firstDay, maxDay, events);
-        //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
-        //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+        }
     }
 
     /**
@@ -192,13 +199,21 @@ public class CalendarScreenController extends MainTemplateController {
 
         monthName.setText(months[currentMonth] + " " + currentYear);
         GregorianCalendar gc1 = new GregorianCalendar(currentYear, currentMonth, 1);
+        localDate = gc1.getTime();
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
-        if (selectedTeam.getTeamName().equals("All Teams"))
+        if (selectedTeam.getTeamName().equals("All Teams")) {
+            allEvents.clear();
+            ArrayList<Team> t = user.getUserTeams();
+            for (Team team : t) {
+                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, team));
+            }
             createCalendar(firstDay, maxDay, allEvents);
-        else
+        } else {
+            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, selectedTeam);
             createCalendar(firstDay, maxDay, events);
+        }
     }
 
     /**
@@ -212,11 +227,11 @@ public class CalendarScreenController extends MainTemplateController {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team : t) {
-                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, team));
             }
             createCalendar(firstDay, maxDay, allEvents);
         } else {
-            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, selectedTeam);
             createCalendar(firstDay, maxDay, events);
         }
     }
