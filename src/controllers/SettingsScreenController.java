@@ -14,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import models.*;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -139,6 +138,14 @@ public class SettingsScreenController extends MainTemplateController {
     @FXML
     private Button uploadTeamLogoButtonCreate;
 
+    //---------------------Help Pane---------------------------//
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     //----------------------Visible to head coach-------------------//
 
     @FXML
@@ -201,6 +208,8 @@ public class SettingsScreenController extends MainTemplateController {
         createTeamPane.setDisable(true);
         darkPane.setDisable(true);
         darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         // Coach buttons
         if(!user.getUser().getTeamRole().equals("Head Coach")){
@@ -392,12 +401,22 @@ public class SettingsScreenController extends MainTemplateController {
 
     @Override
     public void helpButtonPushed(ActionEvent actionEvent){
-        // TODO
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
     }
 
     //-------------------------Team Edit---------------------------//
 
-    public void saveChanges(ActionEvent actionEvent) throws SQLException, IOException {
+    public void saveChanges(ActionEvent actionEvent) throws SQLException {
         if (validEditInput()) {
             // TODO
             // Update team at database
@@ -409,7 +428,7 @@ public class SettingsScreenController extends MainTemplateController {
                 teamCombobox.getValue().setTeamLogo(logoChangeImage);
                 teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
             }
-            DatabaseManager.updateTeam(teamCombobox.getValue(),user.getDatabaseConnection(), selectedFile);
+
             teamCombobox.getItems().clear();
             teamCombobox.getItems().addAll(user.getUserTeams());
             // TODO
@@ -418,7 +437,6 @@ public class SettingsScreenController extends MainTemplateController {
             closeButtonPushed(actionEvent);
             teamCombobox.getSelectionModel().selectFirst();
             displayMessage(messagePane,"Changes are saved", false);
-            teamCombobox.getSelectionModel().selectPrevious();
         }
     }
 
@@ -539,6 +557,7 @@ public class SettingsScreenController extends MainTemplateController {
     public void darkIcons() {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/white/copy_white.png")));
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
         if (user.getUser().getProfilePhoto() == null) {
             accountPhoto.setImage((new Image("/Resources/Images/white/big_profile_white.png")));
         }
@@ -548,6 +567,7 @@ public class SettingsScreenController extends MainTemplateController {
     public void lightIcons() {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/black/copy_black.png")));
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
         if (user.getUser().getProfilePhoto() == null) {
             accountPhoto.setImage((new Image("/Resources/Images/black/big_profile_black.png")));
         }

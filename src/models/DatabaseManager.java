@@ -45,7 +45,7 @@ public class DatabaseManager {
         System.out.println("teamapplications found");
         HashMap<Team, ArrayList<CalendarEvent>> calendarEvents = createCurrentCalendarEvents(databaseConnection, user, userTeams);
         Date lastSync = new Date();
-        return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync);
+        return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync, null);
     }
 
     private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException   {
@@ -184,9 +184,9 @@ public class DatabaseManager {
         ArrayList<Notification> notifications = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm" +
                 " on tm.member_id = notifications.recipent_id join file_storage fs on " +
-                "fs.id = tm.file_id and member_id = ? LIMIT ?, 8");
+                "fs.id = tm.file_id and member_id = ? LIMIT ?, 5");
         prepStmt.setInt(1, user.getMemberId());
-        prepStmt.setInt(2,pageNumber * 8);
+        prepStmt.setInt(2,pageNumber * 5);
         ResultSet resultSet = prepStmt.executeQuery();
         while (resultSet.next()){
             int id = resultSet.getInt("notifications.id");

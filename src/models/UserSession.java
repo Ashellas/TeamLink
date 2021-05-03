@@ -17,6 +17,7 @@ public class UserSession {
 
     private TeamMember user;
     private ArrayList<Team> userTeams;
+    private HashMap<Team, ArrayList<Announcement>> announcements;
     private HashMap<Team,ObservableList<Game>> gamesOfTheCurrentRound;
     private HashMap<Team,ObservableList<Team>> standings;//It can be designed better
     private ArrayList<Notification> notifications;
@@ -28,7 +29,7 @@ public class UserSession {
     private Date lastSync;
     private String styleSheet;
 
-    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, HashMap<Team, ArrayList<CalendarEvent>> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync) {
+    public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, HashMap<Team, ArrayList<CalendarEvent>> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync,HashMap<Team, ArrayList<Announcement>> announcements) {
         this.user = user;
         this.userTeams = userTeams;
         this.gamesOfTheCurrentRound = gamesOfTheCurrentRound;
@@ -40,6 +41,7 @@ public class UserSession {
         this.teamApplications = teamApplications;
         this.gameplans = gameplans;
         this.lastSync = lastSync;
+        this.announcements = announcements;
         styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
 
@@ -63,6 +65,8 @@ public class UserSession {
     public ObservableList<Team> getStandings(Team team) {
         return standings.get(team);
     }
+
+    public ArrayList<Announcement> getAnnouncements(Team team){ return announcements.get(team);}
 
     public ArrayList<Notification> getNotifications() {
         return notifications;
