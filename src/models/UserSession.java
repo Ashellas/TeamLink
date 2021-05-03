@@ -15,7 +15,6 @@ public class UserSession {
 
     private final Preferences preferences = Preferences.userRoot();
 
-
     private TeamMember user;
     private ArrayList<Team> userTeams;
     private HashMap<Team, ArrayList<Announcement>> announcements;

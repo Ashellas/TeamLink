@@ -21,7 +21,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
@@ -1006,11 +1006,11 @@
                         <TableView fx:id="playerStatisticsTable" maxWidth="500.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../stylesheets/tableViewStyleSheet.css" GridPane.rowIndex="1">
                            <columns>
                               <TableColumn fx:id="playerStatisticsNameColumn" prefWidth="82.0" text="Name" />
-                              <TableColumn fx:id="playerStatisticsPointsColumn" prefWidth="82.0" text="Points" />
-                              <TableColumn fx:id="playerStatisticsAssistsColumn" prefWidth="82.0" text="Assists" />
-                              <TableColumn fx:id="playerStatisticsReboundsColumn" prefWidth="82.0" text="Rebounds" />
-                              <TableColumn fx:id="playerStatisticsStealsColumn" prefWidth="82.0" text="Steals" />
-                              <TableColumn fx:id="playerStatisticsBlocksColumn" prefWidth="82.0" text="Blocks" />
+                              <TableColumn fx:id="playerStatisticsFirstColumn" prefWidth="82.0" text="Points" />
+                              <TableColumn fx:id="playerStatisticsSecondColumn" prefWidth="82.0" text="Assists" />
+                              <TableColumn fx:id="playerStatisticsThirdColumn" prefWidth="82.0" text="Rebounds" />
+                              <TableColumn fx:id="playerStatisticsForthColumn" prefWidth="82.0" text="Steals" />
+                              <TableColumn fx:id="playerStatisticsFifthColumn" prefWidth="82.0" text="Blocks" />
                               <TableColumn fx:id="playerStatisticsEnterStatisticsColumn" prefWidth="82.0" text="Enter" />
                            </columns>
                            <columnResizePolicy>

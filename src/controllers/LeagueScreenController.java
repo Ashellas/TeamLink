@@ -1,6 +1,5 @@
 package controllers;
 
-import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +16,6 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.awt.*;
 import java.io.IOException;
@@ -146,19 +144,19 @@ public class LeagueScreenController extends MainTemplateController {
     private TableColumn<TeamMember, String> playerStatisticsNameColumn;
 
     @FXML
-    private TableColumn<TeamMember, String> playerStatisticsPointsColumn;
+    private TableColumn<TeamMember, String> playerStatisticsFirstColumn;
 
     @FXML
-    private TableColumn<TeamMember, String> playerStatisticsAssistsColumn;
+    private TableColumn<TeamMember, String> playerStatisticsSecondColumn;
 
     @FXML
-    private TableColumn<TeamMember, String> playerStatisticsReboundsColumn;
+    private TableColumn<TeamMember, String> playerStatisticsThirdColumn;
 
     @FXML
-    private TableColumn<TeamMember, String> playerStatisticsStealsColumn;
+    private TableColumn<TeamMember, String> playerStatisticsForthColumn;
 
     @FXML
-    private TableColumn<TeamMember, String> playerStatisticsBlocksColumn;
+    private TableColumn<TeamMember, String> playerStatisticsFifthColumn;
 
     @FXML
     private TableColumn<TeamMember, Button> playerStatisticsEnterStatisticsColumn;
@@ -432,19 +430,19 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void setPlayerStatisticsTable(){
         playerStatisticsNameColumn.setCellValueFactory( new PropertyValueFactory<>("fullName"));
-        playerStatisticsPointsColumn.setCellValueFactory( new PropertyValueFactory<>("pointsOrGoalsScored"));
-        playerStatisticsAssistsColumn.setCellValueFactory( new PropertyValueFactory<>("assists"));
-        playerStatisticsReboundsColumn.setCellValueFactory( new PropertyValueFactory<>("reboundsOrSavesMade"));
-        playerStatisticsStealsColumn.setCellValueFactory( new PropertyValueFactory<>("stealsOrYellowCard"));
-        playerStatisticsBlocksColumn.setCellValueFactory( new PropertyValueFactory<>("blocksOrRedCard"));
+        playerStatisticsFirstColumn.setCellValueFactory( new PropertyValueFactory<>("pointsOrGoalsScored"));
+        playerStatisticsSecondColumn.setCellValueFactory( new PropertyValueFactory<>("assists"));
+        playerStatisticsThirdColumn.setCellValueFactory( new PropertyValueFactory<>("reboundsOrSavesMade"));
+        playerStatisticsForthColumn.setCellValueFactory( new PropertyValueFactory<>("stealsOrYellowCard"));
+        playerStatisticsFifthColumn.setCellValueFactory( new PropertyValueFactory<>("blocksOrRedCard"));
 
         playerStatisticsTable.setItems( userSelectedTeamMembers);
 
         if( user.getUser().getSportBranch().equals("Football") ){
-            playerStatisticsPointsColumn.setText("Goals");
-            playerStatisticsReboundsColumn.setText("Saves");
-            playerStatisticsStealsColumn.setText("Yellow Card");
-            playerStatisticsBlocksColumn.setText("Red Card");
+            playerStatisticsFirstColumn.setText("Goals");
+            playerStatisticsThirdColumn.setText("Saves");
+            playerStatisticsForthColumn.setText("Yellow Card");
+            playerStatisticsFifthColumn.setText("Red Card");
         }
     }
 
@@ -478,34 +476,34 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     public void setEditableColumnsOfPlayerStatistics( boolean isPlayed){
-        playerStatisticsPointsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+        playerStatisticsFirstColumn.setCellFactory( TextFieldTableCell.forTableColumn());
 
-        playerStatisticsPointsColumn.setOnEditCommit( e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setPointsOrGoalsScored(e.getNewValue());
+        playerStatisticsFirstColumn.setOnEditCommit(e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).getGameStats().setFirstStat(e.getNewValue());
         });
 
-        playerStatisticsAssistsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+        playerStatisticsSecondColumn.setCellFactory( TextFieldTableCell.forTableColumn());
 
-        playerStatisticsAssistsColumn.setOnEditCommit( e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setAssists(e.getNewValue());
+        playerStatisticsSecondColumn.setOnEditCommit(e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).getGameStats().setSecondStat(e.getNewValue());
         });
 
-        playerStatisticsReboundsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+        playerStatisticsThirdColumn.setCellFactory( TextFieldTableCell.forTableColumn());
 
-        playerStatisticsReboundsColumn.setOnEditCommit( e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setReboundsOrSavesMade(e.getNewValue());
+        playerStatisticsThirdColumn.setOnEditCommit(e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).getGameStats().setThirdStat(e.getNewValue());
         });
 
-        playerStatisticsStealsColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+        playerStatisticsForthColumn.setCellFactory( TextFieldTableCell.forTableColumn());
 
-        playerStatisticsStealsColumn.setOnEditCommit( e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setStealsOrYellowCard(e.getNewValue());
+        playerStatisticsForthColumn.setOnEditCommit(e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).getGameStats().setForthStat(e.getNewValue());
         });
 
-        playerStatisticsBlocksColumn.setCellFactory( TextFieldTableCell.forTableColumn());
+        playerStatisticsFifthColumn.setCellFactory( TextFieldTableCell.forTableColumn());
 
-        playerStatisticsBlocksColumn.setOnEditCommit( e -> {
-            e.getTableView().getItems().get(e.getTablePosition().getRow()).setBlocksOrRedCard(e.getNewValue());
+        playerStatisticsFifthColumn.setOnEditCommit(e -> {
+            e.getTableView().getItems().get(e.getTablePosition().getRow()).getGameStats().setFifthStat(e.getNewValue());
         });
 
         playerStatisticsTable.setEditable( isPlayed);
@@ -531,7 +529,7 @@ public class LeagueScreenController extends MainTemplateController {
     public void setStatisticEnterButtonsOfPlayerStatistics(){
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
 
-            if( player.getPointsOrGoalsScored() == null || !player.getPointsOrGoalsScored().matches("[0-9]+") || player.getPointsOrGoalsScored().length() <= 0){
+            if( player.getFirstColumnData() == null || !player.getFirstColumnData().matches("[0-9]+") || player.getFirstColumnData().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
                     super.displayMessage( messagePane, "The value you entered for points column of " + player.getFullName() + " is invalid", true);
                 }
@@ -542,10 +540,10 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
                 }
             }
-            else if( player.getAssists() == null || !player.getAssists().matches("[0-9]+") || player.getAssists().length() <= 0){
+            else if( player.getSecondColumnData() == null || !player.getSecondColumnData().matches("[0-9]+") || player.getSecondColumnData().length() <= 0){
                 super.displayMessage( messagePane," The value you entered for assists column of " + player.getFullName() + " is invalid", true);
             }
-            else if( player.getReboundsOrSavesMade() == null || !player.getReboundsOrSavesMade().matches("[0-9]+") || player.getReboundsOrSavesMade().length() <= 0){
+            else if( player.getThirdColumnData() == null || !player.getThirdColumnData().matches("[0-9]+") || player.getThirdColumnData().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
                     super.displayMessage( messagePane, "The value you entered for rebounds column of " + player.getFullName() + " is invalid", true);
                 }
@@ -556,7 +554,7 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
                 }
             }
-            else if( player.getStealsOrYellowCard() == null || !player.getStealsOrYellowCard().matches("[0-9]+") || player.getStealsOrYellowCard().length() <= 0){
+            else if( player.getForthColumnData() == null || !player.getForthColumnData().matches("[0-9]+") || player.getForthColumnData().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
                     super.displayMessage( messagePane, "The value you entered for steals column of " + player.getFullName() + " is invalid", true);
                 }
@@ -567,7 +565,7 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
                 }
             }
-            else if( player.getBlocksOrRedCard() == null || !player.getBlocksOrRedCard().matches("[0-9]+") || player.getBlocksOrRedCard().length() <= 0){
+            else if( player.getFifthColumnData() == null || !player.getFifthColumnData().matches("[0-9]+") || player.getFifthColumnData().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
                     super.displayMessage( messagePane, "The value you entered for blocks column of " + player.getFullName() + " is invalid", true);
                 }
@@ -581,24 +579,25 @@ public class LeagueScreenController extends MainTemplateController {
             else{
                 if( player.getSportBranch().equals("Basketball")){
                     try{
-                        DatabaseManager.saveBasketballStats( user, player, new BasketballStats( player, Integer.parseInt( player.getPointsOrGoalsScored()), Integer.parseInt( player.getAssists() ), Integer.parseInt( player.getReboundsOrSavesMade() ), Integer.parseInt( player.getStealsOrYellowCard() ), Integer.parseInt( player.getBlocksOrRedCard() ) ), gameClicked );
+                        DatabaseManager.saveBasketballStats( user, player, new BasketballStats( player, player.getFirstColumnData(), player.getSecondColumnData(), player.getThirdColumnData(), player.getForthColumnData(), player.getFifthColumnData() ), gameClicked );
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
                 else if ( player.getSportBranch().equals("Football")){
                     try{
-                        DatabaseManager.saveFootball( user, player, new FootballStats( player, Integer.parseInt( player.getPointsOrGoalsScored()), Integer.parseInt( player.getAssists() ), Integer.parseInt( player.getReboundsOrSavesMade() ), Integer.parseInt( player.getStealsOrYellowCard() ), Integer.parseInt( player.getBlocksOrRedCard() ) ), gameClicked );
-                    } catch (SQLException throwables) {
+                        DatabaseManager.saveFootball( user, player, new FootballStats( player, player.getFirstColumnData(), player.getSecondColumnData(), player.getThirdColumnData(), player.getForthColumnData(), player.getFifthColumnData() ), gameClicked );
+                    }
+                    catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
                 super.displayMessage(messagePane, "You have successfully entered " + player.getFullName() +"'s statistics.", false);
-                player.setPointsOrGoalsScored(null);
-                player.setAssists(null);
-                player.setReboundsOrSavesMade(null);
-                player.setStealsOrYellowCard(null);
-                player.setBlocksOrRedCard(null);
+                player.getGameStats().setFirstStat(null);
+                player.getGameStats().setSecondStat(null);
+                player.getGameStats().setThirdStat(null);
+                player.getGameStats().setForthStat(null);
+                player.getGameStats().setFifthStat(null);
             }
             return player;
         }));

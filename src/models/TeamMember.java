@@ -1,14 +1,15 @@
 package models;
 
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TeamMember {
-
     private int memberId;
     private String firstName;
     private String lastName;
@@ -18,11 +19,9 @@ public class TeamMember {
     private String sportBranch;
     //ImageView is used instead of Image to display photo easily
     private ImageView profilePhoto;
-    private String pointsOrGoalsScored;
-    private String assists;
-    private String reboundsOrSavesMade;
-    private String stealsOrYellowCard;
-    private String blocksOrRedCard;
+
+    private GameStats gameStats;
+
     private int fileId;
 
     public TeamMember(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email, String sportBranch, Image profilePhoto, int fileId) {
@@ -49,6 +48,8 @@ public class TeamMember {
         this.email = email;
     }
 
+
+
     //TODO edit file selection
     public TeamMember(int memberId, String firstName, String lastName, Image profilePhoto) {
         this.memberId = memberId;
@@ -63,7 +64,12 @@ public class TeamMember {
         }
     }
 
-
+    public TeamMember(int memberId, String firstName, String lastName, GameStats gameStats){
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gameStats = gameStats;
+    }
 
 
     public int getMemberId() {
@@ -118,7 +124,9 @@ public class TeamMember {
         this.fileId = fileId;
     }
 
-
+    public GameStats getGameStats() {
+        return gameStats;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -128,45 +136,26 @@ public class TeamMember {
         this.birthday = birthday;
     }
 
-    public String getPointsOrGoalsScored(){
-        return pointsOrGoalsScored;
+    public String getFirstColumnData(){
+        return gameStats.getFirstStat();
     }
 
-    public void setPointsOrGoalsScored( String pointsOrGoalsScored){
-        this.pointsOrGoalsScored = pointsOrGoalsScored;
+    public String getSecondColumnData(){
+        return gameStats.getSecondStat();
     }
 
-    public String getAssists(){
-        return assists;
+    public String getThirdColumnData(){
+        return gameStats.getThirdStat();
     }
 
-    public void setAssists( String assists){
-        this.assists = assists;
+    public String getForthColumnData(){
+        return gameStats.getForthStat();
     }
 
-    public String getReboundsOrSavesMade(){
-        return reboundsOrSavesMade;
+    public String getFifthColumnData(){
+        return gameStats.getFifthStat();
     }
 
-    public void setReboundsOrSavesMade( String reboundsOrSavesMade){
-        this.reboundsOrSavesMade = reboundsOrSavesMade;
-    }
-
-    public String getStealsOrYellowCard(){
-        return stealsOrYellowCard;
-    }
-
-    public void setStealsOrYellowCard( String stealsOrYellowCard){
-        this.stealsOrYellowCard = stealsOrYellowCard;
-    }
-
-    public String getBlocksOrRedCard(){
-        return blocksOrRedCard;
-    }
-
-    public void setBlocksOrRedCard( String blocksOrRedCard){
-        this.blocksOrRedCard = blocksOrRedCard;
-    }
 
     public int getFileId() {
         return fileId;

@@ -866,11 +866,11 @@ public class DatabaseManager {
     public static boolean saveBasketballStats(UserSession user, TeamMember player, BasketballStats basketballStats, Game game) throws SQLException {
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO basketball_game_stats(points, assists, rebounds, steals, blocks,member_id,game_id)" +
                 "values (?,?,?,?,?,?,?) ");
-        prepStmt.setInt(1, basketballStats.getPoints());
-        prepStmt.setInt(2, basketballStats.getAssists());
-        prepStmt.setInt(3, basketballStats.getRebounds());
-        prepStmt.setInt(4, basketballStats.getSteals());
-        prepStmt.setInt(5, basketballStats.getBlocks());
+        prepStmt.setInt(1, Integer.parseInt(basketballStats.getFirstStat()));
+        prepStmt.setInt(2, Integer.parseInt(basketballStats.getSecondStat()));
+        prepStmt.setInt(3, Integer.parseInt(basketballStats.getThirdStat()));
+        prepStmt.setInt(4, Integer.parseInt(basketballStats.getForthStat()));
+        prepStmt.setInt(5, Integer.parseInt(basketballStats.getFirstStat()));
         prepStmt.setInt(6, player.getMemberId());
         prepStmt.setInt(7, game.getCalendarEventId());
 
@@ -884,11 +884,11 @@ public class DatabaseManager {
     public static boolean saveFootball(UserSession user, TeamMember player, FootballStats basketballStats, Game game) throws SQLException {
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO football_game_stats(goals, assists, saves, yellowcard, redcard, member_id, game_id)" +
                 "values (?,?,?,?,?,?,?) ");
-        prepStmt.setInt(1, basketballStats.getGoalsScored());
-        prepStmt.setInt(2, basketballStats.getAssitsMade());
-        prepStmt.setInt(3, basketballStats.getSavesMade());
-        prepStmt.setInt(4, basketballStats.isYellowCard());
-        prepStmt.setInt(5, basketballStats.isRedCard());
+        prepStmt.setInt(1, Integer.parseInt(basketballStats.getFirstStat()));
+        prepStmt.setInt(2, Integer.parseInt(basketballStats.getSecondStat()));
+        prepStmt.setInt(3, Integer.parseInt(basketballStats.getThirdStat()));
+        prepStmt.setInt(4, Integer.parseInt(basketballStats.getForthStat()));
+        prepStmt.setInt(5, Integer.parseInt(basketballStats.getFirstStat()));
         prepStmt.setInt(6, player.getMemberId());
         prepStmt.setInt(7, game.getCalendarEventId());
 
@@ -897,5 +897,58 @@ public class DatabaseManager {
             return true;
         }
         return false;
+    }
+
+
+    public static void createNewTraining(Connection databaseConnection, Training training, ArrayList<TeamMember> additionalPlayers) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement(" INSERT INTO trainings(title, training_date_time, " +
+                "location_name, location_link, team_id) VALUES (?, ?, ?, ?,?)");
+
+        prepStmt.setString(1, training.getEventTitle());
+        java.sql.Date trainingTime = new java.sql.Date(training.getEventDateTime().getTime());
+        prepStmt.setDate(2, trainingTime);
+        prepStmt.setString(3, training.getTrainingLocationName());
+        prepStmt.setString(4, training.getTrainingLocationLink());
+        prepStmt.setInt(5, training.getTeam().getTeamId());
+
+
+        prepStmt.executeUpdate();
+
+        for( TeamMember player : additionalPlayers){
+            prepStmt = databaseConnection.prepareStatement("INSERT INTO training_additional_players(training_id, member_id) VALUES (?,?)");
+            prepStmt.setInt(1, training.getCalendarEventId());
+            prepStmt.setInt(2, player.getMemberId());
+
+            prepStmt.executeUpdate();
+        }
+    }
+
+    public static void savePlayerRatings(Connection databaseConnection, Training training, ArrayList<RateHBox> playerRatings) throws SQLException {
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement("INSERT INTO training_performances(TRAINING_ID, MEMBER_ID, RATING) " +
+                "values (?,?,?)");
+        for (RateHBox playerRating : playerRatings){
+            if(playerRating.getAttendance()){
+                int memberId = playerRating.teamMember.getMemberId();
+                int trainingId = training.getCalendarEventId();
+                int rating = playerRating.getSliderValue();
+                preparedStatement.setInt(1, trainingId);
+                preparedStatement.setInt(2, memberId);
+                preparedStatement.setInt(3, rating);
+
+                preparedStatement.executeUpdate();
+            }
+        }
+    }
+
+    public static ArrayList<RateHBox> getPlayerRatings(Connection databaseConnection, Training training) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * from team_members left join training_performances tp on " +
+                "team_members.member_id = tp.member_id join team_and_members tam on team_members.member_id = tam.team_member_id and " +
+                "team_id = 1 and team_role = \"Player\"");
+
+        ResultSet teamsMembersResultSet = prepStmt.executeQuery();
+        while(teamsMembersResultSet.next()){
+
+        }
+        return null;
     }
 }

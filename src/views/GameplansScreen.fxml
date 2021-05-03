@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
@@ -736,9 +737,9 @@
                                  <children>
                                     <GridPane>
                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="10.0" prefWidth="100.0" />
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="10.0" prefWidth="100.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -746,7 +747,12 @@
                                         <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <TextField fx:id="titleField" editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Title" stylesheets="@../stylesheets/textFieldStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="titleField" maxWidth="1.7976931348623157E308" minHeight="40.0" promptText="Gameplan Title" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <stylesheets>
+                                                <URL value="@../stylesheets/textFieldStyleSheet.css" />
+                                                <URL value="@../stylesheets/Active.css" />
+                                             </stylesheets>
+                                          </TextField>
                                        </children>
                                     </GridPane>
                                     <GridPane GridPane.rowIndex="1">
@@ -763,16 +769,16 @@
                                         <RowConstraints minHeight="0.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#uploadButtonpushed" prefHeight="40.0" prefWidth="100.0" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Upload" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                          <Label fx:id="fileNamelabel" text="File Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadButtonpushed" prefHeight="40.0" prefWidth="115.0" styleClass="upload" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Upload PDF" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                          <Label fx:id="fileNamelabel" prefHeight="20.0" prefWidth="358.0" text="File Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </GridPane>
-                                    <Button mnemonicParsing="false" onAction="#submitButtonPushed" prefHeight="40.0" prefWidth="100.0" styleClass="create" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button mnemonicParsing="false" onAction="#changeAddGridVisibility" prefHeight="40.0" prefWidth="100.0" style="-fx-background-radius: 12px;" styleClass="delete" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Cancel" GridPane.columnIndex="1" />
+                                    <Button mnemonicParsing="false" onAction="#submitButtonPushed" prefHeight="40.0" prefWidth="115.0" styleClass="create" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Button mnemonicParsing="false" onAction="#changeAddGridVisibility" prefHeight="40.0" prefWidth="115.0" style="-fx-background-radius: 12px;" styleClass="delete" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Cancel" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>

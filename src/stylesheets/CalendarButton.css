@@ -4,11 +4,10 @@
 
 .training:hover {
     -fx-background-color: #8f258d;
-
 }
+
 .training:pressed {
     -fx-background-color: #771f76;
-
 }
 
 .training {
