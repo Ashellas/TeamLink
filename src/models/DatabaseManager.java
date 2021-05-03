@@ -52,7 +52,6 @@ public class DatabaseManager {
         if(userTeams.isEmpty()){
             return null;
         }
-        String[] colorCodes = {"a","b","c","d","e"};
         String teamIds = "" + userTeams.get(0).getTeamId();
         for( int i = 1; i < userTeams.size(); i++){
             teamIds += ", " + userTeams.get(i).getTeamId();
@@ -75,8 +74,19 @@ public class DatabaseManager {
                     teamIndex = i % 5;
                 }
             }
-            trainings.add( new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex],
-                    locationName, locationLink, userTeams.get(teamIndex)));
+            prepStmt = databaseConnection.prepareStatement("SELECT id FROM training_performances where training_id = ?");
+            prepStmt.setInt(1, trainingId);
+
+            ResultSet performaceResultSet = prepStmt.executeQuery();
+            boolean isRated;
+            if(performaceResultSet.next()){
+                isRated = true;
+            }
+            else{
+                isRated = false;
+            }
+            trainings.add( new Training(trainingId, title, trainingDate, actionLink, "training", locationName, locationLink, userTeams.get(teamIndex),isRated));
+
         }
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from trainings where training_date_time > now() " +
                 "and team_id in (" + teamIds + ") ORDER BY training_date_time asc LIMIT ?");
@@ -97,8 +107,19 @@ public class DatabaseManager {
                     teamIndex = i % 5;
                 }
             }
-            trainings.add(0, new Training(trainingId, title, trainingDate, description, actionLink, colorCodes[teamIndex],
-                    locationName, locationLink, userTeams.get(teamIndex)));
+            prepStmt = databaseConnection.prepareStatement("SELECT id FROM training_performances where training_id = ?");
+            prepStmt.setInt(1, trainingId);
+
+            ResultSet performaceResultSet = prepStmt.executeQuery();
+            boolean isRated;
+            if(performaceResultSet.next()){
+                isRated = true;
+            }
+            else{
+                isRated = false;
+            }
+            trainings.add(0, new Training(trainingId, title, trainingDate, actionLink, "training",
+                    locationName, locationLink, userTeams.get(teamIndex),isRated));
         }
         return FXCollections.observableArrayList(trainings);
     }
@@ -984,10 +1005,11 @@ public class DatabaseManager {
         return ratingBoxes;
     }
 
-    public static void createAnnouncements( UserSession userSession) throws SQLException {
-        HashMap<Team, Announcement> announcements = new HashMap<>();
+    public static HashMap<Team, ArrayList<Announcement>> createAnnouncements( UserSession userSession) throws SQLException {
+        HashMap<Team, ArrayList<Announcement>> announcements = new HashMap<>();
         PreparedStatement prepStmt = userSession.getDatabaseConnection().prepareStatement("select * from announcements " +
-                "join team_members tm on tm.member_id = announcements.sender_id and team_id = ? order by time_sent asc LIMIT 5 ");
+                "join team_members tm on tm.member_id = announcements.sender_id and team_id = ? join file_storage fs on " +
+                "fs.id = tm.file_id order by time_sent asc LIMIT 5 ");
         for ( Team userTeam : userSession.getUserTeams())
         {
             prepStmt.setInt(1, userTeam.getTeamId());
@@ -1000,10 +1022,49 @@ public class DatabaseManager {
                 String message = resultSet.getString("message");
                 Date timeSent = resultSet.getDate("time_sent");
                 int senderId = resultSet.getInt("sender_id");
+
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
 
+                Image profilePicture;
+                byte[] photoBytes = resultSet.getBytes("file");
+                if(photoBytes != null)
+                {
+                    InputStream imageFile = resultSet.getBinaryStream("file");
+                    profilePicture = new Image(imageFile);
+                }
+                else{
+                    profilePicture = null;
+                }
+
+                TeamMember member = new TeamMember(senderId, firstName, lastName, profilePicture);
+
+                teamAnnouncements.add(new Announcement(id, title, message, member, timeSent));
             }
+            announcements.put(userTeam, teamAnnouncements);
+        }
+
+        return announcements;
+    }
+
+
+    public boolean createNewAnnouncement(Connection databaseConnection, Announcement announcement, Team team) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("INSERT INTO announcements(team_id, sender_id, title, message, time_sent)" +
+                " values (?,?,?,?,?)");
+        prepStmt.setInt(1, team.getTeamId());
+        prepStmt.setInt(2, announcement.getSender().getMemberId());
+        prepStmt.setString(3, announcement.getTitle());
+        prepStmt.setString(4, announcement.getDescription());
+        java.sql.Date announcedTime = new java.sql.Date(announcement.getTimeSent().getTime());
+        prepStmt.setDate(5, announcedTime);
+
+        int row = prepStmt.executeUpdate();
+        if(row > 0){
+            return true;
+        }
+        else{
+            return false;
         }
     }
+
 }

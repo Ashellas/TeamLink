@@ -12,12 +12,22 @@ public class Training extends CalendarEvent{
     //I deleted TrainingPerformance from here
 
 
-    public Training(int calendarEventId, String eventTitle, Date eventDateTime, String description, String actionLink, String colorCode, String trainingLocationName, String trainingLocationLink, Team team) {
-        super(calendarEventId, eventTitle, eventDateTime, actionLink, colorCode);
+    public Training(int calendarEventId, String eventTitle, Date eventDateTime, String actionLink, String colorCode, String trainingLocationName, String trainingLocationLink, Team team, boolean isRated ) {
+        super(calendarEventId, eventTitle, eventDateTime, actionLink, colorCode );
         this.description = description;
         this.trainingLocationName = trainingLocationName;
         this.trainingLocationLink = trainingLocationLink;
         this.team = team;
+        this.isRated = isRated;
+    }
+
+    public Training( String eventTitle, Date eventDateTime, String trainingLocationName, String trainingLocationLink, Team team, boolean isRated )
+    {
+        super( eventTitle, eventDateTime );
+        this.trainingLocationName = trainingLocationName;
+        this.trainingLocationLink = trainingLocationLink;
+        this.team = team;
+        this.isRated = isRated;
     }
 
     public String getTrainingLocationName() {
@@ -30,6 +40,11 @@ public class Training extends CalendarEvent{
 
     public Team getTeam() {
         return team;
+    }
+
+    public boolean getIsRated()
+    {
+        return isRated;
     }
 
 }
