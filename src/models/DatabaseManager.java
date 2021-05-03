@@ -862,4 +862,32 @@ public class DatabaseManager {
         return false;
     }
 
+
+    public static void saveBasketballStats(UserSession user, TeamMember player, BasketballStats basketballStats, Game game) throws SQLException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO basketball_game_stats(points, assists, rebounds, steals, blocks,member_id,game_id)" +
+                "values (?,?,?,?,?,?,?) ");
+        prepStmt.setInt(1, basketballStats.getPoints());
+        prepStmt.setInt(2, basketballStats.getAssists());
+        prepStmt.setInt(3, basketballStats.getRebounds());
+        prepStmt.setInt(4, basketballStats.getSteals());
+        prepStmt.setInt(5, basketballStats.getBlocks());
+        prepStmt.setInt(6, player.getMemberId());
+        prepStmt.setInt(7, game.getCalendarEventId());
+
+        prepStmt.executeUpdate();
+    }
+
+    public static void saveFootball(UserSession user, TeamMember player, FootballStats basketballStats, Game game) throws SQLException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO basketball_game_stats(points, assists, rebounds, steals, blocks,member_id,game_id)" +
+                "values (?,?,?,?,?,?,?) ");
+        prepStmt.setInt(1, basketballStats.getGoalsScored());
+        prepStmt.setInt(2, basketballStats.getAssitsMade());
+        prepStmt.setInt(3, basketballStats.getSavesMade());
+        prepStmt.setInt(4, basketballStats.isYellowCard());
+        prepStmt.setInt(5, basketballStats.isRedCard());
+        prepStmt.setInt(6, player.getMemberId());
+        prepStmt.setInt(7, game.getCalendarEventId());
+
+        prepStmt.executeUpdate();
+    }
 }

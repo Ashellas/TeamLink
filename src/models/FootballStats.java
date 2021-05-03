@@ -30,11 +30,11 @@ public class FootballStats extends GameStats{
         return savesMade;
     }
 
-    public boolean isYellowCard() {
+    public int isYellowCard() {
         return yellowCard;
     }
 
-    public boolean isRedCard() {
+    public int isRedCard() {
         return redCard;
     }
 }

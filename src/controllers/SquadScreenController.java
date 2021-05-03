@@ -170,6 +170,7 @@ public class SquadScreenController extends MainTemplateController{
         }
 
         detailedViewColumn.setCellFactory(ButtonTableCell.<TeamMember>forTableColumn("View", (TeamMember p) -> {
+
             try {
                 showPane(p);
             } catch (SQLException throwables) {
