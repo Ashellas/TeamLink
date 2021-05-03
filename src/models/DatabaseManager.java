@@ -983,4 +983,27 @@ public class DatabaseManager {
         }
         return ratingBoxes;
     }
+
+    public static void createAnnouncements( UserSession userSession) throws SQLException {
+        HashMap<Team, Announcement> announcements = new HashMap<>();
+        PreparedStatement prepStmt = userSession.getDatabaseConnection().prepareStatement("select * from announcements " +
+                "join team_members tm on tm.member_id = announcements.sender_id and team_id = ? order by time_sent asc LIMIT 5 ");
+        for ( Team userTeam : userSession.getUserTeams())
+        {
+            prepStmt.setInt(1, userTeam.getTeamId());
+
+            ArrayList<Announcement> teamAnnouncements = new ArrayList<>();
+            ResultSet resultSet = prepStmt.executeQuery();
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String message = resultSet.getString("message");
+                Date timeSent = resultSet.getDate("time_sent");
+                int senderId = resultSet.getInt("sender_id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+
+            }
+        }
+    }
 }

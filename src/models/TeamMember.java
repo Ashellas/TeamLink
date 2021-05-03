@@ -54,7 +54,7 @@ public class TeamMember {
         this.firstName = firstName;
         this.lastName = lastName;
         if(photo != null){
-            profilePhoto.setImage(photo);
+            profilePhoto = new ImageView(photo);
         }
     }
     //TODO edit file selection
