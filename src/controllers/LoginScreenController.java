@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -71,11 +73,27 @@ public class LoginScreenController implements  InitializeData{
     @FXML
     private ImageView helpPaneIcon;
 
+    @FXML
+    private GridPane resetPasswordPane;
+
+    @FXML
+    private Button sendEmailButton;
+
+    @FXML
+    private CheckBox approval;
+
+    @FXML
+    private TextField resetEmailField;
+
     private Executor exec;
 
     private Stage loading;
 
-    private final String mailFrom = "TeamLink.host@gmail.com";
+    private final String MAIL_SUBJECT = "Password Change";
+
+    private final String MAIL_FROM = "TeamLink.host@gmail.com";
+
+    private String tempPassword;
 
     String mailTo;
 
@@ -104,11 +122,48 @@ public class LoginScreenController implements  InitializeData{
         disablePane.setDisable(true);
         helpPane.setVisible(false);
         helpPane.setDisable(true);
+        resetPasswordPane.setVisible(false);
+        resetPasswordPane.setDisable(true);
+        sendEmailButton.setDisable(true);
+        approval.setSelected(false);
+    }
+
+    public void forgotPasswordLinkPushed(ActionEvent event) {
+        approveChange(event);
+        resetPasswordPane.setVisible(true);
+        resetPasswordPane.setDisable(false);
+        disablePane.setVisible(true);
+        disablePane.setDisable(false);
     }
 
 
-    public void forgotPasswordLinkPushed(ActionEvent event) {
-        send(mailFrom,"gzdbjvklvtofhphq","m.onuruysal1@gmail.com", "asasasasa", "assasasas");
+    public void resetPaneClose(ActionEvent event) {
+        resetPasswordPane.setVisible(false);
+        resetPasswordPane.setDisable(true);
+        disablePane.setVisible(false);
+        disablePane.setDisable(true);
+    }
+
+
+    public void sendMailButtonPushed(ActionEvent event) {
+        tempPassword = 
+        if (DatabaseManager.getTeamMember(resetEmailField.getText()) != null) {
+            send(MAIL_FROM,"gzdbjvklvtofhphq",resetEmailField.getText(), MAIL_SUBJECT,
+                    "The password for the account with this mail address has been changed to " +  tempPassword);
+        }
+        else {
+            displayMessage(errorPane,"No account found", true);
+        }
+
+    }
+
+    public void approveChange(ActionEvent event) {
+        if (approval.isSelected()) {
+            sendEmailButton.setDisable(false);
+        }
+        else {
+            sendEmailButton.setDisable(true);
+        }
     }
 
     /**
