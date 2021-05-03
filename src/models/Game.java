@@ -63,4 +63,27 @@ public class Game extends CalendarEvent{
             return true;
         }
     }
+
+    @Override
+    public boolean equals(Object other){
+        if( other instanceof Game){
+            Game otherGame = (Game) other;
+            if( this.getRoundNumber() == otherGame.getRoundNumber() &&
+                    this.getHomeTeam().equals(otherGame.getHomeTeam()) &&
+                    this.getAwayTeam().equals(otherGame.getAwayTeam()) &&
+                    this.getResult().equals( otherGame.getResult()) ){
+                return true;
+            }
+
+            return false;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode(){
+        return 1;
+    }
 }

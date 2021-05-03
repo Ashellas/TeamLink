@@ -18,6 +18,7 @@ import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -167,6 +168,9 @@ public class LeagueScreenController extends MainTemplateController {
     private GridPane addPlayersGridPane;
 
     @FXML
+    private Label roundNoLabel;
+
+    @FXML
     private TableColumn<TeamMember, String> addPlayerNameColumn;
 
     @FXML
@@ -193,9 +197,19 @@ public class LeagueScreenController extends MainTemplateController {
     @FXML
     private Pane messagePane;
 
+    @FXML
+    private Button rightButtonFixture;
+
+    @FXML
+    private Button leftButtonFixture;
+
     private Team teamOfCoach;
 
     private Game gameClicked;
+
+    private int roundNo;
+
+    private final int FIRST_ROUND = 1;
 
     private ObservableList<models.Team> teams = FXCollections.observableArrayList();
 
@@ -214,6 +228,8 @@ public class LeagueScreenController extends MainTemplateController {
     private ObservableList<TeamMember> userSelectedTeamMembers = FXCollections.observableArrayList();
 
     private ObservableList<TeamMember> userSelectedTeamMembersAtPlayersAddComboBox = FXCollections.observableArrayList();
+
+    private ObservableList<Game> gamesOfTheRound = FXCollections.observableArrayList();
 
     private HashMap<Game, ArrayList<TeamMember>> addedPlayers = new HashMap<Game, ArrayList<TeamMember>>();
 
@@ -237,6 +253,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         setTeamSelectionComboBox();
         setPlayerStatisticsTable( );
+        setAddPlayerTable();
     }
 
     /**
@@ -257,6 +274,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         userSelectedTeam.add( userTeams.get(0));
 
+
         setStandingsTable();
 
         setTeamOverviewTable();
@@ -265,6 +283,9 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     public void setAddPlayersComboBox(){
+
+        userTeamsAddPlayersComboBox.clear();
+        userTeamNamesAddPlayersComboBox.clear();
 
         for( int arrayIndex = 0; arrayIndex < userTeams.size(); arrayIndex++){
             if( !userTeams.get( arrayIndex).equals( teamOfCoach)){
@@ -382,7 +403,11 @@ public class LeagueScreenController extends MainTemplateController {
         scoreColumn.setCellValueFactory( new PropertyValueFactory<>("result"));
         awayColumn.setCellValueFactory( new PropertyValueFactory<>( "awayTeamName"));
 
-        fixtureTable.setItems( user.getGamesOfTheCurrentRound( userSelectedTeam.get(0)));
+        gamesOfTheRound = user.getGamesOfTheCurrentRound( userSelectedTeam.get(0) );
+
+        fixtureTable.setItems( gamesOfTheRound);
+
+        setFixtureButtonsAndLabel();
 
         //Add view buttons and its listener so user can reach to the details of the clicked match
         detailsColumn.setCellFactory( ButtonTableCell.<Game>forTableColumn("View", (Game gameClicked) -> {
@@ -497,14 +522,6 @@ public class LeagueScreenController extends MainTemplateController {
         }
         else if( user.getUser().getSportBranch().equals("Basketball")){
 
-            /*
-            Set the places of the name labels to omit the draw column
-             */
-            drawsNameLabel.setText( losesNameLabel.getText());
-            losesNameLabel.setText( pointsNameLabel.getText());
-            pointsNameLabel.setText( matchesLeftNameLabel.getText());
-            matchesLeftNameLabel.setText("");
-
             /* Set the labels according to the information received from selected team
                by avoiding draw column
              */
@@ -524,18 +541,46 @@ public class LeagueScreenController extends MainTemplateController {
      */
     public void onTeamSelection( ActionEvent event){
         userSelectedTeam.set(0, userTeams.get( teamSelectionComboBox.getSelectionModel().getSelectedIndex()));
+        teams = user.getStandings( userSelectedTeam.get(0));
+        gamesOfTheRound = user.getGamesOfTheCurrentRound( userSelectedTeam.get(0) );
         updateTeamOverviewTable();
-        standingsTableView.refresh();
-        fixtureTable.refresh();
+        standingsTableView.setItems(teams);
+        fixtureTable.setItems(gamesOfTheRound);
+        setFixtureButtonsAndLabel();
+    }
+
+    public void setFixtureButtonsAndLabel(){
+        roundNo = gamesOfTheRound.get(0).getRoundNumber();
+
+        roundNoLabel.setText( "Round: " + roundNo);
+
+        if( roundNo >= userSelectedTeam.get(0).getTeamStats().getTotalRounds() ){
+            rightButtonFixture.setVisible( false);
+        }
+        else{
+            rightButtonFixture.setVisible( true);
+        }
+
+        if( roundNo <= FIRST_ROUND)
+        {
+            leftButtonFixture.setVisible( false);
+        }
+        else{
+            leftButtonFixture.setVisible( true);
+        }
     }
 
 
-    public void rightButtonFixtureClicked( ActionEvent event){
-
+    public void rightButtonFixtureClicked( ActionEvent event) throws SQLException {
+        gamesOfTheRound = DatabaseManager.getGames(user.getDatabaseConnection(), user.getStandings( userSelectedTeam.get(0) ), roundNo + 1, userSelectedTeam.get(0).getLeagueId() );
+        fixtureTable.setItems(gamesOfTheRound);
+        setFixtureButtonsAndLabel();
     }
 
-    public void leftButtonFixtureClicked( ActionEvent event){
-
+    public void leftButtonFixtureClicked( ActionEvent event) throws SQLException {
+        gamesOfTheRound = DatabaseManager.getGames(user.getDatabaseConnection(), user.getStandings( userSelectedTeam.get(0) ), roundNo - 1, userSelectedTeam.get(0).getLeagueId() );
+        fixtureTable.setItems(gamesOfTheRound);
+        setFixtureButtonsAndLabel();
     }
 
     public void onCloseDetailsButtonClicked( ActionEvent event){
@@ -578,7 +623,6 @@ public class LeagueScreenController extends MainTemplateController {
             addPlayersGridPane.setVisible(true);
             blackenedPane1.setVisible(true);
             setAddPlayersComboBox();
-            setAddPlayerTable();
             if( addedPlayers.get( gameClicked) == null){
                 addedPlayers.put( gameClicked, new ArrayList<TeamMember>());
             }
