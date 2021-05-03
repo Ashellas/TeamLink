@@ -45,7 +45,8 @@ public class DatabaseManager {
         System.out.println("teamapplications found");
         HashMap<Team, ArrayList<CalendarEvent>> calendarEvents = createCurrentCalendarEvents(databaseConnection, userTeams);
         Date lastSync = new Date();
-        return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync, null);
+        HashMap<Team, ArrayList<Announcement>> announcements= createAnnouncements(databaseConnection, userTeams);
+        return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync, announcements);
     }
 
     private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException   {
@@ -775,7 +776,7 @@ public class DatabaseManager {
 
     public static ArrayList<CalendarEvent> getCalendarEventByDate(Connection databaseConnection, Team team, Date date) throws SQLException {
         ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
-        PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where DATE_FORMAT(event_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\"))");
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where DATE_FORMAT(event_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\")");
         java.sql.Date monthYear = new java.sql.Date(date.getTime());
         preparedStatement.setDate(1, monthYear);
         ResultSet calendarEventsResultSet = preparedStatement.executeQuery();
@@ -806,8 +807,8 @@ public class DatabaseManager {
             calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
         }
 
-        preparedStatement = databaseConnection.prepareStatement("select * from trainings where " +
-                "DATE_FORMAT(training_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and team_id = ?");
+        preparedStatement = databaseConnection.prepareStatement("select * from trainings " +
+                "where DATE_FORMAT(training_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and team_id = ?");
         preparedStatement.setDate(1, monthYear);
         preparedStatement.setInt(2, team.getTeamId());
         ResultSet trainingsResultSet = preparedStatement.executeQuery();
@@ -1052,12 +1053,12 @@ public class DatabaseManager {
         return ratingBoxes;
     }
 
-    public static HashMap<Team, ArrayList<Announcement>> createAnnouncements( UserSession userSession) throws SQLException {
+    public static HashMap<Team, ArrayList<Announcement>> createAnnouncements( Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
         HashMap<Team, ArrayList<Announcement>> announcements = new HashMap<>();
-        PreparedStatement prepStmt = userSession.getDatabaseConnection().prepareStatement("select * from announcements " +
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from announcements " +
                 "join team_members tm on tm.member_id = announcements.sender_id and team_id = ? join file_storage fs on " +
                 "fs.id = tm.file_id order by time_sent asc LIMIT 5 ");
-        for ( Team userTeam : userSession.getUserTeams())
+        for ( Team userTeam : userTeams)
         {
             prepStmt.setInt(1, userTeam.getTeamId());
 
