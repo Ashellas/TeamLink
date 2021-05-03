@@ -203,6 +203,9 @@ public class LeagueScreenController extends MainTemplateController {
     private ImageView rightButtonFixtureImage;
 
     @FXML
+    private ImageView gameLocationImage;
+
+    @FXML
     private Pane messagePane;
 
     @FXML
@@ -466,6 +469,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         if( !gameClicked.isPlayed() ){
             setEditableColumnsOfPlayerStatistics( gameClicked.isPlayed());
+            setRemoveAddedPlayerButton();
         }
         else{
             setEditableColumnsOfPlayerStatistics(gameClicked.isPlayed());
@@ -507,13 +511,25 @@ public class LeagueScreenController extends MainTemplateController {
         playerStatisticsTable.setEditable( isPlayed);
     }
 
+    public void setRemoveAddedPlayerButton(){
+        playerStatisticsEnterStatisticsColumn.setText( "Remove");
+
+        playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Remove", (TeamMember player) -> {
+            if( addedPlayers.get( gameClicked).contains( player) ){
+                userSelectedTeamMembers.remove( player);
+                addedPlayers.get( gameClicked).remove( player);
+                playerStatisticsTable.refresh();
+                super.displayMessage( messagePane, "The player has been removed", false);
+            }
+            else if( !addedPlayers.get( gameClicked).contains( player) ){
+                super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
+            }
+            return player;
+        }));
+    }
+
     public void setStatisticEnterButtonsOfPlayerStatistics(){
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
-            System.out.println( player.getPointsOrGoalsScored());
-            System.out.println( player.getAssists());
-            System.out.println( player.getReboundsOrSavesMade());
-            System.out.println( player.getStealsOrYellowCard());
-            System.out.println( player.getBlocksOrRedCard());
 
             if( player.getPointsOrGoalsScored() == null || !player.getPointsOrGoalsScored().matches("[0-9]+") || player.getPointsOrGoalsScored().length() <= 0){
                 if( player.getSportBranch().equals("Basketball")){
@@ -563,7 +579,26 @@ public class LeagueScreenController extends MainTemplateController {
                 }
             }
             else{
+                if( player.getSportBranch().equals("Basketball")){
+                    try{
+                        DatabaseManager.saveBasketballStats( user, player, new BasketballStats( player, Integer.parseInt( player.getPointsOrGoalsScored()), Integer.parseInt( player.getAssists() ), Integer.parseInt( player.getReboundsOrSavesMade() ), Integer.parseInt( player.getStealsOrYellowCard() ), Integer.parseInt( player.getBlocksOrRedCard() ) ), gameClicked );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                else if ( player.getSportBranch().equals("Football")){
+                    try{
+                        DatabaseManager.saveFootball( user, player, new FootballStats( player, Integer.parseInt( player.getPointsOrGoalsScored()), Integer.parseInt( player.getAssists() ), Integer.parseInt( player.getReboundsOrSavesMade() ), Integer.parseInt( player.getStealsOrYellowCard() ), Integer.parseInt( player.getBlocksOrRedCard() ) ), gameClicked );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
                 super.displayMessage(messagePane, "You have successfully entered " + player.getFullName() +"'s statistics.", false);
+                player.setPointsOrGoalsScored(null);
+                player.setAssists(null);
+                player.setReboundsOrSavesMade(null);
+                player.setStealsOrYellowCard(null);
+                player.setBlocksOrRedCard(null);
             }
             return player;
         }));
@@ -662,7 +697,7 @@ public class LeagueScreenController extends MainTemplateController {
         scoreLabel.setText( gameClicked.getResult());
         dateLabel.setText( gameClicked.getEventDateTime().toString());
         gameLocationLabel.setText( "Game Location: " + gameClicked.getGameLocationName());
-        gameLocationLink.setText( gameClicked.getGameLocationLink());
+        gameLocationLink.setText( "Open Game Location");
         gameLocationLink.setOnAction( e -> {
             try {
                 Desktop.getDesktop().browse(new URL(gameClicked.getGameLocationLink()).toURI());
@@ -672,6 +707,13 @@ public class LeagueScreenController extends MainTemplateController {
                 exception.printStackTrace();
             }
         });
+
+        try{
+            gameLocationImage.setImage( DatabaseManager.getPhoto(user.getDatabaseConnection(), gameClicked.getFileId()));
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         if( ( user.getUser().getTeamRole().equals("Head Coach") ||
                 user.getUser().getTeamRole().equals("Assistant Coach") ) &&

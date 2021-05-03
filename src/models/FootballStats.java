@@ -4,12 +4,12 @@ public class FootballStats extends GameStats{
     private int goalsScored;
     private int assitsMade;
     private int savesMade;
-    private boolean yellowCard;
-    private boolean redCard;
+    private int yellowCard;
+    private int redCard;
 
     //TODO think about yellow and red cards
 
-    public FootballStats(TeamMember player, int goalsScored, int assitsMade, int savesMade, boolean yellowCard, boolean redCard) {
+    public FootballStats(TeamMember player, int goalsScored, int assitsMade, int savesMade, int yellowCard, int redCard) {
         super(player);
         this.goalsScored = goalsScored;
         this.assitsMade = assitsMade;
@@ -30,11 +30,11 @@ public class FootballStats extends GameStats{
         return savesMade;
     }
 
-    public boolean isYellowCard() {
+    public int isYellowCard() {
         return yellowCard;
     }
 
-    public boolean isRedCard() {
+    public int isRedCard() {
         return redCard;
     }
 }

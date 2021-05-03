@@ -22,6 +22,9 @@ public class Game extends CalendarEvent{
         this.fileId = fileId;
     }
 
+    public int getFileId(){
+        return fileId;
+    }
 
     public int getRoundNumber() {
         return roundNumber;
