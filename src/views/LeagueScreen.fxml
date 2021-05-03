@@ -549,10 +549,10 @@
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints percentHeight="8.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="12.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="65.0" prefHeight="450.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="6.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="64.0" prefHeight="450.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <GridPane>
@@ -564,12 +564,12 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label contentDisplay="CENTER" prefHeight="51.0" prefWidth="300.0" text="Select Team" textFill="LIGHTGRAY">
+                              <Label contentDisplay="CENTER" prefHeight="51.0" prefWidth="174.0" text="Select Team" textFill="LIGHTGRAY">
                                  <font>
-                                    <Font size="35.0" />
+                                    <Font size="25.0" />
                                  </font>
                                  <graphic>
-                                    <Line endX="100.0" startX="-100.0" stroke="#a1289f" strokeWidth="2.0" translateY="20.0" />
+                                    <Line endX="87.0" startX="-50.0" stroke="#a1289f" strokeWidth="2.0" translateY="20.0" />
                                  </graphic>
                               </Label>
                            </children>
@@ -583,12 +583,12 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label contentDisplay="CENTER" prefHeight="56.0" text="Standings" textFill="LIGHTGRAY">
+                              <Label contentDisplay="CENTER" prefHeight="56.0" prefWidth="275.0" text="Standings" textFill="LIGHTGRAY">
                                  <font>
-                                    <Font size="39.0" />
+                                    <Font size="31.0" />
                                  </font>
                                  <graphic>
-                                    <Line endX="63.0" startX="-100.0" stroke="#a1289f" strokeWidth="2.0" translateX="2.0" translateY="25.0" />
+                                    <Line endX="70.0" startX="-70.0" stroke="#a1289f" strokeWidth="2.0" translateX="2.0" translateY="25.0" />
                                  </graphic>
                               </Label>
                            </children>
@@ -608,25 +608,24 @@
                         <GridPane GridPane.rowIndex="3">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label fx:id="leagueNameLabel" prefHeight="30.0" text="League Name: " textFill="LIGHTGRAY">
+                              <Label fx:id="leagueNameLabel" prefHeight="86.0" prefWidth="547.0" text="League Name: " textFill="LIGHTGRAY" translateY="10.0">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font size="30.0" />
                                  </font>
                               </Label>
                            </children>
                         </GridPane>
-                        <GridPane GridPane.rowIndex="4">
+                        <GridPane translateY="25.0" GridPane.rowIndex="4">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="580.0" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="70.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <TableView fx:id="standingsTableView" maxWidth="500.0" stylesheets="@../stylesheets/tableViewStyleSheet.css">
@@ -769,12 +768,12 @@
                         </GridPane>
                         <GridPane gridLinesVisible="true" styleClass="statsGrid" stylesheets="@../stylesheets/gridPaneStyleSheet.css" translateX="55.0" GridPane.rowIndex="4">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="12.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints maxHeight="42.0" minHeight="10.0" percentHeight="12.0" prefHeight="30.0" vgrow="SOMETIMES" />

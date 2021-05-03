@@ -253,6 +253,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         setTeamSelectionComboBox();
         setPlayerStatisticsTable( );
+        setAddPlayerTable();
     }
 
     /**
@@ -273,6 +274,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         userSelectedTeam.add( userTeams.get(0));
 
+
         setStandingsTable();
 
         setTeamOverviewTable();
@@ -281,6 +283,9 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     public void setAddPlayersComboBox(){
+
+        userTeamsAddPlayersComboBox.clear();
+        userTeamNamesAddPlayersComboBox.clear();
 
         for( int arrayIndex = 0; arrayIndex < userTeams.size(); arrayIndex++){
             if( !userTeams.get( arrayIndex).equals( teamOfCoach)){
@@ -517,14 +522,6 @@ public class LeagueScreenController extends MainTemplateController {
         }
         else if( user.getUser().getSportBranch().equals("Basketball")){
 
-            /*
-            Set the places of the name labels to omit the draw column
-             */
-            drawsNameLabel.setText( losesNameLabel.getText());
-            losesNameLabel.setText( pointsNameLabel.getText());
-            pointsNameLabel.setText( matchesLeftNameLabel.getText());
-            matchesLeftNameLabel.setText("");
-
             /* Set the labels according to the information received from selected team
                by avoiding draw column
              */
@@ -547,8 +544,8 @@ public class LeagueScreenController extends MainTemplateController {
         teams = user.getStandings( userSelectedTeam.get(0));
         gamesOfTheRound = user.getGamesOfTheCurrentRound( userSelectedTeam.get(0) );
         updateTeamOverviewTable();
-        standingsTableView.refresh();
-        fixtureTable.refresh();
+        standingsTableView.setItems(teams);
+        fixtureTable.setItems(gamesOfTheRound);
         setFixtureButtonsAndLabel();
     }
 
@@ -576,13 +573,13 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void rightButtonFixtureClicked( ActionEvent event) throws SQLException {
         gamesOfTheRound = DatabaseManager.getGames(user.getDatabaseConnection(), user.getStandings( userSelectedTeam.get(0) ), roundNo + 1, userSelectedTeam.get(0).getLeagueId() );
-        fixtureTable.refresh();
+        fixtureTable.setItems(gamesOfTheRound);
         setFixtureButtonsAndLabel();
     }
 
     public void leftButtonFixtureClicked( ActionEvent event) throws SQLException {
         gamesOfTheRound = DatabaseManager.getGames(user.getDatabaseConnection(), user.getStandings( userSelectedTeam.get(0) ), roundNo - 1, userSelectedTeam.get(0).getLeagueId() );
-        fixtureTable.refresh();
+        fixtureTable.setItems(gamesOfTheRound);
         setFixtureButtonsAndLabel();
     }
 
@@ -626,7 +623,6 @@ public class LeagueScreenController extends MainTemplateController {
             addPlayersGridPane.setVisible(true);
             blackenedPane1.setVisible(true);
             setAddPlayersComboBox();
-            setAddPlayerTable();
             if( addedPlayers.get( gameClicked) == null){
                 addedPlayers.put( gameClicked, new ArrayList<TeamMember>());
             }
