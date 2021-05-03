@@ -1,44 +1,49 @@
 package models;
 
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.Date;
 
-public class Notification {
-    private int notificationId;
+public class Announcement {
+    private int announcementId;
     private String title;
     private String description;
     private TeamMember sender;
-    private TeamMember recipient;
+    private Team team;
     private String clickAction;
     private Date timeSent;
     private boolean isUnread; //TODO how can this be functional
     private ImageView senderProfilePhoto;
 
-    public Notification(int notificationId, String title, String description, TeamMember sender, TeamMember recipient, String clickAction, Date timeSent, boolean isUnread) {
-        this.notificationId = notificationId;
+    public Announcement(int announcementId, String title, String description, TeamMember sender, Team team, String clickAction, Date timeSent, boolean isUnread) {
+        this.announcementId = announcementId;
         this.title = title;
         this.description = description;
         this.sender = sender;
-        this.recipient = recipient;
+        this.team = team;
         this.clickAction = clickAction;
         this.timeSent = timeSent;
         this.isUnread = isUnread;
-        this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
+        if (sender.getProfilePhoto() != null) {
+            this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
+        }
     }
-    public Notification(String title, String description, TeamMember sender, TeamMember recipient, String clickAction) {
+
+    public Announcement(String title, String description, TeamMember sender, Team team, String clickAction) {
         this.title = title;
         this.description = description;
         this.sender = sender;
-        this.recipient = recipient;
+        this.team = team;
         this.clickAction = clickAction;
-        this.isUnread = true;
         this.timeSent = new Date();
+        this.isUnread = true;
+        if (sender.getProfilePhoto() != null) {
+            this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
+        }
     }
 
-    public int getNotificationId() {
-        return notificationId;
+    public int getAnnouncementId() {
+        return announcementId;
     }
 
     public String getTitle() {
@@ -53,8 +58,8 @@ public class Notification {
         return sender;
     }
 
-    public TeamMember getRecipient() {
-        return recipient;
+    public Team getTeam() {
+        return team;
     }
 
     public String getClickAction() {
@@ -73,3 +78,8 @@ public class Notification {
         return senderProfilePhoto;
     }
 }
+
+}
+
+
+
