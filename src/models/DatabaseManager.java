@@ -141,6 +141,29 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(teamApplications);
     }
 
+    public static void downloadGameplan( Connection databaseConnection, int fileId, String filePath) throws SQLException, IOException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select file from file_storage where id = ?");
+        prepStmt.setInt(1, fileId);
+
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+
+            File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
+            if (!teamLinkDirectory.exists()){
+                teamLinkDirectory.mkdir();
+            }
+
+            FileOutputStream output = new FileOutputStream(filePath);
+
+            InputStream input = resultSet.getBinaryStream("file");
+            byte[] buffer = new byte[1024];
+            while (input.read(buffer) > 0){
+                output.write(buffer);
+            }
+        }
+    }
+
+
     private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, IOException {
 
         if(userTeams.isEmpty()){
@@ -155,25 +178,9 @@ public class DatabaseManager {
             while(resultSet.next()){
                 int gameplanId = resultSet.getInt("gameplan_id");
                 String title = resultSet.getString("title");
-                int version = resultSet.getInt("version");
                 int file_id = resultSet.getInt("file_id");
-                //TODO download gameplan
-                /*
-                File teamLinkDirectory = new File(System.getProperty("user.home") + "\\Teamlink");
-                if (!teamLinkDirectory.exists()){
-                    teamLinkDirectory.mkdir();
-                }
 
-                File theFile = new File(System.getProperty("user.home") + "\\Teamlink\\" + title + "_" + version + ".pdf");
-                FileOutputStream output = new FileOutputStream(theFile);
-
-                InputStream input = resultSet.getBinaryStream("gameplan_pdf");
-                byte[] buffer = new byte[1024];
-                while (input.read(buffer) > 0){
-                    output.write(buffer);
-                }
-                */
-                gameplans.add(new Gameplan(gameplanId, title, team, version,file_id ));
+                gameplans.add(new Gameplan(gameplanId, title, file_id ));
             }
             teamGameplans.put(team, gameplans);
         }
@@ -747,81 +754,64 @@ public class DatabaseManager {
     }
 
     public static void updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
-        prepStmt.setString(1, team.getLeagueName());
-        prepStmt.setString(2, team.getDatabaseTeamName());
-        ResultSet resultSet = prepStmt.executeQuery();
+        PreparedStatement leagueStatement = databaseConnection.prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
+        leagueStatement.setString(1, team.getLeagueName());
+        leagueStatement.setString(2, team.getDatabaseTeamName());
+        ResultSet resultSet = leagueStatement.executeQuery();
         if (resultSet.next()) {
             int leagueId = resultSet.getInt("l.league_id");
             int leagueTeamId = resultSet.getInt("league_team_id");
             team.setLeagueId(leagueId);
             team.setDatabaseTeamId(leagueTeamId);
-            prepStmt = databaseConnection.prepareStatement("UPDATE teams t SET t.team_name = ?, t.abbrevation = ?, t.city = ?, t.age_group = ?, t.database_team_id = ?, t.league_id = ?  WHERE t.team_id = ?");
+
+
+            if(team.getFileId() != 1 || logoFile == null){
+                PreparedStatement changeFileStatement = databaseConnection.prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
+                if (logoFile != null) {
+                    FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
+                    changeFileStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
+                } else {
+                    changeFileStatement.setBlob(1, InputStream.nullInputStream());
+                }
+                changeFileStatement.setInt(2, team.getFileId());
+                changeFileStatement.executeUpdate();
+            }
+            else{
+                PreparedStatement newFileStatement = databaseConnection.prepareStatement("INSERT INTO file_storage(file) values(?)",Statement.RETURN_GENERATED_KEYS);
+                FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
+                newFileStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
+                newFileStatement.executeUpdate();
+                ResultSet rs = newFileStatement.getGeneratedKeys();
+                if(rs.next())
+                {
+                    int fileId = rs.getInt(1);
+                    System.out.println("AAAAA");
+                    team.setFileId(fileId);
+                }
+            }
+
+
+
+            PreparedStatement prepStmt = databaseConnection.prepareStatement("UPDATE teams t SET t.team_name = ?, t.abbrevation = ?, t.city = ?, t.age_group = ?, t.database_team_id = ?, t.league_id = ?, t.file_id = ?  WHERE t.team_id = ?");
             prepStmt.setString(1, team.getTeamName());
             prepStmt.setString(2, team.getAbbrevation());
             prepStmt.setString(3, team.getCity());
             prepStmt.setString(4, team.getAgeGroup());
             prepStmt.setInt(5, leagueTeamId);
             prepStmt.setInt(6, leagueId);
-
-            prepStmt.setInt(7, team.getTeamId());
+            prepStmt.setInt(7, team.getFileId());
+            prepStmt.setInt(8, team.getTeamId());
             int row = prepStmt.executeUpdate();
 
 
-            if(team.getFileId() == 1 && logoFile != null){
-                prepStmt = databaseConnection.prepareStatement("INSERT INTO file_storage(file) values(?)",Statement.RETURN_GENERATED_KEYS);
-                FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
-                prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
-                prepStmt.setBlob(1, InputStream.nullInputStream());
-                ResultSet rs = prepStmt.getGeneratedKeys();
-                if(rs.next())
-                {
-                    int fileId = rs.getInt(1);
-                    team.setFileId(fileId);
-                }
-            }
-            else{
-                prepStmt = databaseConnection.prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
-                if (logoFile != null) {
-                    FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
-                    prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
-                } else {
-                    prepStmt.setBlob(1, InputStream.nullInputStream());
-                }
-                prepStmt.setInt(2, team.getFileId());
-            }
-
-            prepStmt.executeUpdate();
         }
     }
 
     public static void updateUser(UserSession user, File profilePhoto) throws SQLException, IOException {
-       PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE team_members t SET t.first_name = ?, t.last_name = ?, " +
-               "t.email = ?, t.birthday = ? WHERE t.member_id = ?");
-       preparedStatement.setString(1, user.getUser().getFirstName());
-       preparedStatement.setString(2, user.getUser().getLastName());
-       preparedStatement.setString(3, user.getUser().getEmail());
-       preparedStatement.setDate(4, java.sql.Date.valueOf(user.getUser().getBirthday()));
+        PreparedStatement preparedStatement;
 
-
-        preparedStatement.setInt(5, user.getUser().getMemberId());
-
-        int row = preparedStatement.executeUpdate();
-
-        if(user.getUser().getFileId() == 1 && profilePhoto != null){
-            preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)", Statement.RETURN_GENERATED_KEYS);
-            FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
-            preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
-            preparedStatement.setBlob(1, InputStream.nullInputStream());
-            ResultSet rs = preparedStatement.getGeneratedKeys();
-            if(rs.next())
-            {
-                int fileId = rs.getInt(1);
-                user.getUser().setFileId(fileId);
-            }
-        }
-        else{
-            preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
+        if(user.getUser().getFileId() != 1 || profilePhoto == null){
+            preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE file_storage fs SET fs.file = ? WHERE fs.id = ?");
             if (profilePhoto != null) {
                 FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
                 preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
@@ -829,10 +819,33 @@ public class DatabaseManager {
                 preparedStatement.setBlob(1, InputStream.nullInputStream());
             }
             preparedStatement.setInt(2,user.getUser().getFileId());
+            preparedStatement.executeUpdate();
+        }
+        else{
+            preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)", Statement.RETURN_GENERATED_KEYS);
+            FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
+            preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
+
+            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if(rs.next())
+            {
+                int fileId = rs.getInt(1);
+                user.getUser().setFileId(fileId);
+            }
         }
 
+        preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE team_members t SET t.first_name = ?, t.last_name = ?, " +
+                "t.email = ?, t.birthday = ?, t.file_id = ? WHERE t.member_id = ?");
+        preparedStatement.setString(1, user.getUser().getFirstName());
+        preparedStatement.setString(2, user.getUser().getLastName());
+        preparedStatement.setString(3, user.getUser().getEmail());
+        preparedStatement.setDate(4, java.sql.Date.valueOf(user.getUser().getBirthday()));
+        preparedStatement.setInt(5, user.getUser().getFileId());
 
-        preparedStatement.executeUpdate();
+        preparedStatement.setInt(6, user.getUser().getMemberId());
+
+        int row = preparedStatement.executeUpdate();
     }
 
     public static boolean passwordChange(UserSession user, String newPassword) throws SQLException {

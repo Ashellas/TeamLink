@@ -120,3 +120,7 @@ text : #151617
     -fx-stroke   :  #151617;
 }
 
+.gameplan{
+    -fx-background-color:  #faf9f7;
+}
+
