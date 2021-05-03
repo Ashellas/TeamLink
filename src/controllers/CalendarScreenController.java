@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import models.*;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,8 +42,8 @@ public class CalendarScreenController extends MainTemplateController {
     private ArrayList<Label> labels = new ArrayList<Label>();;
     private ArrayList<ListView<Button>> lists = new ArrayList<ListView<Button>>();
     private ArrayList<CalendarEvent> events = new ArrayList<CalendarEvent>();
+    private ArrayList<CalendarEvent> allEvents = new ArrayList<>();
     private ArrayList<Team> teams = new ArrayList<Team>();
-    private CalendarEvent e2 = new CalendarEvent(1,"training", new Date(2021, 04, 19, 17,30),"/views/SquadScreen.fxml","lightBlue");
     private Team selectedTeam;
 
     public void initData(UserSession userSession){
@@ -80,7 +81,8 @@ public class CalendarScreenController extends MainTemplateController {
             gp.add(day, 0, 0);
             gp.add(buttonListView,0,1);
         }
-        events.add(e2);
+        events = userSession.getCalendarEvents(selectedTeam);
+        allEvents = userSession.getAllEvents();
         createCalendar(firstDay, maxDay, events);
         AppManager.fadeIn(calendarPane,500);
     }
@@ -91,21 +93,43 @@ public class CalendarScreenController extends MainTemplateController {
             int column  =  (i + firstDay - 2)%7;
             Label l = labels.get(i + firstDay - 2);
             l.setText("   " + i + "");
-            for (CalendarEvent ce: events) {
-                if (selectedTeam.getTeamName().equals("All Teams")) { // ce.getDescription().equals(selectedTeam.getAbbrevation()) deleted
+            if (selectedTeam.getTeamName().equals("All Teams")) {
+                for (CalendarEvent ce: allEvents) {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(ce.getEventDateTime());
-                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    String formattedDate =  sdf.format(ce.getEventDateTime());
+                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH - 1)) {
                         ListView<Button> buttonListView = lists.get(i + firstDay - 2);
                         if (ce.getActionLink() != null) {
                             try {
-                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
+                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }
-                        else {
+                        } else {
                             buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+                        }
+                    }
+                }
+
+            }
+            else {
+                for (CalendarEvent ce : events) {
+                    if (selectedTeam.getTeamName().equals("All Teams")) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(ce.getEventDateTime());
+                        if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
+                            ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                            if (ce.getActionLink() != null) {
+                                try {
+                                    buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+                            }
                         }
                     }
                 }
@@ -113,26 +137,6 @@ public class CalendarScreenController extends MainTemplateController {
         }
     }
 
-    //if (ce.getActionLink() != null) {
-    //                    Calendar calendar = Calendar.getInstance();
-    //                    calendar.setTime(ce.getEventDateTime());
-    //                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
-    //                        ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-    //                        try {
-    //                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
-    //                        } catch (IOException e) {
-    //                            e.printStackTrace();
-    //                        }
-    //                    }
-    //                else if (ce.getEventTitle() != null) {
-    //                        Calendar calendar1 = Calendar.getInstance();
-    //                        calendar1.setTime(ce.getEventDateTime());
-    //                        if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
-    //                            ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-    //                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
-    //                        }
-    //                    }
-    //                }
     public void clearCalendar() {
         for (Label l: labels) {
             l.setText("");
@@ -149,6 +153,20 @@ public class CalendarScreenController extends MainTemplateController {
             currentMonth = 11;
             currentYear--;
         }
+        if (selectedTeam.getTeamName().equals("All Teams"))  {
+            allEvents.clear();
+            ArrayList<Team> t = user.getUserTeams();
+            for (Team team: t) {
+                allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+            }
+            createCalendar(firstDay, maxDay, allEvents);
+        }
+        else {
+            events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+            createCalendar(firstDay, maxDay, events);
+        }
+
+
         monthName.setText(months[currentMonth] + " " + currentYear);
         GregorianCalendar gc1 = new GregorianCalendar(currentYear, currentMonth, 1);
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
@@ -170,6 +188,19 @@ public class CalendarScreenController extends MainTemplateController {
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
         createCalendar(firstDay, maxDay, events);
+
+        if (selectedTeam.getTeamName().equals("All Teams"))  {
+            allEvents.clear();
+            ArrayList<Team> t = user.getUserTeams();
+            for (Team team: t) {
+                allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+            }
+            createCalendar(firstDay, maxDay, allEvents);
+        }
+        else {
+            events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+            createCalendar(firstDay, maxDay, events);
+        }
     }
 
     public void teamSelection(ActionEvent actionEvent) {
