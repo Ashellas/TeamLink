@@ -157,8 +157,6 @@ public class SettingsScreenController extends MainTemplateController {
     @FXML
     private Button deleteTeamButton;
 
-
-
     @Override
     public void initData(UserSession user){
         super.initData(user);
@@ -233,7 +231,7 @@ public class SettingsScreenController extends MainTemplateController {
     }
 
     //--------------------Main Pane----------------------------//
-    public void editAccount(ActionEvent actionEvent) throws SQLException {
+    public void editAccount(ActionEvent actionEvent) throws SQLException, IOException {
         if (editAccountButton.getText().equals("Edit")) {
             userNameField.setEditable(true);
             emailField.setEditable(true);
@@ -259,12 +257,15 @@ public class SettingsScreenController extends MainTemplateController {
             user.getUser().setName(userNameField.getText());
             user.getUser().setEmail(emailField.getText());
             user.getUser().setBirthday(datePicker.getValue());
+
             editAccountButton.setText("Edit");
             userNameLabel.setText(user.getUser().getFirstName());
-
             if (selectedFile != null) {
+                user.getUser().setProfilePhoto(accountPhoto);
                 profileIcon.setImage(new Image(selectedFile.toURI().toString()));
             }
+            DatabaseManager.updateUser(user, selectedFile);
+            selectedFile = null;
         }
     }
 
@@ -416,10 +417,8 @@ public class SettingsScreenController extends MainTemplateController {
 
     //-------------------------Team Edit---------------------------//
 
-    public void saveChanges(ActionEvent actionEvent) throws SQLException {
+    public void saveChanges(ActionEvent actionEvent) throws SQLException, IOException {
         if (validEditInput()) {
-            // TODO
-            // Update team at database
             teamCombobox.getValue().setTeamName(teamNameEditField.getText());
             teamCombobox.getValue().setCity(chooseCityBox.getValue().toString());
             teamCombobox.getValue().setAbbrevation(abbrevationEditField.getText());
@@ -428,15 +427,14 @@ public class SettingsScreenController extends MainTemplateController {
                 teamCombobox.getValue().setTeamLogo(logoChangeImage);
                 teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
             }
+            DatabaseManager.updateTeam(teamCombobox.getValue(), user.getDatabaseConnection(), selectedFile);
+            displayMessage(messagePane,"Changes are saved", false);
 
             teamCombobox.getItems().clear();
             teamCombobox.getItems().addAll(user.getUserTeams());
-            // TODO
-            // Combobox team is not selected after edit
+            teamCombobox.getSelectionModel().selectFirst();
 
             closeButtonPushed(actionEvent);
-            teamCombobox.getSelectionModel().selectFirst();
-            displayMessage(messagePane,"Changes are saved", false);
         }
     }
 
@@ -445,6 +443,7 @@ public class SettingsScreenController extends MainTemplateController {
         editTeamPane.setVisible(false);
         darkPane.setDisable(true);
         darkPane.setVisible(false);
+        selectedFile = null;
     }
 
     public void changeTeamLogo(ActionEvent actionEvent) {
@@ -551,6 +550,7 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setDisable(true);
         darkPane.setVisible(false);
         logoChangeImageCreate.setImage(new Image("/Resources/Images/emptyTeamLogo.png"));
+        selectedFile = null;
     }
 
     //--------------------HELPER-------------------------------//

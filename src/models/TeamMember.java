@@ -63,9 +63,6 @@ public class TeamMember {
         }
     }
 
-
-
-
     public int getMemberId() {
         return memberId;
     }
@@ -120,6 +117,10 @@ public class TeamMember {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public void setProfilePhoto(ImageView profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public String getPointsOrGoalsScored(){
