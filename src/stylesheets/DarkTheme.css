@@ -119,3 +119,7 @@ Main background : #1f2328
 .statsGrid Line {
     -fx-stroke   :  #d3d3d3;
 }
+
+.text-area {
+    -fx-border-color: #d3d3d3;
+}

@@ -29,3 +29,15 @@
     -fx-background-color: #4b7a4d;
     -fx-font-size: 16px;
 }
+
+.text-area:hover{
+    -fx-font-size: 16px;
+    -fx-border-color: #a1289f;
+    -fx-border-width: 0 0 3 0;
+}
+
+.text-area:focused {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color:  #a1289f;
+}
