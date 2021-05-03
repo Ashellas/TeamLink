@@ -102,7 +102,7 @@ public class MainTemplateController implements InitializeData {
     }
 
     public void toGameplanScreen(ActionEvent actionEvent) throws  IOException {
-        AppManager.changeScene(getClass().getResource("/views/GameplanScreen.fxml"),actionEvent, user);
+        AppManager.changeScene(getClass().getResource("/views/GameplansScreen.fxml"),actionEvent, user);
     }
 
     public void toTrainingsScreen(ActionEvent actionEvent) throws IOException {

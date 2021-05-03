@@ -746,7 +746,7 @@ public class DatabaseManager {
         return teamsAndEvents;
     }
 
-    public static boolean updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
+    public static void updateTeam(Team team, Connection databaseConnection, File logoFile) throws SQLException, IOException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and team_name  = ?");
         prepStmt.setString(1, team.getLeagueName());
         prepStmt.setString(2, team.getDatabaseTeamName());
@@ -766,25 +766,30 @@ public class DatabaseManager {
 
             prepStmt.setInt(7, team.getTeamId());
             int row = prepStmt.executeUpdate();
-            if(row > 0){
-                return  true;
-            }
 
-            prepStmt = databaseConnection.prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
-            if (logoFile != null) {
+
+            if(team.getFileId() == 1 && logoFile != null){
+                prepStmt = databaseConnection.prepareStatement("INSERT INTO file_storage(file) values(?)");
                 FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
                 prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
-            } else {
                 prepStmt.setBlob(1, InputStream.nullInputStream());
             }
-            prepStmt.setInt(2,team.getFileId());
+            else{
+                prepStmt = databaseConnection.prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
+                if (logoFile != null) {
+                    FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
+                    prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
+                } else {
+                    prepStmt.setBlob(1, InputStream.nullInputStream());
+                }
+                prepStmt.setInt(2, team.getFileId());
+            }
 
             prepStmt.executeUpdate();
         }
-        return false;
     }
 
-    public static boolean updateUser(UserSession user, File profilePhoto) throws SQLException, IOException {
+    public static void updateUser(UserSession user, File profilePhoto) throws SQLException, IOException {
        PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE team_members t SET t.first_name = ?, t.last_name = ?, " +
                "t.email = ?, t.birthday = ? WHERE t.member_id = ?");
        preparedStatement.setString(1, user.getUser().getFirstName());
@@ -797,23 +802,25 @@ public class DatabaseManager {
 
         int row = preparedStatement.executeUpdate();
 
-        preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
-        if (profilePhoto != null) {
+        if(user.getUser().getFileId() == 1 && profilePhoto != null){
+            preparedStatement = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)");
             FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
             preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
-        } else {
             preparedStatement.setBlob(1, InputStream.nullInputStream());
         }
-        preparedStatement.setInt(2,user.getUser().getFileId());
-
-        preparedStatement.executeUpdate();
-
-        if(row > 0){
-            return  true;
+        else{
+            preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
+            if (profilePhoto != null) {
+                FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
+                preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
+            } else {
+                preparedStatement.setBlob(1, InputStream.nullInputStream());
+            }
+            preparedStatement.setInt(2,user.getUser().getFileId());
         }
 
 
-        return false;
+        preparedStatement.executeUpdate();
     }
 
     public static boolean passwordChange(UserSession user, String newPassword) throws SQLException {
