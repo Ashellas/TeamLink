@@ -114,47 +114,22 @@ public class CalendarScreenController extends MainTemplateController {
             int column  =  (i + firstDay - 2)%7;
             Label l = labels.get(i + firstDay - 2);
             l.setText("   " + i + "");
-            if (selectedTeam.getTeamName().equals("All Teams")) {
-                if (allEvents != null) {
-                    for (CalendarEvent ce : allEvents) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(ce.getEventDateTime());
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                        String formattedDate = sdf.format(ce.getEventDateTime());
-                        if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH - 1)) {
-                            ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                            if (ce.getActionLink() != null) {
-                                try {
-                                    buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+            if (events != null) {
+                for (CalendarEvent ce : events) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(ce.getEventDateTime());
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    String formattedDate = sdf.format(ce.getEventDateTime());
+                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 2)) {
+                        ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                        if (ce.getActionLink() != null) {
+                            try {
+                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        }
-                    }
-                }
-
-            }
-            else {
-                if (events != null) {
-                    for (CalendarEvent ce : events) {
-                        if (selectedTeam.getTeamName().equals("All Teams")) {
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(ce.getEventDateTime());
-                            if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH - 1)) {
-                                ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                                if (ce.getActionLink() != null) {
-                                    try {
-                                        buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                } else {
-                                    buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
-                                }
-                            }
+                        } else {
+                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                         }
                     }
                 }
@@ -162,6 +137,8 @@ public class CalendarScreenController extends MainTemplateController {
         }
     }
 
+
+    //
     /**
      * Clears the Calendar.
      */
@@ -185,18 +162,6 @@ public class CalendarScreenController extends MainTemplateController {
             currentMonth = 11;
             currentYear--;
         }
-        if (selectedTeam.getTeamName().equals("All Teams"))  {
-            allEvents.clear();
-            ArrayList<Team> t = user.getUserTeams();
-            for (Team team: t) {
-                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
-            }
-            createCalendar(firstDay, maxDay, allEvents);
-        }
-        else {
-            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
-            createCalendar(firstDay, maxDay, events);
-        }
 
 
         monthName.setText(months[currentMonth] + " " + currentYear);
@@ -204,7 +169,12 @@ public class CalendarScreenController extends MainTemplateController {
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
-        createCalendar(firstDay, maxDay, events);
+        if (selectedTeam.getTeamName().equals("All Teams"))
+            createCalendar(firstDay, maxDay, allEvents);
+        else
+            createCalendar(firstDay, maxDay, events);
+        //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
+        //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
     }
 
     /**
@@ -218,25 +188,17 @@ public class CalendarScreenController extends MainTemplateController {
             currentMonth = 0;
             currentYear++;
         }
+
+
         monthName.setText(months[currentMonth] + " " + currentYear);
         GregorianCalendar gc1 = new GregorianCalendar(currentYear, currentMonth, 1);
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
-        createCalendar(firstDay, maxDay, events);
-
-        if (selectedTeam.getTeamName().equals("All Teams"))  {
-            allEvents.clear();
-            ArrayList<Team> t = user.getUserTeams();
-            for (Team team: t) {
-                //allEvents.addAll  (DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, team));
-            }
+        if (selectedTeam.getTeamName().equals("All Teams"))
             createCalendar(firstDay, maxDay, allEvents);
-        }
-        else {
-            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), currentMonth, currentYear, selectedTeam);
+        else
             createCalendar(firstDay, maxDay, events);
-        }
     }
 
     /**

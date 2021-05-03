@@ -212,6 +212,9 @@ public class LeagueScreenController extends MainTemplateController {
     @FXML
     private Button leftButtonFixture;
 
+    @FXML
+    private Button submitChangesButton;
+
     private Team teamOfCoach;
 
     private Game gameClicked;
@@ -440,9 +443,9 @@ public class LeagueScreenController extends MainTemplateController {
 
         if( user.getUser().getSportBranch().equals("Football") ){
             playerStatisticsFirstColumn.setText("Goals");
-            playerStatisticsThirdColumn.setText("Saves");
-            playerStatisticsForthColumn.setText("Yellow Card");
-            playerStatisticsFifthColumn.setText("Red Card");
+            playerStatisticsThirdColumn.setText("Fouls");
+            playerStatisticsForthColumn.setText("Passes");
+            playerStatisticsFifthColumn.setText("Tackles");
         }
     }
 
@@ -513,14 +516,23 @@ public class LeagueScreenController extends MainTemplateController {
         playerStatisticsEnterStatisticsColumn.setText( "Remove");
 
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Remove", (TeamMember player) -> {
-            if( addedPlayers.get( gameClicked).contains( player) ){
-                userSelectedTeamMembers.remove( player);
-                addedPlayers.get( gameClicked).remove( player);
-                playerStatisticsTable.refresh();
-                super.displayMessage( messagePane, "The player has been removed", false);
-            }
-            else if( !addedPlayers.get( gameClicked).contains( player) ){
+            if( !addedPlayers.containsKey( gameClicked)){
                 super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
+            }
+            else{
+                if( addedPlayers.get( gameClicked).contains( player) ){
+                    userSelectedTeamMembers.remove( player);
+                    addedPlayers.get( gameClicked).remove( player);
+                    playerStatisticsTable.refresh();
+                    super.displayMessage( messagePane, "The player has been removed", false);
+                }
+                else if( !addedPlayers.get( gameClicked).contains( player) ){
+                    super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
+                }
+
+                if( addedPlayers.get( gameClicked).isEmpty()){
+                    submitChangesButton.setVisible(false);
+                }
             }
             return player;
         }));
@@ -548,7 +560,7 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for rebounds column of " + player.getFullName() + " is invalid", true);
                 }
                 else if( player.getSportBranch().equals("Football")){
-                    super.displayMessage( messagePane, "The value you entered for saves made column of " + player.getFullName() + " is invalid", true);
+                    super.displayMessage( messagePane, "The value you entered for fouls made column of " + player.getFullName() + " is invalid", true);
                 }
                 else{
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
@@ -559,7 +571,7 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for steals column of " + player.getFullName() + " is invalid", true);
                 }
                 else if( player.getSportBranch().equals("Football")){
-                    super.displayMessage( messagePane, "The value you entered for yellow card column of " + player.getFullName() + " is invalid", true);
+                    super.displayMessage( messagePane, "The value you entered for passes made column of " + player.getFullName() + " is invalid", true);
                 }
                 else{
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
@@ -570,7 +582,7 @@ public class LeagueScreenController extends MainTemplateController {
                     super.displayMessage( messagePane, "The value you entered for blocks column of " + player.getFullName() + " is invalid", true);
                 }
                 else if( player.getSportBranch().equals("Football")){
-                    super.displayMessage( messagePane, "The value you entered for red card column of " + player.getFullName() + " is invalid", true);
+                    super.displayMessage( messagePane, "The value you entered for tackles made column of " + player.getFullName() + " is invalid", true);
                 }
                 else{
                     super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
@@ -593,11 +605,6 @@ public class LeagueScreenController extends MainTemplateController {
                     }
                 }
                 super.displayMessage(messagePane, "You have successfully entered " + player.getFullName() +"'s statistics.", false);
-                player.getGameStats().setFirstStat(null);
-                player.getGameStats().setSecondStat(null);
-                player.getGameStats().setThirdStat(null);
-                player.getGameStats().setForthStat(null);
-                player.getGameStats().setFifthStat(null);
             }
             return player;
         }));
@@ -773,10 +780,15 @@ public class LeagueScreenController extends MainTemplateController {
             userSelectedTeamMembers.add( player);
             addedPlayers.get( gameClicked).add( player);
             playerStatisticsTable.refresh();
+            submitChangesButton.setVisible(true);
         }
         else{
             super.displayMessage(messagePane, "You cannot add the same player", true);
         }
+    }
+
+    public void onClickSubmitChangesButton(ActionEvent event){
+
     }
 
     @Override
