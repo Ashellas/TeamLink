@@ -1,5 +1,6 @@
 import com.sun.javafx.application.HostServicesDelegate;
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -29,8 +30,11 @@ public class Main extends Application {
 //aasd
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        HostServices hostServices = getHostServices();
+        hostServices.showDocument("C:\\Users\\eftal\\Documents\\TeamLink EXTRASC:\\Users\\eftal\\Documents\\TeamLink EXTRAS\\Strong.pdf");
         Connection databaseConnection = DriverManager.getConnection("jdbc:mysql://139.177.181.92:3306/teamlink", "atak", "**CTRLaltBilkentg3m**");
-        UserSession userSession = new UserSession(databaseConnection);
+        UserSession userSession = new UserSession(databaseConnection, hostServices);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("views/LoginScreen.fxml"));
         loader.load();

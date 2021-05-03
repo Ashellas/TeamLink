@@ -11,7 +11,7 @@ public class Game extends CalendarEvent{
     private String result;
     private int fileId;
 
-    public Game(int calendarEventId, String eventTitle, Date eventDateTime, String description, String actionLink, String colorCode, int roundNumber, Team homeTeam, Team awayTeam, String gameLocationName, String gameLocationLink, String result, int fileId) {
+    public Game(int calendarEventId, String eventTitle, Date eventDateTime, String actionLink, String colorCode, int roundNumber, Team homeTeam, Team awayTeam, String gameLocationName, String gameLocationLink, String result, int fileId) {
         super(calendarEventId, eventTitle, eventDateTime, actionLink, colorCode);
         this.roundNumber = roundNumber;
         this.homeTeam = homeTeam;
@@ -70,7 +70,7 @@ public class Game extends CalendarEvent{
             Game otherGame = (Game) other;
             if( this.getRoundNumber() == otherGame.getRoundNumber() &&
                     this.getHomeTeam().equals(otherGame.getHomeTeam()) &&
-                    this.getAwayTeam().equals(otherGame.getAwayTeam())  ){
+                    this.getAwayTeam().equals(otherGame.getAwayTeam() ) ){
                 return true;
             }
 
@@ -85,6 +85,4 @@ public class Game extends CalendarEvent{
     public int hashCode(){
         return 1;
     }
-
-
 }

@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -16,8 +18,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import models.*;
 import org.controlsfx.control.spreadsheet.Grid;
+
+import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,7 +134,7 @@ public class LeagueScreenController extends MainTemplateController {
     private Label gameLocationLabel;
 
     @FXML
-    private Label gameLocationLinkLabel;
+    private Hyperlink gameLocationLink;
 
     @FXML
     private GridPane matchDetailsPane;
@@ -653,7 +658,16 @@ public class LeagueScreenController extends MainTemplateController {
         scoreLabel.setText( gameClicked.getResult());
         dateLabel.setText( gameClicked.getEventDateTime().toString());
         gameLocationLabel.setText( "Game Location: " + gameClicked.getGameLocationName());
-        gameLocationLinkLabel.setText( "Link: " + gameClicked.getGameLocationLink());
+        gameLocationLink.setText( gameClicked.getGameLocationLink());
+        gameLocationLink.setOnAction( e -> {
+            try {
+                Desktop.getDesktop().browse(new URL("https://www.google.com/").toURI());
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            } catch (URISyntaxException exception) {
+                exception.printStackTrace();
+            }
+        });
 
         if( ( user.getUser().getTeamRole().equals("Head Coach") ||
                 user.getUser().getTeamRole().equals("Assistant Coach") ) &&
