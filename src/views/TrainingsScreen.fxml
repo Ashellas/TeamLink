@@ -583,12 +583,12 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button id="createTraining" fx:id="createTraining" mnemonicParsing="false" onAction="#newTraining" prefHeight="38.0" prefWidth="178.0" stylesheets="@../../../../../Desktop/backup/src/stylesheets/TrainingStyleSheet.css" text="New Training" />
-                              <ComboBox fx:id="chooseBetweenTeams" prefHeight="40.0" prefWidth="237.0" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
+                              <Button id="createTraining" fx:id="createTraining" mnemonicParsing="false" onAction="#newTraining" prefHeight="38.0" prefWidth="178.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" text="New Training" />
+                              <ComboBox fx:id="chooseBetweenTeams" prefHeight="40.0" prefWidth="237.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                         <HBox fx:id="tableViewHolder" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                        <GridPane fx:id="trainingsGrid" stylesheets="@../../../../../Desktop/backup/src/stylesheets/TrainingStyleSheet.css" GridPane.rowIndex="1">
+                        <GridPane fx:id="trainingsGrid" GridPane.rowIndex="1">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="3.5" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -622,6 +622,10 @@
                               <Button fx:id="backButton" disable="true" mnemonicParsing="false" onAction="#backButtonPushed" prefHeight="28.0" prefWidth="26.0" style="-fx-font-size: 8;" text="&lt;" />
                               <Button fx:id="nextButton" disable="true" mnemonicParsing="false" onAction="#nextButtonPushed" prefHeight="25.0" prefWidth="28.0" style="-fx-font-size: 8;" text="&gt;" GridPane.columnIndex="6" />
                            </children>
+                           <stylesheets>
+                              <URL value="@../stylesheets/TrainingStyleSheet.css" />
+                              <URL value="@../stylesheets/gridPaneCSS.css" />
+                           </stylesheets>
                         </GridPane>
                      </children>
                   </GridPane>
@@ -689,8 +693,8 @@
                         </GridPane>
                      </children>
                      <stylesheets>
-                        <URL value="@../../../../../Desktop/backup/src/stylesheets/TrainingStyleSheet.css" />
-                        <URL value="@../../../../../Desktop/backup/src/stylesheets/gridPaneCSS.css" />
+                        <URL value="@../stylesheets/TrainingStyleSheet.css" />
+                        <URL value="@../stylesheets/gridPaneCSS.css" />
                      </stylesheets>
                   </GridPane>
                   <GridPane fx:id="ratingsPane" prefHeight="750.0" prefWidth="559.0" GridPane.columnIndex="2">
@@ -705,7 +709,7 @@
                      </rowConstraints>
                      <children>
                         <ListView fx:id="rateListView" prefHeight="573.0" prefWidth="559.0" GridPane.rowIndex="1" />
-                        <Button fx:id="submitRatingButton" alignment="CENTER" mnemonicParsing="false" onAction="#SubmitRatingButtonPushed" prefHeight="47.0" prefWidth="115.0" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" text="Submit" GridPane.rowIndex="2" />
+                        <Button fx:id="submitRatingButton" alignment="CENTER" mnemonicParsing="false" onAction="#SubmitRatingButtonPushed" prefHeight="47.0" prefWidth="115.0" text="Submit" GridPane.rowIndex="2" />
                         <GridPane>
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -715,7 +719,7 @@
                               <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Button fx:id="cancelRatingButton" alignment="CENTER" mnemonicParsing="false" onAction="#CancelRatingButtonPushed" prefHeight="53.0" prefWidth="155.0" style="-fx-background-radius: 10;" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" text="Cancel" GridPane.columnIndex="1" />
+                              <Button fx:id="cancelRatingButton" alignment="CENTER" mnemonicParsing="false" onAction="#CancelRatingButtonPushed" prefHeight="53.0" prefWidth="155.0" style="-fx-background-radius: 10;" text="Cancel" GridPane.columnIndex="1" />
                               <Label alignment="CENTER" prefHeight="141.0" prefWidth="475.0" styleClass="text" text="Rate the players">
                                  <font>
                                     <Font size="24.0" />
@@ -725,8 +729,8 @@
                         </GridPane>
                      </children>
                      <stylesheets>
-                        <URL value="@../../../../../Desktop/backup/src/stylesheets/TrainingStyleSheet.css" />
-                        <URL value="@../../../../../Desktop/backup/src/stylesheets/gridPaneCSS.css" />
+                        <URL value="@../stylesheets/TrainingStyleSheet.css" />
+                        <URL value="@../stylesheets/gridPaneCSS.css" />
                      </stylesheets>
                   </GridPane>
                   <GridPane fx:id="createTrainingPane" prefHeight="762.0" prefWidth="586.0" GridPane.columnIndex="2">
@@ -748,7 +752,7 @@
                            </rowConstraints>
                            <children>
                               <Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" onAction="#cancelButtonPushed" prefHeight="44.0" prefWidth="230.0" style="-fx-background-radius: 15;" text="Cancel" GridPane.columnIndex="1" />
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="94.0" prefWidth="498.0" style="-fx-background-color: transparent;" styleClass="text" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/gridPaneCSS.css" text="Create a new training" GridPane.halignment="CENTER">
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="94.0" prefWidth="498.0" style="-fx-background-color: transparent;" styleClass="text" text="Create a new training" GridPane.halignment="CENTER">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -779,7 +783,7 @@
                                     <RowConstraints minHeight="10.0" percentHeight="24.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <TextField id="nameHolder" fx:id="nameHolder" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="233.0" promptText="Training name" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" />
+                                    <TextField id="nameHolder" fx:id="nameHolder" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="233.0" promptText="Training name" />
                                     <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="198.0" GridPane.rowIndex="1" />
                                     <GridPane GridPane.rowIndex="2">
                                        <columnConstraints>
@@ -791,9 +795,9 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <ComboBox fx:id="amPmChoice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0" prefWidth="78.0" stylesheets="@../../../../../Desktop/backup/src/stylesheets/timePickerStyleSheet.css" />
-                                          <ComboBox fx:id="minuteChoice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0" prefWidth="78.0" stylesheets="@../../../../../Desktop/backup/src/stylesheets/timePickerStyleSheet.css" GridPane.columnIndex="2" />
-                                          <ComboBox fx:id="hourChoice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0" prefWidth="78.0" stylesheets="@../../../../../Desktop/backup/src/stylesheets/timePickerStyleSheet.css" GridPane.columnIndex="1" />
+                                          <ComboBox fx:id="amPmChoice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0" prefWidth="78.0" stylesheets="@../stylesheets/timePickerStyleSheet.css" />
+                                          <ComboBox fx:id="minuteChoice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0" prefWidth="78.0" stylesheets="@../stylesheets/timePickerStyleSheet.css" GridPane.columnIndex="2" />
+                                          <ComboBox fx:id="hourChoice" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="31.0" prefWidth="78.0" stylesheets="@../stylesheets/timePickerStyleSheet.css" GridPane.columnIndex="1" />
                                        </children>
                                     </GridPane>
                                  </children>
@@ -809,8 +813,8 @@
                                     <RowConstraints minHeight="10.0" percentHeight="23.5" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <ComboBox fx:id="teamsBox" onAction="#mainTeamBoxSelected" prefHeight="41.0" prefWidth="222.0" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
-                                    <TextField id="locationUrlHolder" fx:id="locationUrlHolder" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="37.0" prefWidth="234.0" promptText="Location URL" stylesheets="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ComboBox fx:id="teamsBox" onAction="#mainTeamBoxSelected" prefHeight="41.0" prefWidth="222.0" GridPane.columnIndex="1" />
+                                    <TextField id="locationUrlHolder" fx:id="locationUrlHolder" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="37.0" prefWidth="234.0" promptText="Location URL" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <TextField fx:id="locationHolder" prefHeight="30.0" prefWidth="248.0" promptText="Location address" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
@@ -841,8 +845,8 @@
                               </GridPane>
                            </children>
                            <stylesheets>
-                              <URL value="@../../../../../../Desktop/ceren123/src/stylesheets/gridPaneCSS.css" />
-                              <URL value="@../../../../../../Desktop/ceren123/src/stylesheets/TrainingStyleSheet.css" />
+                              <URL value="@../stylesheets/TrainingStyleSheet.css" />
+                              <URL value="@../stylesheets/gridPaneCSS.css" />
                            </stylesheets>
                         </GridPane>
                      </children>
