@@ -173,7 +173,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button disable="true" mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -230,7 +230,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button disable="true" mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>

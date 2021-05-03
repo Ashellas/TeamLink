@@ -219,7 +219,7 @@ public class AfterSignupScreenController extends MainTemplateController implemen
                     chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), selectedFile);
 
             createPaneClose(actionEvent);
-            displayMessage(messagePane, "Team created", false);
+            AppManager.changeScene(getClass().getResource("/views/LoginScreen.fxml"),actionEvent, user);
         }
     }
 
