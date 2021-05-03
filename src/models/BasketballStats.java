@@ -3,13 +3,13 @@ package models;
 import java.util.HashMap;
 
 public class BasketballStats extends GameStats{
-    private int points;
-    private int assists;
-    private int rebounds;
-    private int steals;
-    private int blocks;
+    private String points;
+    private String assists;
+    private String rebounds;
+    private String steals;
+    private String blocks;
 
-    public BasketballStats(TeamMember player, int points, int assists, int rebounds, int steals, int blocks) {
+    public BasketballStats(TeamMember player, String points, String assists, String rebounds, String steals, String blocks) {
         super(player);
         this.points = points;
         this.assists = assists;
@@ -19,24 +19,48 @@ public class BasketballStats extends GameStats{
     }
 
 
-    public int getPoints() {
+    public String getFirstStat() {
         return points;
-
     }
 
-    public int getAssists() {
+    public String getSecondStat() {
         return assists;
     }
 
-    public int getRebounds() {
+    public String getThirdStat() {
         return rebounds;
     }
 
-    public int getSteals() {
+    public String getForthStat() {
         return steals;
     }
 
-    public int getBlocks() {
+    public String getFifthStat() {
         return blocks;
+    }
+
+    @Override
+    public void setFirstStat(String data) {
+        points = data;
+    }
+
+    @Override
+    public void setSecondStat(String data) {
+        assists = data;
+    }
+
+    @Override
+    public void setThirdStat(String data) {
+        rebounds = data;
+    }
+
+    @Override
+    public void setForthStat(String data) {
+        steals = data;
+    }
+
+    @Override
+    public void setFifthStat(String data) {
+        blocks = data;
     }
 }

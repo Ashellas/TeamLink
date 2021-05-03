@@ -12,11 +12,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.FileChooser;
 import models.*;
 
 import java.awt.*;
@@ -44,10 +46,15 @@ public class GameplanScreenController extends MainTemplateController {
     @FXML
     private GridPane addGrid;
 
+    @FXML
+    private Button uploadButton;
+
     private ArrayList<GridPane> gameplanViewsGrids;
 
     @FXML
     private HBox emptyHBox;
+
+    private File selectedFile;
 
     private double emptyHBoxWidth;
 
@@ -126,7 +133,6 @@ public class GameplanScreenController extends MainTemplateController {
         deleteButton.getStyleClass().add("deleteGameplan");
         deleteButton.setPrefWidth(emptyHBoxWidth * 0.4);
         deleteButton.setOnAction(event -> {
-
                 user.getGameplans(user.getUserTeams().get(0)).remove(gameplan);
                 System.out.println();
                 for(GridPane grid : gameplanViewsGrids){
@@ -197,12 +203,31 @@ public class GameplanScreenController extends MainTemplateController {
     }
 
     public void changeAddGridVisibility(ActionEvent event) {
+        titleField.setText("");
+        selectedFile = null;
         addGrid.setVisible(!addGrid.isVisible());
     }
 
     public void submitButtonPushed(ActionEvent event) {
+
     }
 
+
     public void uploadButtonpushed(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Picture Chooser");
+        //Sets up the initial directory as user folder when filechooser is opened
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        //sets the file type options
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF files", "*.pdf"));
+
+        selectedFile = fileChooser.showOpenDialog(null);
+
+        if( selectedFile != null)
+        {
+            uploadButton.setText("Change PDF");
+        }
+        fileNamelabel.setText(selectedFile.getName());
     }
 }
