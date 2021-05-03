@@ -49,19 +49,19 @@ public class TeamMember {
     }
 
 
-
-    //TODO edit file selection
-    public TeamMember(int memberId, String firstName, String lastName, Image profilePhoto) {
+    public TeamMember(int memberId, String firstName, String lastName, Image photo) {
         this.memberId = memberId;
         this.firstName = firstName;
         this.lastName = lastName;
-        if(profilePhoto != null){
-            this.profilePhoto = new ImageView(profilePhoto);
+        if(photo != null){
+            profilePhoto.setImage(photo);
         }
-        else{
-            InputStream inStream = getClass().getResourceAsStream("/Resources/Images/white/profile_white.png");
-            this.profilePhoto = new ImageView(new Image(inStream));
-        }
+    }
+    //TODO edit file selection
+    public TeamMember(int memberId, String firstName, String lastName) {
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public TeamMember(int memberId, String firstName, String lastName, GameStats gameStats){

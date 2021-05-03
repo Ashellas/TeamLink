@@ -11,7 +11,8 @@ public class deneme {
 
         while (rs.next())
         {
-            System.out.println(rs.getInt("rating"));
+            System.out.println(rs.getInt("tp.id"));
+
         }
     }
 }

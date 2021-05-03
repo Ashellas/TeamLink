@@ -941,14 +941,46 @@ public class DatabaseManager {
     }
 
     public static ArrayList<RateHBox> getPlayerRatings(Connection databaseConnection, Training training) throws SQLException {
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * from team_members left join training_performances tp on " +
-                "team_members.member_id = tp.member_id join team_and_members tam on team_members.member_id = tam.team_member_id and " +
-                "team_id = 1 and team_role = \"Player\"");
+        ArrayList<RateHBox> ratingBoxes = new ArrayList<>();
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * from team_members tm left join " +
+                "training_performances tp on tm.member_id = tp.member_id join team_and_members tam on " +
+                "tm.member_id = tam.team_member_id and team_id = ? and team_role = \"Player\"");
+        prepStmt.setInt(1, training.getTeam().getTeamId());
 
         ResultSet teamsMembersResultSet = prepStmt.executeQuery();
         while(teamsMembersResultSet.next()){
-
+            int memberId = teamsMembersResultSet.getInt("tm.member_id");
+            String firstName = teamsMembersResultSet.getString("first_name");
+            String lastName = teamsMembersResultSet.getString("last_name");
+            TeamMember member = new TeamMember(memberId, firstName, lastName);
+            if(teamsMembersResultSet.getInt("tp.id") == 0){
+                ratingBoxes.add(new RateHBox(member));
+            }
+            else{
+                int rating = teamsMembersResultSet.getInt("rating");
+                ratingBoxes.add(new RateHBox(member, rating));
+            }
         }
-        return null;
+
+        prepStmt = databaseConnection.prepareStatement("SELECT * FROM training_additional_players tap" +
+                " left join training_performances tp on tap.training_id = tp.training_id and tap.member_id = tp.member_id " +
+                " join team_members t on t.member_id = tap.member_id");
+
+        ResultSet additionalPlayersResultSet = prepStmt.executeQuery();
+
+        while (additionalPlayersResultSet.next()){
+            int memberId = teamsMembersResultSet.getInt("tap.member_id");
+            String firstName = teamsMembersResultSet.getString("first_name");
+            String lastName = teamsMembersResultSet.getString("last_name");
+            TeamMember member = new TeamMember(memberId, firstName, lastName);
+            if(teamsMembersResultSet.getInt("tp.id") == 0){
+                ratingBoxes.add(new RateHBox(member));
+            }
+            else{
+                int rating = teamsMembersResultSet.getInt("rating");
+                ratingBoxes.add(new RateHBox(member, rating));
+            }
+        }
+        return ratingBoxes;
     }
 }

@@ -42,6 +42,32 @@ public class RateHBox extends HBox
         this.getChildren().addAll( nameLabel, ratingSlider, didPlayerAttend );
     }
 
+    public RateHBox(TeamMember teamMember, int rating){
+        this.teamMember = teamMember;
+        // creating label
+        nameLabel = new Label( "Player name: " + teamMember.getFullName() );
+        nameLabel.setStyle( "-fx-alignment: TOP_CENTER; -fx-content-display: CENTER; -fx-pref-height: 66.0; -fx-pref-width: 140.0; " );
+        nameLabel.getStyleClass().add( "text" );
+
+        // creating slider
+        ratingSlider = new Slider();
+        ratingSlider.setStyle( "-fx-major-tick-unit: 1.0; -fx-minor-tick-count: 0; -fx-pref-height: 14.0; -fx-pref-width: 194.0; -fx-alignment: CENTER" );
+        ratingSlider.setMin( 0 );
+        ratingSlider.setMax( 10 );
+        ratingSlider.setShowTickLabels( true );
+        ratingSlider.setShowTickMarks( true );
+        ratingSlider.setSnapToTicks( true );
+        ratingSlider.setValue(rating);
+        // creating a check box
+        didPlayerAttend = new CheckBox();
+        didPlayerAttend.setSelected( true );
+        didPlayerAttend.setText( "Did Attend" );
+        didPlayerAttend.getStyleClass().add( "text" );
+
+        // adding it to HBox
+        this.getChildren().addAll( nameLabel, ratingSlider, didPlayerAttend );
+    }
+
     /**
      * This method sets the value of the slider as player's rating
      * @param rateValue
