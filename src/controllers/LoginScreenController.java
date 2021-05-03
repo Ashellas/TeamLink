@@ -14,6 +14,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -60,6 +61,12 @@ public class LoginScreenController implements  InitializeData{
     @FXML
     private Pane disablePane;
 
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     private Executor exec;
 
     private Stage loading;
@@ -86,6 +93,9 @@ public class LoginScreenController implements  InitializeData{
             lightThemeIcons();
         }
         disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
     }
 
 
@@ -121,7 +131,19 @@ public class LoginScreenController implements  InitializeData{
      * @param event help button pushed
      */
     public void onHelpButtonPushed(ActionEvent event) throws IOException {
-        // TODO
+        disablePane.setVisible(true);
+        disablePane.setDisable(false);
+        helpPane.setVisible(true);
+        helpPane.setDisable(false);
+        helpIcon.setVisible(false);
+    }
+
+    public void helpPaneClose(ActionEvent event) throws IOException {
+        disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpIcon.setVisible(true);
     }
 
 
@@ -170,8 +192,6 @@ public class LoginScreenController implements  InitializeData{
             System.out.println("gg"); });
 
         // Task.getValue() gives the value returned from call()...
-
-
         // run the task using a thread from the thread pool:
         exec.execute(userCreateTask);
     }
@@ -211,7 +231,8 @@ public class LoginScreenController implements  InitializeData{
      */
     public void darkThemeIcons() {
         logo.setImage(new Image("/Resources/Images/app_logo.png"));
-        helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+        helpIcon.setImage(new Image("/Resources/Images/white/help_white.png"));
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
     }
 
     /**
@@ -219,7 +240,8 @@ public class LoginScreenController implements  InitializeData{
      */
     public void lightThemeIcons() {
         logo.setImage(new Image("/Resources/Images/appLogo_Light.png"));
-        helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
+        helpIcon.setImage(new Image("/Resources/Images/black/help_black.png"));
+        helpPaneIcon.setImage(new Image("/Resources/Images/black/help_black.png"));
     }
 
 

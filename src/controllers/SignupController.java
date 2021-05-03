@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -81,6 +82,15 @@ public class SignupController implements InitializeData {
     @FXML
     private Pane errorPane;
 
+    @FXML
+    private Pane disablePane;
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     private Connection myCon;
 
     private ObservableList<String> roleList = FXCollections.observableArrayList("Head Coach", "Assistant Coach", "Player");
@@ -105,6 +115,11 @@ public class SignupController implements InitializeData {
         else {
             lightThemeIcons();
         }
+
+        disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
     }
     /**
      * Saves the player info into database if teamCode is working and every text field is filled
@@ -160,8 +175,20 @@ public class SignupController implements InitializeData {
      * Shows the help information for the current scene
      * @param event help button pushed
      */
-    public void helpButtonPushed(ActionEvent event) {
-        // TODO
+    public void onHelpButtonPushed(ActionEvent event) throws IOException {
+        disablePane.setVisible(true);
+        disablePane.setDisable(false);
+        helpPane.setVisible(true);
+        helpPane.setDisable(false);
+        helpIcon.setVisible(false);
+    }
+
+    public void helpPaneClose(ActionEvent event) throws IOException {
+        disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpIcon.setVisible(true);
     }
 
 
@@ -254,6 +281,7 @@ public class SignupController implements InitializeData {
     public void darkThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png"));
         helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+        helpPaneIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
     }
 
     /**
@@ -261,6 +289,6 @@ public class SignupController implements InitializeData {
      */
     public void lightThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png"));
-        helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
+        helpPaneIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
     }
 }
