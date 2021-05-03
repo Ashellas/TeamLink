@@ -190,10 +190,11 @@ public class Team {
 
     public void setTeamLogo(ImageView teamLogo) { this.teamLogo = teamLogo; }
 
-
     public String getDatabaseTeamName(){ return databaseTeamName;}
 
     public int getFileId() {
         return fileId;
     }
+
+    public void setFileId(int fileId) { this.fileId = fileId; }
 }

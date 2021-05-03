@@ -42,4 +42,6 @@ public class Gameplan {
     public int getFileId() {
         return fileId;
     }
+
+    public void setFileId(int fileId) { this.fileId = fileId; }
 }

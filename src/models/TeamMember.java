@@ -115,6 +115,10 @@ public class TeamMember {
         this.email = email;
     }
 
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
