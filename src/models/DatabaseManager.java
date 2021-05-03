@@ -43,7 +43,7 @@ public class DatabaseManager {
         System.out.println("trainings found");
         ObservableList<TeamApplication> teamApplications = createApplication(databaseConnection, user, userTeams);
         System.out.println("teamapplications found");
-        HashMap<Team, ArrayList<CalendarEvent>> calendarEvents = createCurrentCalendarEvents(databaseConnection, user, userTeams);
+        HashMap<Team, ArrayList<CalendarEvent>> calendarEvents = createCurrentCalendarEvents(databaseConnection, userTeams);
         Date lastSync = new Date();
         return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync, null);
     }
@@ -773,7 +773,7 @@ public class DatabaseManager {
         return teamsAndEvents;
     }
 
-    public static ArrayList<CalendarEvent> getCalendarEventsByIndex(Connection databaseConnection, Team team, Date date) throws SQLException {
+    public static ArrayList<CalendarEvent> getCalendarEventByDate(Connection databaseConnection, Team team, Date date) throws SQLException {
         ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where DATE_FORMAT(event_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\"))");
         java.sql.Date monthYear = new java.sql.Date(date.getTime());
