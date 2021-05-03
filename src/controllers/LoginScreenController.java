@@ -24,6 +24,9 @@ import models.DatabaseManager;
 import models.InitializeData;
 import models.UserSession;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +34,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -71,6 +75,10 @@ public class LoginScreenController implements  InitializeData{
 
     private Stage loading;
 
+    private final String mailFrom = "TeamLink.host@gmail.com";
+
+    String mailTo;
+
     @Override
     public void initData(UserSession user) {
         userSession = user;
@@ -100,7 +108,7 @@ public class LoginScreenController implements  InitializeData{
 
 
     public void forgotPasswordLinkPushed(ActionEvent event) {
-        // TODO
+        send(mailFrom,"gzdbjvklvtofhphq","m.onuruysal1@gmail.com", "asasasasa", "assasasas");
     }
 
     /**
@@ -242,6 +250,35 @@ public class LoginScreenController implements  InitializeData{
         logo.setImage(new Image("/Resources/Images/appLogo_Light.png"));
         helpIcon.setImage(new Image("/Resources/Images/black/help_black.png"));
         helpPaneIcon.setImage(new Image("/Resources/Images/black/help_black.png"));
+    }
+
+    public void send(String from,String password,String to,String sub,String msg){
+        //Get properties object
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+        //get Session
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(from,password);
+                    }
+                });
+        //compose message
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+            message.setSubject(sub);
+            message.setText(msg);
+            //send message
+            Transport.send(message);
+            System.out.println("message sent successfully");
+        } catch (MessagingException e) {throw new RuntimeException(e);}
+
     }
 
 
