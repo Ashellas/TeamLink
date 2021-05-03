@@ -646,9 +646,9 @@ public class DatabaseManager {
     }
 
 
-    public static Image getProfilePhoto(Connection databaseConnection, int memberId) throws SQLException {
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_members join file_storage fs on fs.id = team_members.file_id and member_id = ?");
-        prepStmt.setInt(1, memberId);
+    public static Image getPhoto(Connection databaseConnection, int fileId) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select file_storage = ?");
+        prepStmt.setInt(1, fileId);
         ResultSet resultSet = prepStmt.executeQuery();
 
         if(resultSet.next()){

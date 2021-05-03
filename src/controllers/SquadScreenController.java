@@ -184,7 +184,7 @@ public class SquadScreenController extends MainTemplateController{
         detailsPane.setVisible(true);
 
 
-        Image photo = DatabaseManager.getProfilePhoto(user.getDatabaseConnection(), member.getMemberId());
+        Image photo = DatabaseManager.getPhoto(user.getDatabaseConnection(), member.getFileId());
         if( photo != null){
             playerPhotoView.setImage(photo);
         }
