@@ -103,11 +103,7 @@ public class GameplanScreenController extends MainTemplateController {
 
             if(file.delete()){
                 user.getGameplans(user.getUserTeams().get(0)).remove(gameplan);
-                try {
-                    AppManager.changeScene(getClass().getResource("/views/GameplansScreen.fxml"), event, user);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
         firstButton.setPrefWidth(emptyHBox.getWidth() * 0.4);

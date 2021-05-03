@@ -3,6 +3,9 @@ Background login etc. :  #151617
 Light gray : #d3d3d3
 Main background : #1f2328
  */
+.button{
+    -fx-cursor: hand;
+}
 
 .backGround {
     -fx-background-color:  #151617;

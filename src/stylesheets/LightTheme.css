@@ -5,6 +5,9 @@ Light gray : #d3d3d3
 Main background : #faf9f7
 text : #151617
  */
+.button{
+    -fx-cursor: hand;
+}
 
 .backGround {
     -fx-background-color:  #d3d3d3;
