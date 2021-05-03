@@ -18,7 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
+/**
+ * Controls the settings scene and all its functions
+ */
 public class SettingsScreenController extends MainTemplateController {
     private final String DARK_STYLE_SHEET = getClass().getResource("/stylesheets/DarkTheme.css").toExternalForm();
     private final String LIGHT_STYLE_SHEET = getClass().getResource("/stylesheets/LightTheme.css").toExternalForm();
@@ -39,7 +41,11 @@ public class SettingsScreenController extends MainTemplateController {
 
     private String selectedAgeGroup = "", selectedCity = "", selectedLeague = "";
 
-    private File selectedFile;
+    private File createTeamLogoFile;
+
+    private File editTeamLogoFile;
+
+    private File userPhotoFile;
 
     @FXML
     private ImageView accountPhoto;
@@ -146,6 +152,17 @@ public class SettingsScreenController extends MainTemplateController {
     @FXML
     private ImageView helpPaneIcon;
 
+    //-----------------------Change Password Pane ----------------//
+
+    @FXML
+    private GridPane changePasswordPane;
+
+    @FXML
+    private PasswordField firstPasswordField;
+
+    @FXML
+    private PasswordField secondPasswordField;
+
     //----------------------Visible to head coach-------------------//
 
     @FXML
@@ -156,8 +173,6 @@ public class SettingsScreenController extends MainTemplateController {
 
     @FXML
     private Button deleteTeamButton;
-
-
 
     @Override
     public void initData(UserSession user){
@@ -210,6 +225,8 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setVisible(false);
         helpPane.setDisable(true);
         helpPane.setVisible(false);
+        changePasswordPane.setVisible(false);
+        changePasswordPane.setDisable(true);
 
         // Coach buttons
         if(!user.getUser().getTeamRole().equals("Head Coach")){
@@ -233,7 +250,14 @@ public class SettingsScreenController extends MainTemplateController {
     }
 
     //--------------------Main Pane----------------------------//
-    public void editAccount(ActionEvent actionEvent) throws SQLException {
+
+    /**
+     * Makes user information editable or saves the changes
+     * @param actionEvent edit button pushed
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void editAccount(ActionEvent actionEvent) throws SQLException, IOException {
         if (editAccountButton.getText().equals("Edit")) {
             userNameField.setEditable(true);
             emailField.setEditable(true);
@@ -259,29 +283,79 @@ public class SettingsScreenController extends MainTemplateController {
             user.getUser().setName(userNameField.getText());
             user.getUser().setEmail(emailField.getText());
             user.getUser().setBirthday(datePicker.getValue());
+
             editAccountButton.setText("Edit");
             userNameLabel.setText(user.getUser().getFirstName());
-
-            if (selectedFile != null) {
-                profileIcon.setImage(new Image(selectedFile.toURI().toString()));
+            if (userPhotoFile != null) {
+                user.getUser().setProfilePhoto(accountPhoto);
+                profileIcon.setImage(new Image(userPhotoFile.toURI().toString()));
             }
+            DatabaseManager.updateUser(user, userPhotoFile);
         }
     }
 
+    /**
+     * Opens change password pane
+     * @param actionEvent change password button pushed
+     */
     public void changePassword(ActionEvent actionEvent) {
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        changePasswordPane.setVisible(true);
+        changePasswordPane.setDisable(false);
     }
 
+    /**
+     * Closes change password pane
+     * @param actionEvent cancel or close button pushed
+     */
+    public void closeChangePasswordPane(ActionEvent actionEvent) {
+        darkPane.setVisible(false);
+        darkPane.setDisable(true);
+        changePasswordPane.setVisible(false);
+        changePasswordPane.setDisable(true);
+    }
+
+    /**
+     * Updates the password of the user
+     * @param actionEvent save button bushed
+     * @throws SQLException
+     */
+    public void savePasswordChange(ActionEvent actionEvent) throws SQLException {
+        if (validPasswordInput()) {
+            DatabaseManager.passwordChange(user.getDatabaseConnection(), user.getUser(), firstPasswordField.getText());
+            displayMessage(messagePane,"Password is changed", false);
+            closeChangePasswordPane(actionEvent);
+        }
+    }
+
+    /**
+     * Deletes the account and opens login screen
+     * @param actionEvent delete account button pushed
+     */
     public void deleteAccount(ActionEvent actionEvent) {
     }
 
+    /**
+     * Copies the team code
+     * @param actionEvent copy button pushed
+     */
     public void copyCode(ActionEvent actionEvent) {
         content.putString(String.valueOf(teamCombobox.getValue().getTeamCode()));
         clipboard.setContent(content);
         displayMessage(messagePane,"Code copied",false);
     }
 
+    /**
+     * Deletes the team if it is not the only team of the user
+     * @param actionEvent delete team button pushed
+     */
     public void deleteTeam(ActionEvent actionEvent) {}
 
+    /**
+     * Opens file chooser for profile photo and sets the display image
+     * @param actionEvent
+     */
     public void changePhoto(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Picture Chooser");
@@ -291,16 +365,21 @@ public class SettingsScreenController extends MainTemplateController {
         // Sets the file type options
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
 
-        selectedFile = fileChooser.showOpenDialog(null);
+        userPhotoFile = fileChooser.showOpenDialog(null);
 
-        if( selectedFile != null)
+        if( userPhotoFile != null)
         {
             // Upload button's text is changed and the display image is changed to the selected image
-            accountPhoto.setImage(new Image(selectedFile.toURI().toString()));
+            accountPhoto.setImage(new Image(userPhotoFile.toURI().toString()));
             changePhotoButton.setText("Change Photo");
         }
     }
 
+    /**
+     * Changes the theme to light or dark
+     * @param actionEvent dark mode check box selection
+     * @throws IOException
+     */
     public void changeTheme(ActionEvent actionEvent) throws IOException {
         if (user.isStyleDark()){
             user.setStyleSheet(LIGHT_STYLE_SHEET);
@@ -315,6 +394,9 @@ public class SettingsScreenController extends MainTemplateController {
     public void turnOffNotifications(ActionEvent actionEvent) {
     }
 
+    /**
+     * Changes the team that is displayed in the screen
+     */
     public void teamChange() {
         if (teamCombobox.getValue().getTeamLogo() != null) {
             teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
@@ -322,6 +404,11 @@ public class SettingsScreenController extends MainTemplateController {
         teamCode.setText("Team code : " + teamCombobox.getValue().getTeamCode());
     }
 
+    /**
+     * Opens team creation pane
+     * @param actionEvent create team button pushed
+     * @throws IOException
+     */
     public void createNewTeam(ActionEvent actionEvent) throws IOException {
         createTeamPane.setDisable(false);
         createTeamPane.setVisible(true);
@@ -339,6 +426,12 @@ public class SettingsScreenController extends MainTemplateController {
         chooseLeagueTeamBoxCreate.setDisable(true);
     }
 
+    /**
+     * Opens team edit pane
+     * @param actionEvent edit team button pushed
+     * @throws IOException
+     * @throws SQLException
+     */
     public void editTeam(ActionEvent actionEvent) throws IOException, SQLException {
         teamNameEditField.setText(teamCombobox.getValue().getTeamName());
         abbrevationEditField.setText(teamCombobox.getValue().getAbbrevation());
@@ -400,6 +493,9 @@ public class SettingsScreenController extends MainTemplateController {
 
 
     @Override
+    /**
+     * Shows help information of the screen
+     */
     public void helpButtonPushed(ActionEvent actionEvent){
         darkPane.setVisible(true);
         darkPane.setDisable(false);
@@ -407,6 +503,10 @@ public class SettingsScreenController extends MainTemplateController {
         helpPane.setVisible(true);
     }
 
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
     public void helpPaneClose(ActionEvent actionEvent) {
         darkPane.setDisable(true);
         darkPane.setVisible(false);
@@ -416,10 +516,14 @@ public class SettingsScreenController extends MainTemplateController {
 
     //-------------------------Team Edit---------------------------//
 
-    public void saveChanges(ActionEvent actionEvent) throws SQLException {
+    /**
+     * Saves the changes of team and updates the database
+     * @param actionEvent save button pushed
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void saveChanges(ActionEvent actionEvent) throws SQLException, IOException {
         if (validEditInput()) {
-            // TODO
-            // Update team at database
             teamCombobox.getValue().setTeamName(teamNameEditField.getText());
             teamCombobox.getValue().setCity(chooseCityBox.getValue().toString());
             teamCombobox.getValue().setAbbrevation(abbrevationEditField.getText());
@@ -428,25 +532,33 @@ public class SettingsScreenController extends MainTemplateController {
                 teamCombobox.getValue().setTeamLogo(logoChangeImage);
                 teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
             }
+            DatabaseManager.updateTeam(teamCombobox.getValue(), user.getDatabaseConnection(), editTeamLogoFile);
+            displayMessage(messagePane,"Changes are saved", false);
 
             teamCombobox.getItems().clear();
             teamCombobox.getItems().addAll(user.getUserTeams());
-            // TODO
-            // Combobox team is not selected after edit
+            teamCombobox.getSelectionModel().selectFirst();
 
             closeButtonPushed(actionEvent);
-            teamCombobox.getSelectionModel().selectFirst();
-            displayMessage(messagePane,"Changes are saved", false);
         }
     }
 
+    /**
+     * Closes the edit team pane
+     * @param actionEvent close or cancel button pushed
+     */
     public void closeButtonPushed(ActionEvent actionEvent) {
         editTeamPane.setDisable(true);
         editTeamPane.setVisible(false);
         darkPane.setDisable(true);
         darkPane.setVisible(false);
+        editTeamLogoFile = null;
     }
 
+    /**
+     * Opens file chooser for editing screen team logo and displays it
+     * @param actionEvent change logo button pushed
+     */
     public void changeTeamLogo(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Picture Chooser");
@@ -456,18 +568,22 @@ public class SettingsScreenController extends MainTemplateController {
         // Sets the file type options
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
 
-        selectedFile = fileChooser.showOpenDialog(null);
+        editTeamLogoFile = fileChooser.showOpenDialog(null);
 
-        if( selectedFile != null)
+        if( editTeamLogoFile != null)
         {
             // Upload button's text is changed and the display image is changed to the selected image
             uploadTeamLogoButton.setText("Change Photo");
-            logoChangeImage.setImage(new Image(selectedFile.toURI().toString()));
+            logoChangeImage.setImage(new Image(editTeamLogoFile.toURI().toString()));
         }
     }
 
     //------------------Team Create------------------------//
 
+    /**
+     * Opens file chooser for creation screen team logo and displays it
+     * @param actionEvent add logo button pushed
+     */
     public void createTeamLogo(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Picture Chooser");
@@ -477,27 +593,38 @@ public class SettingsScreenController extends MainTemplateController {
         // Sets the file type options
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
 
-        selectedFile = fileChooser.showOpenDialog(null);
+        createTeamLogoFile = fileChooser.showOpenDialog(null);
 
-        if( selectedFile != null)
+        if( createTeamLogoFile != null)
         {
             // Upload button's text is changed and the display image is changed to the selected image
             uploadTeamLogoButtonCreate.setText("Change Photo");
-            logoChangeImageCreate.setImage(new Image(selectedFile.toURI().toString()));
+            logoChangeImageCreate.setImage(new Image(createTeamLogoFile.toURI().toString()));
         }
     }
 
+    /**
+     * Creates the team with given input and saves it to the database
+     * @param actionEvent create button pushed
+     * @throws IOException
+     * @throws SQLException
+     */
     public void createTeam(ActionEvent actionEvent) throws IOException, SQLException {
         int currentTeams = user.getUserTeams().size();
         if (validCreateInput()) {
             user = DatabaseManager.createTeam(user, teamNameCreateField.getText(), abbrevationCreateField.getText(), chooseCityBoxCreate.getValue().toString(),
-                    chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), selectedFile);
+                    chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), createTeamLogoFile);
 
             createPaneClose(actionEvent);
             displayMessage(messagePane, "Team created", false);
         }
     }
 
+    /**
+     * Initialises comboboxes and makes others enabled
+     * @param event age and city combobox selection
+     * @throws SQLException
+     */
     public void onSelectionCreate(ActionEvent event) throws SQLException {
         //TODO think about creating league model class to get id easily
         if(chooseAgeGroupCreate.getValue() != null && chooseCityBoxCreate.getValue() != null){
@@ -523,6 +650,11 @@ public class SettingsScreenController extends MainTemplateController {
         }
     }
 
+    /**
+     * Creates the team list for combobox and activates it
+     * @param actionEvent league combobox selection
+     * @throws SQLException
+     */
     public void onLeagueSelectionCreate(ActionEvent actionEvent) throws SQLException {
         if(chooseLeagueBoxCreate.getValue() != null){
             chooseLeagueTeamBoxCreate.setDisable(false);
@@ -545,15 +677,24 @@ public class SettingsScreenController extends MainTemplateController {
         }
     }
 
+    /**
+     * Closes the create pane
+     * @param actionEvent close or cancel button pushed
+     */
     public void createPaneClose(ActionEvent actionEvent) {
         createTeamPane.setDisable(true);
         createTeamPane.setVisible(false);
         darkPane.setDisable(true);
         darkPane.setVisible(false);
         logoChangeImageCreate.setImage(new Image("/Resources/Images/emptyTeamLogo.png"));
+        createTeamLogoFile = null;
     }
 
     //--------------------HELPER-------------------------------//
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
     public void darkIcons() {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/white/copy_white.png")));
@@ -561,9 +702,11 @@ public class SettingsScreenController extends MainTemplateController {
         if (user.getUser().getProfilePhoto() == null) {
             accountPhoto.setImage((new Image("/Resources/Images/white/big_profile_white.png")));
         }
-
     }
 
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
     public void lightIcons() {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/black/copy_black.png")));
@@ -573,6 +716,11 @@ public class SettingsScreenController extends MainTemplateController {
         }
     }
 
+    /**
+     * Checks account edit input and displays messages accordingly
+     * @return true if all the input are valid
+     * @throws SQLException
+     */
     private boolean validInput() throws SQLException {
         if (userNameField.getText().length() == 0) {
             displayMessage(messagePane, "Name cannot be empty", true);
@@ -604,6 +752,11 @@ public class SettingsScreenController extends MainTemplateController {
         }
     }
 
+    /**
+     * Checks team creation input and displays message
+     * @return true if all input are valid
+     * @throws SQLException
+     */
     private boolean validCreateInput() throws SQLException {
         // Checks if any of the fields is empty
         if(teamNameCreateField.getText().equals("") || abbrevationCreateField.getText().equals("")
@@ -626,6 +779,11 @@ public class SettingsScreenController extends MainTemplateController {
         return true;
     }
 
+    /**
+     * Checks team edit input and displays message
+     * @return true if all input are valid
+     * @throws SQLException
+     */
     private boolean validEditInput() throws SQLException {
         // Checks if any of the fields is empty
         if(teamNameEditField.getText().equals("") || abbrevationEditField.getText().equals("")
@@ -649,6 +807,26 @@ public class SettingsScreenController extends MainTemplateController {
     }
 
     /**
+     * Checks passwords
+     * @return true if the passwords are valid
+     * @throws SQLException
+     */
+    private boolean validPasswordInput() throws SQLException {
+        // Checks if the password and the confirmation are the same
+        if (!firstPasswordField.getText().equals(secondPasswordField.getText())){
+            displayMessage(messagePane, "Passwords do not match", true);
+            return false;
+        }
+        //Checks the password length
+        else if(firstPasswordField.getText().length() < 8 || firstPasswordField.getText().length() > 16)
+        {
+            displayMessage(messagePane, "Passwords must be between 8-16 characters", true);
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Checkes if the given text consists only of letters
      * @param text the given string to check
      * @return true if the text is all letters
@@ -664,6 +842,9 @@ public class SettingsScreenController extends MainTemplateController {
     }
 
     @Override
+    /**
+     * Deactivates the settings button on the left pane
+     */
     public void toSettingsScreen(ActionEvent actionEvent) throws IOException {}
 
 }

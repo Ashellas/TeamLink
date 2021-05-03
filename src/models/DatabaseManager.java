@@ -916,12 +916,12 @@ public class DatabaseManager {
         int row = preparedStatement.executeUpdate();
     }
 
-    public static boolean passwordChange(UserSession user, String newPassword) throws SQLException {
-        PreparedStatement preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE team_members t SET " +
+    public static boolean passwordChange(Connection databaseConnection, TeamMember member,  String newPassword) throws SQLException {
+        PreparedStatement preparedStatement = databaseConnection.prepareStatement("UPDATE team_members t SET " +
                 "t.password = MD5(?) WHERE t.member_id = ?");
 
         preparedStatement.setString(1, newPassword);
-        preparedStatement.setInt(2, user.getUser().getMemberId());
+        preparedStatement.setInt(2, member.getMemberId());
 
         int row = preparedStatement.executeUpdate();
         if(row > 0){
@@ -1092,6 +1092,10 @@ public class DatabaseManager {
         }
 
         return announcements;
+    }
+
+    public static TeamMember getTeamMemberByEmail(String text) {
+        return null;
     }
 
 

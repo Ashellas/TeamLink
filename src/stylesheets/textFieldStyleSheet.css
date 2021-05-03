@@ -4,4 +4,10 @@
     -fx-font-size: 20px;
 }
 
+.text-area {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-font-size: 15px;
+}
+
 

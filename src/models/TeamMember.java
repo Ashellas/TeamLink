@@ -160,4 +160,8 @@ public class TeamMember {
     public int getFileId() {
         return fileId;
     }
+
+    public void setProfilePhoto(ImageView accountPhoto) {
+        this.profilePhoto = accountPhoto;
+    }
 }
