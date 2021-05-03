@@ -647,7 +647,7 @@ public class DatabaseManager {
 
 
     public static Image getPhoto(Connection databaseConnection, int fileId) throws SQLException {
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select file from file_storage where file_id = ?");
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select file from file_storage where id = ?");
         prepStmt.setInt(1, fileId);
         ResultSet resultSet = prepStmt.executeQuery();
 
