@@ -170,6 +170,9 @@ public class LeagueScreenController extends MainTemplateController {
     private Pane blackenedPane1;
 
     @FXML
+    private Pane matchDetailsSubPane;
+
+    @FXML
     private GridPane addPlayersGridPane;
 
     @FXML
@@ -648,6 +651,7 @@ public class LeagueScreenController extends MainTemplateController {
         matchDetailsPane.setVisible(false);
         setStatisticsPane.setVisible(false);
         blackenedPane.setVisible(false);
+        matchDetailsSubPane.setTranslateX(-30);
     }
 
     public void onFixtureDetailsClicked( Game gameClicked){
@@ -661,7 +665,7 @@ public class LeagueScreenController extends MainTemplateController {
         gameLocationLink.setText( gameClicked.getGameLocationLink());
         gameLocationLink.setOnAction( e -> {
             try {
-                Desktop.getDesktop().browse(new URL("https://www.google.com/").toURI());
+                Desktop.getDesktop().browse(new URL(gameClicked.getGameLocationLink()).toURI());
             } catch (IOException exception) {
                 exception.printStackTrace();
             } catch (URISyntaxException exception) {
@@ -682,6 +686,9 @@ public class LeagueScreenController extends MainTemplateController {
             }
             setStatisticsPane.setVisible(true);
             updatePlayerStatisticsTable( teamOfCoach, gameClicked);
+        }
+        else{
+            matchDetailsSubPane.setTranslateX( 300);
         }
     }
 

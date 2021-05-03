@@ -895,7 +895,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <GridPane gridLinesVisible="true" maxHeight="600.0" maxWidth="450.0" stylesheets="@../stylesheets/gridPaneStyleSheet.css" translateX="-30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <GridPane fx:id="matchDetailsSubPane" gridLinesVisible="true" maxHeight="600.0" maxWidth="450.0" stylesheets="@../stylesheets/gridPaneStyleSheet.css" translateX="-30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -985,7 +985,7 @@
                         <String fx:value="mainGrid" />
                      </styleClass>
                   </GridPane>
-                  <GridPane fx:id="setStatisticsPane" maxHeight="600.0" maxWidth="576.0" stylesheets="@../stylesheets/gridPaneStyleSheet.css" translateX="420.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <GridPane fx:id="setStatisticsPane" maxHeight="600.0" maxWidth="576.0" stylesheets="@../stylesheets/gridPaneStyleSheet.css" translateX="420.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
