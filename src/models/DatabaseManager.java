@@ -646,9 +646,9 @@ public class DatabaseManager {
     }
 
 
-    public static Image getProfilePhoto(Connection databaseConnection, int memberId) throws SQLException {
-        PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_members join file_storage fs on fs.id = team_members.file_id and member_id = ?");
-        prepStmt.setInt(1, memberId);
+    public static Image getPhoto(Connection databaseConnection, int fileId) throws SQLException {
+        PreparedStatement prepStmt = databaseConnection.prepareStatement("select file from file_storage where id = ?");
+        prepStmt.setInt(1, fileId);
         ResultSet resultSet = prepStmt.executeQuery();
 
         if(resultSet.next()){
@@ -862,4 +862,40 @@ public class DatabaseManager {
         return false;
     }
 
+
+    public static boolean saveBasketballStats(UserSession user, TeamMember player, BasketballStats basketballStats, Game game) throws SQLException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO basketball_game_stats(points, assists, rebounds, steals, blocks,member_id,game_id)" +
+                "values (?,?,?,?,?,?,?) ");
+        prepStmt.setInt(1, basketballStats.getPoints());
+        prepStmt.setInt(2, basketballStats.getAssists());
+        prepStmt.setInt(3, basketballStats.getRebounds());
+        prepStmt.setInt(4, basketballStats.getSteals());
+        prepStmt.setInt(5, basketballStats.getBlocks());
+        prepStmt.setInt(6, player.getMemberId());
+        prepStmt.setInt(7, game.getCalendarEventId());
+
+        int row = prepStmt.executeUpdate();
+        if(row > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean saveFootball(UserSession user, TeamMember player, FootballStats basketballStats, Game game) throws SQLException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO football_game_stats(goals, assists, saves, yellowcard, redcard, member_id, game_id)" +
+                "values (?,?,?,?,?,?,?) ");
+        prepStmt.setInt(1, basketballStats.getGoalsScored());
+        prepStmt.setInt(2, basketballStats.getAssitsMade());
+        prepStmt.setInt(3, basketballStats.getSavesMade());
+        prepStmt.setInt(4, basketballStats.isYellowCard());
+        prepStmt.setInt(5, basketballStats.isRedCard());
+        prepStmt.setInt(6, player.getMemberId());
+        prepStmt.setInt(7, game.getCalendarEventId());
+
+        int row = prepStmt.executeUpdate();
+        if(row > 0){
+            return true;
+        }
+        return false;
+    }
 }
