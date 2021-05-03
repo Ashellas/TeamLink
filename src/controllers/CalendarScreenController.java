@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import models.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -152,8 +153,7 @@ public class CalendarScreenController extends MainTemplateController {
      * Clears the calendar and creates it's previous month with events.
      * @param actionEvent Clicking "<" button
      */
-    public void backButtonPushed( ActionEvent actionEvent )
-    {
+    public void backButtonPushed( ActionEvent actionEvent ) throws SQLException {
         currentMonth--;
         if(currentMonth == -1) {
             currentMonth = 11;
@@ -171,11 +171,11 @@ public class CalendarScreenController extends MainTemplateController {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team : t) {
-                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, team));
+                allEvents.addAll(DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date));
             }
             createCalendar(firstDay, maxDay, allEvents);
         } else {
-            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, selectedTeam);
+            events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
             createCalendar(firstDay, maxDay, events);
         }
     }
@@ -184,8 +184,7 @@ public class CalendarScreenController extends MainTemplateController {
      * Clears the calendar and creates it's next month with events.
      * @param actionEvent Clicking ">" button
      */
-    public void nextButtonPushed( ActionEvent actionEvent )
-    {
+    public void nextButtonPushed( ActionEvent actionEvent ) throws SQLException {
         currentMonth++;
         if(currentMonth == 12) {
             currentMonth = 0;
@@ -203,11 +202,11 @@ public class CalendarScreenController extends MainTemplateController {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team : t) {
-                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, team));
+                allEvents.addAll(DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date));
             }
             createCalendar(firstDay, maxDay, allEvents);
         } else {
-            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, selectedTeam);
+            events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
             createCalendar(firstDay, maxDay, events);
         }
     }
@@ -216,18 +215,18 @@ public class CalendarScreenController extends MainTemplateController {
      * Clears the calendar and creates the same month with chosen team's events.
      * @param actionEvent changing the team selection combo box's value
      */
-    public void teamSelection(ActionEvent actionEvent) {
+    public void teamSelection(ActionEvent actionEvent) throws SQLException {
         selectedTeam = (Team) teamSelectionCombo.getValue();
         clearCalendar();
         if (selectedTeam.getTeamName().equals("All Teams")) {
             allEvents.clear();
             ArrayList<Team> t = user.getUserTeams();
             for (Team team : t) {
-                //allEvents.addAll(DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, team));
+                allEvents.addAll(DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date));
             }
             createCalendar(firstDay, maxDay, allEvents);
         } else {
-            //events = DatabaseManager.getCalendarEvents(user.getDatabaseConnection(), localDate, selectedTeam);
+            events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
             createCalendar(firstDay, maxDay, events);
         }
     }
