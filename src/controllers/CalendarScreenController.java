@@ -94,10 +94,12 @@ public class CalendarScreenController extends MainTemplateController {
         }
 
         //Setting current month's events
-        events = userSession.getCalendarEvents(selectedTeam);
-        allEvents = userSession.getAllEvents();
+        events = user.getCalendarEvents(selectedTeam);
+        allEvents = user.getAllEvents();
         createCalendar(firstDay, maxDay, allEvents);
         AppManager.fadeIn(calendarPane,500);
+        System.out.println(events);
+        System.out.println(allEvents);
     }
 
     /**
@@ -113,41 +115,45 @@ public class CalendarScreenController extends MainTemplateController {
             Label l = labels.get(i + firstDay - 2);
             l.setText("   " + i + "");
             if (selectedTeam.getTeamName().equals("All Teams")) {
-                for (CalendarEvent ce: allEvents) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(ce.getEventDateTime());
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                    String formattedDate =  sdf.format(ce.getEventDateTime());
-                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH - 1)) {
-                        ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                        if (ce.getActionLink() != null) {
-                            try {
-                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                if (allEvents != null) {
+                    for (CalendarEvent ce : allEvents) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(ce.getEventDateTime());
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                        String formattedDate = sdf.format(ce.getEventDateTime());
+                        if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH - 1)) {
+                            ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                            if (ce.getActionLink() != null) {
+                                try {
+                                    buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                             }
-                        } else {
-                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                         }
                     }
                 }
 
             }
             else {
-                for (CalendarEvent ce : events) {
-                    if (selectedTeam.getTeamName().equals("All Teams")) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(ce.getEventDateTime());
-                        if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {
-                            ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                            if (ce.getActionLink() != null) {
-                                try {
-                                    buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                if (events != null) {
+                    for (CalendarEvent ce : events) {
+                        if (selectedTeam.getTeamName().equals("All Teams")) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(ce.getEventDateTime());
+                            if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH - 1)) {
+                                ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                                if (ce.getActionLink() != null) {
+                                    try {
+                                        buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), (ce.getEventDateTime().getHours() + "." + ce.getEventDateTime().getMinutes()), ce.getActionLink(), ce.getColorCode(), user));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                                 }
-                            } else {
-                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                             }
                         }
                     }
