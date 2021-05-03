@@ -282,6 +282,7 @@ public class SignupController implements InitializeData {
         backIcon.setImage(new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png"));
         helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
         helpPaneIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
     }
 
     /**
@@ -290,5 +291,6 @@ public class SignupController implements InitializeData {
     public void lightThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png"));
         helpPaneIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
     }
 }
