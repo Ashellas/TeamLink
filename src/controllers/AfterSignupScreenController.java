@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
 /**
- * Help action and error pane is missing
+ * Controls after signup scene and all its functions
  */
 public class AfterSignupScreenController extends MainTemplateController implements InitializeData {
 
@@ -102,13 +102,6 @@ public class AfterSignupScreenController extends MainTemplateController implemen
     public void initData(UserSession userSession) {
         super.initData(userSession);
 
-        if(user.isStyleDark()) {
-            //darkIcons();
-        }
-        else {
-            //lightIcons();
-        }
-
         try{
             updateApplicationTable();
         }
@@ -129,10 +122,6 @@ public class AfterSignupScreenController extends MainTemplateController implemen
 
         lastSyncLabel.setText(AppManager.getLastSyncText(user.getLastSync()));
     }
-
-
-    //TODO add checking for already made submissions
-    //TODO send Notification to people who can accept the application
 
     /**
      * Takes the team code and makes the application to the team
@@ -195,6 +184,10 @@ public class AfterSignupScreenController extends MainTemplateController implemen
 
     //------------------Team Create------------------------//
 
+    /**
+     * Opens file chooser for team logo selection and displays it
+     * @param actionEvent
+     */
     public void createTeamLogo(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Picture Chooser");
@@ -214,8 +207,13 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         }
     }
 
+    /**
+     * Creates team and saves it to the database
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void createTeam(ActionEvent actionEvent) throws IOException, SQLException {
-        int currentTeams = user.getUserTeams().size();
         if (validCreateInput()) {
             user = DatabaseManager.createTeam(user, teamNameCreateField.getText(), abbrevationCreateField.getText(), chooseCityBoxCreate.getValue().toString(),
                     chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), selectedFile);
@@ -225,6 +223,11 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         }
     }
 
+    /**
+     * Initialises comboboxes and enables league seleciton combobox
+     * @param event city and age combobox selection
+     * @throws SQLException
+     */
     public void onSelectionCreate(ActionEvent event) throws SQLException {
         //TODO think about creating league model class to get id easily
         if(chooseAgeGroupCreate.getValue() != null && chooseCityBoxCreate.getValue() != null){
@@ -250,6 +253,11 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         }
     }
 
+    /**
+     * Creates team list for league teams and enables team selection combobox
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void onLeagueSelectionCreate(ActionEvent actionEvent) throws SQLException {
         if(chooseLeagueBoxCreate.getValue() != null){
             chooseLeagueTeamBoxCreate.setDisable(false);
@@ -272,6 +280,10 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         }
     }
 
+    /**
+     * Closes the team creation pane
+     * @param actionEvent cancel or close button pushed
+     */
     public void createPaneClose(ActionEvent actionEvent) {
         popUpCreateTeamPane.setDisable(true);
         popUpCreateTeamPane.setVisible(false);
@@ -280,6 +292,11 @@ public class AfterSignupScreenController extends MainTemplateController implemen
         logoChangeImageCreate.setImage(new Image("/Resources/Images/emptyTeamLogo.png"));
     }
 
+    /**
+     * Checks the team creation input
+     * @return true if all input are valid
+     * @throws SQLException
+     */
     private boolean validCreateInput() throws SQLException {
         // Checks if any of the fields is empty
         if(teamNameCreateField.getText().equals("") || abbrevationCreateField.getText().equals("")

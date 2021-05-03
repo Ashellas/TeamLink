@@ -38,10 +38,7 @@ import java.util.prefs.Preferences;
 
 
 /**
- * @version 24.04.2021
- * errorPane is missing
- * help button action is missing
- * Does not connect to database
+ * Controls signup scene and all its functions
  */
 public class SignupController implements InitializeData {
 
@@ -247,12 +244,17 @@ public class SignupController implements InitializeData {
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
     }
 
-
+    /**
+     * Helps initialising icons according to chosen theme
+     */
     public void darkThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png"));
         helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
     }
 
+    /**
+     * Helps initialising icons according to chosen theme
+     */
     public void lightThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png"));
         helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));

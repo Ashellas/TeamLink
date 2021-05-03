@@ -36,10 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.prefs.Preferences;
 
 /**
- * @version 24.02.2021
- * errorPane is missing (Also in the fxml)
- * help button and forgot password actions are missing
- * does not connect to database
+ * Controls the login screen and all its functions
  */
 public class LoginScreenController implements  InitializeData{
 
@@ -128,7 +125,10 @@ public class LoginScreenController implements  InitializeData{
     }
 
 
-
+    /**
+     * Creates user session with users information or empty
+     * @param event login button pushed or app start
+     */
     private void createUserSession(ActionEvent event) {
 
         Task<UserSession> userCreateTask =  new Task<UserSession>() {
@@ -177,6 +177,10 @@ public class LoginScreenController implements  InitializeData{
         exec.execute(userCreateTask);
     }
 
+    /**
+     * Opens loading window on top of the scene
+     * @throws IOException
+     */
     private void createLoading() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
         loading = new Stage();
@@ -200,11 +204,17 @@ public class LoginScreenController implements  InitializeData{
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
     }
 
+    /**
+     * Helps initialising icons according to chosen theme
+     */
     public void darkThemeIcons() {
         logo.setImage(new Image("/Resources/Images/app_logo.png"));
         helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
     }
 
+    /**
+     * Helps initialising icons according to chosen theme
+     */
     public void lightThemeIcons() {
         logo.setImage(new Image("/Resources/Images/appLogo_Light.png"));
         helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
