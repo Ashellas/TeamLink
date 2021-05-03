@@ -158,14 +158,4 @@ public class UserSession {
         }
         return false;
     }
-
-
-    public ArrayList<CalendarEvent> getAllEvents() {
-        ArrayList<CalendarEvent> result = new ArrayList<>();
-        for (Team t: userTeams) {
-            ArrayList<CalendarEvent> c = calendarEvents.get(t);
-            result.addAll(c);
-        }
-        return result;
-    }
 }
