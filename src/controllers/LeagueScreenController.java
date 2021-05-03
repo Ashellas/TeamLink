@@ -286,6 +286,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         userTeamsAddPlayersComboBox.clear();
         userTeamNamesAddPlayersComboBox.clear();
+        userSelectedTeamAtPlayersAddComboBox.clear();
 
         for( int arrayIndex = 0; arrayIndex < userTeams.size(); arrayIndex++){
             if( !userTeams.get( arrayIndex).equals( teamOfCoach)){
@@ -336,7 +337,7 @@ public class LeagueScreenController extends MainTemplateController {
             //Sets the draw column non-visible
             drawColumnStandings.setVisible(false);
 
-            standingsTableView.setMaxWidth( standingsTableView.getMaxWidth() * 0.83);
+            standingsTableView.setMaxWidth( standingsTableView.getMaxWidth() * 0.85);
 
             //Creates the columns of the table
             teamsColumnStandings.setCellValueFactory( new PropertyValueFactory<>("teamName"));
@@ -428,7 +429,7 @@ public class LeagueScreenController extends MainTemplateController {
 
         playerStatisticsTable.setItems( userSelectedTeamMembers);
 
-        if( user.getUser().getSportBranch().equals("Basketball") ){
+        if( user.getUser().getSportBranch().equals("Football") ){
             playerStatisticsPointsColumn.setText("Goals");
             playerStatisticsReboundsColumn.setText("Saves");
             playerStatisticsStealsColumn.setText("Yellow Card");
@@ -500,7 +501,62 @@ public class LeagueScreenController extends MainTemplateController {
 
     public void setStatisticEnterButtonsOfPlayerStatistics(){
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
-            //TODO: cellere girilmiş girdileri db'ye yollayacak kod
+            System.out.println( player.getPointsOrGoalsScored());
+            System.out.println( player.getAssists());
+            System.out.println( player.getReboundsOrSavesMade());
+            System.out.println( player.getStealsOrYellowCard());
+            System.out.println( player.getBlocksOrRedCard());
+
+            if( player.getPointsOrGoalsScored() == null || !player.getPointsOrGoalsScored().matches("[0-9]+") || player.getPointsOrGoalsScored().length() <= 0){
+                if( player.getSportBranch().equals("Basketball")){
+                    super.displayMessage( messagePane, "The value you entered for points column of " + player.getFullName() + " is invalid", true);
+                }
+                else if( player.getSportBranch().equals("Football")){
+                    super.displayMessage( messagePane, "The value you entered for goals scored column of " + player.getFullName() + " is invalid", true);
+                }
+                else{
+                    super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
+                }
+            }
+            else if( player.getAssists() == null || !player.getAssists().matches("[0-9]+") || player.getAssists().length() <= 0){
+                super.displayMessage( messagePane," The value you entered for assists column of " + player.getFullName() + " is invalid", true);
+            }
+            else if( player.getReboundsOrSavesMade() == null || !player.getReboundsOrSavesMade().matches("[0-9]+") || player.getReboundsOrSavesMade().length() <= 0){
+                if( player.getSportBranch().equals("Basketball")){
+                    super.displayMessage( messagePane, "The value you entered for rebounds column of " + player.getFullName() + " is invalid", true);
+                }
+                else if( player.getSportBranch().equals("Football")){
+                    super.displayMessage( messagePane, "The value you entered for saves made column of " + player.getFullName() + " is invalid", true);
+                }
+                else{
+                    super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
+                }
+            }
+            else if( player.getStealsOrYellowCard() == null || !player.getStealsOrYellowCard().matches("[0-9]+") || player.getStealsOrYellowCard().length() <= 0){
+                if( player.getSportBranch().equals("Basketball")){
+                    super.displayMessage( messagePane, "The value you entered for steals column of " + player.getFullName() + " is invalid", true);
+                }
+                else if( player.getSportBranch().equals("Football")){
+                    super.displayMessage( messagePane, "The value you entered for yellow card column of " + player.getFullName() + " is invalid", true);
+                }
+                else{
+                    super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
+                }
+            }
+            else if( player.getBlocksOrRedCard() == null || !player.getBlocksOrRedCard().matches("[0-9]+") || player.getBlocksOrRedCard().length() <= 0){
+                if( player.getSportBranch().equals("Basketball")){
+                    super.displayMessage( messagePane, "The value you entered for blocks column of " + player.getFullName() + " is invalid", true);
+                }
+                else if( player.getSportBranch().equals("Football")){
+                    super.displayMessage( messagePane, "The value you entered for red card column of " + player.getFullName() + " is invalid", true);
+                }
+                else{
+                    super.displayMessage( messagePane, "The value you entered for " + player.getFullName() + " is invalid", true);
+                }
+            }
+            else{
+                super.displayMessage(messagePane, "You have successfully entered " + player.getFullName() +"'s statistics.", false);
+            }
             return player;
         }));
     }
@@ -635,18 +691,19 @@ public class LeagueScreenController extends MainTemplateController {
     }
 
     public void onAddPlayersComboBoxSelection( ActionEvent event){
-        userSelectedTeamAtPlayersAddComboBox.clear();
-        userSelectedTeamAtPlayersAddComboBox.add(0, userTeamsAddPlayersComboBox.get( addPlayersComboBox.getSelectionModel().getSelectedIndex()));
-        userSelectedTeamMembersAtPlayersAddComboBox.clear();
-        for( int arrayIndex = 0; arrayIndex < userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().size(); arrayIndex++){
-            if( !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Head Coach")
-                    && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
-            {
-                userSelectedTeamMembersAtPlayersAddComboBox.add( userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex));
+        if( addPlayersComboBox.getSelectionModel().getSelectedIndex() != -1 ){
+            userSelectedTeamAtPlayersAddComboBox.add( userTeamsAddPlayersComboBox.get( addPlayersComboBox.getSelectionModel().getSelectedIndex() ) );
+            userSelectedTeamMembersAtPlayersAddComboBox.clear();
+            for( int arrayIndex = 0; arrayIndex < userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().size(); arrayIndex++){
+                if( !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Head Coach")
+                        && !userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex).getTeamRole().equals("Assistant Coach"))
+                {
+                    userSelectedTeamMembersAtPlayersAddComboBox.add( userSelectedTeamAtPlayersAddComboBox.get(0).getTeamMembers().get( arrayIndex));
+                }
             }
-        }
 
-        addPlayerTable.refresh();
+            addPlayerTable.refresh();
+        }
     }
 
     public void onAddPlayerButtonClicked( TeamMember player){
