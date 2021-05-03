@@ -1,40 +1,67 @@
 package models;
 
 public class FootballStats extends GameStats{
-    private int goalsScored;
-    private int assitsMade;
-    private int savesMade;
-    private boolean yellowCard;
-    private boolean redCard;
+    private String goalsScored;
+    private String assitsMade;
+    private String foulsMade;
+    private String passesMade;
+    private String tacklesMade;
 
     //TODO think about yellow and red cards
 
-    public FootballStats(TeamMember player, int goalsScored, int assitsMade, int savesMade, boolean yellowCard, boolean redCard) {
+    public FootballStats(TeamMember player, String goalsScored, String assitsMade, String foulsMade, String passesMade, String tacklesMade) {
         super(player);
         this.goalsScored = goalsScored;
         this.assitsMade = assitsMade;
-        this.savesMade = savesMade;
-        this.yellowCard = yellowCard;
-        this.redCard = redCard;
+        this.foulsMade = foulsMade;
+        this.passesMade = passesMade;
+        this.tacklesMade = tacklesMade;
     }
 
-    public int getGoalsScored() {
+    public String getFirstStat() {
         return goalsScored;
     }
 
-    public int getAssitsMade() {
+    public String getSecondStat() {
         return assitsMade;
     }
 
-    public int getSavesMade() {
-        return savesMade;
+    public String getThirdStat() {
+        return foulsMade;
     }
 
-    public boolean isYellowCard() {
-        return yellowCard;
+    public String getForthStat() {
+        return passesMade;
     }
 
-    public boolean isRedCard() {
-        return redCard;
+    public String getFifthStat() {
+        return tacklesMade;
     }
+
+    @Override
+    public void setFirstStat(String data) {
+        goalsScored = data;
+    }
+
+    @Override
+    public void setSecondStat(String data) {
+        assitsMade = data;
+    }
+
+    @Override
+    public void setThirdStat(String data) {
+        foulsMade = data;
+    }
+
+    @Override
+    public void setForthStat(String data) {
+        passesMade = data;
+    }
+
+    @Override
+    public void setFifthStat(String data) {
+        tacklesMade = data;
+    }
+
+
 }

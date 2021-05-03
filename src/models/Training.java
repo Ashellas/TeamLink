@@ -8,6 +8,7 @@ public class Training extends CalendarEvent{
     private String trainingLocationLink;
     private Team team;
     private String description;
+    private boolean isRated;
     //I deleted TrainingPerformance from here
 
 

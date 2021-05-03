@@ -1,5 +1,6 @@
 package models;
 
+import javafx.application.HostServices;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
@@ -14,7 +15,6 @@ public class UserSession {
 
     private final Preferences preferences = Preferences.userRoot();
 
-
     private TeamMember user;
     private ArrayList<Team> userTeams;
     private HashMap<Team, ArrayList<Announcement>> announcements;
@@ -28,6 +28,7 @@ public class UserSession {
     private HashMap<Team, ArrayList<Gameplan>> gameplans;
     private Date lastSync;
     private String styleSheet;
+    private HostServices hostServices;
 
     public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, HashMap<Team, ArrayList<CalendarEvent>> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync,HashMap<Team, ArrayList<Announcement>> announcements) {
         this.user = user;
@@ -45,9 +46,14 @@ public class UserSession {
         styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
 
-    public UserSession(Connection connection){
+    public UserSession(Connection connection, HostServices hostServices){
+        this.hostServices = hostServices;
         this.databaseConnection = connection;
         styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
+    }
+
+    public HostServices getHostServices() {
+        return hostServices;
     }
 
     public TeamMember getUser() {
@@ -88,9 +94,8 @@ public class UserSession {
         return teamApplications;
     }
 
-    //TODO it can be modified similar to getStandings() method
-    public HashMap<Team, ArrayList<Gameplan>> getGameplans() {
-        return gameplans;
+    public ArrayList<Gameplan> getGameplans(Team team) {
+        return gameplans.get(team);
     }
 
     public Date getLastSync() {
@@ -151,5 +156,14 @@ public class UserSession {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<CalendarEvent> getAllEvents() {
+        ArrayList<CalendarEvent> result = new ArrayList<>();
+        for (Team t: userTeams) {
+            ArrayList<CalendarEvent> c = calendarEvents.get(t);
+            result.addAll(c);
+        }
+        return result;
     }
 }
