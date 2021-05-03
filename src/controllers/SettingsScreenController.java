@@ -150,6 +150,17 @@ public class SettingsScreenController extends MainTemplateController {
     @FXML
     private ImageView helpPaneIcon;
 
+    //-----------------------Change Password Pane ----------------//
+
+    @FXML
+    private GridPane changePasswordPane;
+
+    @FXML
+    private PasswordField firstPasswordField;
+
+    @FXML
+    private PasswordField secondPasswordField;
+
     //----------------------Visible to head coach-------------------//
 
     @FXML
@@ -212,6 +223,8 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setVisible(false);
         helpPane.setDisable(true);
         helpPane.setVisible(false);
+        changePasswordPane.setVisible(false);
+        changePasswordPane.setDisable(true);
 
         // Coach buttons
         if(!user.getUser().getTeamRole().equals("Head Coach")){
@@ -273,6 +286,26 @@ public class SettingsScreenController extends MainTemplateController {
     }
 
     public void changePassword(ActionEvent actionEvent) {
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        changePasswordPane.setVisible(true);
+        changePasswordPane.setDisable(false);
+    }
+
+    public void closeChangePasswordPane(ActionEvent actionEvent) {
+        darkPane.setVisible(false);
+        darkPane.setDisable(true);
+        changePasswordPane.setVisible(false);
+        changePasswordPane.setDisable(true);
+    }
+
+    public void savePasswordChange(ActionEvent actionEvent) throws SQLException {
+        if (validPasswordInput()) {
+            DatabaseManager.passwordChange(user, firstPasswordField.getText());
+            displayMessage(messagePane,"Password is changed", false);
+            closeChangePasswordPane(actionEvent);
+        }
+
     }
 
     public void deleteAccount(ActionEvent actionEvent) {
@@ -651,6 +684,21 @@ public class SettingsScreenController extends MainTemplateController {
         return true;
     }
 
+    private boolean validPasswordInput() throws SQLException {
+        // Checks if the password and the confirmation are the same
+        if (!firstPasswordField.getText().equals(secondPasswordField.getText())){
+            displayMessage(messagePane, "Passwords do not match", true);
+            return false;
+        }
+        //Checks the password length
+        else if(firstPasswordField.getText().length() < 8 || firstPasswordField.getText().length() > 16)
+        {
+            displayMessage(messagePane, "Passwords must be between 8-16 characters", true);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Checkes if the given text consists only of letters
      * @param text the given string to check
@@ -668,5 +716,7 @@ public class SettingsScreenController extends MainTemplateController {
 
     @Override
     public void toSettingsScreen(ActionEvent actionEvent) throws IOException {}
+
+
 
 }
