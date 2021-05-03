@@ -578,7 +578,6 @@
                                        <columnConstraints>
                                           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
                                           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
                                        </columnConstraints>
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
@@ -765,7 +764,11 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" promptText="Content" wrapText="true" GridPane.columnIndex="1" />
+                              <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" promptText="Content" wrapText="true" GridPane.columnIndex="1">
+                                 <stylesheets>
+                                    <URL value="@../stylesheets/textFieldStyleSheet.css" />
+                                    <URL value="@../stylesheets/Active.css" />
+                                 </stylesheets></TextArea>
                            </children>
                         </GridPane>
                         <GridPane GridPane.rowIndex="5">

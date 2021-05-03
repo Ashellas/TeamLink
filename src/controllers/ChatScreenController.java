@@ -80,25 +80,39 @@ public class ChatScreenController extends MainTemplateController implements Init
             }
         }
 
-
         Platform.runLater(() -> {
             setUpAnnouncementsGrid();
         });
     }
 
     public void setUpAnnouncementsGrid() {
-        for (int i = currentIndex; i <= MAX_ROW_INDEX + currentIndex; i++) {
-            GridPane customGrid = createCustomAnnouncementGridPane(user.getAnnouncements(teamBox.getValue()).get(i).getTitle(), user.getAnnouncements(teamBox.getValue()).get(i).getDescription());
-            GridPane senderPane = createSenderInfoGrid(user.getAnnouncements(teamBox.getValue()).get(i));
+        Announcement announcement;
+        int extraAnnouncement;
+        int extras;
 
-            // TODO change order
-            announcementsGrid.add(senderPane, 0, MAX_ROW_INDEX - i);
-            announcementsGrid.add(customGrid, 1, MAX_ROW_INDEX - i);
+        extraAnnouncement = currentIndex;
+        extras = 0;
+
+        for (int i = 0; i < 5; i--) {
+            if (currentIndex < 5 && extraAnnouncement < 5) {
+                announcement = user.getAnnouncements(teamBox.getValue()).get(extraAnnouncement);
+
+            }
+            else {
+                //announcement  = DatabaseManager.getAnnouncement(user.getDatabaseConnection(), teamBox.getValue(), extras);
+                extras++;
+            }
+            //GridPane customGrid = createCustomAnnouncementGridPane(announcement.getTitle(), announcement.getDescription());
+            //GridPane senderPane = createSenderInfoGrid(announcement);
+            //announcementsGrid.add(senderPane, 0, i-1);
+            //announcementsGrid.add(customGrid, 1, i-1);
+
+            extraAnnouncement++;
         }
     }
 
     private GridPane createCustomAnnouncementGridPane(String notTitle, String notDescription){
-        GridPane gridPane = new GridPane()  ;
+        GridPane gridPane = new GridPane();
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(10);
         row1.setMinHeight(0);
@@ -114,8 +128,8 @@ public class ChatScreenController extends MainTemplateController implements Init
         gridPane.getRowConstraints().addAll(row1, row2, row3, row4);
         Label title = new Label(notTitle);
         Label description = new Label(notDescription);
-        System.out.println(announcementsEmptyHBox.getWidth());
-        title.setPrefWidth(announcementsEmptyHBox.getWidth()*0.70);
+        title.setPrefWidth(announcementsEmptyHBox.getWidth() * 0.70);
+        description.setPrefWidth(announcementsEmptyHBox.getWidth()*0.70);
         title.getStyleClass().add("title");
         description.getStyleClass().add("description");
         gridPane.add(title, 0, 1);
@@ -153,12 +167,15 @@ public class ChatScreenController extends MainTemplateController implements Init
         GridPane gridPane = new GridPane();
         RowConstraints row1 = new RowConstraints();
         BorderPane imageContainer = new BorderPane(senderPhoto);
-        row1.setPercentHeight(80);
+        row1.setPercentHeight(60);
         row1.setMinHeight(0);
         RowConstraints row2 = new RowConstraints();
         row2.setPercentHeight(20);
         row2.setMinHeight(0);
-        gridPane.getRowConstraints().addAll(row1, row2);
+        RowConstraints row3 = new RowConstraints();
+        row3.setPercentHeight(20);
+        row3.setMinHeight(0);
+        gridPane.getRowConstraints().addAll(row1, row2, row3);
         Label senderNameLabel = new Label(announcement.getSender().getFirstName());
         Label sentDateLabel = new Label(formattedDate);
         senderNameLabel.setPrefWidth(announcementsEmptyHBox.getWidth()*0.55);
@@ -178,14 +195,16 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     public void moveDown(ActionEvent actionEvent) {
         if (currentIndex > 0) {
-            currentIndex++;
+            currentIndex--;
             setUpAnnouncementsGrid();
         }
     }
 
     public void sendAnnouncement(ActionEvent actionEvent) {
-        Announcement announcement = new Announcement(textField.getText(), textArea.getText() , user.getUser());
-        //DatabaseManager.createAnnouncement( user.getDatabaseConnection(), teamBox.getValue());
+        Announcement announcement = new Announcement(textField.getText(), textArea.getText(), user.getUser());
+        user.getAnnouncements(teamBox.getValue()).add(0,announcement);
+        //DatabaseManager.createAnnouncement(user.getDatabaseConnection(), teamBox.getValue(), announcement);
+        setUpAnnouncementsGrid();
     }
 
     private void lightIcons() {
