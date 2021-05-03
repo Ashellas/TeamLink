@@ -289,7 +289,7 @@ public class DatabaseManager {
                     awayTeam = leagueTeam;
                 }
             }
-            Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result, fileId);
+            Game game = new Game(gameId, "Game", gameDate, "/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result, fileId);
             games.add(game);
         }
 
@@ -328,7 +328,7 @@ public class DatabaseManager {
                         awayTeam = leagueTeam;
                     }
                 }
-                Game game = new Game(gameId, "Game", gameDate, "","/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result, fileId);
+                Game game = new Game(gameId, "Game", gameDate, "/views/LeagueScreen.fxml","COLORCODE", roundNo, homeTeam, awayTeam, gameLocationName, gameLocationName, result, fileId);
                 games.add(game);
             }
             gamesOfTheCurrentRound.put(team, games);

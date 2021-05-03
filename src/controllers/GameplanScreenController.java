@@ -3,9 +3,11 @@ package controllers;
 import com.sun.scenario.effect.impl.state.GaussianRenderState;
 import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -103,7 +105,8 @@ public class GameplanScreenController extends MainTemplateController {
 
             if(file.delete()){
                 user.getGameplans(user.getUserTeams().get(0)).remove(gameplan);
-
+                deleteAllViews();
+                setGameplansGrid();
             }
         });
         firstButton.setPrefWidth(emptyHBox.getWidth() * 0.4);
@@ -142,6 +145,37 @@ public class GameplanScreenController extends MainTemplateController {
         gridPane.add(firstButton, 0, 2);
         gridPane.add(deleteButton, 0, 3);
         return gridPane;
+    }
+
+    private void deleteAllViews() {
+        ObservableList<Node> childrens = gameplansGrid.getChildren();
+
+        for (Node node : childrens) {
+            if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 1) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 3) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 5) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 1 && GridPane.getColumnIndex(node) == 7) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 1) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 3) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 5) {
+                gameplansGrid.getChildren().remove(node);
+            }
+            else if(GridPane.getRowIndex(node) == 3 && GridPane.getColumnIndex(node) == 7) {
+                gameplansGrid.getChildren().remove(node);
+            }
+        }
     }
 
     private void downloadPDF(int fileId, String filePath) throws SQLException, IOException {
