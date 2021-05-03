@@ -30,6 +30,8 @@ public class CalendarButton extends Button {
     }
     public CalendarButton (String title, String colorCode, UserSession user) {
         this.setText(title);
+        this.getStylesheets().add("/styleshhets/CalendarButton.css");
+        this.setDisable( true );
         this.getStyleClass().add(colorCode);
         this.user = user;
     }

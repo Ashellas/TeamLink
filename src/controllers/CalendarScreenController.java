@@ -96,8 +96,6 @@ public class CalendarScreenController extends MainTemplateController {
         allEvents = user.getAllEvents();
         createCalendar(firstDay, maxDay, allEvents);
         AppManager.fadeIn(calendarPane,500);
-        System.out.println(events);
-        System.out.println(allEvents);
     }
 
     /**
