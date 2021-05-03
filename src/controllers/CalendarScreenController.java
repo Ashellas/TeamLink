@@ -1,12 +1,8 @@
 package controllers;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import models.*;
 
@@ -39,7 +35,7 @@ public class CalendarScreenController extends MainTemplateController {
     String[] months =  {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     private int maxDay;
     private int firstDay;
-    Date localDate;
+    Date date;
 
     //Declaring calendar view related variables
     private ArrayList<Label> labels = new ArrayList<Label>();;
@@ -167,7 +163,7 @@ public class CalendarScreenController extends MainTemplateController {
 
         monthName.setText(months[currentMonth] + " " + currentYear);
         GregorianCalendar gc1 = new GregorianCalendar(currentYear, currentMonth, 1);
-        localDate = gc1.getTime();
+        date = gc1.getTime();
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
@@ -199,7 +195,7 @@ public class CalendarScreenController extends MainTemplateController {
 
         monthName.setText(months[currentMonth] + " " + currentYear);
         GregorianCalendar gc1 = new GregorianCalendar(currentYear, currentMonth, 1);
-        localDate = gc1.getTime();
+        date = gc1.getTime();
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
