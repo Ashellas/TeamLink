@@ -175,40 +175,40 @@ public class SignupController implements InitializeData {
         if(firstNameField.getText().equals("") || lastNameField.getText().equals("") || emailField.getText().equals("")
                 || passwordField.getText().equals("") || roleBox.getValue() == null || dateOfBirthPicker.getValue() == null ||
                 confirmPasswordField.getText().equals("") || sportBranchBox.getValue() == null){
-            displayError("Please fill all the fields");
+            displayMessage(errorPane, "Please fill all the fields", true);
             return true;
         }
         // Checks if the password and the confirmation are the same
         else if (!confirmPasswordField.getText().equals(passwordField.getText())){
-            displayError("Passwords do not match");
+            displayMessage(errorPane, "Passwords do not match", true);
             return true;
         }
         //Checks the password length
         else if(passwordField.getText().length() < 8 || passwordField.getText().length() > 16)
         {
-            displayError("Passwords must be between 8-16 characters");
+            displayMessage(errorPane, "Passwords must be between 8-16 characters", true);
             return true;
         }
         //Checks if the name does not contain numbers or punctuations
         else if( !isAllLetters( firstNameField.getText()) || !isAllLetters( lastNameField.getText()))
         {
-            displayError("Names must be all letters");
+            displayMessage(errorPane, "Names must be all letters",  true);
             return true;
         }
         //Checks the length of names
         else if (firstNameField.getText().length() > 20 || lastNameField.getText().length() > 20){
-            displayError("Names must be smaller than 20 characters");
+            displayMessage(errorPane, "Names must be smaller than 20 characters", true);
             return true;
         }
         //Checks if the mail contains '@'
         else if (emailField.getText().indexOf('@') == -1)
         {
-            displayError("Invalid Email");
+            displayMessage(errorPane, "Invalid Email", true);
             return true;
         }
 
         if(DatabaseManager.isEmailTaken(user.getDatabaseConnection(), emailField.getText())){
-            displayError("Email is used before");
+            displayMessage(errorPane, "Email is used before", true);
             return true;
         }
 
@@ -235,12 +235,16 @@ public class SignupController implements InitializeData {
      * Shows the error message
      * @param errorMessage message to show
      */
-    private void displayError(String errorMessage){
+    private void displayMessage(Pane pane, String errorMessage, boolean error) {
         System.out.println(errorMessage);
-        JFXSnackbar snackbar = new JFXSnackbar(errorPane);
+        JFXSnackbar snackbar = new JFXSnackbar(pane);
+        if (error) {
+            snackbar.getStylesheets().add("/stylesheets/errorSnackBar.css");
+        }
+        else {
+            snackbar.getStylesheets().add("/stylesheets/messageSnackBar.css");
+        }
 
-        snackbar.setPrefWidth(300.0);
-        snackbar.getStylesheets().add("sample/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
     }
 

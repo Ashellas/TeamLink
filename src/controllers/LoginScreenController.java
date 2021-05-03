@@ -146,9 +146,8 @@ public class LoginScreenController implements  InitializeData{
 
         userCreateTask.setOnSucceeded(e -> {
             if(userSession.getUser() == null) {
-                displayError("No user found");
+                displayMessage(errorPane, "No user found", true);
                 System.out.println("failed");
-                displayError("No user found");
                 disablePane.setVisible(false);
             }
             else {
@@ -194,13 +193,16 @@ public class LoginScreenController implements  InitializeData{
      * Shows the error message
      * @param errorMessage message to show
      */
-    private void displayError(String errorMessage){
-        disablePane.setDisable(false);
+    private void displayMessage(Pane pane, String errorMessage, boolean error) {
         System.out.println(errorMessage);
-        JFXSnackbar snackbar = new JFXSnackbar(errorPane);
+        JFXSnackbar snackbar = new JFXSnackbar(pane);
+        if (error) {
+            snackbar.getStylesheets().add("/stylesheets/errorSnackBar.css");
+        }
+        else {
+            snackbar.getStylesheets().add("/stylesheets/messageSnackBar.css");
+        }
 
-        snackbar.setPrefWidth(300.0);
-        snackbar.getStylesheets().add("/stylesheets/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
     }
 

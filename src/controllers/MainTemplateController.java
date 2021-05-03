@@ -184,7 +184,6 @@ public class MainTemplateController implements InitializeData {
      * @throws IOException
      */
     public void SynchronizeData(ActionEvent actionEvent) {
-        displayMessage(messagePane,"aaaa",false);
     }
 
     /**
