@@ -39,7 +39,11 @@ public class SettingsScreenController extends MainTemplateController {
 
     private String selectedAgeGroup = "", selectedCity = "", selectedLeague = "";
 
-    private File selectedFile;
+    private File createTeamLogoFile;
+
+    private File editTeamLogoFile;
+
+    private File userPhotoFile;
 
     @FXML
     private ImageView accountPhoto;
@@ -260,12 +264,11 @@ public class SettingsScreenController extends MainTemplateController {
 
             editAccountButton.setText("Edit");
             userNameLabel.setText(user.getUser().getFirstName());
-            if (selectedFile != null) {
+            if (userPhotoFile != null) {
                 user.getUser().setProfilePhoto(accountPhoto);
-                profileIcon.setImage(new Image(selectedFile.toURI().toString()));
+                profileIcon.setImage(new Image(userPhotoFile.toURI().toString()));
             }
-            DatabaseManager.updateUser(user, selectedFile);
-            selectedFile = null;
+            DatabaseManager.updateUser(user, userPhotoFile);
         }
     }
 
@@ -292,12 +295,12 @@ public class SettingsScreenController extends MainTemplateController {
         // Sets the file type options
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
 
-        selectedFile = fileChooser.showOpenDialog(null);
+        userPhotoFile = fileChooser.showOpenDialog(null);
 
-        if( selectedFile != null)
+        if( userPhotoFile != null)
         {
             // Upload button's text is changed and the display image is changed to the selected image
-            accountPhoto.setImage(new Image(selectedFile.toURI().toString()));
+            accountPhoto.setImage(new Image(userPhotoFile.toURI().toString()));
             changePhotoButton.setText("Change Photo");
         }
     }
@@ -427,7 +430,7 @@ public class SettingsScreenController extends MainTemplateController {
                 teamCombobox.getValue().setTeamLogo(logoChangeImage);
                 teamPhoto.setImage(teamCombobox.getValue().getTeamLogo().getImage());
             }
-            DatabaseManager.updateTeam(teamCombobox.getValue(), user.getDatabaseConnection(), selectedFile);
+            DatabaseManager.updateTeam(teamCombobox.getValue(), user.getDatabaseConnection(), editTeamLogoFile);
             displayMessage(messagePane,"Changes are saved", false);
 
             teamCombobox.getItems().clear();
@@ -443,7 +446,7 @@ public class SettingsScreenController extends MainTemplateController {
         editTeamPane.setVisible(false);
         darkPane.setDisable(true);
         darkPane.setVisible(false);
-        selectedFile = null;
+        editTeamLogoFile = null;
     }
 
     public void changeTeamLogo(ActionEvent actionEvent) {
@@ -455,13 +458,13 @@ public class SettingsScreenController extends MainTemplateController {
         // Sets the file type options
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
 
-        selectedFile = fileChooser.showOpenDialog(null);
+        editTeamLogoFile = fileChooser.showOpenDialog(null);
 
-        if( selectedFile != null)
+        if( editTeamLogoFile != null)
         {
             // Upload button's text is changed and the display image is changed to the selected image
             uploadTeamLogoButton.setText("Change Photo");
-            logoChangeImage.setImage(new Image(selectedFile.toURI().toString()));
+            logoChangeImage.setImage(new Image(editTeamLogoFile.toURI().toString()));
         }
     }
 
@@ -476,13 +479,13 @@ public class SettingsScreenController extends MainTemplateController {
         // Sets the file type options
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG and JPG files", "*.png","*.jpg","*.jpeg"));
 
-        selectedFile = fileChooser.showOpenDialog(null);
+        createTeamLogoFile = fileChooser.showOpenDialog(null);
 
-        if( selectedFile != null)
+        if( createTeamLogoFile != null)
         {
             // Upload button's text is changed and the display image is changed to the selected image
             uploadTeamLogoButtonCreate.setText("Change Photo");
-            logoChangeImageCreate.setImage(new Image(selectedFile.toURI().toString()));
+            logoChangeImageCreate.setImage(new Image(createTeamLogoFile.toURI().toString()));
         }
     }
 
@@ -490,7 +493,7 @@ public class SettingsScreenController extends MainTemplateController {
         int currentTeams = user.getUserTeams().size();
         if (validCreateInput()) {
             user = DatabaseManager.createTeam(user, teamNameCreateField.getText(), abbrevationCreateField.getText(), chooseCityBoxCreate.getValue().toString(),
-                    chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), selectedFile);
+                    chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), createTeamLogoFile);
 
             createPaneClose(actionEvent);
             displayMessage(messagePane, "Team created", false);
@@ -550,7 +553,7 @@ public class SettingsScreenController extends MainTemplateController {
         darkPane.setDisable(true);
         darkPane.setVisible(false);
         logoChangeImageCreate.setImage(new Image("/Resources/Images/emptyTeamLogo.png"));
-        selectedFile = null;
+        createTeamLogoFile = null;
     }
 
     //--------------------HELPER-------------------------------//
