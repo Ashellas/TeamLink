@@ -70,8 +70,7 @@ public class Game extends CalendarEvent{
             Game otherGame = (Game) other;
             if( this.getRoundNumber() == otherGame.getRoundNumber() &&
                     this.getHomeTeam().equals(otherGame.getHomeTeam()) &&
-                    this.getAwayTeam().equals(otherGame.getAwayTeam()) &&
-                    this.getResult().equals( otherGame.getResult()) ){
+                    this.getAwayTeam().equals(otherGame.getAwayTeam() ) ){
                 return true;
             }
 
