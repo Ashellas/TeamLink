@@ -10,16 +10,14 @@ public class Announcement {
     private String description;
     private TeamMember sender;
     private Date timeSent;
-    private boolean isUnread; //TODO how can this be functional
     private ImageView senderProfilePhoto;
 
-    public Announcement(int announcementId, String title, String description, TeamMember sender, Date timeSent, boolean isUnread) {
+    public Announcement(int announcementId, String title, String description, TeamMember sender, Date timeSent) {
         this.announcementId = announcementId;
         this.title = title;
         this.description = description;
         this.sender = sender;
         this.timeSent = timeSent;
-        this.isUnread = isUnread;
         if (sender.getProfilePhoto() != null) {
             this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
         }
@@ -30,7 +28,6 @@ public class Announcement {
         this.description = description;
         this.sender = sender;
         this.timeSent = new Date();
-        this.isUnread = true;
         if (sender.getProfilePhoto() != null) {
             this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
         }
@@ -56,9 +53,6 @@ public class Announcement {
         return timeSent;
     }
 
-    public boolean isUnread() {
-        return isUnread;
-    }
 
     public ImageView getSenderProfilePhoto() {
         return senderProfilePhoto;

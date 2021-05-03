@@ -97,10 +97,24 @@ public class AfterSignupScreenController extends MainTemplateController implemen
 
     private File selectedFile;
 
+    //---------------------Help Pane---------------------------//
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
 
     @Override
     public void initData(UserSession userSession) {
         super.initData(userSession);
+        if(user.isStyleDark()) {
+            darkIcons();
+        }
+        else {
+            lightIcons();
+        }
 
         try{
             updateApplicationTable();
@@ -114,8 +128,10 @@ public class AfterSignupScreenController extends MainTemplateController implemen
 
         popUpCreateTeamPane.setVisible(false);
         popUpCreateTeamPane.setDisable(true);
-        darkPane.setVisible(false);
         darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         chooseCityBoxCreate.getItems().addAll(cityList);
         chooseAgeGroupCreate.getItems().addAll(ageGroupList);
@@ -164,8 +180,25 @@ public class AfterSignupScreenController extends MainTemplateController implemen
     }
 
     @Override
-    public void helpButtonPushed(ActionEvent event) {
-        // TODO
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
     }
 
     /**
@@ -317,5 +350,19 @@ public class AfterSignupScreenController extends MainTemplateController implemen
             return false;
         }
         return true;
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void darkIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void lightIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
 }

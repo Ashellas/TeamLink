@@ -201,7 +201,9 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     public void sendAnnouncement(ActionEvent actionEvent) {
         Announcement announcement = new Announcement(textField.getText(), textArea.getText(), user.getUser());
+        user.getAnnouncements(teamBox.getValue()).add(0,announcement);
         //DatabaseManager.createAnnouncement(user.getDatabaseConnection(), teamBox.getValue(), announcement);
+        setUpAnnouncementsGrid();
     }
 
     private void lightIcons() {
