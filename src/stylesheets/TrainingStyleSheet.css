@@ -1,0 +1,103 @@
+
+/* line chart's color */
+.default-color0.chart-series-line
+{
+    -fx-stroke: #a1289f;
+}
+
+.combo-box-base {
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+    -fx-border-width: 0.5px;
+    -fx-font-size: 16;
+}
+
+.combo-box-base:focused{
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 3px, 3px, 2px, 1px;
+    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+    -fx-border-color: #a1289f;
+    -fx-border-width: 1.5px;
+    -fx-font-size: 16px;
+}
+
+.combo-box-base:hover{
+    -fx-font-size: 17px;
+    -fx-border-color: #a1289f;
+}
+
+.arrow
+{
+    -fx-background-color:  #a1289f;
+    -fx-padding: 3 5 3 5;
+}
+
+.combo-box-popup .list-view{
+    -fx-border-width: 0.5px;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:hover
+{
+    -fx-background: -fx-accent;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+.combo-box .list-cell
+{
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 5        ;
+    -fx-cell-size: 1.66667em;
+}
+.text-area
+{
+    -fx-background-color: rgba(53,89,119,0.4);
+    -fx-border-width: 0 0 2 0;
+    -fx-font-size: 16px;
+    -fx-border-color: BLACK;
+}
+.text-area .text
+{
+    -fx-fill: BLACK;
+}
+
+.button:hover
+{
+    -fx-background-color: #a1289f;
+    -fx-font-size: 17;
+}
+
+.button:pressed
+{
+    -fx-background-color: #872986;
+    -fx-font-size: 16;
+}
+
+.button
+{
+    -fx-background-color: #a1289f;
+    -fx-font-size: 16;
+}
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-font-size: 16px;
+    -fx-border-color: BLACK;
+}
+.list-cell
+{
+    -fx-background-color: transparent;
+}
+
+.list-view
+{
+    -fx-background-color: transparent;
+}
+
+
