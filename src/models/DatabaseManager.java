@@ -878,7 +878,7 @@ public class DatabaseManager {
     }
 
     public static void saveFootball(UserSession user, TeamMember player, FootballStats basketballStats, Game game) throws SQLException {
-        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO basketball_game_stats(points, assists, rebounds, steals, blocks,member_id,game_id)" +
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO football_game_stats(goals, assists, saves, yellowcard, redcard, member_id, game_id)" +
                 "values (?,?,?,?,?,?,?) ");
         prepStmt.setInt(1, basketballStats.getGoalsScored());
         prepStmt.setInt(2, basketballStats.getAssitsMade());
