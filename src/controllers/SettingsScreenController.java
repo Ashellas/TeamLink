@@ -138,6 +138,14 @@ public class SettingsScreenController extends MainTemplateController {
     @FXML
     private Button uploadTeamLogoButtonCreate;
 
+    //---------------------Help Pane---------------------------//
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     //----------------------Visible to head coach-------------------//
 
     @FXML
@@ -200,6 +208,8 @@ public class SettingsScreenController extends MainTemplateController {
         createTeamPane.setDisable(true);
         darkPane.setDisable(true);
         darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         // Coach buttons
         if(!user.getUser().getTeamRole().equals("Head Coach")){
@@ -391,7 +401,17 @@ public class SettingsScreenController extends MainTemplateController {
 
     @Override
     public void helpButtonPushed(ActionEvent actionEvent){
-        // TODO
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
     }
 
     //-------------------------Team Edit---------------------------//
@@ -537,6 +557,7 @@ public class SettingsScreenController extends MainTemplateController {
     public void darkIcons() {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/white/copy_white.png")));
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
         if (user.getUser().getProfilePhoto() == null) {
             accountPhoto.setImage((new Image("/Resources/Images/white/big_profile_white.png")));
         }
@@ -546,6 +567,7 @@ public class SettingsScreenController extends MainTemplateController {
     public void lightIcons() {
         teamPhoto.setImage((new Image("/Resources/Images/emptyTeamLogo.png")));
         copyIcon.setImage((new Image("/Resources/Images/black/copy_black.png")));
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
         if (user.getUser().getProfilePhoto() == null) {
             accountPhoto.setImage((new Image("/Resources/Images/black/big_profile_black.png")));
         }

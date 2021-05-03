@@ -102,7 +102,7 @@ public class MainTemplateController implements InitializeData {
     }
 
     public void toGameplanScreen(ActionEvent actionEvent) throws  IOException {
-        AppManager.changeScene(getClass().getResource("/views/GameplanScreen.fxml"),actionEvent, user);
+        AppManager.changeScene(getClass().getResource("/views/GameplansScreen.fxml"),actionEvent, user);
     }
 
     public void toTrainingsScreen(ActionEvent actionEvent) throws IOException {
@@ -113,7 +113,8 @@ public class MainTemplateController implements InitializeData {
         AppManager.changeScene(getClass().getResource("/views/LeagueScreen.fxml"),actionEvent, user);
     }
 
-    public void toChatScreen(ActionEvent actionEvent) {
+    public void toChatScreen(ActionEvent actionEvent) throws IOException {
+        AppManager.changeScene(getClass().getResource("/views/ChatScreen.fxml"),actionEvent, user);
     }
 
     public void toSettingsScreen(ActionEvent actionEvent) throws IOException {

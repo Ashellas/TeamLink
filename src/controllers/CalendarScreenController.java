@@ -42,12 +42,12 @@ public class CalendarScreenController extends MainTemplateController {
     private ArrayList<ListView<Button>> lists = new ArrayList<ListView<Button>>();
     private ArrayList<CalendarEvent> events = new ArrayList<CalendarEvent>();
     private ArrayList<Team> teams = new ArrayList<Team>();
-    private CalendarEvent e2 = new CalendarEvent(1,"training", new Date(2021, 04, 19, 17,30),"cool game","/views/SquadScreen.fxml","lightBlue");
+    private CalendarEvent e2 = new CalendarEvent(1,"training", new Date(2021, 04, 19, 17,30),"/views/SquadScreen.fxml","lightBlue");
     private Team selectedTeam;
 
     public void initData(UserSession userSession){
         super.initData(userSession);
-        Team allTeams = new Team(99999,"All Teams",null,null);
+        Team allTeams = new Team(99999,"All Teams","",  "");
         teamSelectionCombo.getItems().add(allTeams);
         teams = user.getUserTeams();
         for (Team t: teams) {
@@ -92,7 +92,7 @@ public class CalendarScreenController extends MainTemplateController {
             Label l = labels.get(i + firstDay - 2);
             l.setText("   " + i + "");
             for (CalendarEvent ce: events) {
-                if (ce.getDescription().equals(selectedTeam.getAbbrevation()) || selectedTeam.getTeamName().equals("All Teams")) {
+                if (selectedTeam.getTeamName().equals("All Teams")) { // ce.getDescription().equals(selectedTeam.getAbbrevation()) deleted
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(ce.getEventDateTime());
                     if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 1)) {

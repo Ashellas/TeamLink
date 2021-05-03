@@ -88,7 +88,7 @@
                               <URL value="@../stylesheets/textFieldStyleSheet.css" />
                               <URL value="@../stylesheets/Active.css" />
                            </stylesheets></TextField>
-                        <DatePicker fx:id="dateOfBirthPicker" maxWidth="1.7976931348623157E308" minHeight="40.0" promptText="Date of Birth" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <DatePicker fx:id="dateOfBirthPicker" editable="false" maxWidth="1.7976931348623157E308" minHeight="40.0" promptText="Date of Birth" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <stylesheets>
                               <URL value="@../stylesheets/textFieldStyleSheet.css" />
                               <URL value="@../stylesheets/datePickerStyleeSheet.css" />

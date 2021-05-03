@@ -7,15 +7,19 @@ public class Gameplan {
     private String title;
     private Team team;
     private String filePath;
+    private int fileId;
     private int version;
 
-    public Gameplan(int gameplanId, String title, Team team, int version) {
+    public Gameplan(int gameplanId, String title, Team team, int version, int fileId) {
         this.gameplanId = gameplanId;
         this.title = title;
         this.team = team;
         this.version = version;
+        this.fileId = fileId;
         filePath = title + "_" + version + ".pdf";
     }
+
+
 
     public int getGameplanId() {
         return gameplanId;
@@ -37,4 +41,7 @@ public class Gameplan {
         return version;
     }
 
+    public int getFileId() {
+        return fileId;
+    }
 }

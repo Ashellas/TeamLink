@@ -239,8 +239,8 @@ public class MainScreenController extends MainTemplateController{
         gridPane.getRowConstraints().addAll(row1, row2, row3, row4);
         Label title = new Label(notTitle);
         Label description = new Label(notDescription);
-        System.out.println(notificationsEmptyHBox.getWidth());
-        title.setPrefWidth(notificationsEmptyHBox.getWidth()*0.70);
+        title.setPrefWidth(notificationsEmptyHBox.getWidth() * 0.70);
+        description.setPrefWidth(notificationsEmptyHBox.getWidth()*0.70);
         title.getStyleClass().add("title");
         description.getStyleClass().add("description");
         gridPane.add(title, 0, 1);

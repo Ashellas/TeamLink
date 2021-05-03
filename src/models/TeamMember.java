@@ -23,8 +23,9 @@ public class TeamMember {
     private String reboundsOrSavesMade;
     private String stealsOrYellowCard;
     private String blocksOrRedCard;
+    private int fileId;
 
-    public TeamMember(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email, String sportBranch, Image profilePhoto) {
+    public TeamMember(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email, String sportBranch, Image profilePhoto, int fileId) {
         this.memberId = memberId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,8 +36,20 @@ public class TeamMember {
         if(profilePhoto != null){
             this.profilePhoto = new ImageView(profilePhoto);
         }
+        this.fileId = fileId;
     }
 
+    //for applications
+    public TeamMember(int memberId, String firstName, String lastName, LocalDate birthday, String teamRole, String email) {
+        this.memberId = memberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.teamRole = teamRole;
+        this.email = email;
+    }
+
+    //TODO edit file selection
     public TeamMember(int memberId, String firstName, String lastName, Image profilePhoto) {
         this.memberId = memberId;
         this.firstName = firstName;
@@ -101,6 +114,12 @@ public class TeamMember {
         lastName = name.substring(spaceIndex + 1);
     }
 
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
+    }
+
+
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -147,5 +166,9 @@ public class TeamMember {
 
     public void setBlocksOrRedCard( String blocksOrRedCard){
         this.blocksOrRedCard = blocksOrRedCard;
+    }
+
+    public int getFileId() {
+        return fileId;
     }
 }
