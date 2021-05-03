@@ -22,10 +22,6 @@ public class ButtonTableCell<S> extends TableCell<S, Button> {
         });
     }
 
-    public void setButtonText(String text){
-        tableButton.setText(text);
-    }
-
     public S getCurrentItem() {
         return (S) getTableView().getItems().get(getIndex());
     }
