@@ -118,6 +118,8 @@ public class SettingsScreenController extends MainTemplateController {
     private Button openEditPaneButton;
     @FXML
     private Button deleteTeamButton;
+    @FXML
+    private TextField teamApplicationCodeField;
 
     /**
      * Initialises scene properties
@@ -781,5 +783,21 @@ public class SettingsScreenController extends MainTemplateController {
      * Deactivates the settings button on the left pane
      */
     public void toSettingsScreen(ActionEvent actionEvent) throws IOException {}
+
+    /**
+     * Sends application
+     * @param event apply button pushed
+     */
+    public void applyButtonPushed(ActionEvent event) throws SQLException {
+        String response = DatabaseManager.isTeamCodeProper(user, teamApplicationCodeField.getText());
+        System.out.println(response);
+        if(response.equals("Success")){
+            user = DatabaseManager.updateApplications(user);
+            displayMessage(messagePane, "Application sent", false);
+        }
+        else{
+            displayMessage(messagePane,"Invalid code", true);
+        }
+    }
 
 }
