@@ -194,7 +194,7 @@ public class MainScreenController extends MainTemplateController{
 
     private void setUpCalendarGrid() throws IOException {
         cal = new GregorianCalendar();
-        int dayOfWeekIndex = (Calendar.DAY_OF_WEEK - 2) % 7;
+        int dayOfWeekIndex = (Calendar.DAY_OF_WEEK - 2);
         for( int i = 0; i < 4; i++){
             Label dayNameLabel = new Label(daysOfTheWeek[(dayOfWeekIndex + i) % 7]);
             dayNameLabel.getStyleClass().add("standings");
@@ -204,9 +204,24 @@ public class MainScreenController extends MainTemplateController{
 
             eventsListView.setOrientation(Orientation.VERTICAL);
             eventsListView.setFocusTraversable(false);
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            CalendarButton eventButton = new CalendarButton("training", sdf.format(new Date()), "/views/SquadScreen.fxml","red", user);
-            eventsListView.getItems().add(eventButton);
+            ArrayList<CalendarEvent> events = user.getCalendarEvents(selectedTeam);
+            for (CalendarEvent ce : events) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(ce.getEventDateTime());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                String formattedDate = sdf.format(ce.getEventDateTime());
+                if (i + 1 == calendar.get(Calendar.DAY_OF_MONTH)) {
+                    if (ce.getActionLink() != null) {
+                        try {
+                            eventsListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        eventsListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+                    }
+                }
+            }
             calendarGrid.add(eventsListView, i, 1);
             calendarItems.add(eventsListView);
         }
@@ -563,7 +578,7 @@ public class MainScreenController extends MainTemplateController{
         }
         else{
             applicantsTable.setVisible(true);
-            applicantsTable.setVisible(false);
+            myApplicationTable.setVisible(false);
         }
         setUpApplicantsTable();
     }
