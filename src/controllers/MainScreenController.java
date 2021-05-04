@@ -492,15 +492,18 @@ public class MainScreenController extends MainTemplateController{
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+            setUpApplicantsTable();
             return p;
         }));
         declineColumn.setCellFactory(ButtonTableCell.<TeamApplication>forTableColumn("Decline", (TeamApplication p) -> {
             try {
                 DatabaseManager.declineTeamApplication(user, p);
                 user.getTeamApplications().remove(p);
+
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
+            setUpApplicantsTable();
             return p;
         }));
 
