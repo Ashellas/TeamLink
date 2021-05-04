@@ -17,6 +17,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * This class is the controller class for calendar screen. It contains methods such as creating a calendar, deleting a calendar and fetching event information from database
+ * @author Semih Kaan Çakır
+ * @version 1.0.1 4.05.2021
+ */
 
 public class CalendarScreenController extends MainTemplateController {
 
