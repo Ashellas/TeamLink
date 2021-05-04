@@ -13,11 +13,9 @@ import java.nio.file.StandardOpenOption;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class DatabaseManager {
 
@@ -748,9 +746,8 @@ public class DatabaseManager {
             preparedStatement.setInt(2, team.getDatabaseTeamId());
             ResultSet gamesResultSet = preparedStatement.executeQuery();
             while (gamesResultSet.next()){
-
                 int gameId = gamesResultSet.getInt("game_id");
-                String title = "VS " + gamesResultSet.getString("abbrevation");
+                String title = "Game";
                 Date eventDate = gamesResultSet.getDate("game_date_time");
                 String actionLink = "/views/LeagueScreen.fxml";
                 teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
@@ -774,11 +771,11 @@ public class DatabaseManager {
         return teamsAndEvents;
     }
 
-    public static ArrayList<CalendarEvent> getCalendarEventByDate(Connection databaseConnection, Team team, Date date) throws SQLException {
+    public static ArrayList<CalendarEvent> getCalendarEventByDate(Connection databaseConnection, Team team, java.util.Date date) throws SQLException {
         ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
+        Timestamp ts=new Timestamp(date.getTime());
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where DATE_FORMAT(event_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\")");
-        java.sql.Date monthYear = new java.sql.Date(date.getTime());
-        preparedStatement.setDate(1, monthYear);
+        preparedStatement.setTimestamp(1, ts);
         ResultSet calendarEventsResultSet = preparedStatement.executeQuery();
 
         //same for every team
@@ -791,16 +788,17 @@ public class DatabaseManager {
         }
 
 
-        preparedStatement = databaseConnection.prepareStatement("select * from league_games " +
-                "where DATE_FORMAT(game_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and (home_team_id = ? or away_team_id = ?)");
-        preparedStatement.setDate(1, monthYear);
-        preparedStatement.setInt(2, team.getTeamId());
-        preparedStatement.setInt(3, team.getTeamId());
+        preparedStatement = databaseConnection.prepareStatement("select * from league_games join league_teams lt on lt.league_team_id = league_games.away_team_id" +
+                " AND DATE_FORMAT(game_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and (home_team_id = ? or away_team_id = ?)");
+        preparedStatement.setTimestamp(1, ts);
+        System.out.println("Database Team Id " + team.getDatabaseTeamId());
+        preparedStatement.setInt(2, team.getDatabaseTeamId());
+        preparedStatement.setInt(3, team.getDatabaseTeamId());
         ResultSet gamesResultSet = preparedStatement.executeQuery();
 
         while (gamesResultSet.next()){
             int gameId = gamesResultSet.getInt("game_id");
-            String title = "VS " + gamesResultSet.getString("abbrevation");
+            String title = "VS " ;
             Date eventDate = gamesResultSet.getDate("game_date_time");
             String actionLink = "/views/LeagueScreen.fxml";
             calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
@@ -808,8 +806,10 @@ public class DatabaseManager {
 
         preparedStatement = databaseConnection.prepareStatement("select * from trainings " +
                 "where DATE_FORMAT(training_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\") and team_id = ?");
-        preparedStatement.setDate(1, monthYear);
+        preparedStatement.setTimestamp(1, ts);
         preparedStatement.setInt(2, team.getTeamId());
+        System.out.println(" Team Id " + team.getTeamId());
+
         ResultSet trainingsResultSet = preparedStatement.executeQuery();
         while (trainingsResultSet.next()){
             int gameId = trainingsResultSet.getInt("training_id");
@@ -817,6 +817,10 @@ public class DatabaseManager {
             Date eventDate = trainingsResultSet.getDate("training_date_time");
             String actionLink = "/views/TrainingsScreen.fxml";
             calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "green"));
+        }
+
+        for (CalendarEvent ce : calendarEvents){
+            System.out.println(ce.getEventTitle() + ce.getEventDateTime());
         }
         return calendarEvents;
     }

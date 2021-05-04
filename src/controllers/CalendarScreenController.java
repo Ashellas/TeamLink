@@ -61,7 +61,7 @@ public class CalendarScreenController extends MainTemplateController {
         for (Team t: teams) {
             teamSelectionCombo.getItems().add(t);
         }
-        selectedTeam = allTeams;
+        selectedTeam = user.getUserTeams().get(0);
         teamSelectionCombo.setValue(selectedTeam);
 
         //Creating calendar
@@ -120,11 +120,13 @@ public class CalendarScreenController extends MainTemplateController {
                         ListView<Button> buttonListView = lists.get(i + firstDay - 2);
                         if (ce.getActionLink() != null) {
                             try {
+                                System.out.println("1");
                                 buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         } else {
+                            System.out.println("2");
                             buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                         }
                     }

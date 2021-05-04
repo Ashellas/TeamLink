@@ -1188,7 +1188,7 @@ teamlink|schema||atak||grant option|G</Grants>
     </column>
     <column id="356" parent="283" name="game_date_time">
       <Position>6</Position>
-      <DataType>datetime|0s</DataType>
+      <DataType>timestamp|0s</DataType>
     </column>
     <column id="357" parent="283" name="game_location_name">
       <Position>7</Position>
