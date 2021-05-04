@@ -443,8 +443,12 @@ public class GameplanScreenController extends MainTemplateController {
         helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
 
+
+
+
     @Override
     public void toGameplanScreen(ActionEvent actionEvent) throws  IOException { }
+
 
     @Override
     public void SynchronizeData(ActionEvent event) {

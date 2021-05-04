@@ -50,7 +50,7 @@ public class UserSession {
         this.databaseConnection = connection;
         styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
-    
+
     public TeamMember getUser() {
         return user;
     }

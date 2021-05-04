@@ -20,6 +20,15 @@ import java.text.SimpleDateFormat;
 
 public class DatabaseManager {
 
+    /**
+     * Creates a userSession with logged user's info
+     * @param userSession application session for user
+     * @param email user email
+     * @param password user password
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public static UserSession login( UserSession userSession, String email, String password) throws SQLException, IOException {
         Connection databaseConnection = userSession.getDatabaseConnection();
         TeamMember user = createUser(databaseConnection, email, password);
@@ -28,7 +37,7 @@ public class DatabaseManager {
         }
         ArrayList<Team> userTeams = createUserTeams(user, databaseConnection);
         HashMap<Team, ObservableList<Team>> standings = createStandings(databaseConnection, userTeams);
-        HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = createCurrentRoundGames(databaseConnection, userTeams, standings, 0);
+        HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = createCurrentRoundGames(databaseConnection, userTeams, standings);
         ArrayList<Notification> notifications = createNotifications(databaseConnection, user,0);
         HashMap<Team, ArrayList<Gameplan>> gameplans = createGameplans(databaseConnection, userTeams);
         ObservableList<Training> trainings = createTrainings(databaseConnection, userTeams);
@@ -39,6 +48,13 @@ public class DatabaseManager {
         return new UserSession(user, userTeams, gamesOfTheCurrentRound, standings, notifications, calendarEvents, trainings, databaseConnection, teamApplications, gameplans, lastSync, announcements);
     }
 
+    /**
+     *
+     * @param databaseConnection connection for database
+     * @param userTeams user's teams
+     * @return list of trainings for all teams of the user
+     * @throws SQLException
+     */
     private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException   {
         if(userTeams.isEmpty()){
             return null;
@@ -115,6 +131,14 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(trainings);
     }
 
+    /**
+     * Getting user's team applications
+     * @param databaseConnection connection for database
+     * @param user user's member info
+     * @param userTeams user's team info
+     * @return team applications
+     * @throws SQLException
+     */
     private static ObservableList<TeamApplication> createApplication(Connection databaseConnection, TeamMember user, ArrayList<Team> userTeams) throws SQLException {
         ArrayList<TeamApplication> teamApplications = new ArrayList<>();
         if(user.getTeamRole().equals("Head Coach") && !userTeams.isEmpty()){
@@ -153,6 +177,15 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(teamApplications);
     }
 
+    /**
+     * downloads Gameplans
+     * @param databaseConnection connection for database
+     * @param fileId required file info for database
+     * @param filePath file's path app will download gameplan into user's computer
+     * @return result
+     * @throws SQLException
+     * @throws IOException
+     */
     public static boolean downloadGameplan( Connection databaseConnection, int fileId, String filePath) throws SQLException, IOException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select file from file_storage where id = ?");
         prepStmt.setInt(1, fileId);
@@ -178,6 +211,14 @@ public class DatabaseManager {
     }
 
 
+    /**
+     * Gets gameplans for user's teams
+     * @param databaseConnection connection for database
+     * @param userTeams user's team info
+     * @return gameplan list for user teams
+     * @throws SQLException
+     * @throws IOException
+     */
     private static HashMap<Team, ArrayList<Gameplan>>  createGameplans(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, IOException {
 
         if(userTeams.isEmpty()){
@@ -201,6 +242,14 @@ public class DatabaseManager {
         return teamGameplans;
     }
 
+    /**
+     * gets the notifications for user
+     * @param databaseConnection databaseConnection
+     * @param user user's member info
+     * @param pageNumber notification page
+     * @return
+     * @throws SQLException
+     */
     public static ArrayList<Notification> createNotifications(Connection databaseConnection, TeamMember user, int pageNumber) throws SQLException {
         ArrayList<Notification> notifications = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm" +
@@ -237,6 +286,13 @@ public class DatabaseManager {
         return notifications;
     }
 
+    /**
+     * creates standings for user teams
+     * @param databaseConnection connection for database
+     * @param userTeams user's team info
+     * @return standings
+     * @throws SQLException
+     */
     public static HashMap<Team, ObservableList<Team>> createStandings(Connection databaseConnection, ArrayList<Team> userTeams ) throws SQLException {
         if(userTeams.isEmpty()){
             return null;
@@ -276,6 +332,15 @@ public class DatabaseManager {
         return standings;
     }
 
+    /**
+     * getSpecificGames
+     * @param databaseConnection connection for database
+     * @param leagueTeams teams of the standings
+     * @param roundNo roundNo
+     * @param leagueId league Id for database
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Game> getGames(Connection databaseConnection, ObservableList<Team> leagueTeams, int roundNo, int leagueId ) throws SQLException {
         ObservableList<Game> games = FXCollections.observableArrayList();
 
@@ -310,7 +375,15 @@ public class DatabaseManager {
         return games;
     }
 
-    private static HashMap<Team, ObservableList<Game>> createCurrentRoundGames(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings, int diffFromCurrent ) throws SQLException {
+    /**
+     * gets the current round's games
+     * @param databaseConnection connection for database
+     * @param userTeams user's team info
+     * @param standings league teams
+     * @return
+     * @throws SQLException
+     */
+    private static HashMap<Team, ObservableList<Game>> createCurrentRoundGames(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings ) throws SQLException {
         if(userTeams.isEmpty()){
             return null;
         }
@@ -350,6 +423,14 @@ public class DatabaseManager {
         return gamesOfTheCurrentRound;
     }
 
+    /**
+     *
+     * @param databaseConnection db connection
+     * @param email user email
+     * @param password user password
+     * @return user's member details
+     * @throws SQLException
+     */
     private static  TeamMember createUser(Connection databaseConnection, String email, String password) throws SQLException { //TODO If player
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_members join file_storage fs on " +
                 "fs.id = team_members.file_id and email = ? and password = MD5(?)");
@@ -382,6 +463,13 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * create user's team info
+     * @param user user's member details
+     * @param databaseConnection db connnection
+     * @return
+     * @throws SQLException
+     */
     private static ArrayList<Team> createUserTeams(TeamMember user, Connection databaseConnection) throws SQLException {
         ArrayList<Team> userTeams = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from team_and_members JOIN team_members tm on " +
@@ -457,6 +545,21 @@ public class DatabaseManager {
         return userTeams;
     }
 
+    /**
+     * Signs user up
+     * @param userSession user's app session
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param birthday
+     * @param password
+     * @param teamRole
+     * @param sportBranch
+     * @param selectedFile profile photo of the user
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public static UserSession signUpUser(UserSession userSession, String firstName, String lastName, String email, java.sql.Date birthday, String password, String teamRole, String sportBranch, File selectedFile) throws SQLException, IOException {
         int fileId = 1;
         if(selectedFile != null){
@@ -499,6 +602,13 @@ public class DatabaseManager {
         return userSession;
     }
 
+    /**
+     * Checks that email is unique or not
+     * @param databaseConnection db connection
+     * @param email email to checl
+     * @return
+     * @throws SQLException
+     */
     public static boolean isEmailTaken(Connection databaseConnection, String email) throws SQLException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("SELECT * FROM team_members " +
                 "where email = ?");
@@ -510,8 +620,14 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Checks the team code is unique or not
+     * @param user
+     * @param teamCode
+     * @return
+     * @throws SQLException
+     */
     public static String isTeamCodeProper(UserSession user, String teamCode) throws SQLException    {
-        //TODO age test, code's existence, sport_branch
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from teams where team_code = ?");
         prepStmt.setString(1, teamCode);
         ResultSet teamsResultSet = prepStmt.executeQuery();
@@ -529,15 +645,17 @@ public class DatabaseManager {
               prepStmt.setInt(2, teamsResultSet.getInt("team_id"));
               ResultSet applicationResultSet = prepStmt.executeQuery();
               if(applicationResultSet.next()){
-                  return "You have pending application to that team";
+                  return "You have a pending application to that team";
               }
               else{
+
                   if( applyTeam(user, teamsResultSet.getInt("team_id"))){
                       return "Success";
                   }
                   else{
                       return "an Error Occured";
                   }
+
               }
         }
         else{
@@ -545,12 +663,25 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * updates applications of the user
+     * @param userSession
+     * @return
+     * @throws SQLException
+     */
     public static UserSession updateApplications(UserSession userSession) throws SQLException {
         ObservableList<TeamApplication> teamApplications = createApplication(userSession.getDatabaseConnection(), userSession.getUser(), userSession.getUserTeams());
         userSession.setTeamApplications(teamApplications);
         return userSession;
     }
 
+    /**
+     * Team application
+     * @param user user's app sesssion
+     * @param teamId applied team
+     * @return
+     * @throws SQLException
+     */
     public static boolean applyTeam(UserSession user, int teamId) throws SQLException {
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO team_applications(applicant_id, team_id, isDeclined) VALUES (?,?, false )");
         prepStmt.setInt(1, user.getUser().getMemberId());
@@ -562,6 +693,14 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * gets the available leagues from database
+     * @param user
+     * @param city
+     * @param ageGroup
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<String> getLeagues(UserSession user, String city, String ageGroup) throws SQLException {
         ArrayList<String> leagueNames = new ArrayList<>();
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select * from leagues where city = ? and age_group = ?");
@@ -574,6 +713,15 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(leagueNames);
     }
 
+    /**
+     *
+     * @param user user's member details
+     * @param city
+     * @param ageGroup
+     * @param league
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<String> getLeagueTeams(UserSession user, String city, String ageGroup, String league) throws SQLException {
         ArrayList<String> teamNames = new ArrayList<>();
         PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("select team_name from league_teams join leagues l on l.league_id = league_teams.league_id and l.title = ? and l.age_group = ? and l.city = ?");
@@ -700,8 +848,6 @@ public class DatabaseManager {
 
         return "" + teamCode;
     }
-
-
 
     //TODO
     private static TrainingPerformanceReport getTeamTrainingReport(int teamId, Connection databaseConnection) {
@@ -1408,14 +1554,14 @@ public class DatabaseManager {
     public static UserSession sync(UserSession user) throws SQLException, IOException {
         user.setUserTeams(createUserTeams(user.getUser(), user.getDatabaseConnection()));
         user.setStandings(createStandings(user.getDatabaseConnection(), user.getUserTeams()));
-        user.setGamesOfTheCurrentRound(createCurrentRoundGames(user.getDatabaseConnection(), user.getUserTeams(), user.getStandings(), 0));
+        user.setGamesOfTheCurrentRound(createCurrentRoundGames(user.getDatabaseConnection(), user.getUserTeams(), user.getStandings()));
         user.setNotifications(createNotifications(user.getDatabaseConnection(), user.getUser(),0));
         user.setGameplans(createGameplans(user.getDatabaseConnection(), user.getUserTeams()));
         user.setTrainings(createTrainings(user.getDatabaseConnection(), user.getUserTeams()));
         user.setTeamApplications(createApplication(user.getDatabaseConnection(), user.getUser(), user.getUserTeams()));
-         createCurrentCalendarEvents(user.getDatabaseConnection(), user.getUserTeams());
-        Date lastSync = new Date();
-        HashMap<Team, ArrayList<Announcement>> announcements= createAnnouncements(user.getDatabaseConnection(), user.getUserTeams());
+        user.setCalendarEvents(createCurrentCalendarEvents(user.getDatabaseConnection(), user.getUserTeams()));
+        user.setLastSync(new Date());
+        user.setAnnouncements(createAnnouncements(user.getDatabaseConnection(), user.getUserTeams()));
         return user;
     }
 }
