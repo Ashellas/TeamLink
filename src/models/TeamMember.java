@@ -36,6 +36,13 @@ public class TeamMember {
             this.profilePhoto = new ImageView(profilePhoto);
         }
         this.fileId = fileId;
+
+        if( sportBranch.equals("Football")){
+            gameStats = new FootballStats(memberId, null, null, null, null, null);
+        }
+        else if( sportBranch.equals( "Basketball")){
+            gameStats = new BasketballStats( memberId, null, null, null, null, null);
+        }
     }
 
     //for applications
