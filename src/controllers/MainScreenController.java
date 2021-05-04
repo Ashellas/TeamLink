@@ -488,6 +488,11 @@ public class MainScreenController extends MainTemplateController{
         acceptColumn.setCellFactory(ButtonTableCell.<TeamApplication>forTableColumn("Accept", (TeamApplication p) -> {
             try {
                 DatabaseManager.acceptTeamApplication(user, p);
+                for (Team team: user.getUserTeams()) {
+                    if (team == p.getAppliedTeam()) {
+                        team.getTeamMembers().add(p.getApplicant());
+                    }
+                }
                 user.getTeamApplications().remove(p);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
