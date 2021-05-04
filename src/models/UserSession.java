@@ -29,7 +29,6 @@ public class UserSession {
     private HashMap<Team, ArrayList<Gameplan>> gameplans;
     private Date lastSync;
     private String styleSheet;
-    private HostServices hostServices;
 
     public UserSession(TeamMember user, ArrayList<Team> userTeams, HashMap<Team,ObservableList<Game>>  gamesOfTheCurrentRound, HashMap<Team,ObservableList<Team>> standings, ArrayList<Notification> notifications, HashMap<Team, ArrayList<CalendarEvent>> calendarEvents, ObservableList<Training> trainings, Connection databaseConnection, ObservableList<TeamApplication> teamApplications, HashMap<Team, ArrayList<Gameplan>> gameplans, Date lastSync,HashMap<Team, ArrayList<Announcement>> announcements) {
         this.user = user;
@@ -47,16 +46,11 @@ public class UserSession {
         styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
 
-    public UserSession(Connection connection, HostServices hostServices){
-        this.hostServices = hostServices;
+    public UserSession(Connection connection){
         this.databaseConnection = connection;
         styleSheet = preferences.get("stylesheet", getClass().getResource("/stylesheets/LightTheme.css").toExternalForm());
     }
-
-    public HostServices getHostServices() {
-        return hostServices;
-    }
-
+    
     public TeamMember getUser() {
         return user;
     }
@@ -196,6 +190,10 @@ public class UserSession {
         return myApplications;
     }
 
+    public HashMap<Team, ObservableList<Team>> getStandings() {
+        return standings;
+    }
+
     public ObservableList<TeamApplication> getmyTeamsApplications(){
         ObservableList<TeamApplication> myTeamApplications = FXCollections.observableArrayList();
         for (TeamApplication application : teamApplications){
@@ -206,4 +204,11 @@ public class UserSession {
         return myTeamApplications;
     }
 
+    public void setAnnouncements(HashMap<Team, ArrayList<Announcement>> announcements) {
+        this.announcements = announcements;
+    }
+
+    public void setCalendarEvents(HashMap<Team, ArrayList<CalendarEvent>> calendarEvents) {
+        this.calendarEvents = calendarEvents;
+    }
 }

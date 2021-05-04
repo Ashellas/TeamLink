@@ -31,10 +31,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        HostServices hostServices = getHostServices();
-        hostServices.showDocument("C:\\Users\\eftal\\Documents\\TeamLink EXTRASC:\\Users\\eftal\\Documents\\TeamLink EXTRAS\\Strong.pdf");
         Connection databaseConnection = DriverManager.getConnection("jdbc:mysql://139.177.181.92:3306/teamlink", "atak", "**CTRLaltBilkentg3m**");
-        UserSession userSession = new UserSession(databaseConnection, hostServices);
+        UserSession userSession = new UserSession(databaseConnection);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("views/LoginScreen.fxml"));
         loader.load();

@@ -23,25 +23,16 @@ public class DatabaseManager {
     public static UserSession login( UserSession userSession, String email, String password) throws SQLException, IOException {
         Connection databaseConnection = userSession.getDatabaseConnection();
         TeamMember user = createUser(databaseConnection, email, password);
-        System.out.println("user found");
         if(user == null){
-            System.out.println("haha");
             return userSession;
         }
         ArrayList<Team> userTeams = createUserTeams(user, databaseConnection);
-        System.out.println("teams found");
         HashMap<Team, ObservableList<Team>> standings = createStandings(databaseConnection, userTeams);
-        System.out.println("standings found");
         HashMap<Team, ObservableList<Game>> gamesOfTheCurrentRound = createCurrentRoundGames(databaseConnection, userTeams, standings, 0);
-        System.out.println("games found");
         ArrayList<Notification> notifications = createNotifications(databaseConnection, user,0);
-        System.out.println("notifications found");
         HashMap<Team, ArrayList<Gameplan>> gameplans = createGameplans(databaseConnection, userTeams);
-        System.out.println("gameplans found");
         ObservableList<Training> trainings = createTrainings(databaseConnection, userTeams);
-        System.out.println("trainings found");
         ObservableList<TeamApplication> teamApplications = createApplication(databaseConnection, user, userTeams);
-        System.out.println("teamapplications found");
         HashMap<Team, ArrayList<CalendarEvent>> calendarEvents = createCurrentCalendarEvents(databaseConnection, userTeams);
         Date lastSync = new Date();
         HashMap<Team, ArrayList<Announcement>> announcements= createAnnouncements(databaseConnection, userTeams);
@@ -715,6 +706,7 @@ public class DatabaseManager {
     //TODO
     private static TrainingPerformanceReport getTeamTrainingReport(int teamId, Connection databaseConnection) {
         int[] lastFiveTrainingAverages = new int[5];
+
         return null;
     }
 
@@ -1397,7 +1389,7 @@ public class DatabaseManager {
 
         prepStmt.executeUpdate();
 
-        prepStmt = user.getDatabaseConnection().prepareStatement("Delete from team_application where id = ?");
+        prepStmt = user.getDatabaseConnection().prepareStatement("Delete from team_applications where id = ?");
         prepStmt.setInt(1, application.getApplicationId());
 
         prepStmt.executeUpdate();
@@ -1405,9 +1397,25 @@ public class DatabaseManager {
 
     public static void declineTeamApplication(UserSession user, TeamApplication application) throws SQLException {
 
-        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("Update team_application SET isDeclined = true where id = ?");
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("Update team_applications SET isDeclined = true where id = ?");
         prepStmt.setInt(1, application.getApplicationId());
 
         prepStmt.executeUpdate();
+    }
+
+
+
+    public static UserSession sync(UserSession user) throws SQLException, IOException {
+        user.setUserTeams(createUserTeams(user.getUser(), user.getDatabaseConnection()));
+        user.setStandings(createStandings(user.getDatabaseConnection(), user.getUserTeams()));
+        user.setGamesOfTheCurrentRound(createCurrentRoundGames(user.getDatabaseConnection(), user.getUserTeams(), user.getStandings(), 0));
+        user.setNotifications(createNotifications(user.getDatabaseConnection(), user.getUser(),0));
+        user.setGameplans(createGameplans(user.getDatabaseConnection(), user.getUserTeams()));
+        user.setTrainings(createTrainings(user.getDatabaseConnection(), user.getUserTeams()));
+        user.setTeamApplications(createApplication(user.getDatabaseConnection(), user.getUser(), user.getUserTeams()));
+         createCurrentCalendarEvents(user.getDatabaseConnection(), user.getUserTeams());
+        Date lastSync = new Date();
+        HashMap<Team, ArrayList<Announcement>> announcements= createAnnouncements(user.getDatabaseConnection(), user.getUserTeams());
+        return user;
     }
 }
