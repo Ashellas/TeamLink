@@ -52,11 +52,8 @@ public class CalendarScreenController extends MainTemplateController {
         //Writing a super statement because CalendarScreenController is extended from MainTemplateController
         super.initData(userSession);
 
-        //Declaring a psuedo team to give calendar ability to show all teams' events
-        Team allTeams = new Team(99999,"All Teams","",  "");
 
         //Populating team selection combo box & give a starting value to it
-        teamSelectionCombo.getItems().add(allTeams);
         teams = user.getUserTeams();
         for (Team t: teams) {
             teamSelectionCombo.getItems().add(t);
@@ -110,25 +107,21 @@ public class CalendarScreenController extends MainTemplateController {
             int column  =  (i + firstDay - 2)%7;
             Label l = labels.get(i + firstDay - 2);
             l.setText("   " + i + "");
-            if (events != null) {
-                for (CalendarEvent ce : events) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(ce.getEventDateTime());
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                    String formattedDate = sdf.format(ce.getEventDateTime());
-                    if (i == calendar.get(Calendar.DAY_OF_MONTH) && currentMonth == (Calendar.MONTH + 2)) {
-                        ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                        if (ce.getActionLink() != null) {
-                            try {
-                                System.out.println("1");
-                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            System.out.println("2");
-                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
+            for (CalendarEvent ce : events) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(ce.getEventDateTime());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                String formattedDate = sdf.format(ce.getEventDateTime());
+                if (i == calendar.get(Calendar.DAY_OF_MONTH)) {
+                    ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                    if (ce.getActionLink() != null) {
+                        try {
+                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                    } else {
+                        buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                     }
                 }
             }
@@ -167,17 +160,9 @@ public class CalendarScreenController extends MainTemplateController {
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
-        if (selectedTeam.getTeamName().equals("All Teams")) {
-            allEvents.clear();
-            ArrayList<Team> t = user.getUserTeams();
-            for (Team team : t) {
-                allEvents.addAll(DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date));
-            }
-            createCalendar(firstDay, maxDay, allEvents);
-        } else {
-            events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
-            createCalendar(firstDay, maxDay, events);
-        }
+        events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
+        createCalendar(firstDay, maxDay, events);
+
     }
 
     /**
@@ -198,17 +183,9 @@ public class CalendarScreenController extends MainTemplateController {
         maxDay = gc1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         firstDay = gc1.get(GregorianCalendar.DAY_OF_WEEK);
         clearCalendar();
-        if (selectedTeam.getTeamName().equals("All Teams")) {
-            allEvents.clear();
-            ArrayList<Team> t = user.getUserTeams();
-            for (Team team : t) {
-                allEvents.addAll(DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date));
-            }
-            createCalendar(firstDay, maxDay, allEvents);
-        } else {
-            events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
-            createCalendar(firstDay, maxDay, events);
-        }
+        events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
+        createCalendar(firstDay, maxDay, events);
+
     }
 
     /**
@@ -218,16 +195,7 @@ public class CalendarScreenController extends MainTemplateController {
     public void teamSelection(ActionEvent actionEvent) throws SQLException {
         selectedTeam = (Team) teamSelectionCombo.getValue();
         clearCalendar();
-        if (selectedTeam.getTeamName().equals("All Teams")) {
-            allEvents.clear();
-            ArrayList<Team> t = user.getUserTeams();
-            for (Team team : t) {
-                allEvents.addAll(DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date));
-            }
-            createCalendar(firstDay, maxDay, allEvents);
-        } else {
-            events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
-            createCalendar(firstDay, maxDay, events);
-        }
+        events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
+        createCalendar(firstDay, maxDay, events);
     }
 }

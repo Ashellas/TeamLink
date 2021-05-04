@@ -23,14 +23,14 @@ public class CalendarButton extends Button {
                 e.printStackTrace();
             }
         });
-        this.getStylesheets().add("/stylesheets/CalendarButton.css");
+        this.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
         this.setCursor(Cursor.HAND);
         this.getStyleClass().add(colorCode);
 
     }
     public CalendarButton (String title, String colorCode, UserSession user) {
         this.setText(title);
-        this.getStylesheets().add("/styleshhets/CalendarButton.css");
+        this.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
         this.setDisable( true );
         this.getStyleClass().add(colorCode);
         this.user = user;

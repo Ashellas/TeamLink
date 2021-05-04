@@ -223,6 +223,50 @@ main.buttonText{
     -fx-background-color: #025B77;
 }
 
+.button {
+    -fx-font-size: 10;
+}
+
+.training:hover {
+    -fx-background-color: #8f258d;
+}
+
+.training:pressed {
+    -fx-background-color: #771f76;
+}
+
+.training {
+    -fx-font-size: 10;
+    -fx-background-color: #a1289f;
+}
+
+.game:hover {
+    -fx-background-color: #046f91;
+
+}
+.game:pressed {
+    -fx-background-color: #025B77;
+}
+
+.game {
+    -fx-font-size: 10;
+    -fx-background-color:  #007A9F;
+}
+
+.calendarEvent:hover {
+    -fx-background-color: #4b7a4d;
+
+}
+.calendarEvent:pressed {
+    -fx-background-color: #406942;
+}
+
+.calendarEvent {
+    -fx-font-size: 10;
+    -fx-background-color: #568c58;
+}
+
+
 
 .disabledMain {
     -fx-background-color: transparent;
