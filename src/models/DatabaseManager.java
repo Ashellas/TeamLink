@@ -1304,31 +1304,37 @@ public class DatabaseManager {
 
     }
 
-    public static boolean createNewGameplan(UserSession user, Team team, File gameplanFile, Gameplan gameplan) throws SQLException, IOException {
-        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) " +
-                "value (?)", Statement.RETURN_GENERATED_KEYS);
+    public static Gameplan createNewGameplan(UserSession user, Team team, File gameplanFile, String title) throws SQLException, IOException {
 
-        prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)", Statement.RETURN_GENERATED_KEYS);
-        FileInputStream fileInputStream = new FileInputStream(gameplanFile.getAbsolutePath());
-        prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
 
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) value(?)", Statement.RETURN_GENERATED_KEYS);
+        FileInputStream fileInputStream = new FileInputStream(gameplanFile);
+        prepStmt.setBinaryStream(1, fileInputStream);
+        System.out.println("file InputStream "  + fileInputStream);
+        System.out.println("Step 1");
+
+        prepStmt.executeUpdate();
         ResultSet rs = prepStmt.getGeneratedKeys();
         if(rs.next())
         {
+            System.out.println("Step 2");
+
             int fileId = rs.getInt(1);
             user.getUser().setFileId(fileId);
             prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO gameplans(title, team_id, file_id)" +
-                    "values(?,?,?)");
-            prepStmt.setString(1, gameplan.getTitle());
-            prepStmt.setInt(2,team.getTeamId());
+                    "values(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            prepStmt.setString(1, title);
+            prepStmt.setInt(2, 1);
             prepStmt.setInt(3, fileId);
 
-            int row = prepStmt.executeUpdate();
-            if(row > 0){
-                return true;
+            prepStmt.executeUpdate();
+            rs = prepStmt.getGeneratedKeys();
+            if(rs.next()){
+                System.out.println("Step 3");
+                return new Gameplan(rs.getInt(1), title, fileId);
             }
         }
-        return false;
+        return null;
     }
 
 
@@ -1359,5 +1365,17 @@ public class DatabaseManager {
             }
 
         }
+    }
+
+    public static TeamMember getUserByMail(UserSession userSession,String email) throws SQLException {
+        PreparedStatement prepStmt = userSession.getDatabaseConnection().prepareStatement("SELECT member_id FROM team_members " +
+                "where email = ?");
+        prepStmt.setString(1, email);
+        ResultSet resultSet = prepStmt.executeQuery();
+        if(resultSet.next()){
+            int memberId = resultSet.getInt("member_id");
+            return new TeamMember(memberId);
+        }
+        return null;
     }
 }

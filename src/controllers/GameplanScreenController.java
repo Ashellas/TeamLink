@@ -4,10 +4,14 @@ import com.sun.scenario.effect.impl.state.GaussianRenderState;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,6 +23,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.*;
 
 import java.awt.*;
@@ -27,6 +34,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class GameplanScreenController extends MainTemplateController {
@@ -35,7 +44,7 @@ public class GameplanScreenController extends MainTemplateController {
     private GridPane gameplansGrid;
 
     @FXML
-    private ComboBox<String> teamBox;
+    private ComboBox<Team> teamBox;
 
     @FXML
     private Label fileNamelabel;
@@ -52,14 +61,32 @@ public class GameplanScreenController extends MainTemplateController {
     private ArrayList<GridPane> gameplanViewsGrids;
 
     @FXML
+    private GridPane disablePane;
+
+    @FXML
     private HBox emptyHBox;
 
     private File selectedFile;
 
+    private Stage loading;
+
+    private Executor exec;
+
     private double emptyHBoxWidth;
 
-    public void initData(UserSession user){
-        gameplanViewsGrids = new ArrayList<>();
+    private Gameplan gameplanCreated;
+
+    private int pageIndex;
+
+    public void initData(UserSession user)  {
+        pageIndex = 0;
+        try {
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         super.initData(user);
 
 
@@ -72,19 +99,31 @@ public class GameplanScreenController extends MainTemplateController {
             }
         });
 
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
+        gameplanViewsGrids = new ArrayList<>();
+
         addGrid.setVisible(false);
     }
 
+    //TODO make side buttons active
 
     private void setGameplansGrid() throws URISyntaxException {
         int gridCounter = 0;
-        for( Gameplan gameplan : user.getGameplans(user.getUserTeams().get(0))){
-            int row = 1 + ((int) gridCounter/ 8) * 2;
-            int column = (1 + gridCounter) % 8;
-            GridPane gameplanViewgrid = createAGameplan(gameplan);
-            gameplansGrid.add(gameplanViewgrid, column, row);
-            gameplanViewsGrids.add(gameplanViewgrid);
-            gridCounter += 2;
+        //TODO change to selected team
+        ArrayList<Gameplan> userGameplans = user.getGameplans(user.getUserTeams().get(0));
+        for(int i = 0; i < 8; i++){
+            if(userGameplans.get(i + 8 * pageIndex) != null){
+                int row = 1 + ((int) gridCounter/ 8) * 2;
+                int column = (1 + gridCounter) % 8;
+                GridPane gameplanViewgrid = createAGameplan(userGameplans.get(i + 8 * pageIndex) );
+                gameplansGrid.add(gameplanViewgrid, column, row);
+                gameplanViewsGrids.add(gameplanViewgrid);
+                gridCounter += 2;
+            }
         }
     }
 
@@ -204,14 +243,26 @@ public class GameplanScreenController extends MainTemplateController {
 
     public void changeAddGridVisibility(ActionEvent event) {
         titleField.setText("");
+        fileNamelabel.setText("File Name");
         selectedFile = null;
         addGrid.setVisible(!addGrid.isVisible());
     }
 
-    public void submitButtonPushed(ActionEvent event) {
-
+    public void submitButtonPushed(ActionEvent event) throws SQLException, IOException {
+        if(isSubmissionValid()){
+            uploadGameplan(event);
+            disablePane.setVisible(true);
+            loading.show();
+        }
     }
 
+    private boolean isSubmissionValid() {
+
+        //TODO check some details like is empty
+        return true;
+    }
+
+    //TODO 8den fazla olmasına izin verme
 
     public void uploadButtonpushed(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -229,5 +280,48 @@ public class GameplanScreenController extends MainTemplateController {
             uploadButton.setText("Change PDF");
         }
         fileNamelabel.setText(selectedFile.getName());
+    }
+
+    private void createLoading() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        disablePane.setOpacity(0.5);
+    }
+
+    private void uploadGameplan(ActionEvent event) {
+
+        Task<Gameplan> userCreateTask =  new Task<Gameplan>() {
+            @Override
+            public Gameplan call() throws Exception {
+                gameplanCreated = DatabaseManager.createNewGameplan(user, teamBox.getValue(), selectedFile, titleField.getText());
+                return  gameplanCreated;
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            if(gameplanCreated == null) {
+                //TODO show error
+                displayMessage(messagePane, "Gameplan cannot be saved", true);
+                System.out.println("failed");
+            }
+            else {
+                //TODO show message
+                displayMessage(messagePane, "Gameplan is saved", false);
+                changeAddGridVisibility(event);
+            }
+            loading.close();
+            disablePane.setVisible(false);
+            System.out.println("gg"); });
+
+        // Task.getValue() gives the value returned from call()...
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
     }
 }

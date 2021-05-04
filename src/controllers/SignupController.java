@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -38,10 +39,7 @@ import java.util.prefs.Preferences;
 
 
 /**
- * @version 24.04.2021
- * errorPane is missing
- * help button action is missing
- * Does not connect to database
+ * Controls signup scene and all its functions
  */
 public class SignupController implements InitializeData {
 
@@ -84,6 +82,15 @@ public class SignupController implements InitializeData {
     @FXML
     private Pane errorPane;
 
+    @FXML
+    private Pane disablePane;
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     private Connection myCon;
 
     private ObservableList<String> roleList = FXCollections.observableArrayList("Head Coach", "Assistant Coach", "Player");
@@ -108,6 +115,11 @@ public class SignupController implements InitializeData {
         else {
             lightThemeIcons();
         }
+
+        disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
     }
     /**
      * Saves the player info into database if teamCode is working and every text field is filled
@@ -163,8 +175,20 @@ public class SignupController implements InitializeData {
      * Shows the help information for the current scene
      * @param event help button pushed
      */
-    public void helpButtonPushed(ActionEvent event) {
-        // TODO
+    public void onHelpButtonPushed(ActionEvent event) throws IOException {
+        disablePane.setVisible(true);
+        disablePane.setDisable(false);
+        helpPane.setVisible(true);
+        helpPane.setDisable(false);
+        helpIcon.setVisible(false);
+    }
+
+    public void helpPaneClose(ActionEvent event) throws IOException {
+        disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpIcon.setVisible(true);
     }
 
 
@@ -178,40 +202,40 @@ public class SignupController implements InitializeData {
         if(firstNameField.getText().equals("") || lastNameField.getText().equals("") || emailField.getText().equals("")
                 || passwordField.getText().equals("") || roleBox.getValue() == null || dateOfBirthPicker.getValue() == null ||
                 confirmPasswordField.getText().equals("") || sportBranchBox.getValue() == null){
-            displayError("Please fill all the fields");
+            displayMessage(errorPane, "Please fill all the fields", true);
             return true;
         }
         // Checks if the password and the confirmation are the same
         else if (!confirmPasswordField.getText().equals(passwordField.getText())){
-            displayError("Passwords do not match");
+            displayMessage(errorPane, "Passwords do not match", true);
             return true;
         }
         //Checks the password length
         else if(passwordField.getText().length() < 8 || passwordField.getText().length() > 16)
         {
-            displayError("Passwords must be between 8-16 characters");
+            displayMessage(errorPane, "Passwords must be between 8-16 characters", true);
             return true;
         }
         //Checks if the name does not contain numbers or punctuations
         else if( !isAllLetters( firstNameField.getText()) || !isAllLetters( lastNameField.getText()))
         {
-            displayError("Names must be all letters");
+            displayMessage(errorPane, "Names must be all letters",  true);
             return true;
         }
         //Checks the length of names
         else if (firstNameField.getText().length() > 20 || lastNameField.getText().length() > 20){
-            displayError("Names must be smaller than 20 characters");
+            displayMessage(errorPane, "Names must be smaller than 20 characters", true);
             return true;
         }
         //Checks if the mail contains '@'
         else if (emailField.getText().indexOf('@') == -1)
         {
-            displayError("Invalid Email");
+            displayMessage(errorPane, "Invalid Email", true);
             return true;
         }
 
         if(DatabaseManager.isEmailTaken(user.getDatabaseConnection(), emailField.getText())){
-            displayError("Email is used before");
+            displayMessage(errorPane, "Email is used before", true);
             return true;
         }
 
@@ -238,23 +262,35 @@ public class SignupController implements InitializeData {
      * Shows the error message
      * @param errorMessage message to show
      */
-    private void displayError(String errorMessage){
+    private void displayMessage(Pane pane, String errorMessage, boolean error) {
         System.out.println(errorMessage);
-        JFXSnackbar snackbar = new JFXSnackbar(errorPane);
+        JFXSnackbar snackbar = new JFXSnackbar(pane);
+        if (error) {
+            snackbar.getStylesheets().add("/stylesheets/errorSnackBar.css");
+        }
+        else {
+            snackbar.getStylesheets().add("/stylesheets/messageSnackBar.css");
+        }
 
-        snackbar.setPrefWidth(300.0);
-        snackbar.getStylesheets().add("sample/errorSnackBar.css");
         snackbar.fireEvent(new JFXSnackbar.SnackbarEvent(new JFXSnackbarLayout(errorMessage)));
     }
 
-
+    /**
+     * Helps initialising icons according to chosen theme
+     */
     public void darkThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png"));
         helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+        helpPaneIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
+        helpIcon.setImage(new   Image("/Resources/Images/white/help_white.png"));
     }
 
+    /**
+     * Helps initialising icons according to chosen theme
+     */
     public void lightThemeIcons() {
         backIcon.setImage(new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png"));
+        helpPaneIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
         helpIcon.setImage(new   Image("/Resources/Images/black/help_black.png"));
     }
 }

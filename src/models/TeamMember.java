@@ -71,6 +71,9 @@ public class TeamMember {
         this.gameStats = gameStats;
     }
 
+    public TeamMember(int memberId) {
+        this.memberId = memberId;
+    }
 
     public int getMemberId() {
         return memberId;

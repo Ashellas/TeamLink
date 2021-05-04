@@ -17,6 +17,7 @@ public class Gameplan {
 
 
 
+
     public int getGameplanId() {
         return gameplanId;
     }
