@@ -125,6 +125,19 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     }
 
+    public void setTeamAnnouncements() {
+        int rowIndex = 4;
+        for (Announcement announcement : user.getAnnouncements(teamBox.getValue())) {
+            GridPane customGrid = createCustomAnnouncementGridPane(announcement.getTitle(), announcement.getDescription());
+            GridPane senderPane = createSenderInfoGrid(announcement);
+            announcementsGrid.add(senderPane, 0, rowIndex);
+            announcementsGrid.add(customGrid, 1, rowIndex);
+            gridPanes.add(senderPane);
+            gridPanes.add(customGrid);
+            rowIndex--;
+        }
+    }
+
     /**
      * Updates the announcements according to current index
      * @throws SQLException
@@ -189,7 +202,12 @@ public class ChatScreenController extends MainTemplateController implements Init
      */
     public void teamSelected(ActionEvent actionEvent) throws SQLException {
         currentIndex = 0;
-        setUpAnnouncementsGrid();
+
+        for(GridPane grid : gridPanes){
+            announcementsGrid.getChildren().remove(grid);
+        }
+
+        setTeamAnnouncements();
         currentIndex = 0;
 
         downButton.setDisable(true);
@@ -214,10 +232,12 @@ public class ChatScreenController extends MainTemplateController implements Init
      * @throws SQLException
      */
     public void sendAnnouncement(ActionEvent actionEvent) throws SQLException {
-        if (textArea.getText() != null && textField.getText() != null) {
+        System.out.println(DatabaseManager.getAnnouncementsByIndex(user.getDatabaseConnection(), teamBox.getValue(),0).getTitle());
+        if (!textArea.getText().equals("") && !textField.getText().equals("")) {
             Announcement announcement = new Announcement(textField.getText(), textArea.getText(), user.getUser());
             user.getAnnouncements(teamBox.getValue()).add(0,announcement);
             DatabaseManager.createNewAnnouncement(user.getDatabaseConnection(), announcement, teamBox.getValue());
+            System.out.println(DatabaseManager.getAnnouncementsByIndex(user.getDatabaseConnection(), teamBox.getValue(),0).getTitle());
             updateGrid();
             textField.setText("");
             textArea.setText("");

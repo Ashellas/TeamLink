@@ -1113,7 +1113,7 @@ public class DatabaseManager {
 
     public static boolean createNewAnnouncement(Connection databaseConnection, Announcement announcement, Team team) throws SQLException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("INSERT INTO announcements(team_id, sender_id, title, message, time_sent)" +
-                " values (?,?,?,?,?)");
+                " values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         prepStmt.setInt(1, team.getTeamId());
         prepStmt.setInt(2, announcement.getSender().getMemberId());
         prepStmt.setString(3, announcement.getTitle());
@@ -1121,8 +1121,11 @@ public class DatabaseManager {
         java.sql.Date announcedTime = new java.sql.Date(announcement.getTimeSent().getTime());
         prepStmt.setDate(5, announcedTime);
 
-        int row = prepStmt.executeUpdate();
-        if(row > 0){
+        prepStmt.executeUpdate();
+
+        ResultSet rs = prepStmt.getGeneratedKeys();
+        if(rs.next()){
+            announcement.setAnnouncementId(rs.getInt(1));
             return true;
         }
         else{
