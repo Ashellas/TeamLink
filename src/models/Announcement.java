@@ -4,6 +4,9 @@ import javafx.scene.image.ImageView;
 
 import java.util.Date;
 
+/**
+ * Model class to hold announcement
+ */
 public class Announcement {
     private int announcementId;
     private String title;
@@ -12,6 +15,14 @@ public class Announcement {
     private Date timeSent;
     private ImageView senderProfilePhoto;
 
+    /**
+     * Creates announcement with all information
+     * @param announcementId id
+     * @param title announcement title
+     * @param description description
+     * @param sender user who sends the announcement
+     * @param timeSent time that the announcement was sent
+     */
     public Announcement(int announcementId, String title, String description, TeamMember sender, Date timeSent) {
         this.announcementId = announcementId;
         this.title = title;
@@ -23,6 +34,12 @@ public class Announcement {
         }
     }
 
+    /**
+     * Creates announcements with given input and gives initial value to time sent
+     * @param title title
+     * @param description description
+     * @param sender user who sends the announcement
+     */
     public Announcement(String title, String description, TeamMember sender) {
         this.title = title;
         this.description = description;
@@ -52,7 +69,6 @@ public class Announcement {
     public Date getTimeSent() {
         return timeSent;
     }
-
 
     public ImageView getSenderProfilePhoto() {
         return senderProfilePhoto;
