@@ -582,4 +582,12 @@ public class MainScreenController extends MainTemplateController{
         }
         setUpApplicantsTable();
     }
+
+    public void calendarView(ActionEvent event) throws IOException {
+        toCalendarScreen(event);
+    }
+
+    public void standingsView(ActionEvent event) throws IOException {
+        toLeagueScreen(event);
+    }
 }
