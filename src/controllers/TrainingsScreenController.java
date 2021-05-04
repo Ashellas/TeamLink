@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -190,31 +191,46 @@ public class TrainingsScreenController extends MainTemplateController
         t1 = chooseBetweenTeams.getValue().getTeamStats(); // gets the team selection
 
         // show team's stats in line chart and labels
-        /**
-         int[] lastFiveTraining = t1.getTrainingPerformanceReport().getLastFiveTraining();
-         // creating a new chart
-         statsChart.setCreateSymbols(true);
-         XYChart.Series series = new XYChart.Series();
-         series.setName( "Last five training's average" );
+        int[] lastFiveTraining;
+        if ( t1.getTrainingPerformanceReport() != null && t1.getTrainingPerformanceReport().getLastFiveTraining() != null )
+        {
+            lastFiveTraining = t1.getTrainingPerformanceReport().getLastFiveTraining();
+        }
+        else
+        {
+            lastFiveTraining = new int[]{0, 0, 0, 0, 0};
+        }
+        // creating a new chart
+        statsChart.setCreateSymbols(true);
+        XYChart.Series series = new XYChart.Series();
+        series.setName( "Last five training performances" );
 
-         // adding last 5 training ratings
-         for ( int i = 1; i < lastFiveTraining.length + 1; i++ )
-         {
-         series.getData().add( new XYChart.Data("" + i, lastFiveTraining[i - 1] ) );
-         }
+        // adding last 5 training ratings
+        for ( int i = 1; i < lastFiveTraining.length + 1; i++ )
+        {
+            series.getData().add( new XYChart.Data("" + i, lastFiveTraining[i - 1] ) );
+        }
 
-         statsChart.getData().add( series ); // adding the data to the chart
+        statsChart.getData().add( series ); // adding the data to the chart
 
-         // setting the labels' text to users' performance
-         weekAverageLabel.setText( "" + t1.getTrainingPerformanceReport().getLastWeekAverage() );
-         monthAverageLabel.setText( "" + t1.getTrainingPerformanceReport().getLastMonthAverage() );
-         overallAverage.setText( "" + t1.getTrainingPerformanceReport().getSeasonAverage() );
-         */
+        if ( t1.getTrainingPerformanceReport() != null )
+        {
+            // setting the labels' text to users' performance
+            weekAverageLabel.setText( "" + t1.getTrainingPerformanceReport().getLastWeekAverage() );
+            monthAverageLabel.setText( "" + t1.getTrainingPerformanceReport().getLastMonthAverage() );
+            overallAverage.setText( "" + t1.getTrainingPerformanceReport().getSeasonAverage() );
+        }
+        else
+        {
+            weekAverageLabel.setText( "No report found" );
+            monthAverageLabel.setText( "No report found" );
+            overallAverage.setText( "No report found" );
+        }
 
         // add items to the time picker components for training creation
-        minuteChoice.getItems().addAll(00, 15, 30, 45);
-        hourChoice.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 );
-        amPmChoice.getItems().addAll("AM", "PM");
+        minuteChoice.getItems().addAll( 00, 15, 30, 45 );
+        hourChoice.getItems().addAll( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 );
+        amPmChoice.getItems().addAll( "AM", "PM" );
 
         // add items to the time picker components for training creation
         teamsList = FXCollections.observableArrayList( user.getUserTeams() );
@@ -259,6 +275,7 @@ public class TrainingsScreenController extends MainTemplateController
         if ( isSubmitValid() )
         {
             messageGridPane.setVisible( true );
+            messagePane.setDisable( false );
             displayMessage( messagePane, "There is an error", true );
         }
         // if every information is correct.
@@ -691,8 +708,55 @@ public class TrainingsScreenController extends MainTemplateController
     /**
      * Shows help information of the screen
      */
-    public void helpButtonPushed(ActionEvent actionEvent){
+    public void helpButtonPushed(ActionEvent actionEvent)
+    {
 
     }
 
+    /**
+     *
+     * @param actionEvent
+     */
+    public void chooseBetweenTeamsSelected(ActionEvent actionEvent)
+    {
+        TeamStats t1;
+        t1 = chooseBetweenTeams.getValue().getTeamStats(); // gets the team selection
+
+        // show team's stats in line chart and labels
+        int[] lastFiveTraining;
+        if ( t1.getTrainingPerformanceReport() != null && t1.getTrainingPerformanceReport().getLastFiveTraining() != null )
+        {
+            lastFiveTraining = t1.getTrainingPerformanceReport().getLastFiveTraining();
+        }
+        else
+        {
+            lastFiveTraining = new int[]{0, 0, 0, 0, 0};
+        }
+        // creating a new chart
+        statsChart.setCreateSymbols( true );
+        XYChart.Series series = new XYChart.Series();
+        series.setName( "Last five training performances" );
+
+        // adding last 5 training ratings
+        for ( int i = 1; i < lastFiveTraining.length + 1; i++ )
+        {
+            series.getData().add( new XYChart.Data("" + i, lastFiveTraining[i - 1] ) );
+        }
+
+        statsChart.getData().add( series ); // adding the data to the chart
+
+        if ( t1.getTrainingPerformanceReport() != null )
+        {
+            // setting the labels' text to users' performance
+            weekAverageLabel.setText( "" + t1.getTrainingPerformanceReport().getLastWeekAverage() );
+            monthAverageLabel.setText( "" + t1.getTrainingPerformanceReport().getLastMonthAverage() );
+            overallAverage.setText( "" + t1.getTrainingPerformanceReport().getSeasonAverage() );
+        }
+        else
+        {
+            weekAverageLabel.setText( "No report found" );
+            monthAverageLabel.setText( "No report found" );
+            overallAverage.setText( "No report found" );
+        }
+    }
 }
