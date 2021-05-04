@@ -168,4 +168,10 @@ public class TeamMember {
     public void setProfilePhoto(ImageView accountPhoto) {
         this.profilePhoto = accountPhoto;
     }
+
+    @Override
+    public String toString()
+    {
+        return getFullName();
+    }
 }
