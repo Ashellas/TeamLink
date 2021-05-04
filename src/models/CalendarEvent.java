@@ -22,6 +22,10 @@ public class CalendarEvent {
         this.eventDateTime = eventDateTime;
     }
 
+    public void setCalendarEventId(int calendarEventId) {
+        this.calendarEventId = calendarEventId;
+    }
+
     public int getCalendarEventId() {
         return calendarEventId;
     }

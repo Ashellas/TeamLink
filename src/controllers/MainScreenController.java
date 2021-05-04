@@ -298,7 +298,7 @@ public class MainScreenController extends MainTemplateController{
         }
         standingLabels = new ArrayList<>();
     }
-    
+
     public void setUpNotificationsGrid() throws SQLException {
         int notificationCount = 0;
         if(notificationPageIndex == 0) {

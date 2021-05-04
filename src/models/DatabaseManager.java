@@ -980,7 +980,7 @@ public class DatabaseManager {
 
     public static void createNewTraining(Connection databaseConnection, Training training, ObservableList<TeamMember> additionalPlayers) throws SQLException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement(" INSERT INTO trainings(title, training_date_time, " +
-                "location_name, location_link, team_id) VALUES (?, ?, ?, ?,?)");
+                "location_name, location_link, team_id) VALUES (?, ?, ?, ?,?)", Statement.RETURN_GENERATED_KEYS);
 
         prepStmt.setString(1, training.getEventTitle());
         java.sql.Date trainingTime = new java.sql.Date(training.getEventDateTime().getTime());
@@ -989,8 +989,12 @@ public class DatabaseManager {
         prepStmt.setString(4, training.getTrainingLocationLink());
         prepStmt.setInt(5, training.getTeam().getTeamId());
 
-
         prepStmt.executeUpdate();
+
+        ResultSet rs = prepStmt.getGeneratedKeys();
+        if(rs.next()){
+            training.setCalendarEventId(rs.getInt(1));
+        }
 
         for( TeamMember player : additionalPlayers){
             prepStmt = databaseConnection.prepareStatement("INSERT INTO training_additional_players(training_id, member_id) VALUES (?,?)");
