@@ -110,7 +110,7 @@ public class MainScreenController extends MainTemplateController{
 
     private ArrayList<Node> noticationNodes;
 
-    private ObservableList<String>comboBoxTexts  = FXCollections.observableArrayList("my Applications", "Team Applications");
+    private ObservableList<String>comboBoxTexts  = FXCollections.observableArrayList("My Applications", "Team Applications");
 
     @FXML
     private Button rightButton;
@@ -575,7 +575,7 @@ public class MainScreenController extends MainTemplateController{
     }
 
     public void changeApplicationType(ActionEvent event) {
-        if(applicationtypeBox.getValue().toString().equals( "my Applications")){
+        if(applicationtypeBox.getValue().toString().equals( "My Applications")){
             applicantsTable.setVisible(false);
             myApplicationTable.setVisible(true);
         }
