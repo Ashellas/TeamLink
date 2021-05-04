@@ -66,6 +66,15 @@ public class GameplanScreenController extends MainTemplateController {
     @FXML
     private HBox emptyHBox;
 
+    @FXML
+    private Button rightButton;
+
+    @FXML
+    private Button leftButton;
+
+    @FXML
+    private Button addNewButton;
+
     private File selectedFile;
 
     private Stage loading;
@@ -78,7 +87,13 @@ public class GameplanScreenController extends MainTemplateController {
 
     private int pageIndex;
 
+
+
     public void initData(UserSession user)  {
+
+        if(user.getUser().getTeamRole().equals("Player")){
+            addNewButton.setVisible(false);
+        }
         pageIndex = 0;
         try {
             createLoading();
@@ -89,6 +104,11 @@ public class GameplanScreenController extends MainTemplateController {
 
         super.initData(user);
 
+        leftButton.setVisible(false);
+
+        if((pageIndex + 1) * 8 >= (user.getGameplans(user.getUserTeams().get(0)).size())){
+            rightButton.setVisible(false);
+        }
 
         Platform.runLater(() -> {
             emptyHBoxWidth = emptyHBox.getWidth();
@@ -116,7 +136,7 @@ public class GameplanScreenController extends MainTemplateController {
         //TODO change to selected team
         ArrayList<Gameplan> userGameplans = user.getGameplans(user.getUserTeams().get(0));
         for(int i = 0; i < 8; i++){
-            if(userGameplans.get(i + 8 * pageIndex) != null){
+            if(i + 8 * pageIndex < userGameplans.size()){
                 int row = 1 + ((int) gridCounter/ 8) * 2;
                 int column = (1 + gridCounter) % 8;
                 GridPane gameplanViewgrid = createAGameplan(userGameplans.get(i + 8 * pageIndex) );
@@ -168,27 +188,40 @@ public class GameplanScreenController extends MainTemplateController {
             firstButton.setText("Download");
             uninstallButton.setDisable(true);
         }
-        Button deleteButton = new Button("Delete");
-        deleteButton.getStyleClass().add("deleteGameplan");
-        deleteButton.setPrefWidth(emptyHBoxWidth * 0.4);
-        deleteButton.setOnAction(event -> {
+        if(!user.getUser().getTeamRole().equals("Player")){
+            Button deleteButton = new Button("Delete");
+            deleteButton.getStyleClass().add("deleteGameplan");
+            deleteButton.setPrefWidth(emptyHBoxWidth * 0.4);
+            deleteButton.setOnAction(event -> {
                 user.getGameplans(user.getUserTeams().get(0)).remove(gameplan);
+                clearGameplans();
                 System.out.println();
-                for(GridPane grid : gameplanViewsGrids){
-                    gameplansGrid.getChildren().remove(grid);
+                try {
+                    setGameplansGrid();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
-            try {
-                setGameplansGrid();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        });
+                if(gameplanViewsGrids.size() == 0 && pageIndex != 0){
+                    try {
+                        leftButtonClicked(event);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            GridPane.setHalignment(deleteButton, HPos.CENTER);
+            deleteButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
+            gridPane.add(deleteButton, 0, 4);
+        }
+
 
         uninstallButton.setPrefWidth(emptyHBoxWidth * 0.4);
         uninstallButton.setOnAction(event -> {
             file.delete();
             firstButton.setText("Download");
             uninstallButton.setDisable(true);
+
+
         });
 
         firstButton.setPrefWidth(emptyHBoxWidth * 0.4);
@@ -218,27 +251,30 @@ public class GameplanScreenController extends MainTemplateController {
         });
 
         GridPane.setHalignment(gameplanTitle, HPos.CENTER);
-        GridPane.setHalignment(deleteButton, HPos.CENTER);
         GridPane.setHalignment(firstButton, HPos.CENTER);
         GridPane.setHalignment(uninstallButton, HPos.CENTER);
 
         gameplanTitle.getStyleClass().add("title");
         firstButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
         uninstallButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
-        deleteButton.getStylesheets().add(getClass().getResource("/stylesheets/ButtonStyleSheet.css").toURI().toString());
 
 
 
         gridPane.add(gameplanTitle, 0,1);
         gridPane.add(firstButton, 0, 2);
         gridPane.add(uninstallButton,0, 3);
-        gridPane.add(deleteButton, 0, 4);
         return gridPane;
     }
 
     //TODO set it to background
     private void downloadPDF(int fileId, String filePath) throws SQLException, IOException {
         DatabaseManager.downloadGameplan(user.getDatabaseConnection(), fileId, filePath);
+    }
+
+    public void clearGameplans(){
+        for(GridPane grid : gameplanViewsGrids){
+            gameplansGrid.getChildren().remove(grid);
+        }
     }
 
     public void changeAddGridVisibility(ActionEvent event) {
@@ -323,5 +359,25 @@ public class GameplanScreenController extends MainTemplateController {
         // Task.getValue() gives the value returned from call()...
         // run the task using a thread from the thread pool:
         exec.execute(userCreateTask);
+    }
+
+    public void rigthButtonClicked(ActionEvent event) throws URISyntaxException {
+        clearGameplans();
+        pageIndex++;
+        setGameplansGrid();
+        if((pageIndex + 1) * 8 >= (user.getGameplans(user.getUserTeams().get(0)).size())){
+            rightButton.setVisible(false);
+        }
+        leftButton.setVisible(true);
+    }
+
+    public void leftButtonClicked(ActionEvent event) throws URISyntaxException {
+        clearGameplans();
+        pageIndex--;
+        setGameplansGrid();
+        if(pageIndex == 0){
+            leftButton.setVisible(false);
+        }
+        rightButton.setVisible(true);
     }
 }

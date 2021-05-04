@@ -1779,7 +1779,7 @@ teamlink|schema||atak||grant option|G</Grants>
     </column>
     <column id="484" parent="295" name="rating">
       <Position>4</Position>
-      <DataType>int|0s</DataType>
+      <DataType>float|0s</DataType>
     </column>
     <index id="485" parent="295" name="training_id">
       <ColNames>training_id</ColNames>

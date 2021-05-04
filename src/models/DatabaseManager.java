@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javax.swing.plaf.PanelUI;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -454,7 +455,7 @@ public class DatabaseManager {
                 int totalRounds = leagueResultSet.getInt("total_rounds");
                 databaseTeamName = leagueResultSet.getString("team_name");
                 //TODO calculate training averages
-                TrainingPerformanceReport trainingPerformanceReport = getTeamTrainingPerformances(teamMembers, databaseConnection);
+                TrainingPerformanceReport trainingPerformanceReport = getTeamTrainingReport(teamId, databaseConnection);
                 //Placement will be modified in standings creation
                 teamStats = new TeamStats(statsId, gamesPlayed, gamesWon, gamesLost, gamesDrawn, points, totalRounds, trainingPerformanceReport);
             }
@@ -708,8 +709,9 @@ public class DatabaseManager {
     }
 
     //TODO
-    private static TrainingPerformanceReport getTeamTrainingPerformances(ArrayList<TeamMember> members, Connection databaseConnection) {
-        return null;
+    private static TrainingPerformanceReport getTeamTrainingReport(int teamId, Connection databaseConnection) {
+        int[] lastFiveTrainingAverages = new int[5];
+        PreparedStatement preparedStatement = n
     }
 
     //TODO
