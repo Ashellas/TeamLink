@@ -578,7 +578,7 @@ public class MainScreenController extends MainTemplateController{
         }
         else{
             applicantsTable.setVisible(true);
-            applicantsTable.setVisible(false);
+            myApplicationTable.setVisible(false);
         }
         setUpApplicantsTable();
     }
