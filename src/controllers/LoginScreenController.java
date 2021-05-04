@@ -92,8 +92,6 @@ public class LoginScreenController implements  InitializeData{
 
     private String tempPassword;
 
-    String mailTo;
-
     @Override
     public void initData(UserSession user) {
         userSession = user;

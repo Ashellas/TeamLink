@@ -83,7 +83,7 @@ public class ChatScreenController extends MainTemplateController implements Init
         currentIndex = 0;
         upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
 
-        downButton.setDisable(true);
+        downButton.setDisable(false);
 
         teamNameLabel.setText(teamBox.getValue().getTeamName());
 
@@ -156,55 +156,13 @@ public class ChatScreenController extends MainTemplateController implements Init
             announcementsGrid.add(customGrid, 1, rowIndex - i);
             gridPanes.add(senderPane);
             gridPanes.add(customGrid);
-            rowIndex--;
         }
-        /*
-        while (userAnnouncement > 0) {
-            announcement = user.getAnnouncements(teamBox.getValue()).get(firstUserIndex);
-            GridPane customGrid = createCustomAnnouncementGridPane(announcement.getTitle(), announcement.getDescription());
-            GridPane senderPane = createSenderInfoGrid(announcement);
-            announcementsGrid.add(senderPane, 0, rowIndex);
-            announcementsGrid.add(customGrid, 1, rowIndex);
-            gridPanes.add(senderPane);
-            gridPanes.add(customGrid);
-            rowIndex--;
-            userAnnouncement--;
-            firstUserIndex++;
-        }
-        while (extraAnnouncement > 0) {
-            announcement = DatabaseManager.getAnnouncementsByIndex(user.getDatabaseConnection(),teamBox.getValue(),extraAnnouncement + 4);
-            GridPane customGrid = createCustomAnnouncementGridPane(announcement.getTitle(), announcement.getDescription());
-            GridPane senderPane = createSenderInfoGrid(announcement);
-            announcementsGrid.add(senderPane, 0, rowIndex);
-            announcementsGrid.add(customGrid, 1, rowIndex);
-            gridPanes.add(senderPane);
-            gridPanes.add(customGrid);
-            rowIndex--;
-            extraAnnouncement--;
-        }
-
-         */
 
     }
 
 
 
     public void moveUp(ActionEvent actionEvent) throws SQLException {
-        /*
-        if (upMoves > 1) {
-            currentIndex++;
-            updateGrid();
-            upMoves--;
-        }
-        else if (upMoves == 1) {
-            currentIndex++;
-            updateGrid();
-            upMoves--;
-            upButton.setDisable(true);
-        }
-        downButton.setDisable(false);
-
-         */
         currentIndex++;
         updateGrid();
     }
