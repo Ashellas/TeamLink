@@ -13,6 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
@@ -683,4 +684,13 @@ public class TrainingsScreenController extends MainTemplateController
         clearViewTrainings(); // removes the last training
         viewTrainings( trainingHolder ); // shows the next training
     }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+
+    }
+
 }

@@ -83,6 +83,12 @@ public class SquadScreenController extends MainTemplateController{
     @FXML
     private ImageView playerPhotoView;
 
+    //---------------------Help Pane---------------------------//
+    @FXML
+    private GridPane helpPane;
+    @FXML
+    private ImageView helpPaneIcon;
+
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
 
     private ObservableList<String> memberFilterOptions = FXCollections.observableArrayList("All Members", "Players", "Assistant Coaches", "Head Coaches");
@@ -110,6 +116,9 @@ public class SquadScreenController extends MainTemplateController{
                 e.printStackTrace();
             }
         }
+
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
         for(Team team : user.getUserTeams()){
             teamNames.add(team.getTeamName());
         }
@@ -218,9 +227,33 @@ public class SquadScreenController extends MainTemplateController{
 
     private void darkIcons() throws URISyntaxException {
         playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/white/big_profile_white.png").toURI().toString()));
+        helpPaneIcon.setImage((new Image(getClass().getResource("/Resources/Images/white/help_white.png").toURI().toString())));
     }
 
     private void lightIcons() throws URISyntaxException {
         playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/black/big_profile_black.png").toURI().toString()));
+        helpPaneIcon.setImage((new Image(getClass().getResource("/Resources/Images/black/help_black.png").toURI().toString())));
+    }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        disablePane.setVisible(true);
+        disablePane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        disablePane.setDisable(true);
+        disablePane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
     }
 }

@@ -718,11 +718,6 @@
                               <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #a1289f;" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
-                        <CheckBox fx:id="notificationsCheck" mnemonicParsing="false" onAction="#turnOffNotifications" styleClass="text" text="Turn off notifications" textFill="WHITE" GridPane.rowIndex="2">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </CheckBox>
                         <CheckBox fx:id="darkThemeCheck" mnemonicParsing="false" onAction="#changeTheme" styleClass="text" text="Dark Mode" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
                               <Font size="20.0" />

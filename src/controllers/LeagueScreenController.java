@@ -155,6 +155,13 @@ public class LeagueScreenController extends MainTemplateController
     private Button leftButtonFixture;
     @FXML
     private Button submitChangesButton;
+
+    //---------------------Help Pane---------------------------//
+    @FXML
+    private GridPane helpPane;
+    @FXML
+    private ImageView helpPaneIcon;
+
     private Team teamOfCoach;
     private Game gameClicked;
     private int roundNo;
@@ -199,6 +206,9 @@ public class LeagueScreenController extends MainTemplateController
                 e.printStackTrace();
             }
         }
+
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         //Team selection combo box, player statistics table and add player table are initialized
         setTeamSelectionComboBox();
@@ -1068,6 +1078,7 @@ public class LeagueScreenController extends MainTemplateController
         addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/white/squad_white.png").toURI().toString()));
         leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
         rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png").toURI().toString()));
+        helpPaneIcon.setImage((new Image(getClass().getResource("/Resources/Images/white/help_white.png").toURI().toString())));
     }
 
     /**
@@ -1080,5 +1091,28 @@ public class LeagueScreenController extends MainTemplateController
         addPlayerButtonImage.setImage( new Image(getClass().getResource("/Resources/Images/black/squad_black.png").toURI().toString()));
         leftButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
         rightButtonFixtureImage.setImage( new Image(getClass().getResource("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png").toURI().toString()));
+        helpPaneIcon.setImage((new Image(getClass().getResource("/Resources/Images/black/help_black.png").toURI().toString())));
+    }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        blackenedPane.setVisible(true);
+        blackenedPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        blackenedPane.setDisable(true);
+        blackenedPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
     }
 }

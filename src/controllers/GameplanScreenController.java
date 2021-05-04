@@ -61,7 +61,7 @@ public class GameplanScreenController extends MainTemplateController {
     private ArrayList<GridPane> gameplanViewsGrids;
 
     @FXML
-    private GridPane disablePane;
+    private GridPane darkPane;
 
     @FXML
     private HBox emptyHBox;
@@ -74,6 +74,14 @@ public class GameplanScreenController extends MainTemplateController {
 
     @FXML
     private Button addNewButton;
+
+    //---------------------Help Pane---------------------------//
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
 
     private File selectedFile;
 
@@ -101,10 +109,21 @@ public class GameplanScreenController extends MainTemplateController {
             e.printStackTrace();
         }
 
-
         super.initData(user);
 
+        // Theme selection
+        if(user.isStyleDark()) {
+            darkIcons();
+        }
+        else {
+            lightIcons();
+        }
+
         leftButton.setVisible(false);
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         if((pageIndex + 1) * 8 >= (user.getGameplans(user.getUserTeams().get(0)).size())){
             rightButton.setVisible(false);
@@ -288,7 +307,7 @@ public class GameplanScreenController extends MainTemplateController {
     public void submitButtonPushed(ActionEvent event) throws SQLException, IOException {
         if(isSubmissionValid()){
             uploadGameplan(event);
-            disablePane.setVisible(true);
+            darkPane.setVisible(true);
             loading.show();
         }
     }
@@ -325,7 +344,7 @@ public class GameplanScreenController extends MainTemplateController {
         loading.initStyle(StageStyle.UNDECORATED);
         loading.initModality(Modality.APPLICATION_MODAL);
         loading.setScene(new Scene(root));
-        disablePane.setOpacity(0.5);
+        darkPane.setOpacity(0.5);
     }
 
     private void uploadGameplan(ActionEvent event) {
@@ -354,7 +373,7 @@ public class GameplanScreenController extends MainTemplateController {
                 changeAddGridVisibility(event);
             }
             loading.close();
-            disablePane.setVisible(false);
+            darkPane.setVisible(false);
             System.out.println("gg"); });
 
         // Task.getValue() gives the value returned from call()...
@@ -380,5 +399,41 @@ public class GameplanScreenController extends MainTemplateController {
             leftButton.setVisible(false);
         }
         rightButton.setVisible(true);
+    }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void darkIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void lightIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
 }

@@ -78,9 +78,6 @@ public class SettingsScreenController extends MainTemplateController {
     private CheckBox darkThemeCheck;
 
     @FXML
-    private CheckBox notificationsCheck;
-
-    @FXML
     private ImageView copyIcon;
 
     //--------------------------------------------//

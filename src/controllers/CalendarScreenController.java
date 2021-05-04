@@ -3,7 +3,10 @@ package controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import models.*;
 
 import java.io.IOException;
@@ -26,6 +29,14 @@ public class CalendarScreenController extends MainTemplateController {
     private GridPane calendarPane;
     @FXML
     private ComboBox<Team> teamSelectionCombo;
+    //---------------------Help Pane---------------------------//
+
+    @FXML
+    private GridPane helpPane;
+    @FXML
+    private Pane darkPane;
+    @FXML
+    private ImageView helpPaneIcon;
 
     //Declaring calendar related variables
     private int realDay;
@@ -52,6 +63,18 @@ public class CalendarScreenController extends MainTemplateController {
         //Writing a super statement because CalendarScreenController is extended from MainTemplateController
         super.initData(userSession);
 
+        // Theme selection
+        if(user.isStyleDark()) {
+            darkIcons();
+        }
+        else {
+            lightIcons();
+        }
+
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         //Populating team selection combo box & give a starting value to it
         teams = user.getUserTeams();
@@ -197,5 +220,41 @@ public class CalendarScreenController extends MainTemplateController {
         clearCalendar();
         events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
         createCalendar(firstDay, maxDay, events);
+    }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void darkIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void lightIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
 }

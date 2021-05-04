@@ -6,10 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import models.*;
 
 import java.io.IOException;
@@ -61,6 +58,17 @@ public class ChatScreenController extends MainTemplateController implements Init
     @FXML
     private HBox announcementsEmptyHBox;
 
+    //---------------------Help Pane---------------------------//
+
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private Pane darkPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     private ArrayList<GridPane> gridPanes;
 
     private int upMoves;
@@ -69,11 +77,16 @@ public class ChatScreenController extends MainTemplateController implements Init
         super.initData(user);
 
         if(user.isStyleDark()) {
-                darkIcons();
+            darkIcons();
         }
         else {
-                lightIcons();
+            lightIcons();
         }
+
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
 
         gridPanes = new ArrayList<GridPane>();
 
@@ -300,6 +313,28 @@ public class ChatScreenController extends MainTemplateController implements Init
         gridPane.add(senderNameLabel, 0, 1);
         gridPane.add(sentDateLabel, 0, 2);
         return gridPane;
+    }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
     }
 
 }

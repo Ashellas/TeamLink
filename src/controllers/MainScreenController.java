@@ -63,6 +63,13 @@ public class MainScreenController extends MainTemplateController{
     @FXML
     private Pane disablePane;
 
+    //---------------------Help Pane---------------------------//
+    @FXML
+    private GridPane helpPane;
+
+    @FXML
+    private ImageView helpPaneIcon;
+
     GregorianCalendar cal; //Create calendar
 
     ArrayList<Notification> notifications = new ArrayList<>();
@@ -72,17 +79,14 @@ public class MainScreenController extends MainTemplateController{
     public void initData(UserSession user){
         super.initData(user);
 
-        //userNameLabel.setText(user.getUser().getFirstName());
-        //userRoleLabel.setText(user.getUser().getTeamRole());
-        //profilePictureImageView.setImage(user.getUser().getProfilePhoto().getImage());
-        //lastSyncLabel.setText(user.getLastSync().toString()); //TODO get timeDiff in background maybe
-
-        /*
-        for(int i = 0; i < 4; i ++){
-            notifications.add(new Notification(i, "Title" + i, "Description" + i, null, null, "/views/SettingsScreen.fxml",new Date(),false,null));
+        // Theme selection
+        if(user.isStyleDark()) {
+            darkIcons();
         }
-        notifications.add(new Notification(0, "Title", "Description", null, null, "/views/LoginScreen.fxml",new Date(),false,null));
-*/
+        else {
+            lightIcons();
+        }
+
         //sets up the gridpane after scene establishes
         Platform.runLater(() -> {
             setUpNotificationsGrid();
@@ -94,6 +98,9 @@ public class MainScreenController extends MainTemplateController{
             }
         });
         disablePane.setVisible(false);
+        disablePane.setDisable(true);
+        helpPane.setVisible(false);
+        helpPane.setDisable(true);
         applicantsPane.setVisible(false);
         setUpApplicantsTable();
         for(Team team : user.getStandings(user.getUserTeams().get(0))){
@@ -139,7 +146,7 @@ public class MainScreenController extends MainTemplateController{
         else{
             firstTeamPlacement = userTeamplacement - 2;
         }
-//int i = firstTeamPlacement - 1; i < firstTeamPlacement + 3; i++
+
         for(int i = 2; i < 7; i++){
 
             Label placementLabel = new Label("" + (i + 1) + ".");
@@ -196,30 +203,7 @@ public class MainScreenController extends MainTemplateController{
             notificationsGrid.add(senderPane, 0, notificationCount);
             notificationsGrid.add(customGrid, 1, notificationCount);
         }
-        /*
-        for(int i = 0; i < 5; i++){
-            GridPane customGrid = createCustomNotificationGridPane(notifications.get(i).getTitle(), notifications.get(i).getDescription());
-            Button button = new Button("View");
-            InputStream inStream = getClass().getResourceAsStream("/Resources/Images/white/profile_white.png");
-            ImageView imageView = new ImageView(new Image(inStream));
-            final int j = i;
-            button.setOnAction(event -> {
-                try {
-                    AppManager.changeScene(getClass().getResource(notifications.get(j).getClickAction()),event, user);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
-            String formattedDate =  sdf.format(notifications.get(i).getTimeSent());
-            GridPane senderPane = createSenderInfoGrid(imageView, "Göktürk", formattedDate);
-            notificationsGrid.add(senderPane, 0,i);
-            notificationsGrid.add(customGrid, 1,i);
-            notificationsGrid.add(button, 2, i);
-        }
 
-
-         */
     }
 
     private GridPane createCustomNotificationGridPane(String notTitle, String notDescription){
@@ -329,6 +313,42 @@ public class MainScreenController extends MainTemplateController{
         applicantColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("applicantFullName"));
         teamRoleColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("applicantTeamRole"));
         applicantsTable.setItems(appliedTeamsList);
+    }
+
+    @Override
+    /**
+     * Shows help information of the screen
+     */
+    public void helpButtonPushed(ActionEvent actionEvent){
+        disablePane.setVisible(true);
+        disablePane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
+    }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        disablePane.setDisable(true);
+        disablePane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void darkIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
+    }
+
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
+    public void lightIcons() {
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
 
 }
