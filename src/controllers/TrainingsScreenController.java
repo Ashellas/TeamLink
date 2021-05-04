@@ -13,9 +13,11 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import models.*;
 
@@ -125,6 +127,13 @@ public class TrainingsScreenController extends MainTemplateController
     private Button nextButton;
     private double emptyHBoxWidth;
     private Training trainingToRate;
+    //---------------------Help Pane---------------------------//
+    @FXML
+    private GridPane helpPane;
+    @FXML
+    private Pane darkPane;
+    @FXML
+    private ImageView helpPaneIcon;
 
     /**
      * This method initializes the screen
@@ -161,11 +170,11 @@ public class TrainingsScreenController extends MainTemplateController
         // adjust the dark & light theme
         if ( userSession.isStyleDark() )
         {
-            darkThemeIcons();
+            helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
         }
         else
         {
-            lightThemeIcons();
+            helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
         }
 
         // adjust the buttons
@@ -220,6 +229,12 @@ public class TrainingsScreenController extends MainTemplateController
         teamsList = FXCollections.observableArrayList( user.getUserTeams() );
         teamsBox.getItems().addAll( teamsList );
 
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
+
+        AppManager.fadeIn(trainingGrid,500);
     }
 
 
@@ -692,7 +707,23 @@ public class TrainingsScreenController extends MainTemplateController
      * Shows help information of the screen
      */
     public void helpButtonPushed(ActionEvent actionEvent){
-
+        darkPane.setVisible(true);
+        darkPane.setDisable(false);
+        helpPane.setDisable(false);
+        helpPane.setVisible(true);
     }
+
+    /**
+     * Closes the help pane
+     * @param actionEvent close button pushed
+     */
+    public void helpPaneClose(ActionEvent actionEvent) {
+        darkPane.setDisable(true);
+        darkPane.setVisible(false);
+        helpPane.setDisable(true);
+        helpPane.setVisible(false);
+    }
+
+    public void toTrainingsScreen(ActionEvent actionEvent) throws IOException {}
 
 }

@@ -128,6 +128,8 @@ public class LeagueScreenController extends MainTemplateController
     @FXML
     private GridPane addPlayersGridPane;
     @FXML
+    private GridPane leaguePane;
+    @FXML
     private Label roundNoLabel;
     @FXML
     private TableColumn<TeamMember, String> addPlayerNameColumn;
@@ -212,8 +214,10 @@ public class LeagueScreenController extends MainTemplateController
 
         //Team selection combo box, player statistics table and add player table are initialized
         setTeamSelectionComboBox();
-        setPlayerStatisticsTable( );
+        setPlayerStatisticsTable();
         setAddPlayerTable();
+
+        AppManager.fadeIn(leaguePane,500);
     }
 
     /**
@@ -1065,8 +1069,7 @@ public class LeagueScreenController extends MainTemplateController
      * @param actionEvent league button pushed
      */
     @Override
-    public void toLeagueScreen(ActionEvent actionEvent) {
-    }
+    public void toLeagueScreen(ActionEvent actionEvent) {}
 
     /**
      * sets the icon's colors if the dark theme is selected
@@ -1115,4 +1118,5 @@ public class LeagueScreenController extends MainTemplateController
         helpPane.setDisable(true);
         helpPane.setVisible(false);
     }
+
 }

@@ -30,7 +30,6 @@ public class CalendarScreenController extends MainTemplateController {
     @FXML
     private ComboBox<Team> teamSelectionCombo;
     //---------------------Help Pane---------------------------//
-
     @FXML
     private GridPane helpPane;
     @FXML
@@ -257,4 +256,7 @@ public class CalendarScreenController extends MainTemplateController {
     public void lightIcons() {
         helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
+
+    @Override
+    public void toCalendarScreen(ActionEvent actionEvent) throws IOException {}
 }
