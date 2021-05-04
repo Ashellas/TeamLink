@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Executor;
@@ -845,8 +846,7 @@ public class LeagueScreenController extends MainTemplateController
      * @param event ActionEvent object
      * @throws SQLException when the data cannot be retrieved from the database
      */
-    public void rightButtonFixtureClicked( ActionEvent event) throws SQLException
-    {
+    public void rightButtonFixtureClicked( ActionEvent event) throws SQLException, ParseException {
         /* Sets the gamesOfTheRound observable list to a new observable list taken from the database
            which is the games of the next round of the same team
          */
@@ -862,8 +862,7 @@ public class LeagueScreenController extends MainTemplateController
      * @param event ActionEvent object
      * @throws SQLException when the data cannot be retrieved from the database
      */
-    public void leftButtonFixtureClicked( ActionEvent event) throws SQLException
-    {
+    public void leftButtonFixtureClicked( ActionEvent event) throws SQLException, ParseException {
         /* Sets the gamesOfTheRound observable list to a new observable list taken from the database
            which is the games of the preceding round of the same team
          */

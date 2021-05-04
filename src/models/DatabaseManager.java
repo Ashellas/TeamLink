@@ -104,7 +104,7 @@ public class DatabaseManager {
         while(futureTrainingsResultSet.next()){
             int trainingId = futureTrainingsResultSet.getInt("training_id");
             String title = futureTrainingsResultSet.getString("title");
-            String  trainingDateStr = pastTraininingsResultSet.getString("training_date_time");
+            String  trainingDateStr = futureTrainingsResultSet.getString("training_date_time");
             Date trainingDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(trainingDateStr);
             String locationName = futureTrainingsResultSet.getString("location_name");
             String locationLink = futureTrainingsResultSet.getString("location_link");
@@ -251,7 +251,7 @@ public class DatabaseManager {
      * @return
      * @throws SQLException
      */
-    public static ArrayList<Notification> createNotifications(Connection databaseConnection, TeamMember user, int pageNumber) throws SQLException {
+    public static ArrayList<Notification> createNotifications(Connection databaseConnection, TeamMember user, int pageNumber) throws SQLException, ParseException {
         ArrayList<Notification> notifications = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm" +
                 " on tm.member_id = notifications.recipent_id join file_storage fs on " +
@@ -267,7 +267,8 @@ public class DatabaseManager {
             String title = resultSet.getString("title");
             String message = resultSet.getString("message");
             boolean isUnread = resultSet.getBoolean("is_unread");
-            Date timeSent = resultSet.getDate("time_sent");
+            String  timeStr = resultSet.getString("time_sent");
+            Date timeSent = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(timeStr);
             String clickAction = resultSet.getString("click_action");
             Image profilePicture = null;
             byte[] photoBytes = resultSet.getBytes("file");
@@ -342,7 +343,7 @@ public class DatabaseManager {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Game> getGames(Connection databaseConnection, ObservableList<Team> leagueTeams, int roundNo, int leagueId ) throws SQLException {
+    public static ObservableList<Game> getGames(Connection databaseConnection, ObservableList<Team> leagueTeams, int roundNo, int leagueId ) throws SQLException, ParseException {
         ObservableList<Game> games = FXCollections.observableArrayList();
 
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
@@ -352,7 +353,8 @@ public class DatabaseManager {
         ResultSet gamesResultSet = prepStmt.executeQuery();
         while (gamesResultSet.next()){
             int gameId = gamesResultSet.getInt("game_id");
-            Date gameDate = gamesResultSet.getDate("game_date_time");
+            String  gamedateStr = gamesResultSet.getString("game_date_time");
+            Date gameDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(gamedateStr);
             String gameLocationName = gamesResultSet.getString("game_location_name");
             String gameLocationLink = gamesResultSet.getString("game_location_link");
             String result = gamesResultSet.getString("final_score");
@@ -384,7 +386,7 @@ public class DatabaseManager {
      * @return
      * @throws SQLException
      */
-    private static HashMap<Team, ObservableList<Game>> createCurrentRoundGames(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings ) throws SQLException {
+    private static HashMap<Team, ObservableList<Game>> createCurrentRoundGames(Connection databaseConnection, ArrayList<Team> userTeams, HashMap<Team, ObservableList<Team>> standings ) throws SQLException, ParseException {
         if(userTeams.isEmpty()){
             return null;
         }
@@ -397,7 +399,8 @@ public class DatabaseManager {
             ResultSet gamesResultSet = prepStmt.executeQuery();
             while (gamesResultSet.next()){
                 int gameId = gamesResultSet.getInt("game_id");
-                Date gameDate = gamesResultSet.getDate("game_date_time");
+                String  gamedateStr = gamesResultSet.getString("game_date_time");
+                Date gameDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(gamedateStr);
                 int roundNo = gamesResultSet.getInt("round_no");
                 String gameLocationName = gamesResultSet.getString("game_location_name");
                 String gameLocationLink = gamesResultSet.getString("game_location_link");
@@ -818,7 +821,6 @@ public class DatabaseManager {
             byte[] photoBytes = resultSet.getBytes("file");
             if(photoBytes != null)
             {
-                System.out.println("NOOO");
                 InputStream imageFile = resultSet.getBinaryStream("file");
                 return new Image(imageFile);
             }
@@ -862,7 +864,7 @@ public class DatabaseManager {
         return null;
     }
 
-    private static HashMap<Team, ArrayList<CalendarEvent>> createCurrentCalendarEvents(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException {
+    private static HashMap<Team, ArrayList<CalendarEvent>> createCurrentCalendarEvents(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, ParseException {
         HashMap<Team, ArrayList<CalendarEvent>> teamsAndEvents = new HashMap<>();
         ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where event_date_time < NOW() + interval 5 day and " +
@@ -873,7 +875,8 @@ public class DatabaseManager {
         while (calendarEventsResultSet.next()){
             int eventId = calendarEventsResultSet.getInt("id");
             String title = calendarEventsResultSet.getString("title");
-            Date eventDate = calendarEventsResultSet.getDate("event_date_time");
+            String  eventDateStr = calendarEventsResultSet.getString("event_date_time");
+            Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(eventDateStr);
             String actionLink = calendarEventsResultSet.getString("action_link");
             calendarEvents.add(new CalendarEvent(eventId, title, eventDate, actionLink, "calendarEvent"));
         }
@@ -893,7 +896,8 @@ public class DatabaseManager {
             while (gamesResultSet.next()){
                 int gameId = gamesResultSet.getInt("game_id");
                 String title = "Game";
-                Date eventDate = gamesResultSet.getDate("game_date_time");
+                String  eventDateStr = gamesResultSet.getString("game_date_time");
+                Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(eventDateStr);
                 String actionLink = "/views/LeagueScreen.fxml";
                 teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
             }
@@ -907,7 +911,8 @@ public class DatabaseManager {
 
                 int gameId = trainingsResultSet.getInt("training_id");
                 String title = trainingsResultSet.getString("title");
-                Date eventDate = trainingsResultSet.getDate("training_date_time");
+                String  eventDateStr = trainingsResultSet.getString("training_date_time");
+                Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(eventDateStr);
                 String actionLink = "/views/TrainingsScreen.fxml";
                 teamEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "training"));
             }
@@ -916,7 +921,7 @@ public class DatabaseManager {
         return teamsAndEvents;
     }
 
-    public static ArrayList<CalendarEvent> getCalendarEventByDate(Connection databaseConnection, Team team, java.util.Date date) throws SQLException {
+    public static ArrayList<CalendarEvent> getCalendarEventByDate(Connection databaseConnection, Team team, java.util.Date date) throws SQLException, ParseException {
         ArrayList<CalendarEvent> calendarEvents = new ArrayList<>();
         Timestamp ts=new Timestamp(date.getTime());
         PreparedStatement preparedStatement = databaseConnection.prepareStatement("select * from calendar_events where DATE_FORMAT(event_date_time, \"%m-%Y\") = DATE_FORMAT(?, \"%m-%Y\")");
@@ -927,7 +932,8 @@ public class DatabaseManager {
         while (calendarEventsResultSet.next()){
             int eventId = calendarEventsResultSet.getInt("id");
             String title = calendarEventsResultSet.getString("title");
-            Date eventDate = calendarEventsResultSet.getDate("event_date_time");
+            String  eventDateStr = calendarEventsResultSet.getString("event_date_time");
+            Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(eventDateStr);
             String actionLink = calendarEventsResultSet.getString("action_link");
             calendarEvents.add(new CalendarEvent(eventId, title, eventDate, actionLink, "calendarEvent"));
         }
@@ -944,7 +950,8 @@ public class DatabaseManager {
         while (gamesResultSet.next()){
             int gameId = gamesResultSet.getInt("game_id");
             String title = "VS " ;
-            Date eventDate = gamesResultSet.getDate("game_date_time");
+            String  eventDateStr = gamesResultSet.getString("game_date_time");
+            Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(eventDateStr);
             String actionLink = "/views/LeagueScreen.fxml";
             calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "game"));
         }
@@ -959,7 +966,8 @@ public class DatabaseManager {
         while (trainingsResultSet.next()){
             int gameId = trainingsResultSet.getInt("training_id");
             String title = trainingsResultSet.getString("title");
-            Date eventDate = trainingsResultSet.getDate("training_date_time");
+            String  eventDateStr = trainingsResultSet.getString("training_date_time");
+            Date eventDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(eventDateStr);
             String actionLink = "/views/TrainingsScreen.fxml";
             calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "training"));
         }
@@ -1555,6 +1563,7 @@ public class DatabaseManager {
     public static UserSession sync(UserSession user) throws SQLException, IOException, ParseException {
         user.setUserTeams(createUserTeams(user.getUser(), user.getDatabaseConnection()));
         user.setStandings(createStandings(user.getDatabaseConnection(), user.getUserTeams()));
+        System.out.println(user.getStandings().get(user.getUserTeams().get(0)).size());;
         user.setGamesOfTheCurrentRound(createCurrentRoundGames(user.getDatabaseConnection(), user.getUserTeams(), user.getStandings()));
         user.setNotifications(createNotifications(user.getDatabaseConnection(), user.getUser(),0));
         user.setGameplans(createGameplans(user.getDatabaseConnection(), user.getUserTeams()));

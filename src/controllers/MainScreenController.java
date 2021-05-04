@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -157,7 +158,7 @@ public class MainScreenController extends MainTemplateController{
             if(DatabaseManager.createNotifications(user.getDatabaseConnection(), user.getUser(), notificationPageIndex + 1).size() == 0){
                 rightButton.setVisible(false);
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | ParseException throwables) {
             throwables.printStackTrace();
         }
         leftButton.setVisible(false);
@@ -166,7 +167,7 @@ public class MainScreenController extends MainTemplateController{
         Platform.runLater(() -> {
             try {
                 setUpNotificationsGrid();
-            } catch (SQLException throwables) {
+            } catch (SQLException | ParseException throwables) {
                 throwables.printStackTrace();
             }
             setUpStandingsTable();
@@ -336,7 +337,7 @@ public class MainScreenController extends MainTemplateController{
         standingLabels = new ArrayList<>();
     }
 
-    public void setUpNotificationsGrid() throws SQLException {
+    public void setUpNotificationsGrid() throws SQLException, ParseException {
         int notificationCount = 0;
         if(notificationPageIndex == 0) {
             for (Notification notification : user.getNotifications()) {
@@ -588,10 +589,14 @@ public class MainScreenController extends MainTemplateController{
             leftButton.setVisible(false);
         }
         rightButton.setVisible(true);
-        setUpNotificationsGrid();
+        try {
+            setUpNotificationsGrid();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void rightButtonClicked(ActionEvent event) throws SQLException {
+    public void rightButtonClicked(ActionEvent event) throws SQLException, ParseException {
         clearNotificationGrid();
         notificationPageIndex++;
         if(DatabaseManager.createNotifications(user.getDatabaseConnection(), user.getUser(), notificationPageIndex + 1).size() == 0){
@@ -641,6 +646,7 @@ public class MainScreenController extends MainTemplateController{
             displayMessage(messagePane, "Session is synchronized", false);
             loading.close();
             disablePane.setVisible(false);
+
             System.out.println("gg"); });
 
         // Task.getValue() gives the value returned from call()...

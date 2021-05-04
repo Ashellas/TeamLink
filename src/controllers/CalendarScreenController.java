@@ -18,6 +18,7 @@ import models.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -195,7 +196,7 @@ public class CalendarScreenController extends MainTemplateController {
      * Clears the calendar and creates it's previous month with events.
      * @param actionEvent Clicking "<" button
      */
-    public void backButtonPushed( ActionEvent actionEvent ) throws SQLException {
+    public void backButtonPushed( ActionEvent actionEvent ) throws SQLException, ParseException {
         currentMonth--;
         if(currentMonth == -1) {
             currentMonth = 11;
@@ -218,7 +219,7 @@ public class CalendarScreenController extends MainTemplateController {
      * Clears the calendar and creates it's next month with events.
      * @param actionEvent Clicking ">" button
      */
-    public void nextButtonPushed( ActionEvent actionEvent ) throws SQLException {
+    public void nextButtonPushed( ActionEvent actionEvent ) throws SQLException, ParseException {
         currentMonth++;
         if(currentMonth == 12) {
             currentMonth = 0;
@@ -241,7 +242,7 @@ public class CalendarScreenController extends MainTemplateController {
      * Clears the calendar and creates the same month with chosen team's events.
      * @param actionEvent changing the team selection combo box's value
      */
-    public void teamSelection(ActionEvent actionEvent) throws SQLException {
+    public void teamSelection(ActionEvent actionEvent) throws SQLException, ParseException {
         selectedTeam = (Team) teamSelectionCombo.getValue();
         clearCalendar();
         events = DatabaseManager.getCalendarEventByDate(user.getDatabaseConnection(), selectedTeam, date);
