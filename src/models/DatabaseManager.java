@@ -162,7 +162,7 @@ public class DatabaseManager {
         return FXCollections.observableArrayList(teamApplications);
     }
 
-    public static void downloadGameplan( Connection databaseConnection, int fileId, String filePath) throws SQLException, IOException {
+    public static boolean downloadGameplan( Connection databaseConnection, int fileId, String filePath) throws SQLException, IOException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select file from file_storage where id = ?");
         prepStmt.setInt(1, fileId);
 
@@ -181,7 +181,9 @@ public class DatabaseManager {
             while (input.read(buffer) > 0){
                 output.write(buffer);
             }
+            return true;
         }
+        return false;
     }
 
 
@@ -708,10 +710,12 @@ public class DatabaseManager {
         return "" + teamCode;
     }
 
+
+
     //TODO
     private static TrainingPerformanceReport getTeamTrainingReport(int teamId, Connection databaseConnection) {
         int[] lastFiveTrainingAverages = new int[5];
-        PreparedStatement preparedStatement = n
+        return null;
     }
 
     //TODO

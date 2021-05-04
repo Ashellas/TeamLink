@@ -269,6 +269,7 @@ public class GameplanScreenController extends MainTemplateController {
     //TODO set it to background
     private void downloadPDF(int fileId, String filePath) throws SQLException, IOException {
         DatabaseManager.downloadGameplan(user.getDatabaseConnection(), fileId, filePath);
+
     }
 
     public void clearGameplans(){
