@@ -144,6 +144,7 @@ public class SettingsScreenController extends MainTemplateController {
         datePicker.setValue(user.getUser().getBirthday());
 
         if (user.getUser().getProfilePhoto() != null) {
+            System.out.println("NOT NULL");
             accountPhoto.setImage(user.getUser().getProfilePhoto().getImage());
         }
 

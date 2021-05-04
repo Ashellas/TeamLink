@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.*;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -29,7 +30,7 @@ public class DatabaseManager {
      * @throws SQLException
      * @throws IOException
      */
-    public static UserSession login( UserSession userSession, String email, String password) throws SQLException, IOException {
+    public static UserSession login( UserSession userSession, String email, String password) throws SQLException, IOException, ParseException {
         Connection databaseConnection = userSession.getDatabaseConnection();
         TeamMember user = createUser(databaseConnection, email, password);
         if(user == null){
@@ -55,7 +56,7 @@ public class DatabaseManager {
      * @return list of trainings for all teams of the user
      * @throws SQLException
      */
-    private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException   {
+    private static ObservableList<Training> createTrainings(Connection databaseConnection, ArrayList<Team> userTeams) throws SQLException, ParseException {
         if(userTeams.isEmpty()){
             return null;
         }
@@ -70,8 +71,8 @@ public class DatabaseManager {
         while(pastTraininingsResultSet.next()){
             int trainingId = pastTraininingsResultSet.getInt("training_id");
             String title = pastTraininingsResultSet.getString("title");
-            Date  trainingDate = pastTraininingsResultSet.getDate("training_date_time");
-            String description = pastTraininingsResultSet.getString("training_description");
+            String  trainingDateStr = pastTraininingsResultSet.getString("training_date_time");
+            Date trainingDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(trainingDateStr);
             String locationName = pastTraininingsResultSet.getString("location_name");
             String locationLink = pastTraininingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
@@ -103,8 +104,8 @@ public class DatabaseManager {
         while(futureTrainingsResultSet.next()){
             int trainingId = futureTrainingsResultSet.getInt("training_id");
             String title = futureTrainingsResultSet.getString("title");
-            Date  trainingDate = futureTrainingsResultSet.getDate("training_date_time");
-            String description = futureTrainingsResultSet.getString("training_description");
+            String  trainingDateStr = pastTraininingsResultSet.getString("training_date_time");
+            Date trainingDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(trainingDateStr);
             String locationName = futureTrainingsResultSet.getString("location_name");
             String locationLink = futureTrainingsResultSet.getString("location_link");
             String actionLink = "/views/TrainingsScreen.fxml";
@@ -447,8 +448,9 @@ public class DatabaseManager {
             int fileId = resultSet.getInt("file_id");
             Image profilePicture;
             byte[] photoBytes = resultSet.getBytes("file");
-            if(photoBytes != null)
+            if(photoBytes.length != 0)
             {
+                System.out.println("NOT NULL");
                 InputStream imageFile = resultSet.getBinaryStream("file");
                 profilePicture = new Image(imageFile);
             }
@@ -489,7 +491,7 @@ public class DatabaseManager {
             int teamFileıd = teamsResultSet.getInt("file_id");
             Image teamLogo;
             byte[] photoBytes = teamsResultSet.getBytes("file");
-            if(photoBytes != null)
+            if(photoBytes.length != 0)
             {
                 InputStream imageFile = teamsResultSet.getBinaryStream("file");
                 teamLogo = new Image(imageFile);
@@ -980,13 +982,13 @@ public class DatabaseManager {
             team.setDatabaseTeamId(leagueTeamId);
 
 
-            if(team.getFileId() != 1 || logoFile == null){
+            if(team.getFileId() != 1){
                 PreparedStatement changeFileStatement = databaseConnection.prepareStatement("UPDATE file_storage fs SET file = ? WHERE id = ?");
                 if (logoFile != null) {
                     FileInputStream fileInputStream = new FileInputStream(logoFile.getAbsolutePath());
                     changeFileStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
                 } else {
-                    changeFileStatement.setBlob(1, InputStream.nullInputStream());
+                    changeFileStatement.setNull(1, Types.BLOB);
                 }
                 changeFileStatement.setInt(2, team.getFileId());
                 changeFileStatement.executeUpdate();
@@ -1025,13 +1027,13 @@ public class DatabaseManager {
     public static void updateUser(UserSession user, File profilePhoto) throws SQLException, IOException {
         PreparedStatement preparedStatement;
 
-        if(user.getUser().getFileId() != 1 || profilePhoto == null){
+        if(user.getUser().getFileId() != 1){
             preparedStatement = user.getDatabaseConnection().prepareStatement("UPDATE file_storage fs SET fs.file = ? WHERE fs.id = ?");
             if (profilePhoto != null) {
                 FileInputStream fileInputStream = new FileInputStream(profilePhoto.getAbsolutePath());
                 preparedStatement.setBinaryStream(1, fileInputStream, fileInputStream.available());
             } else {
-                preparedStatement.setBlob(1, InputStream.nullInputStream());
+                preparedStatement.setNull(1, Types.BLOB);
             }
             preparedStatement.setInt(2,user.getUser().getFileId());
             preparedStatement.executeUpdate();
@@ -1550,7 +1552,7 @@ public class DatabaseManager {
 
 
 
-    public static UserSession sync(UserSession user) throws SQLException, IOException {
+    public static UserSession sync(UserSession user) throws SQLException, IOException, ParseException {
         user.setUserTeams(createUserTeams(user.getUser(), user.getDatabaseConnection()));
         user.setStandings(createStandings(user.getDatabaseConnection(), user.getUserTeams()));
         user.setGamesOfTheCurrentRound(createCurrentRoundGames(user.getDatabaseConnection(), user.getUserTeams(), user.getStandings()));

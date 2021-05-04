@@ -35,6 +35,7 @@ public class TeamMember {
         if(profilePhoto != null){
             this.profilePhoto = new ImageView(profilePhoto);
         }
+
         this.fileId = fileId;
 
         if( sportBranch.equals("Football")){
