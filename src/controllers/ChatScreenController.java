@@ -83,7 +83,7 @@ public class ChatScreenController extends MainTemplateController implements Init
         currentIndex = 0;
         upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
 
-        downButton.setDisable(false);
+        downButton.setDisable(true);
 
         teamNameLabel.setText(teamBox.getValue().getTeamName());
 
@@ -160,40 +160,58 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     }
 
-
-
     public void moveUp(ActionEvent actionEvent) throws SQLException {
         currentIndex++;
+        downButton.setDisable(false);
         updateGrid();
     }
 
     public void moveDown(ActionEvent actionEvent) throws SQLException {
-        if (currentIndex > 1) {
+        if (currentIndex > 0) {
             currentIndex--;
             upMoves++;
             updateGrid();
         }
-        else if (currentIndex == 1) {
-            upMoves++;
-            currentIndex--;
+        if (currentIndex == 0) {
             downButton.setDisable(true);
-            updateGrid();
         }
-        upButton.setDisable(false);
+
     }
 
     public void teamSelected(ActionEvent actionEvent) throws SQLException {
+        currentIndex = 0;
+        upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
         setUpAnnouncementsGrid();
+        currentIndex = 0;
         upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
 
+        downButton.setDisable(true);
+
+        teamNameLabel.setText(teamBox.getValue().getTeamName());
+
+        if (teamBox.getValue().getTeamLogo() != null) {
+            teamLogo.setImage(teamBox.getValue().getTeamLogo().getImage());
+        }
+        else {
+            try {
+                teamLogo.setImage(new Image(getClass().getResource("/Resources/Images/emptyTeamLogo.png").toURI().toString()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
     public void sendAnnouncement(ActionEvent actionEvent) throws SQLException {
-        Announcement announcement = new Announcement(textField.getText(), textArea.getText(), user.getUser());
-        user.getAnnouncements(teamBox.getValue()).add(0,announcement);
-        DatabaseManager.createNewAnnouncement(user.getDatabaseConnection(), announcement, teamBox.getValue());
-        updateGrid();
+        if (textArea.getText() != null && textField.getText() != null) {
+            Announcement announcement = new Announcement(textField.getText(), textArea.getText(), user.getUser());
+            user.getAnnouncements(teamBox.getValue()).add(0,announcement);
+            DatabaseManager.createNewAnnouncement(user.getDatabaseConnection(), announcement, teamBox.getValue());
+            updateGrid();
+            textField.setText("");
+            textArea.setText("");
+        }
+
     }
 
     private void lightIcons() {
