@@ -1159,6 +1159,21 @@ public class DatabaseManager {
         return null;
     }
 
+    public static void sendNotificationToAUser(UserSession userSession, Notification notification) throws SQLException {
+        PreparedStatement preparedStatement = userSession.getDatabaseConnection().prepareStatement("INSERT " +
+                "INTO notifications(title, recipent_id, sender_id, message, time_sent, click_action)" +
+                "values (?,?,?,?,?,?)");
+        preparedStatement.setString(1, notification.getTitle());
+        preparedStatement.setInt(2, notification.getRecipient().getMemberId());
+        preparedStatement.setInt(3, notification.getSender().getMemberId());
+        preparedStatement.setString(4, notification.getDescription());
+        java.sql.Date sqlDate = new java.sql.Date(notification.getTimeSent().getTime());
+        preparedStatement.setDate(5, sqlDate);
+        preparedStatement.setString(6, notification.getClickAction());
+
+        preparedStatement.executeUpdate();
+    }
+
     public static ObservableList<TeamMember> getGameStats(UserSession userSession, Game game, Team team) throws SQLException {
         ObservableList<TeamMember> gamePlayers = FXCollections.observableArrayList();
 
@@ -1288,7 +1303,35 @@ public class DatabaseManager {
         return gamePlayers;
 
     }
-    
+
+    public static boolean createNewGameplan(UserSession user, Team team, File gameplanFile, Gameplan gameplan) throws SQLException, IOException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) " +
+                "value (?)", Statement.RETURN_GENERATED_KEYS);
+
+        prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO file_storage(file) values(?)", Statement.RETURN_GENERATED_KEYS);
+        FileInputStream fileInputStream = new FileInputStream(gameplanFile.getAbsolutePath());
+        prepStmt.setBinaryStream(1, fileInputStream, fileInputStream.available());
+
+        ResultSet rs = prepStmt.getGeneratedKeys();
+        if(rs.next())
+        {
+            int fileId = rs.getInt(1);
+            user.getUser().setFileId(fileId);
+            prepStmt = user.getDatabaseConnection().prepareStatement("INSERT INTO gameplans(title, team_id, file_id)" +
+                    "values(?,?,?)");
+            prepStmt.setString(1, gameplan.getTitle());
+            prepStmt.setInt(2,team.getTeamId());
+            prepStmt.setInt(3, fileId);
+
+            int row = prepStmt.executeUpdate();
+            if(row > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public static void saveStats(UserSession userSession, Game game, ObservableList<TeamMember> players) throws SQLException {
         if(userSession.getUser().getSportBranch().equals("Basketball")){
             for (TeamMember player : players){

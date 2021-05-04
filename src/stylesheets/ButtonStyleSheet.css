@@ -223,9 +223,6 @@ main.buttonText{
     -fx-background-color: #025B77;
 }
 
-.button {
-    -fx-font-size: 10;
-}
 
 .training:hover {
     -fx-background-color: #8f258d;

@@ -96,7 +96,6 @@ public class ChatScreenController extends MainTemplateController implements Init
         for (int i = 0; i < 5; i--) {
             if (currentIndex < 5 && extraAnnouncement < 5) {
                 announcement = user.getAnnouncements(teamBox.getValue()).get(extraAnnouncement);
-
             }
             else {
                 //announcement  = DatabaseManager.getAnnouncement(user.getDatabaseConnection(), teamBox.getValue(), extras);
