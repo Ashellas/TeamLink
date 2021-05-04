@@ -1,12 +1,14 @@
 package controllers;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -17,6 +19,7 @@ import models.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -55,7 +58,26 @@ public class MainScreenController extends MainTemplateController{
     private TableColumn<TeamApplication, String> teamRoleColumn;
 
     @FXML
-    private TableColumn<TeamApplication, String> actionColumn;
+    private TableColumn<TeamApplication, Button> acceptColumn;
+
+    @FXML
+    private TableColumn<TeamApplication, Button> declineColumn;
+
+
+    @FXML
+    private TableView<TeamApplication> myApplicationTable;
+
+    @FXML
+    private TableColumn<TeamApplication, String> teamNameColumn;
+
+    @FXML
+    private TableColumn<TeamApplication, String> ageGroupColumn;
+
+    @FXML
+    private TableColumn<TeamApplication, String> cityColumn;
+
+    @FXML
+    private TableColumn<TeamApplication, String> statusColumn;
 
     @FXML
     private GridPane applicantsPane;
@@ -66,18 +88,43 @@ public class MainScreenController extends MainTemplateController{
     @FXML
     private Pane disablePane;
 
+    @FXML
+    private ComboBox<Team> teamBox;
+
     //---------------------Help Pane---------------------------//
     @FXML
     private GridPane helpPane;
+
+
+    @FXML
+    private ComboBox applicationtypeBox;
 
     @FXML
     private ImageView helpPaneIcon;
 
     GregorianCalendar cal; //Create calendar
 
+    private ArrayList<Label> standingLabels;
+
+    private ArrayList<ListView> calendarItems;
+
+    private ArrayList<Node> noticationNodes;
+
+    private ObservableList<String>comboBoxTexts  = FXCollections.observableArrayList("my Applications", "Team Applications");
+
+    @FXML
+    private Button rightButton;
+
+    @FXML
+    private Button leftButton;
+
+    private int notificationPageIndex;
+
     ArrayList<Notification> notifications = new ArrayList<>();
 
     String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"};
+
+    private Team selectedTeam;
 
     public void initData(UserSession user){
         super.initData(user);
@@ -90,9 +137,27 @@ public class MainScreenController extends MainTemplateController{
             lightIcons();
         }
 
+        notificationPageIndex = 0;
+        standingLabels = new ArrayList<>();
+        calendarItems = new ArrayList<>();
+        noticationNodes = new ArrayList<>();
+
+        try {
+            if(DatabaseManager.createNotifications(user.getDatabaseConnection(), user.getUser(), notificationPageIndex + 1).size() == 0){
+                rightButton.setVisible(false);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        leftButton.setVisible(false);
+
         //sets up the gridpane after scene establishes
         Platform.runLater(() -> {
-            setUpNotificationsGrid();
+            try {
+                setUpNotificationsGrid();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             setUpStandingsTable();
             try {
                 setUpCalendarGrid();
@@ -100,6 +165,13 @@ public class MainScreenController extends MainTemplateController{
                 e.printStackTrace();
             }
         });
+
+        for (Team t: user.getUserTeams()) {
+            teamBox.getItems().add(t);
+        }
+        selectedTeam = user.getUserTeams().get(0);
+        teamBox.getSelectionModel().selectFirst();
+
         disablePane.setVisible(false);
         disablePane.setDisable(true);
         helpPane.setVisible(false);
@@ -108,6 +180,13 @@ public class MainScreenController extends MainTemplateController{
         setUpApplicantsTable();
         for(Team team : user.getStandings(user.getUserTeams().get(0))){
             System.out.println(team.getTeamName());
+        }
+        if(user.getUser().getTeamRole().equals("Head Coach")){
+            applicationtypeBox.getItems().addAll(comboBoxTexts);
+            applicationtypeBox.getSelectionModel().selectFirst();
+        }
+        else{
+            applicationtypeBox.setVisible(false);
         }
 
         AppManager.fadeIn(mainScreenPane,500);
@@ -122,21 +201,43 @@ public class MainScreenController extends MainTemplateController{
             dayNameLabel.setPrefWidth(standingsEmptyHBox.getWidth());
             calendarGrid.add(dayNameLabel, i, 0);
             ListView eventsListView = new ListView();
-            
+
             eventsListView.setOrientation(Orientation.VERTICAL);
             eventsListView.setFocusTraversable(false);
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
             CalendarButton eventButton = new CalendarButton("training", sdf.format(new Date()), "/views/SquadScreen.fxml","red", user);
             eventsListView.getItems().add(eventButton);
             calendarGrid.add(eventsListView, i, 1);
+            calendarItems.add(eventsListView);
         }
     }
 
+    /**
+     * Clears the calendar and creates the same month with chosen team's events.
+     * @param actionEvent changing the team selection combo box's value
+     */
+    public void teamSelection(ActionEvent actionEvent) throws SQLException, IOException {
+        selectedTeam = (Team) teamBox.getValue();
+        clearCalendar();
+        clearStandings();
+        setUpCalendarGrid();
+        setUpStandingsTable();
+    }
+
+    private void clearCalendar() {
+        for(ListView node : calendarItems){
+            calendarGrid.getChildren().remove(node);
+        }
+        calendarItems = new ArrayList<>();
+    }
+
+
     private void setUpStandingsTable() {
-        ObservableList<Team> selectedTeamStandings = user.getStandings(user.getUserTeams().get(0));
-        int userTeamplacement = selectedTeamStandings.indexOf(user.getUserTeams().get(0)) + 1;
+        ObservableList<Team> selectedTeamStandings = user.getStandings(selectedTeam);
+        int userTeamplacement = selectedTeamStandings.indexOf(selectedTeam) + 1;
         int teamCount = selectedTeamStandings.size();
         int firstTeamPlacement;
+
         if(userTeamplacement == 1 ||userTeamplacement == 2){
             firstTeamPlacement = 1;
         }
@@ -151,63 +252,115 @@ public class MainScreenController extends MainTemplateController{
         else{
             firstTeamPlacement = userTeamplacement - 2;
         }
+        for(int i = 0; i < 5; i++){
 
-        for(int i = 2; i < 7; i++){
-
-            Label placementLabel = new Label("" + (i + 1) + ".");
+            Label placementLabel = new Label("" + (firstTeamPlacement + i) + ".");
             placementLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
             placementLabel.getStyleClass().add("standings");
-            Label teamNameLabel = new Label(selectedTeamStandings.get(i).getTeamName());
+            Label teamNameLabel = new Label(selectedTeamStandings.get(i + firstTeamPlacement - 1).getTeamName());
             teamNameLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.4);
             teamNameLabel.getStyleClass().add("standings");
-            Label gamesPlayedLabel = new Label("" + selectedTeamStandings.get(i).getTeamStats().getGamesPlayed());
+            Label gamesPlayedLabel = new Label("" + selectedTeamStandings.get(i + firstTeamPlacement - 1).getTeamStats().getGamesPlayed());
             gamesPlayedLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
             gamesPlayedLabel.getStyleClass().add("standings");
-            Label gamesWonLabel = new Label("" + selectedTeamStandings.get(i).getGamesWon());
+            Label gamesWonLabel = new Label("" + selectedTeamStandings.get(i + firstTeamPlacement - 1).getGamesWon());
             gamesWonLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
             gamesWonLabel.getStyleClass().add("standings");
-            Label gamesLostLabel = new Label("" + selectedTeamStandings.get(i).getGamesLost());
+            Label gamesLostLabel = new Label("" + selectedTeamStandings.get(i + firstTeamPlacement - 1).getGamesLost());
             gamesLostLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
             gamesLostLabel.getStyleClass().add("standings");
-            Label pointsLabel = new Label("" + selectedTeamStandings.get(i).getPoints());
+            Label pointsLabel = new Label("" + selectedTeamStandings.get(i + firstTeamPlacement - 1).getPoints());
             pointsLabel.setPrefWidth(standingsEmptyHBox.getWidth() * 0.12);
             pointsLabel.getStyleClass().add("standings");
 
-            standingsGrid.add(placementLabel, 0, i -1);
-            standingsGrid.add(teamNameLabel, 1, i - 1);
-            standingsGrid.add(gamesPlayedLabel, 2, i - 1);
-            standingsGrid.add(gamesWonLabel, 3, i - 1);
-            standingsGrid.add(gamesLostLabel, 4, i - 1);
-            standingsGrid.add(pointsLabel, 5, i - 1);
+            standingsGrid.add(placementLabel, 0, i + 1);
+            standingsGrid.add(teamNameLabel, 1, i + 1);
+            standingsGrid.add(gamesPlayedLabel, 2, i + 1);
+            standingsGrid.add(gamesWonLabel, 3, i + 1);
+            standingsGrid.add(gamesLostLabel, 4, i + 1);
+            standingsGrid.add(pointsLabel, 5, i + 1);
+
+            standingLabels.add(placementLabel );
+            standingLabels.add(teamNameLabel );
+            standingLabels.add(gamesPlayedLabel );
+            standingLabels.add(gamesWonLabel);
+            standingLabels.add(gamesLostLabel );
+            standingLabels.add(pointsLabel);
 
         }
     }
 
     public void toMainScreen(ActionEvent actionEvent) {}
 
-    public void setUpNotificationsGrid()     {
+    private void clearStandings(){
+        for(Label label : standingLabels){
+            standingsGrid.getChildren().remove(label);
+        }
+        standingLabels = new ArrayList<>();
+    }
+    
+    public void setUpNotificationsGrid() throws SQLException {
         int notificationCount = 0;
-        for(Notification notification : user.getNotifications()){
-            GridPane customGrid = createCustomNotificationGridPane(notification.getTitle(), notification.getDescription());
-            if(notification.getClickAction().equals(   "")){
-                Button button = new Button("View");
-                button.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
-                button.getStyleClass().add("viewButton");
-                button.setOnAction(event -> {
-                    try {
-                        AppManager.changeScene(getClass().getResource(notification.getClickAction()),event, user);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                notificationsGrid.add(button, 2, notificationCount);
-            }
+        if(notificationPageIndex == 0) {
+            for (Notification notification : user.getNotifications()) {
+                GridPane customGrid = createCustomNotificationGridPane(notification.getTitle(), notification.getDescription());
+                if (!notification.getClickAction().equals("")) {
+                    Button button = new Button("View");
+                    button.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
+                    button.getStyleClass().add("viewButton");
+                    button.setOnAction(event -> {
 
-            GridPane senderPane = createSenderInfoGrid(notification);
-            notificationsGrid.add(senderPane, 0, notificationCount);
-            notificationsGrid.add(customGrid, 1, notificationCount);
+                        try {
+                            AppManager.changeScene(getClass().getResource(notification.getClickAction()), event, user);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    notificationsGrid.add(button, 2, notificationCount);
+                }
+
+                GridPane senderPane = createSenderInfoGrid(notification);
+                notificationsGrid.add(senderPane, 0, notificationCount);
+                notificationsGrid.add(customGrid, 1, notificationCount);
+                noticationNodes.add(customGrid);
+                noticationNodes.add(senderPane);
+                notificationCount++;
+            }
+        }else{
+            for(Notification notification : DatabaseManager.createNotifications(user.getDatabaseConnection(), user.getUser(), notificationPageIndex)){
+                GridPane customGrid = createCustomNotificationGridPane(notification.getTitle(), notification.getDescription());
+                if(!notification.getClickAction().equals("")){
+                    Button button = new Button("View");
+                    button.getStylesheets().add("/stylesheets/ButtonStyleSheet.css");
+                    button.getStyleClass().add("viewButton");
+                    button.setOnAction(event -> {
+                        try {
+                            AppManager.changeScene(getClass().getResource(notification.getClickAction()),event, user);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    notificationsGrid.add(button, 2, notificationCount);
+                    noticationNodes.add(button);
+                }
+
+                GridPane senderPane = createSenderInfoGrid(notification);
+                notificationsGrid.add(senderPane, 0, notificationCount);
+                notificationsGrid.add(customGrid, 1, notificationCount);
+                noticationNodes.add(customGrid);
+                noticationNodes.add(senderPane);
+
+                notificationCount++;
+                }
+            }
         }
 
+
+    private void clearNotificationGrid(){
+        for(Node node : noticationNodes){
+            notificationsGrid.getChildren().remove(node);
+        }
+        noticationNodes = new ArrayList<>();
     }
 
     private GridPane createCustomNotificationGridPane(String notTitle, String notDescription){
@@ -237,7 +390,7 @@ public class MainScreenController extends MainTemplateController{
     }
 
     private GridPane createSenderInfoGrid(Notification notification){
-        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd");
         String formattedDate =  sdf.format(notification.getTimeSent());
         ImageView senderPhoto = new ImageView();
         if(notification.getSender().getMemberId() == 1){
@@ -312,11 +465,39 @@ public class MainScreenController extends MainTemplateController{
     }
 
     private void setUpApplicantsTable(){
-        ObservableList<TeamApplication> appliedTeamsList = user.getTeamApplications();
+        ObservableList<TeamApplication> appliedTeamsList = user.getmyTeamsApplications();
         appliedTeamColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("teamName"));
         applicantColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("applicantFullName"));
         teamRoleColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("applicantTeamRole"));
         applicantsTable.setItems(appliedTeamsList);
+        acceptColumn.setCellFactory(ButtonTableCell.<TeamApplication>forTableColumn("Accept", (TeamApplication p) -> {
+            try {
+                DatabaseManager.acceptTeamApplication(user, p);
+                user.getTeamApplications().remove(p);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            return p;
+        }));
+        declineColumn.setCellFactory(ButtonTableCell.<TeamApplication>forTableColumn("Decline", (TeamApplication p) -> {
+            try {
+                DatabaseManager.declineTeamApplication(user, p);
+                user.getTeamApplications().remove(p);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            return p;
+        }));
+
+
+
+        ObservableList<TeamApplication> applicationList = user.getmyApplication();
+
+        teamNameColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("teamName"));
+        ageGroupColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("ageGroup"));
+        cityColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("city"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<TeamApplication, String>("applicationStatus"));
+        myApplicationTable.setItems(applicationList);
     }
 
     @Override
@@ -355,4 +536,35 @@ public class MainScreenController extends MainTemplateController{
         helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
 
+    public void leftButtonClicked(ActionEvent event) throws SQLException {
+        clearNotificationGrid();
+        notificationPageIndex--;
+        if(notificationPageIndex == 0){
+            leftButton.setVisible(false);
+        }
+        rightButton.setVisible(true);
+        setUpNotificationsGrid();
+    }
+
+    public void rightButtonClicked(ActionEvent event) throws SQLException {
+        clearNotificationGrid();
+        notificationPageIndex++;
+        if(DatabaseManager.createNotifications(user.getDatabaseConnection(), user.getUser(), notificationPageIndex + 1).size() == 0){
+            rightButton.setVisible(false);
+        }
+        leftButton.setVisible(true);
+        setUpNotificationsGrid();
+    }
+
+    public void changeApplicationType(ActionEvent event) {
+        if(applicationtypeBox.getValue().toString().equals( "my Applications")){
+            applicantsTable.setVisible(false);
+            myApplicationTable.setVisible(true);
+        }
+        else{
+            applicantsTable.setVisible(true);
+            applicantsTable.setVisible(false);
+        }
+        setUpApplicantsTable();
+    }
 }

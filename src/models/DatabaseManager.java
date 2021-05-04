@@ -214,7 +214,7 @@ public class DatabaseManager {
         ArrayList<Notification> notifications = new ArrayList<>();
         PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from notifications join team_members tm" +
                 " on tm.member_id = notifications.recipent_id join file_storage fs on " +
-                "fs.id = tm.file_id and member_id = ? LIMIT ?, 5");
+                "fs.id = tm.file_id and member_id = ? order by time_sent desc LIMIT ?, 5");
         prepStmt.setInt(1, user.getMemberId());
         prepStmt.setInt(2,pageNumber * 5);
         ResultSet resultSet = prepStmt.executeQuery();
@@ -978,7 +978,7 @@ public class DatabaseManager {
     }
 
 
-    public static void createNewTraining(Connection databaseConnection, Training training, ArrayList<TeamMember> additionalPlayers) throws SQLException {
+    public static void createNewTraining(Connection databaseConnection, Training training, ObservableList<TeamMember> additionalPlayers) throws SQLException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement(" INSERT INTO trainings(title, training_date_time, " +
                 "location_name, location_link, team_id) VALUES (?, ?, ?, ?,?)");
 
@@ -1380,5 +1380,27 @@ public class DatabaseManager {
             return new TeamMember(memberId, email);
         }
         return null;
+    }
+
+    public static void acceptTeamApplication(UserSession user, TeamApplication application) throws SQLException {
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement(" INSERT INTO team_and_members(team_member_id, team_id)" +
+                "values (?,?)");
+        prepStmt.setInt(1, application.getApplicant().getMemberId());
+        prepStmt.setInt(2, application.getAppliedTeam().getTeamId());
+
+        prepStmt.executeUpdate();
+
+        prepStmt = user.getDatabaseConnection().prepareStatement("Delete from team_application where id = ?");
+        prepStmt.setInt(1, application.getApplicationId());
+
+        prepStmt.executeUpdate();
+    }
+
+    public static void declineTeamApplication(UserSession user, TeamApplication application) throws SQLException {
+
+        PreparedStatement prepStmt = user.getDatabaseConnection().prepareStatement("Update team_application SET isDeclined = true where id = ?");
+        prepStmt.setInt(1, application.getApplicationId());
+
+        prepStmt.executeUpdate();
     }
 }

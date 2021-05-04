@@ -186,4 +186,24 @@ public class UserSession {
         return result;
     }
 
+    public ObservableList<TeamApplication> getmyApplication(){
+        ObservableList<TeamApplication> myApplications = FXCollections.observableArrayList();
+        for (TeamApplication application : teamApplications){
+            if(application.getApplicant() == getUser()){
+                myApplications.add(application);
+            }
+        }
+        return myApplications;
+    }
+
+    public ObservableList<TeamApplication> getmyTeamsApplications(){
+        ObservableList<TeamApplication> myTeamApplications = FXCollections.observableArrayList();
+        for (TeamApplication application : teamApplications){
+            if(application.getApplicant() != getUser()){
+                myTeamApplications.add(application);
+            }
+        }
+        return myTeamApplications;
+    }
+
 }

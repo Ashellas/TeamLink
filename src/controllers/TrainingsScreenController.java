@@ -308,7 +308,7 @@ public class TrainingsScreenController extends MainTemplateController
 
             // sends the additional players and the training to the database
             ObservableList<TeamMember> otherPlayersCheckedList = otherPlayersBox.getCheckModel().getCheckedItems();
-            DatabaseManager.createNewTraining( user.getDatabaseConnection(), training, ( ArrayList<TeamMember> ) otherPlayersCheckedList );
+            DatabaseManager.createNewTraining( user.getDatabaseConnection(), training, otherPlayersCheckedList );
 
             // remove training pane and add stats pane again
             createTrainingPane.setVisible( false );
