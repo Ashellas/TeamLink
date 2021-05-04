@@ -570,7 +570,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="620.0" minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <HBox fx:id="announcementsEmptyHBox" prefHeight="100.0" prefWidth="200.0" />
@@ -579,13 +579,6 @@
                                           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
                                           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                                        </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
                                     </GridPane>
                                     <GridPane GridPane.columnIndex="1">
                                        <columnConstraints>
@@ -595,7 +588,7 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <Button layoutX="214.0" layoutY="10.0" maxHeight="50.0" mnemonicParsing="false" onAction="#moveUp" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: transparent;" textFill="#aa2020" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                                          <Button fx:id="upButton" layoutX="214.0" layoutY="10.0" maxHeight="50.0" mnemonicParsing="false" onAction="#moveUp" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: transparent;" textFill="#aa2020" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                                              <padding>
                                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                              </padding>
@@ -617,7 +610,7 @@
                                                 <Cursor fx:constant="HAND" />
                                              </cursor>
                                           </Button>
-                                          <Button maxHeight="50.0" mnemonicParsing="false" onAction="#moveDown" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: transparent;" textFill="#aa2020" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                                          <Button fx:id="downButton" maxHeight="50.0" mnemonicParsing="false" onAction="#moveDown" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: transparent;" textFill="#aa2020" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                                              <padding>
                                                 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                              </padding>
@@ -711,7 +704,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ComboBox fx:id="teamBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="teamBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#teamSelected" prefWidth="150.0" stylesheets="@../stylesheets/comboBoxStyleSheet.css" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                         <Label fx:id="teamNameLabel" styleClass="text" text="MaviBirlik" textFill="LIGHTGRAY" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -800,7 +793,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#sendAnnouncement" styleClass="submit" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button fx:id="submitButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#sendAnnouncement" styleClass="submit" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #a1289f;" GridPane.rowIndex="6">

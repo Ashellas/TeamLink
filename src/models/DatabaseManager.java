@@ -1099,7 +1099,7 @@ public class DatabaseManager {
     }
 
 
-    public boolean createNewAnnouncement(Connection databaseConnection, Announcement announcement, Team team) throws SQLException {
+    public static boolean createNewAnnouncement(Connection databaseConnection, Announcement announcement, Team team) throws SQLException {
         PreparedStatement prepStmt = databaseConnection.prepareStatement("INSERT INTO announcements(team_id, sender_id, title, message, time_sent)" +
                 " values (?,?,?,?,?)");
         prepStmt.setInt(1, team.getTeamId());
