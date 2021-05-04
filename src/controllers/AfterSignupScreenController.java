@@ -36,24 +36,18 @@ import java.util.prefs.Preferences;
 public class AfterSignupScreenController extends MainTemplateController implements InitializeData {
 
     private ObservableList<String> cityList = FXCollections.observableArrayList("Istanbul", "Ankara", "İzmir");
-
     private ObservableList<String> ageGroupList = FXCollections.observableArrayList("U18", "U16", "U14", "U12");
 
     @FXML
     private Pane darkPane;
-
     @FXML
     private TextField teamCodeField;
-
     @FXML
     private Pane messagePane;
-
     @FXML
     private TableView<TeamApplication> teamApplicationTable;
-
     @FXML
     private TableColumn<TeamApplication, String> teamNameColumn;
-
     @FXML
     private TableColumn<TeamApplication, String> ageGroupColumn;
 

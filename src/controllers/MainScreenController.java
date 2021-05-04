@@ -183,8 +183,7 @@ public class MainScreenController extends MainTemplateController{
         }
     }
 
-    public void toMainScreen(ActionEvent actionEvent) {
-    }
+    public void toMainScreen(ActionEvent actionEvent) {}
 
     public void setUpNotificationsGrid()     {
         int notificationCount = 0;

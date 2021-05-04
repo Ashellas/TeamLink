@@ -15,61 +15,45 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-
+/**
+ * Chat screen with announcements of the selected team
+ */
 public class ChatScreenController extends MainTemplateController implements InitializeData {
 
     private int currentIndex;
+    private ArrayList<GridPane> gridPanes;
 
     @FXML
     private Label teamNameLabel;
-
     @FXML
     private ComboBox<Team> teamBox;
-
     @FXML
     private ImageView teamLogo;
-
-    @FXML
-    private Button upButton;
-
     @FXML
     private Button downButton;
-
     @FXML
     private TextField textField;
-
     @FXML
     private TextArea textArea;
-
-    @FXML
-    private Button submitButton;
-
     @FXML
     private GridPane chatPane;
-
     @FXML
     private ImageView arrowIcon;
-
     @FXML
     private GridPane announcementsGrid;
-
     @FXML
     private HBox announcementsEmptyHBox;
-
-    //---------------------Help Pane---------------------------//
-
     @FXML
     private GridPane helpPane;
-
     @FXML
     private Pane darkPane;
-
     @FXML
     private ImageView helpPaneIcon;
 
-    private ArrayList<GridPane> gridPanes;
-
-
+    /**
+     * Initialises scene properties
+     * @param user current user session
+     */
     public void initData(UserSession user){
         super.initData(user);
 
@@ -118,8 +102,11 @@ public class ChatScreenController extends MainTemplateController implements Init
         });
     }
 
+    /**
+     * Gets teams announcemets and displays in the grid
+     * @throws SQLException
+     */
     public void setUpAnnouncementsGrid() throws SQLException {
-
         for (int i = 0; i < 5; i++) {
             RowConstraints row = new RowConstraints();
             row.setPercentHeight(20);
@@ -138,6 +125,10 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     }
 
+    /**
+     * Updates the announcements according to current index
+     * @throws SQLException
+     */
     public void updateGrid() throws SQLException {
         Announcement announcement;
         int rowIndex;
@@ -164,12 +155,22 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     }
 
+    /**
+     * Moves announcements up
+     * @param actionEvent up button pushed
+     * @throws SQLException
+     */
     public void moveUp(ActionEvent actionEvent) throws SQLException {
         currentIndex++;
         downButton.setDisable(false);
         updateGrid();
     }
 
+    /**
+     * Moves the announcements down
+     * @param actionEvent down button pushed
+     * @throws SQLException
+     */
     public void moveDown(ActionEvent actionEvent) throws SQLException {
         if (currentIndex > 0) {
             currentIndex--;
@@ -181,6 +182,11 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     }
 
+    /**
+     * Gets selected team and displays it's announcements
+     * @param actionEvent team combo box selection
+     * @throws SQLException
+     */
     public void teamSelected(ActionEvent actionEvent) throws SQLException {
         currentIndex = 0;
         setUpAnnouncementsGrid();
@@ -202,7 +208,11 @@ public class ChatScreenController extends MainTemplateController implements Init
         }
     }
 
-
+    /**
+     * Sends an announcement in a team
+     * @param actionEvent submit button pushed
+     * @throws SQLException
+     */
     public void sendAnnouncement(ActionEvent actionEvent) throws SQLException {
         if (textArea.getText() != null && textField.getText() != null) {
             Announcement announcement = new Announcement(textField.getText(), textArea.getText(), user.getUser());
@@ -215,18 +225,29 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     }
 
+    /**
+     * Initialises icons according to selected theme
+     */
     private void lightIcons() {
         arrowIcon.setImage((new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png")));
         helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
 
     }
 
-
+    /**
+     * Initialises icons according to selected theme
+     */
     private void darkIcons() {
         arrowIcon.setImage((new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png")));
         helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
     }
 
+    /**
+     * Creates the part to display with announcement title and description
+     * @param notTitle title
+     * @param notDescription content
+     * @return grid with texts
+     */
     private GridPane createCustomAnnouncementGridPane(String notTitle, String notDescription){
         GridPane gridPane = new GridPane();
         RowConstraints row1 = new RowConstraints();
@@ -254,7 +275,11 @@ public class ChatScreenController extends MainTemplateController implements Init
     }
 
 
-
+    /**
+     * Creates the sender information part to display
+     * @param announcement announcement to display
+     * @return sender info grid
+     */
     private GridPane createSenderInfoGrid(Announcement announcement){
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
         String formattedDate =  sdf.format(announcement.getTimeSent());
