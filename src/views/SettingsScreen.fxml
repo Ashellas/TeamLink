@@ -1614,11 +1614,11 @@
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" percentHeight="80.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="90.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label alignment="TOP_LEFT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" text="Log in screen:&#10;&#10;If you have already an account, you can log in to our application by entering your &#10;email and password to the stated areas. After filling the information correctly, you&#10;will be logged in.&#10;If there is an error, the error will be popped up in the screen and you have to&#10;reenter your information.&#10;If you forgot your password, you should click on the “Forgot password?” link.&#10;Then, you will be directed to a password recovery stage.&#10;If you do not have any account yet, click on the “Don’t have account?” link. Then,&#10;you will be directed to the sign up screen to create an account.&#10;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Label alignment="TOP_LEFT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" text="Settings page:&#10;This is the settings page. Here, you can change your name, email address, your birthday and your password by clicking on the “edit” button. After changing, click on “save” button to save your changes. &#10;&#10;You can delete your account by clicking delete your account and you can log out by clicking the button log out.&#10;&#10;If you are a coach, you can copy the team code, edit or delete the team, or create a new team by clicking on the stated buttons.&#10;&#10;When clicked on create new team, a new panel will be opened where you should enter the correct information and upload a team logo. After filling in all information, press submit button to create your new team. " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
