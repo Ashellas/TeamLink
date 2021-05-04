@@ -584,7 +584,7 @@
                            </rowConstraints>
                            <children>
                               <Button id="createTraining" fx:id="createTraining" mnemonicParsing="false" onAction="#newTraining" prefHeight="38.0" prefWidth="178.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" text="New Training" />
-                              <ComboBox fx:id="chooseBetweenTeams" prefHeight="40.0" prefWidth="237.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="chooseBetweenTeams" onAction="#chooseBetweenTeamsSelected" prefHeight="40.0" prefWidth="237.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                         <HBox fx:id="tableViewHolder" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
