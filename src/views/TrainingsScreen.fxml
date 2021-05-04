@@ -44,7 +44,7 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#logoutButtonPushed" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#logoutButtonPushed" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -53,7 +53,7 @@
                            <children>
                               <ImageView fx:id="logoutIcon" fitHeight="40.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/logout_white.png" />
+                                    <Image url="@../Resources/Images/white/logout_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -82,7 +82,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="80.0" prefWidth="120.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#helpButtonPushed" prefHeight="80.0" prefWidth="120.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -91,7 +91,7 @@
                            <children>
                               <ImageView fx:id="helpIcon" fitHeight="40.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/help_white.png" />
+                                    <Image url="@../Resources/Images/white/help_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -141,7 +141,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button fx:id="mainMenuButton22" mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button fx:id="mainMenuButton22" mnemonicParsing="false" onAction="#SynchronizeData" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -150,7 +150,7 @@
                            <children>
                               <ImageView fx:id="syncIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/sync_white.png" />
+                                    <Image url="@../Resources/Images/white/sync_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -176,7 +176,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="50.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -185,7 +185,7 @@
                            <children>
                               <ImageView fx:id="notificationIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/notification_white.png" />
+                                    <Image url="@../Resources/Images/white/notification_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -233,7 +233,7 @@
                         <Insets left="15.0" right="15.0" />
                      </HBox.margin>
                   </Pane>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="74.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -242,7 +242,7 @@
                            <children>
                               <ImageView fx:id="profileIcon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/profile_white.png" />
+                                    <Image url="@../Resources/Images/white/profile_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -296,7 +296,7 @@
                   <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="1">
+                  <Button mnemonicParsing="false" onAction="#toMainScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="1">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -305,7 +305,7 @@
                            <children>
                               <ImageView fx:id="homeIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/home_white.png" />
+                                    <Image url="@../Resources/Images/white/home_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -326,7 +326,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toSquadScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="2">
+                  <Button mnemonicParsing="false" onAction="#toSquadScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="2">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -335,7 +335,7 @@
                            <children>
                               <ImageView fx:id="squadIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/squad_white.png" />
+                                    <Image url="@../Resources/Images/white/squad_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -356,7 +356,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toCalendarScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="3">
+                  <Button mnemonicParsing="false" onAction="#toCalendarScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="3">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -365,7 +365,7 @@
                            <children>
                               <ImageView fx:id="calendarIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/calendar_white.png" />
+                                    <Image url="@../Resources/Images/white/calendar_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -386,7 +386,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toGameplanScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="4">
+                  <Button mnemonicParsing="false" onAction="#toGameplanScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="4">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -395,7 +395,7 @@
                            <children>
                               <ImageView fx:id="gameplanIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/gameplan_white.png" />
+                                    <Image url="@../Resources/Images/white/gameplan_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -416,7 +416,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toTrainingsScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="5">
+                  <Button mnemonicParsing="false" onAction="#toTrainingsScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="5">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -425,7 +425,7 @@
                            <children>
                               <ImageView fx:id="trainingIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/training_white.png" />
+                                    <Image url="@../Resources/Images/white/training_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -446,7 +446,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toLeagueScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="6">
+                  <Button mnemonicParsing="false" onAction="#toLeagueScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="6">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -455,7 +455,7 @@
                            <children>
                               <ImageView fx:id="leagueIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/league_white.png" />
+                                    <Image url="@../Resources/Images/white/league_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -476,7 +476,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="7">
+                  <Button mnemonicParsing="false" onAction="#toChatScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="7">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -485,7 +485,7 @@
                            <children>
                               <ImageView fx:id="chatIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/chat_white.png" />
+                                    <Image url="@../Resources/Images/white/chat_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -506,7 +506,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#toSettingsScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../../../../../Desktop/backup/src/stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="8">
+                  <Button mnemonicParsing="false" onAction="#toSettingsScreen" prefHeight="89.0" prefWidth="40.0" styleClass="main" stylesheets="@../stylesheets/ButtonStyleSheet.css" textFill="#aa2020" GridPane.rowIndex="8">
                      <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </padding>
@@ -515,7 +515,7 @@
                            <children>
                               <ImageView fx:id="settingsIcon" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
                                  <image>
-                                    <Image url="@../../../../../Desktop/backup/src/Resources/Images/white/settings_white.png" />
+                                    <Image url="@../Resources/Images/white/settings_white.png" />
                                  </image>
                                  <HBox.margin>
                                     <Insets />
@@ -538,7 +538,7 @@
                   </Button>
                </children>
             </GridPane>
-            <GridPane fx:id="messageGridPane" GridPane.columnIndex="1">
+            <GridPane GridPane.columnIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -851,14 +851,14 @@
                         </GridPane>
                      </children>
                      <stylesheets>
-                        <URL value="@../../../../../Desktop/backup/src/stylesheets/TrainingStyleSheet.css" />
-                        <URL value="@../../../../../Desktop/backup/src/stylesheets/gridPaneCSS.css" />
+                        <URL value="@../stylesheets/TrainingStyleSheet.css" />
+                        <URL value="@../stylesheets/gridPaneCSS.css" />
                      </stylesheets>
                   </GridPane>
                </children>
                <stylesheets>
-                  <URL value="@../../../../../Desktop/backup/src/stylesheets/TrainingStyleSheet.css" />
-                  <URL value="@../../../../../Desktop/backup/src/stylesheets/gridPaneCSS.css" />
+                  <URL value="@../stylesheets/TrainingStyleSheet.css" />
+                  <URL value="@../stylesheets/gridPaneCSS.css" />
                </stylesheets>
             </GridPane>
          </children>
