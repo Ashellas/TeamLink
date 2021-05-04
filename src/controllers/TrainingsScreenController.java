@@ -3,9 +3,13 @@ package controllers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -19,6 +23,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.*;
 
 import java.awt.*;
@@ -30,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javafx.scene.control.Label;
 import org.controlsfx.control.CheckComboBox;
@@ -134,6 +143,8 @@ public class TrainingsScreenController extends MainTemplateController
     private Pane darkPane;
     @FXML
     private ImageView helpPaneIcon;
+    private Stage loading;
+    private Executor exec;
 
     /**
      * This method initializes the screen
@@ -166,6 +177,18 @@ public class TrainingsScreenController extends MainTemplateController
         ratingsPane.setVisible( false );
         statsPane.setVisible( true );
         messageGridPane.setVisible( false );
+
+        try {
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
+
 
         // adjust the dark & light theme
         if ( userSession.isStyleDark() )
@@ -326,6 +349,7 @@ public class TrainingsScreenController extends MainTemplateController
             // sends the additional players and the training to the database
             ObservableList<TeamMember> otherPlayersCheckedList = otherPlayersBox.getCheckModel().getCheckedItems();
             DatabaseManager.createNewTraining( user.getDatabaseConnection(), training, otherPlayersCheckedList );
+            user.getTrainings().add(training);
 
             // remove training pane and add stats pane again
             createTrainingPane.setVisible( false );
@@ -797,4 +821,39 @@ public class TrainingsScreenController extends MainTemplateController
     }
 
 
+    @Override
+    public void SynchronizeData(ActionEvent event) {
+        darkPane.setVisible(true);
+        loading.show();
+        Task<UserSession> userCreateTask =  new Task<UserSession>() {
+            @Override
+            public UserSession call() throws Exception {
+                System.out.println(" Succeed at : " + new java.util.Date());
+                return DatabaseManager.sync(user);
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            displayMessage(messagePane, "Session is synchronized", false);
+            loading.close();
+            darkPane.setVisible(false);
+            System.out.println("gg"); });
+
+        // Task.getValue() gives the value returned from call()...
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
+    }
+
+    private void createLoading() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        darkPane.setOpacity(0.5);
+    }
 }

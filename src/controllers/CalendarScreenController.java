@@ -1,12 +1,19 @@
 package controllers;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.*;
 
 import java.io.IOException;
@@ -16,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * This class is the controller class for calendar screen. It contains methods such as creating a calendar, deleting a calendar and fetching event information from database
@@ -52,6 +61,8 @@ public class CalendarScreenController extends MainTemplateController {
     private int maxDay;
     private int firstDay;
     Date date;
+    private Stage loading;
+    private Executor exec;
 
     //Declaring calendar view related variables
     private ArrayList<Label> labels = new ArrayList<Label>();;
@@ -79,6 +90,16 @@ public class CalendarScreenController extends MainTemplateController {
         darkPane.setVisible(false);
         helpPane.setDisable(true);
         helpPane.setVisible(false);
+        try {
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
 
         //Populating team selection combo box & give a starting value to it
         teams = user.getUserTeams();
@@ -117,8 +138,7 @@ public class CalendarScreenController extends MainTemplateController {
 
         //Setting current month's events
         events = user.getCalendarEvents(selectedTeam);
-        allEvents = user.getAllEvents();
-        createCalendar(firstDay, maxDay, allEvents);
+        createCalendar(firstDay, maxDay, events);
         AppManager.fadeIn(calendarPane,500);
     }
 
@@ -264,4 +284,40 @@ public class CalendarScreenController extends MainTemplateController {
 
     @Override
     public void toCalendarScreen(ActionEvent actionEvent) throws IOException {}
+
+    @Override
+    public void SynchronizeData(ActionEvent event) {
+        darkPane.setVisible(true);
+        loading.show();
+        Task<UserSession> userCreateTask =  new Task<UserSession>() {
+            @Override
+            public UserSession call() throws Exception {
+                System.out.println(" Succeed at : " + new java.util.Date());
+                return DatabaseManager.sync(user);
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            displayMessage(messagePane, "Session is synchronized", false);
+            loading.close();
+            darkPane.setVisible(false);
+            System.out.println("gg"); });
+
+        // Task.getValue() gives the value returned from call()...
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
+    }
+
+    private void createLoading() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        darkPane.setOpacity(0.5);
+    }
 }

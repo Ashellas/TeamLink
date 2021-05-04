@@ -2,20 +2,29 @@ package controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Squad screen with a list of team members
@@ -68,6 +77,8 @@ public class SquadScreenController extends MainTemplateController{
     private GridPane helpPane;
     @FXML
     private ImageView helpPaneIcon;
+    private Stage loading;
+    private Executor exec;
 
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
     private ObservableList<String> memberFilterOptions = FXCollections.observableArrayList("All Members", "Players", "Assistant Coaches", "Head Coaches");
@@ -113,6 +124,17 @@ public class SquadScreenController extends MainTemplateController{
         setUpDetailsPane();
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
+        try {
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
+
 
 
         for(CalendarEvent calendarEvent : user.getCalendarEvents(user.getUserTeams().get(0))) {
@@ -261,4 +283,39 @@ public class SquadScreenController extends MainTemplateController{
     }
 
 
+    @Override
+    public void SynchronizeData(ActionEvent event) {
+        disablePane.setVisible(true);
+        loading.show();
+        Task<UserSession> userCreateTask =  new Task<UserSession>() {
+            @Override
+            public UserSession call() throws Exception {
+                System.out.println(" Succeed at : " + new java.util.Date());
+                return DatabaseManager.sync(user);
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            displayMessage(messagePane, "Session is synchronized", false);
+            loading.close();
+            disablePane.setVisible(false);
+            System.out.println("gg"); });
+
+        // Task.getValue() gives the value returned from call()...
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
+    }
+
+    private void createLoading() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        disablePane.setOpacity(0.5);
+    }
 }
