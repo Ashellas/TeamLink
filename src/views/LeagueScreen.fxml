@@ -21,7 +21,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="864.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LeagueScreenController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
@@ -1040,7 +1040,6 @@
                                     </HBox>
                                  </graphic>
                               </Button>
-                              <Button fx:id="submitChangesButton" mnemonicParsing="false" onAction="#onClickSubmitChangesButton" prefHeight="29.0" prefWidth="148.0" styleClass="create" stylesheets="@../stylesheets/ButtonStyleSheet.css" text="Submit Changes" textFill="LIGHTGRAY" translateX="72.0" visible="false" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                      </children>
