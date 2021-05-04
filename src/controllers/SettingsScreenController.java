@@ -28,61 +28,40 @@ public class SettingsScreenController extends MainTemplateController {
     final Clipboard clipboard = Clipboard.getSystemClipboard();
     final ClipboardContent content = new ClipboardContent();
 
-    //-----------------Main Part--------------------------//
-    @FXML
-    private GridPane settingsPane;
-
-    @FXML
-    private Pane darkPane;
-
     private ObservableList<String> cityList = FXCollections.observableArrayList("Istanbul", "Ankara", "İzmir");
-
     private ObservableList<String> ageGroupList = FXCollections.observableArrayList("U18", "U16", "U14", "U12");
-
     private String selectedAgeGroup = "", selectedCity = "", selectedLeague = "";
 
     private File createTeamLogoFile;
-
     private File editTeamLogoFile;
-
     private File userPhotoFile;
 
     @FXML
+    private GridPane settingsPane;
+    @FXML
+    private Pane darkPane;
+    @FXML
     private ImageView accountPhoto;
-
     @FXML
     private ImageView teamPhoto;
-
     @FXML
     private Label teamCode;
-
     @FXML
     private ComboBox<Team> teamCombobox;
-
     @FXML
     private TextField userNameField;
-
     @FXML
     private TextField emailField;
-
     @FXML
     private DatePicker datePicker;
-
     @FXML
     private Button editAccountButton;
-
     @FXML
     private Button changePhotoButton;
-
     @FXML
     private CheckBox darkThemeCheck;
-
     @FXML
     private ImageView copyIcon;
-
-    //--------------------------------------------//
-
-    //-------------------Edit Pane----------------//
     @FXML
     private GridPane editTeamPane;
 
@@ -97,81 +76,53 @@ public class SettingsScreenController extends MainTemplateController {
 
     @FXML
     private ComboBox chooseLeagueBox;
-
     @FXML
     private ComboBox<String> chooseAgeGroup;
-
     @FXML
     private ComboBox chooseLeagueTeamBox;
-
     @FXML
     private ImageView logoChangeImage;
-
     @FXML
     private Button uploadTeamLogoButton;
-
-    //--------------------------------------------//
-
-    //----------------Create Pane-----------------//
-
     @FXML
     private GridPane createTeamPane;
-
     @FXML
     private TextField teamNameCreateField;
-
     @FXML
     private TextField abbrevationCreateField;
-
     @FXML
     private ComboBox chooseCityBoxCreate;
-
     @FXML
     private ComboBox chooseLeagueBoxCreate;
-
     @FXML
     private ComboBox<String> chooseAgeGroupCreate;
-
     @FXML
     private ComboBox chooseLeagueTeamBoxCreate;
-
     @FXML
     private ImageView logoChangeImageCreate;
-
     @FXML
     private Button uploadTeamLogoButtonCreate;
-
-    //---------------------Help Pane---------------------------//
-
     @FXML
     private GridPane helpPane;
-
     @FXML
     private ImageView helpPaneIcon;
-
-    //-----------------------Change Password Pane ----------------//
-
     @FXML
     private GridPane changePasswordPane;
-
     @FXML
     private PasswordField firstPasswordField;
-
     @FXML
     private PasswordField secondPasswordField;
-
-    //----------------------Visible to head coach-------------------//
-
     @FXML
     private Button openCreationPaneButton;
-
     @FXML
     private Button openEditPaneButton;
-
     @FXML
     private Button deleteTeamButton;
 
-    @Override
+    /**
+     * Initialises scene properties
+     * @param user current user session
+     */
     public void initData(UserSession user){
         super.initData(user);
 
@@ -241,12 +192,9 @@ public class SettingsScreenController extends MainTemplateController {
         chooseCityBox.getItems().addAll(cityList);
         chooseAgeGroup.getItems().addAll(ageGroupList);
 
-
         // Fade in
         AppManager.fadeIn(settingsPane,500);
     }
-
-    //--------------------Main Pane----------------------------//
 
     /**
      * Makes user information editable or saves the changes
@@ -388,9 +336,6 @@ public class SettingsScreenController extends MainTemplateController {
 
     }
 
-    public void turnOffNotifications(ActionEvent actionEvent) {
-    }
-
     /**
      * Changes the team that is displayed in the screen
      */
@@ -511,8 +456,6 @@ public class SettingsScreenController extends MainTemplateController {
         helpPane.setVisible(false);
     }
 
-    //-------------------------Team Edit---------------------------//
-
     /**
      * Saves the changes of team and updates the database
      * @param actionEvent save button pushed
@@ -575,8 +518,6 @@ public class SettingsScreenController extends MainTemplateController {
         }
     }
 
-    //------------------Team Create------------------------//
-
     /**
      * Opens file chooser for creation screen team logo and displays it
      * @param actionEvent add logo button pushed
@@ -607,7 +548,6 @@ public class SettingsScreenController extends MainTemplateController {
      * @throws SQLException
      */
     public void createTeam(ActionEvent actionEvent) throws IOException, SQLException {
-        int currentTeams = user.getUserTeams().size();
         if (validCreateInput()) {
             user = DatabaseManager.createTeam(user, teamNameCreateField.getText(), abbrevationCreateField.getText(), chooseCityBoxCreate.getValue().toString(),
                     chooseAgeGroupCreate.getValue(), chooseLeagueBoxCreate.getValue().toString(), chooseLeagueTeamBoxCreate.getValue().toString(), createTeamLogoFile);
@@ -686,8 +626,6 @@ public class SettingsScreenController extends MainTemplateController {
         logoChangeImageCreate.setImage(new Image("/Resources/Images/emptyTeamLogo.png"));
         createTeamLogoFile = null;
     }
-
-    //--------------------HELPER-------------------------------//
 
     /**
      * Helps initialising the icons according to the chosen team

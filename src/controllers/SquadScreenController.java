@@ -17,80 +17,59 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
-
+/**
+ * Squad screen with a list of team members
+ */
 public class SquadScreenController extends MainTemplateController{
 
     @FXML
     private ComboBox<String> teamBox;
-
     @FXML
     private ComboBox<String> memberFilterBox;
-
     @FXML
     private TableView<TeamMember> squadTable;
-
     @FXML
     private TableColumn<TeamMember, String> firstNameColumn;
-
     @FXML
     private TableColumn<TeamMember, String> lastNameColumn;
-
     @FXML
     private TableColumn<TeamMember, String> birthdayColumn;
-
     @FXML
     private TableColumn<TeamMember, String> teamRoleColumn;
-
     @FXML
     private TableColumn<TeamMember, String> emailColumn;
-
     @FXML
     private TableColumn<TeamMember, Button> detailedViewColumn;
-
     @FXML
     private Pane disablePane;
-
     @FXML
     private Pane detailsPane;
-
     @FXML
     private GridPane lastFiveTrainingsGrid;
-
     @FXML
     private GridPane trainingAveragesGrid;
-
     @FXML
     private GridPane averageGameStatsGrid;
-
     @FXML
     private GridPane lastGameStatsGrid;
-
     @FXML
     private GridPane squadPane;
-
     @FXML
     private Label detailsFullNameLabel;
-
     @FXML
     private Label detailsBirthdayLabel;
-
     @FXML
     private Label detailsEmailLabel;
-
     @FXML
     private Label detailsTeamRoleLabel;
-
     @FXML
     private ImageView playerPhotoView;
-
-    //---------------------Help Pane---------------------------//
     @FXML
     private GridPane helpPane;
     @FXML
     private ImageView helpPaneIcon;
 
     private ObservableList<String> teamNames = FXCollections.observableArrayList();
-
     private ObservableList<String> memberFilterOptions = FXCollections.observableArrayList("All Members", "Players", "Assistant Coaches", "Head Coaches");
 
     private String[] footballAverages = {"Gpg","Apg","Spg","YCpg", "RCpg"};
@@ -99,6 +78,10 @@ public class SquadScreenController extends MainTemplateController{
     private String[] basketballAverages = {"Ppg","Apg","Rpg","Spg", "Bpg"};
     private String[] basketballGameStats = {"Pts", "Ast","Rbd","Stl","Blk"};
 
+    /**
+     * Initialises scene properties
+     * @param user current user session
+     */
     public void initData(UserSession user){
         super.initData(user);
 
@@ -138,6 +121,9 @@ public class SquadScreenController extends MainTemplateController{
         AppManager.fadeIn(squadPane,500);
     }
 
+    /**
+     * Sets up the pane to display selected members details
+     */
     private void setUpDetailsPane() {
         //TODO get values from database and show it here
         for(int i = 0; i < 5; i++){
@@ -152,6 +138,9 @@ public class SquadScreenController extends MainTemplateController{
         }
     }
 
+    /**
+     * Updates the table
+     */
     public void updateSquadTable() {
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<TeamMember, String>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<TeamMember, String>("lastName"));
@@ -189,10 +178,14 @@ public class SquadScreenController extends MainTemplateController{
         }));
     }
 
+    /**
+     * Opens the details pane for the selected team member
+     * @param member selected team member
+     * @throws SQLException
+     */
     private void showPane(TeamMember member) throws SQLException {
         disablePane.setVisible(true);
         detailsPane.setVisible(true);
-
 
         Image photo = DatabaseManager.getPhoto(user.getDatabaseConnection(), member.getFileId());
         if( photo != null){
@@ -220,16 +213,26 @@ public class SquadScreenController extends MainTemplateController{
         detailsTeamRoleLabel.setText(member.getTeamRole());
     }
 
+    /**
+     * Closes details pane
+     * @param event close button pushed
+     */
     public void closeButtonPushed(ActionEvent event) {
         disablePane.setVisible(false);
         detailsPane.setVisible(false);
     }
 
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
     private void darkIcons() throws URISyntaxException {
         playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/white/big_profile_white.png").toURI().toString()));
         helpPaneIcon.setImage((new Image(getClass().getResource("/Resources/Images/white/help_white.png").toURI().toString())));
     }
 
+    /**
+     * Helps initialising the icons according to the chosen team
+     */
     private void lightIcons() throws URISyntaxException {
         playerPhotoView.setImage(new Image(getClass().getResource("/Resources/Images/black/big_profile_black.png").toURI().toString()));
         helpPaneIcon.setImage((new Image(getClass().getResource("/Resources/Images/black/help_black.png").toURI().toString())));
