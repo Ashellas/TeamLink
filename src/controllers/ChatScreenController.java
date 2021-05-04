@@ -18,18 +18,13 @@ import java.util.ArrayList;
 
 public class ChatScreenController extends MainTemplateController implements InitializeData {
 
-    private final int MAX_ROW_INDEX = 4;
-
-    int currentIndex;
+    private int currentIndex;
 
     @FXML
     private Label teamNameLabel;
 
     @FXML
     private ComboBox<Team> teamBox;
-
-    @FXML
-    private Label header;
 
     @FXML
     private ImageView teamLogo;
@@ -48,6 +43,9 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     @FXML
     private Button submitButton;
+
+    @FXML
+    private GridPane chatPane;
 
     @FXML
     private ImageView arrowIcon;
@@ -71,7 +69,6 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     private ArrayList<GridPane> gridPanes;
 
-    private int upMoves;
 
     public void initData(UserSession user){
         super.initData(user);
@@ -94,7 +91,6 @@ public class ChatScreenController extends MainTemplateController implements Init
         teamBox.getSelectionModel().selectFirst();
 
         currentIndex = 0;
-        upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
 
         downButton.setDisable(true);
 
@@ -110,6 +106,8 @@ public class ChatScreenController extends MainTemplateController implements Init
                 e.printStackTrace();
             }
         }
+
+        AppManager.fadeIn(chatPane,500);
 
         Platform.runLater(() -> {
             try {
@@ -142,19 +140,12 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     public void updateGrid() throws SQLException {
         Announcement announcement;
-        int extraAnnouncement;
-        int userAnnouncement;
         int rowIndex;
-        int firstUserIndex;
 
         for(GridPane grid : gridPanes){
             announcementsGrid.getChildren().remove(grid);
         }
-
-        int announcementIndex = currentIndex;
-        //userAnnouncement = 5 - extraAnnouncement;
         rowIndex = 4;
-        //firstUserIndex = extraAnnouncement;
 
         for (int i = 0; i < 5; i++) {
             if (currentIndex + i < user.getAnnouncements(teamBox.getValue()).size()) {
@@ -182,7 +173,6 @@ public class ChatScreenController extends MainTemplateController implements Init
     public void moveDown(ActionEvent actionEvent) throws SQLException {
         if (currentIndex > 0) {
             currentIndex--;
-            upMoves++;
             updateGrid();
         }
         if (currentIndex == 0) {
@@ -193,10 +183,8 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     public void teamSelected(ActionEvent actionEvent) throws SQLException {
         currentIndex = 0;
-        upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
         setUpAnnouncementsGrid();
         currentIndex = 0;
-        upMoves = user.getAnnouncements(teamBox.getValue()).size() - 5;
 
         downButton.setDisable(true);
 
@@ -229,11 +217,14 @@ public class ChatScreenController extends MainTemplateController implements Init
 
     private void lightIcons() {
         arrowIcon.setImage((new Image("/Resources/Images/black/outline_arrow_back_ios_black_24dp.png")));
+        helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
+
     }
 
 
     private void darkIcons() {
         arrowIcon.setImage((new Image("/Resources/Images/white/outline_arrow_back_ios_white_24dp.png")));
+        helpPaneIcon.setImage((new Image("/Resources/Images/white/help_white.png")));
     }
 
     private GridPane createCustomAnnouncementGridPane(String notTitle, String notDescription){
@@ -336,5 +327,8 @@ public class ChatScreenController extends MainTemplateController implements Init
         helpPane.setDisable(true);
         helpPane.setVisible(false);
     }
+
+    @Override
+    public void toChatScreen(ActionEvent actionEvent) throws IOException {}
 
 }

@@ -61,6 +61,9 @@ public class MainScreenController extends MainTemplateController{
     private GridPane applicantsPane;
 
     @FXML
+    private GridPane mainScreenPane;
+
+    @FXML
     private Pane disablePane;
 
     //---------------------Help Pane---------------------------//
@@ -106,6 +109,8 @@ public class MainScreenController extends MainTemplateController{
         for(Team team : user.getStandings(user.getUserTeams().get(0))){
             System.out.println(team.getTeamName());
         }
+
+        AppManager.fadeIn(mainScreenPane,500);
     }
 
     private void setUpCalendarGrid() throws IOException {

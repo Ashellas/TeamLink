@@ -256,4 +256,6 @@ public class SquadScreenController extends MainTemplateController{
         helpPane.setDisable(true);
         helpPane.setVisible(false);
     }
+
+
 }

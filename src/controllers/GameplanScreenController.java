@@ -64,6 +64,9 @@ public class GameplanScreenController extends MainTemplateController {
     private GridPane darkPane;
 
     @FXML
+    private GridPane gamePlanPane;
+
+    @FXML
     private HBox emptyHBox;
 
     @FXML
@@ -144,6 +147,8 @@ public class GameplanScreenController extends MainTemplateController {
             return t ;
         });
         gameplanViewsGrids = new ArrayList<>();
+
+        AppManager.fadeIn(gamePlanPane,500);
 
         addGrid.setVisible(false);
     }
@@ -436,4 +441,7 @@ public class GameplanScreenController extends MainTemplateController {
     public void lightIcons() {
         helpPaneIcon.setImage((new Image("/Resources/Images/black/help_black.png")));
     }
+
+    @Override
+    public void toGameplanScreen(ActionEvent actionEvent) throws  IOException { }
 }

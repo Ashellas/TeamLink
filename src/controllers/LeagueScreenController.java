@@ -24,11 +24,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Controllers of the league screen. Methods to interact the tables, combo boxes and buttons of the
- * league screen.
- *
- */
+
 public class LeagueScreenController extends MainTemplateController
 {
     //Constants
@@ -132,6 +128,8 @@ public class LeagueScreenController extends MainTemplateController
     @FXML
     private GridPane addPlayersGridPane;
     @FXML
+    private GridPane leaguePane;
+    @FXML
     private Label roundNoLabel;
     @FXML
     private TableColumn<TeamMember, String> addPlayerNameColumn;
@@ -179,6 +177,7 @@ public class LeagueScreenController extends MainTemplateController
     private ObservableList<TeamMember> userSelectedTeamMembers = FXCollections.observableArrayList();
     private ObservableList<TeamMember> userSelectedTeamMembersAtPlayersAddComboBox = FXCollections.observableArrayList();
     private ObservableList<Game> gamesOfTheRound = FXCollections.observableArrayList();
+    private HashMap<Game, ArrayList<TeamMember>> addedPlayers = new HashMap<Game, ArrayList<TeamMember>>();
 
     /**
      * Sets the intial data when the scene is opened
@@ -215,8 +214,10 @@ public class LeagueScreenController extends MainTemplateController
 
         //Team selection combo box, player statistics table and add player table are initialized
         setTeamSelectionComboBox();
-        setPlayerStatisticsTable( );
+        setPlayerStatisticsTable();
         setAddPlayerTable();
+
+        AppManager.fadeIn(leaguePane,500);
     }
 
     /**
@@ -447,11 +448,11 @@ public class LeagueScreenController extends MainTemplateController
     {
         //Setting the rows of the table
         playerStatisticsNameColumn.setCellValueFactory( new PropertyValueFactory<>("fullName"));
-        playerStatisticsFirstColumn.setCellValueFactory( new PropertyValueFactory<>("firstColumnData"));
-        playerStatisticsSecondColumn.setCellValueFactory( new PropertyValueFactory<>("secondColumnData"));
-        playerStatisticsThirdColumn.setCellValueFactory( new PropertyValueFactory<>("thirdColumnData"));
-        playerStatisticsForthColumn.setCellValueFactory( new PropertyValueFactory<>("forthColumnData"));
-        playerStatisticsFifthColumn.setCellValueFactory( new PropertyValueFactory<>("fifthColumnData"));
+        playerStatisticsFirstColumn.setCellValueFactory( new PropertyValueFactory<>("pointsOrGoalsScored"));
+        playerStatisticsSecondColumn.setCellValueFactory( new PropertyValueFactory<>("assists"));
+        playerStatisticsThirdColumn.setCellValueFactory( new PropertyValueFactory<>("reboundsOrSavesMade"));
+        playerStatisticsForthColumn.setCellValueFactory( new PropertyValueFactory<>("stealsOrYellowCard"));
+        playerStatisticsFifthColumn.setCellValueFactory( new PropertyValueFactory<>("blocksOrRedCard"));
 
         /* Sets the table with the userSelectedTeamMembers observable list which consists of players
            of the user's team
@@ -495,11 +496,11 @@ public class LeagueScreenController extends MainTemplateController
            We use hashmaps to easily seperate the games by making games keys and
            arrayList of added players as values
          */
-        if( Game.addedPlayers.get( gameClicked) != null)
+        if( addedPlayers.get( gameClicked) != null)
         {
-            for( int arrayIndex = 0; arrayIndex < Game.addedPlayers.get( gameClicked).size(); arrayIndex++)
+            for( int arrayIndex = 0; arrayIndex < addedPlayers.get( gameClicked).size(); arrayIndex++)
             {
-                userSelectedTeamMembers.add( Game.addedPlayers.get( gameClicked).get(arrayIndex) );
+                userSelectedTeamMembers.add( addedPlayers.get( gameClicked).get(arrayIndex) );
             }
         }
 
@@ -575,20 +576,20 @@ public class LeagueScreenController extends MainTemplateController
                the message that a main member of the team cannot be removed when the button is clicked
                as there are no added players
              */
-            if( !Game.addedPlayers.containsKey( gameClicked))
+            if( !addedPlayers.containsKey( gameClicked))
             {
                 super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
             }
             else
             {
                 //If the player that is clicked is an added player, then remove the player
-                if( Game.addedPlayers.get( gameClicked).contains( player) )
+                if( addedPlayers.get( gameClicked).contains( player) )
                 {
                     //remove from the observational list
                     userSelectedTeamMembers.remove( player);
 
                     //remove from the added player arrayList that is in the hashmap
-                    Game.addedPlayers.get( gameClicked).remove( player);
+                    addedPlayers.get( gameClicked).remove( player);
 
                     //Refresh the player statistics table
                     playerStatisticsTable.refresh();
@@ -596,7 +597,7 @@ public class LeagueScreenController extends MainTemplateController
                     //display the message that informs the user that the player has been removed
                     super.displayMessage( messagePane, "The player has been removed", false);
                 }
-                else if( !Game.addedPlayers.get( gameClicked).contains( player) )
+                else if( !addedPlayers.get( gameClicked).contains( player) )
                 {
                     //display the message that infroms the user that the player cannot be removed
                     super.displayMessage( messagePane, "You cannot remove a main member of the team", true);
@@ -606,7 +607,7 @@ public class LeagueScreenController extends MainTemplateController
                    then set the visibility of submit changes button as false
                    submitChangesButton is the button that sends the added players to the database
                  */
-                if( Game.addedPlayers.get( gameClicked).isEmpty())
+                if( addedPlayers.get( gameClicked).isEmpty())
                 {
                     submitChangesButton.setVisible(false);
                 }
@@ -720,11 +721,6 @@ public class LeagueScreenController extends MainTemplateController
 
                 //Display the message that the data has been successfully sent
                 super.displayMessage(messagePane, "You have successfully entered " + player.getFullName() +"'s statistics.", false);
-                player.getGameStats().setFirstStat(null);
-                player.getGameStats().setSecondStat(null);
-                player.getGameStats().setThirdStat(null);
-                player.getGameStats().setForthStat(null);
-                player.getGameStats().setFifthStat(null);
             }
 
             return player;
@@ -984,9 +980,9 @@ public class LeagueScreenController extends MainTemplateController
             setAddPlayersComboBox();
 
             //If the clicked game is not a key in hashmap, then add it to the hashmap as a key
-            if( Game.addedPlayers.get( gameClicked) == null)
+            if( addedPlayers.get( gameClicked) == null)
             {
-                Game.addedPlayers.put( gameClicked, new ArrayList<TeamMember>());
+                addedPlayers.put( gameClicked, new ArrayList<TeamMember>());
             }
         }
     }
@@ -1045,7 +1041,7 @@ public class LeagueScreenController extends MainTemplateController
         {
             //Add the player to the userSelectedTeamMembers observable list and addedPlayers hashmap
             userSelectedTeamMembers.add( player);
-            Game.addedPlayers.get( gameClicked).add( player);
+            addedPlayers.get( gameClicked).add( player);
 
             //Update the player statistics table
             playerStatisticsTable.refresh();
@@ -1073,8 +1069,7 @@ public class LeagueScreenController extends MainTemplateController
      * @param actionEvent league button pushed
      */
     @Override
-    public void toLeagueScreen(ActionEvent actionEvent) {
-    }
+    public void toLeagueScreen(ActionEvent actionEvent) {}
 
     /**
      * sets the icon's colors if the dark theme is selected
@@ -1123,4 +1118,5 @@ public class LeagueScreenController extends MainTemplateController
         helpPane.setDisable(true);
         helpPane.setVisible(false);
     }
+
 }

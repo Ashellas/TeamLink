@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
@@ -584,7 +585,7 @@
                            </rowConstraints>
                            <children>
                               <Button id="createTraining" fx:id="createTraining" mnemonicParsing="false" onAction="#newTraining" prefHeight="38.0" prefWidth="178.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" text="New Training" />
-                              <ComboBox fx:id="chooseBetweenTeams" onAction="#chooseBetweenTeamsSelected" prefHeight="40.0" prefWidth="237.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="chooseBetweenTeams" prefHeight="40.0" prefWidth="237.0" stylesheets="@../stylesheets/TrainingStyleSheet.css" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                         <HBox fx:id="tableViewHolder" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
@@ -860,6 +861,118 @@
                   <URL value="@../stylesheets/TrainingStyleSheet.css" />
                   <URL value="@../stylesheets/gridPaneCSS.css" />
                </stylesheets>
+            </GridPane>
+            <Pane fx:id="darkPane" opacity="0.5" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: BLACK;" GridPane.columnIndex="1" />
+            <GridPane fx:id="helpPane" disable="true" GridPane.columnIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <GridPane stylesheets="@../stylesheets/gridPaneCSS.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" percentHeight="15.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="2.0" minHeight="0.0" prefHeight="2.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label styleClass="text" text="Help" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="Verdana" size="33.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #a1289f;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                        <ImageView fx:id="helpPaneIcon" fitHeight="150.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/Images/white/help_white.png" />
+                           </image>
+                           <GridPane.margin>
+                              <Insets left="20.0" top="40.0" />
+                           </GridPane.margin>
+                        </ImageView>
+                        <GridPane GridPane.rowIndex="1">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" percentHeight="80.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label alignment="TOP_LEFT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" text="Training page:&#10;&#10;This page is the training page. If you are a head coach or an assistant coach, there is a button called “new training”. When clicked, the coaches can create new trainings when filled all the information correctly. &#10;&#10;There is a line chart that shows the selected team’s status. From the combo box at the top, users can change the team that they want to see.&#10;&#10;At the left, you can see the first 6 trainings, and when clicked on the next-back buttons, you can view other trainings, too. If you have a coach role, you can rate and delete the trainings by clicking on the buttons. When clicked on rate, a rating panel will be opened and you should rate all players via a slider. When the rating process is completed, you should press the submit button." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </GridPane>
+                     </children>
+                     <styleClass>
+                        <String fx:value="detailsGrid" />
+                        <String fx:value="mainGrid" />
+                     </styleClass>
+                  </GridPane>
+                  <Button mnemonicParsing="false" onAction="#helpPaneClose" prefHeight="89.0" prefWidth="50.0" stylesheets="@../stylesheets/Main.css" textFill="#aa2020" GridPane.columnIndex="2">
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" minHeight="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="76.0" prefWidth="50.0">
+                           <children>
+                              <ImageView fx:id="cancelButtonView11" fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Resources/Images/white/cancel_white.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label prefWidth="242.0" styleClass="buttonText" text="Close" textFill="WHITE" visible="false">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <styleClass>
+                        <String fx:value="menu" />
+                        <String fx:value="cancel" />
+                     </styleClass>
+                  </Button>
+               </children>
             </GridPane>
          </children>
       </GridPane>

@@ -534,7 +534,7 @@
                   </Button>
                </children>
             </GridPane>
-            <GridPane GridPane.columnIndex="1">
+            <GridPane fx:id="chatPane" GridPane.columnIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="70.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="2.0" minWidth="2.0" prefWidth="100.0" />
@@ -869,7 +869,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label alignment="TOP_LEFT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" text="Log in screen:&#10;&#10;If you have already an account, you can log in to our application by entering your &#10;email and password to the stated areas. After filling the information correctly, you&#10;will be logged in.&#10;If there is an error, the error will be popped up in the screen and you have to&#10;reenter your information.&#10;If you forgot your password, you should click on the “Forgot password?” link.&#10;Then, you will be directed to a password recovery stage.&#10;If you do not have any account yet, click on the “Don’t have account?” link. Then,&#10;you will be directed to the sign up screen to create an account.&#10;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Label alignment="TOP_LEFT" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="text" text="Chat &amp; Forum page:&#10;&#10;This is the forum page. Here, you can view older messages and even view older messages by clicking to the up and down buttons.&#10;&#10;You can also create your own announcement by choosing the team you want your message to send to, typing the announcement and the title, and then clicking on the submit button.&#10;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="20.0" />
                                  </font>

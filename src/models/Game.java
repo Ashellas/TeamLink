@@ -1,11 +1,8 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Game extends CalendarEvent{
-    public static HashMap<Game, ArrayList<TeamMember>> addedPlayers = new HashMap<Game, ArrayList<TeamMember>>();
     private int roundNumber;
     private Team homeTeam;
     private Team awayTeam;
