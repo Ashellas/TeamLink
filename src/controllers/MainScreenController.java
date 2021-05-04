@@ -3,17 +3,24 @@ package controllers;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.*;
 
 import java.io.IOException;
@@ -26,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class MainScreenController extends MainTemplateController{
@@ -125,6 +134,8 @@ public class MainScreenController extends MainTemplateController{
     String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"};
 
     private Team selectedTeam;
+    private Stage loading;
+    private Executor exec;
 
     public void initData(UserSession user){
         super.initData(user);
@@ -176,6 +187,17 @@ public class MainScreenController extends MainTemplateController{
         disablePane.setDisable(true);
         helpPane.setVisible(false);
         helpPane.setDisable(true);
+        try {
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
+
         applicantsPane.setVisible(false);
         setUpApplicantsTable();
         for(Team team : user.getStandings(user.getUserTeams().get(0))){
@@ -597,5 +619,41 @@ public class MainScreenController extends MainTemplateController{
 
     public void standingsView(ActionEvent event) throws IOException {
         toLeagueScreen(event);
+    }
+
+    @Override
+    public void SynchronizeData(ActionEvent event) {
+        disablePane.setVisible(true);
+        loading.show();
+        Task<UserSession> userCreateTask =  new Task<UserSession>() {
+            @Override
+            public UserSession call() throws Exception {
+                System.out.println(" Succeed at : " + new java.util.Date());
+                return DatabaseManager.sync(user);
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            displayMessage(messagePane, "Session is synchronized", false);
+            loading.close();
+            disablePane.setVisible(false);
+            System.out.println("gg"); });
+
+        // Task.getValue() gives the value returned from call()...
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
+    }
+
+    private void createLoading() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        disablePane.setOpacity(0.5);
     }
 }

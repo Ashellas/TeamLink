@@ -155,20 +155,22 @@ public class CalendarScreenController extends MainTemplateController {
             Label l = labels.get(i + firstDay - 2);
             l.setText("   " + i + "");
             for (CalendarEvent ce : events) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(ce.getEventDateTime());
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                String formattedDate = sdf.format(ce.getEventDateTime());
-                if (i == calendar.get(Calendar.DAY_OF_MONTH)) {
-                    ListView<Button> buttonListView = lists.get(i + firstDay - 2);
-                    if (ce.getActionLink() != null) {
-                        try {
-                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                if (ce != null) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(ce.getEventDateTime());
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    String formattedDate = sdf.format(ce.getEventDateTime());
+                    if (i == calendar.get(Calendar.DAY_OF_MONTH)) {
+                        ListView<Button> buttonListView = lists.get(i + firstDay - 2);
+                        if (ce.getActionLink() != null) {
+                            try {
+                                buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), formattedDate, ce.getActionLink(), ce.getColorCode(), user));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                         }
-                    } else {
-                        buttonListView.getItems().add(new CalendarButton(ce.getEventTitle(), ce.getColorCode(), user));
                     }
                 }
             }

@@ -2,8 +2,12 @@ package controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +19,9 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.*;
 import java.awt.*;
 import java.io.IOException;
@@ -23,6 +30,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class LeagueScreenController extends MainTemplateController
@@ -175,6 +184,8 @@ public class LeagueScreenController extends MainTemplateController
     private ObservableList<TeamMember> userSelectedTeamMembers = FXCollections.observableArrayList();
     private ObservableList<TeamMember> userSelectedTeamMembersAtPlayersAddComboBox = FXCollections.observableArrayList();
     private ObservableList<Game> gamesOfTheRound = FXCollections.observableArrayList();
+    private Stage loading;
+    private Executor exec;
 
     /**
      * Sets the intial data when the scene is opened
@@ -208,6 +219,17 @@ public class LeagueScreenController extends MainTemplateController
 
         helpPane.setDisable(true);
         helpPane.setVisible(false);
+
+        try {
+            createLoading();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        exec = Executors.newCachedThreadPool(runnable -> {
+            Thread t = new Thread(runnable);
+            t.setDaemon(true);
+            return t ;
+        });
 
         //Team selection combo box, player statistics table and add player table are initialized
         setTeamSelectionComboBox();
@@ -1103,6 +1125,42 @@ public class LeagueScreenController extends MainTemplateController
         blackenedPane.setVisible(false);
         helpPane.setDisable(true);
         helpPane.setVisible(false);
+    }
+
+    @Override
+    public void SynchronizeData(ActionEvent event) {
+        blackenedPane.setVisible(true);
+        loading.show();
+        Task<UserSession> userCreateTask =  new Task<UserSession>() {
+            @Override
+            public UserSession call() throws Exception {
+                System.out.println(" Succeed at : " + new java.util.Date());
+                return DatabaseManager.sync(user);
+            }
+        };
+        userCreateTask.setOnFailed(e -> {
+            userCreateTask.getException().printStackTrace();
+            // inform user of error...
+        });
+
+        userCreateTask.setOnSucceeded(e -> {
+            displayMessage(messagePane, "Session is synchronized", false);
+            loading.close();
+            blackenedPane.setVisible(false);
+            System.out.println("gg"); });
+
+        // Task.getValue() gives the value returned from call()...
+        // run the task using a thread from the thread pool:
+        exec.execute(userCreateTask);
+    }
+
+    private void createLoading() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/views/LoadingScreen.fxml"));
+        loading = new Stage();
+        loading.initStyle(StageStyle.UNDECORATED);
+        loading.initModality(Modality.APPLICATION_MODAL);
+        loading.setScene(new Scene(root));
+        blackenedPane.setOpacity(0.5);
     }
 
 }
