@@ -391,9 +391,8 @@ public class DatabaseManager {
         for (Team team : userTeams){
             ObservableList<Game> games = FXCollections.observableArrayList();
             PreparedStatement prepStmt = databaseConnection.prepareStatement("select * from league_games join leagues l " +
-                    "on league_games.league_id = l.league_id and league_games.round_no = (l.current_round - ? )and l.league_id = ? ");
-            prepStmt.setInt(1, diffFromCurrent);
-            prepStmt.setInt(2, team.getLeagueId());
+                    "on league_games.league_id = l.league_id and league_games.round_no = l.current_round and l.league_id = ? ");
+            prepStmt.setInt(1, team.getLeagueId());
             ResultSet gamesResultSet = prepStmt.executeQuery();
             while (gamesResultSet.next()){
                 int gameId = gamesResultSet.getInt("game_id");
