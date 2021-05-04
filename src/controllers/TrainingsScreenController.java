@@ -258,7 +258,7 @@ public class TrainingsScreenController extends MainTemplateController
         // checks if the submission is valid
         if ( isSubmitValid() )
         {
-            messagePane.setVisible( true );
+            messageGridPane.setVisible( true );
             displayMessage( messagePane, "There is an error", true );
         }
         // if every information is correct.
@@ -330,6 +330,7 @@ public class TrainingsScreenController extends MainTemplateController
      */
     public void refreshCreation()
     {
+        messageGridPane.setVisible( false );
         // name holder
         nameHolder.setText( null );
         nameHolder.setPromptText( "Training name" );
@@ -378,6 +379,7 @@ public class TrainingsScreenController extends MainTemplateController
         statsPane.setVisible( true );
         createTraining.setVisible( true );
         refreshCreation(); // to refresh the text fields
+        messageGridPane.setVisible( false );
     }
 
     /**
