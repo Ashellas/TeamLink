@@ -70,6 +70,10 @@ public class Announcement {
         return timeSent;
     }
 
+    public void setAnnouncementId(int announcementId) {
+        this.announcementId = announcementId;
+    }
+
     public ImageView getSenderProfilePhoto() {
         return senderProfilePhoto;
     }
