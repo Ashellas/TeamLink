@@ -611,6 +611,9 @@ public class LeagueScreenController extends MainTemplateController
      */
     public void setStatisticEnterButtonsOfPlayerStatistics()
     {
+        //Set the header of the enter statistics column
+        playerStatisticsEnterStatisticsColumn.setText( "Enter");
+
         //Set the buttons with the necessary code line
         playerStatisticsEnterStatisticsColumn.setCellFactory( ButtonTableCell.<TeamMember>forTableColumn("Enter", (TeamMember player) -> {
             //The necessary checker if statements to prevent from unwanted inputs from the user
