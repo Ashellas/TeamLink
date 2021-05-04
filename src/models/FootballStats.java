@@ -9,8 +9,8 @@ public class FootballStats extends GameStats{
 
     //TODO think about yellow and red cards
 
-    public FootballStats(TeamMember player, String goalsScored, String assitsMade, String foulsMade, String passesMade, String tacklesMade) {
-        super(player);
+    public FootballStats(int id, String goalsScored, String assitsMade, String foulsMade, String passesMade, String tacklesMade) {
+        super(id);
         this.goalsScored = goalsScored;
         this.assitsMade = assitsMade;
         this.foulsMade = foulsMade;

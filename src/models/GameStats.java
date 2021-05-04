@@ -1,15 +1,13 @@
 package models;
 
 public abstract class GameStats {
-    private TeamMember player;
-
-    public GameStats(TeamMember player) {
-        this.player = player;
+    private int id;
+    public GameStats(int id) {
+        this.id = id;
     }
 
-    public String getPlayerName(){
-        return player.getFullName();
-    }
+
+    public int getId(){return id;}
 
     abstract public String getFirstStat();
     abstract public String getSecondStat();

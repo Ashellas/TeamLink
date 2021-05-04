@@ -9,8 +9,8 @@ public class BasketballStats extends GameStats{
     private String steals;
     private String blocks;
 
-    public BasketballStats(TeamMember player, String points, String assists, String rebounds, String steals, String blocks) {
-        super(player);
+    public BasketballStats(int id , String points, String assists, String rebounds, String steals, String blocks) {
+        super(id);
         this.points = points;
         this.assists = assists;
         this.rebounds = rebounds;

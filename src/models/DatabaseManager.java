@@ -816,7 +816,7 @@ public class DatabaseManager {
             String title = trainingsResultSet.getString("title");
             Date eventDate = trainingsResultSet.getDate("training_date_time");
             String actionLink = "/views/TrainingsScreen.fxml";
-            calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "green"));
+            calendarEvents.add(new CalendarEvent(gameId, title, eventDate, actionLink, "training"));
         }
 
         for (CalendarEvent ce : calendarEvents){
@@ -1036,8 +1036,9 @@ public class DatabaseManager {
 
         prepStmt = databaseConnection.prepareStatement("SELECT * FROM training_additional_players tap" +
                 " left join training_performances tp on tap.training_id = tp.training_id and tap.member_id = tp.member_id " +
-                " join team_members t on t.member_id = tap.member_id");
+                " join team_members t on t.member_id = tap.member_id and tap.training_id = ?");
 
+        prepStmt.setInt(1, training.getCalendarEventId());
         ResultSet additionalPlayersResultSet = prepStmt.executeQuery();
 
         while (additionalPlayersResultSet.next()){
@@ -1158,4 +1159,162 @@ public class DatabaseManager {
         return null;
     }
 
+    public static ObservableList<TeamMember> getGameStats(UserSession userSession, Game game, Team team) throws SQLException {
+        ObservableList<TeamMember> gamePlayers = FXCollections.observableArrayList();
+
+        PreparedStatement prepStmt;
+        if(userSession.getUser().getSportBranch().equals("Basketball")){
+            prepStmt = userSession.getDatabaseConnection().prepareStatement("SELECT * from team_members tm left join " +
+                    "basketball_game_stats bgs on tm.member_id = bgs.member_id join team_and_members tam on " +
+                    "tm.member_id = tam.team_member_id and team_id = ? and team_role = \"Player\"");
+
+            prepStmt.setInt(1, team.getDatabaseTeamId());
+
+            ResultSet memberResultSet = prepStmt.executeQuery();
+            while (memberResultSet.next()) {
+                int memberId = memberResultSet.getInt("tm.member_id");
+                String firstName = memberResultSet.getString("first_name");
+                String lastName = memberResultSet.getString("last_name");
+                GameStats gameStats;
+                if(memberResultSet.getInt("bgs.id") == 0){
+                    gameStats = null;
+                }
+                else {
+                    int statId = memberResultSet.getInt("bgs.id");
+                    int points = memberResultSet.getInt("points");
+                    int assists = memberResultSet.getInt("assists");
+                    int rebounds = memberResultSet.getInt("rebounds");
+                    int steals = memberResultSet.getInt("steals");
+                    int blocks = memberResultSet.getInt("blocks");
+                    gameStats = new BasketballStats(statId, "" + points,"" + assists, "" + rebounds,
+                            ""+ steals, "" + blocks);
+
+                    TeamMember member = new TeamMember(memberId, firstName, lastName, gameStats);
+                    gamePlayers.add(member);
+                }
+            }
+
+            prepStmt = userSession.getDatabaseConnection().prepareStatement("SELECT * FROM games_additional_players gap" +
+                    " left join basketball_game_stats bgs on gap.game_id = bgs.game_id and gap.member_id = bgs.member_id " +
+                    " join team_members t on t.member_id = gap.member_id and gap.game_id = ?");
+            prepStmt.setInt(1, game.getCalendarEventId());
+
+            ResultSet additionalResultSet = prepStmt.executeQuery();
+            while (additionalResultSet.next()){
+                int memberId = memberResultSet.getInt("gap.member_id");
+                String firstName = memberResultSet.getString("first_name");
+                String lastName = memberResultSet.getString("last_name");
+                GameStats gameStats;
+                if(memberResultSet.getInt("tp.id") == 0){
+                    gameStats = null;
+                }
+                else {
+                    int statId = memberResultSet.getInt("bgs.id");
+                    int points = memberResultSet.getInt("points");
+                    int assists = memberResultSet.getInt("assists");
+                    int rebounds = memberResultSet.getInt("rebounds");
+                    int steals = memberResultSet.getInt("steals");
+                    int blocks = memberResultSet.getInt("blocks");
+                    gameStats = new BasketballStats(statId, "" + points,"" + assists, "" + rebounds,
+                            ""+ steals, "" + blocks);
+
+                    TeamMember member = new TeamMember(memberId, firstName, lastName, gameStats);
+                    gamePlayers.add(member);
+                }
+            }
+        }
+        else{
+            prepStmt = userSession.getDatabaseConnection().prepareStatement("SELECT * from team_members tm left join " +
+                    " football_game_stats fgs on tm.member_id = fgs.member_id join team_and_members tam on " +
+                    "tm.member_id = tam.team_member_id and team_id = ? and team_role = \"Player\"");
+            prepStmt.setInt(1, team.getDatabaseTeamId());
+
+            ResultSet memberResultSet = prepStmt.executeQuery();
+            while (memberResultSet.next()){
+                int memberId = memberResultSet.getInt("gap.member_id");
+                String firstName = memberResultSet.getString("first_name");
+                String lastName = memberResultSet.getString("last_name");
+                GameStats gameStats;
+                if(memberResultSet.getInt("fgs.id") == 0){
+                    gameStats = null;
+                }
+                else{
+                    int statId = memberResultSet.getInt("fgs.id");
+                    int goals = memberResultSet.getInt("goals");
+                    int assists = memberResultSet.getInt("assists");
+                    int fouls_made = memberResultSet.getInt("fouls_made");
+                    int passes_made = memberResultSet.getInt("passes_made");
+                    int tackles_made = memberResultSet.getInt("tackles_made");
+                    gameStats = new FootballStats(statId, "" + goals,"" + assists, "" + fouls_made, "" + passes_made,"" + tackles_made);
+
+
+                    TeamMember member = new TeamMember(memberId, firstName, lastName, gameStats);
+                    gamePlayers.add(member);
+                }
+            }
+
+            prepStmt = userSession.getDatabaseConnection().prepareStatement("SELECT * FROM games_additional_players gap" +
+                    " left join football_game_stats fgs on gap.game_id = fgs.game_id and gap.member_id = fgs.member_id " +
+                    " join team_members t on t.member_id = gap.member_id and gap.game_id = ?");
+            prepStmt.setInt(1, game.getCalendarEventId());
+
+            ResultSet additionalResultSet = prepStmt.executeQuery();
+            while (additionalResultSet.next()){
+                int memberId = memberResultSet.getInt("gap.member_id");
+                String firstName = memberResultSet.getString("first_name");
+                String lastName = memberResultSet.getString("last_name");
+                GameStats gameStats;
+                if(memberResultSet.getInt("fgs.id") == 0){
+                    gameStats = null;
+                }
+                else{
+                    int statId = memberResultSet.getInt("fgs.id");
+                    int goals = memberResultSet.getInt("goals");
+                    int assists = memberResultSet.getInt("assists");
+                    int fouls_made = memberResultSet.getInt("fouls_made");
+                    int passes_made = memberResultSet.getInt("passes_made");
+                    int tackles_made = memberResultSet.getInt("tackles_made");
+                    gameStats = new FootballStats(statId, "" + goals,"" + assists, "" + fouls_made, "" + passes_made,"" + tackles_made);
+
+
+                    TeamMember member = new TeamMember(memberId, firstName, lastName, gameStats);
+                    gamePlayers.add(member);
+                }
+            }
+        }
+
+
+
+        return gamePlayers;
+
+    }
+    
+    public static void saveStats(UserSession userSession, Game game, ObservableList<TeamMember> players) throws SQLException {
+        if(userSession.getUser().getSportBranch().equals("Basketball")){
+            for (TeamMember player : players){
+                //if player does not have any previous stat
+                PreparedStatement prepStmt;
+                if(player.getGameStats().getId() == 0){
+                    prepStmt = userSession.getDatabaseConnection().prepareStatement("INSERT " +
+                            "INTO basketball_game_stats (points, assists, rebounds, steals, blocks)" +
+                            "values (?,?,?,?,?)");
+
+                }
+                else{
+                    prepStmt = userSession.getDatabaseConnection().prepareStatement("UPDATE basketball_game_stats bgs" +
+                            " SET bgs.points = ?, bgs.assists = ?, bgs.rebounds = ?, bgs.steals = ?, bgs.blocks = ? " +
+                            "WHERE bgs.id = ?");
+                    prepStmt.setInt(6, player.getGameStats().getId());
+                }
+                prepStmt.setInt(1, Integer.parseInt(player.getFirstColumnData()));
+                prepStmt.setInt(2, Integer.parseInt(player.getSecondColumnData()));
+                prepStmt.setInt(3, Integer.parseInt(player.getThirdColumnData()));
+                prepStmt.setInt(4, Integer.parseInt(player.getForthColumnData()));
+                prepStmt.setInt(5, Integer.parseInt(player.getFifthColumnData()));
+
+                prepStmt.executeUpdate();
+            }
+
+        }
+    }
 }

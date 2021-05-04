@@ -688,7 +688,7 @@ public class LeagueScreenController extends MainTemplateController
                 {
                     try
                     {
-                        DatabaseManager.saveBasketballStats( user, player, new BasketballStats( player, player.getFirstColumnData(), player.getSecondColumnData(), player.getThirdColumnData(), player.getForthColumnData(), player.getFifthColumnData() ), gameClicked );
+                        DatabaseManager.saveBasketballStats( user, player, new BasketballStats( player.getGameStats().getId(), player.getFirstColumnData(), player.getSecondColumnData(), player.getThirdColumnData(), player.getForthColumnData(), player.getFifthColumnData() ), gameClicked );
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -697,7 +697,7 @@ public class LeagueScreenController extends MainTemplateController
                 {
                     try
                     {
-                        DatabaseManager.saveFootball( user, player, new FootballStats( player, player.getFirstColumnData(), player.getSecondColumnData(), player.getThirdColumnData(), player.getForthColumnData(), player.getFifthColumnData() ), gameClicked );
+                        DatabaseManager.saveFootball( user, player, new FootballStats( player.getGameStats().getId(), player.getFirstColumnData(), player.getSecondColumnData(), player.getThirdColumnData(), player.getForthColumnData(), player.getFifthColumnData() ), gameClicked );
                     }
                     catch (SQLException throwables)
                     {
