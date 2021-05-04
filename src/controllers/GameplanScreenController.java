@@ -300,6 +300,7 @@ public class GameplanScreenController extends MainTemplateController {
         for(GridPane grid : gameplanViewsGrids){
             gameplansGrid.getChildren().remove(grid);
         }
+        gameplanViewsGrids = new ArrayList<>();
     }
 
     public void changeAddGridVisibility(ActionEvent event) {
