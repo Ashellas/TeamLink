@@ -16,7 +16,7 @@ public class CalendarEvent {
         this.actionLink = actionLink;
         this.colorCode = colorCode;
     }
-    public CalendarEvent( String eventTitle, Date eventDateTimec)
+    public CalendarEvent( String eventTitle, Date eventDateTime)
     {
         this.eventTitle = eventTitle;
         this.eventDateTime = eventDateTime;
