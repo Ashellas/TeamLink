@@ -1099,9 +1099,6 @@ public class DatabaseManager {
         return announcements;
     }
 
-    public static TeamMember getTeamMemberByEmail(String text) {
-        return null;
-    }
 
 
     public boolean createNewAnnouncement(Connection databaseConnection, Announcement announcement, Team team) throws SQLException {
@@ -1367,14 +1364,14 @@ public class DatabaseManager {
         }
     }
 
-    public static TeamMember getUserByMail(UserSession userSession,String email) throws SQLException {
+    public static TeamMember getTeamMemberByEmail(UserSession userSession,String email) throws SQLException {
         PreparedStatement prepStmt = userSession.getDatabaseConnection().prepareStatement("SELECT member_id FROM team_members " +
                 "where email = ?");
         prepStmt.setString(1, email);
         ResultSet resultSet = prepStmt.executeQuery();
         if(resultSet.next()){
             int memberId = resultSet.getInt("member_id");
-            return new TeamMember(memberId);
+            return new TeamMember(memberId, email);
         }
         return null;
     }

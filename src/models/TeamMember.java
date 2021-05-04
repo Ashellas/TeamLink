@@ -71,8 +71,9 @@ public class TeamMember {
         this.gameStats = gameStats;
     }
 
-    public TeamMember(int memberId) {
+    public TeamMember(int memberId, String email) {
         this.memberId = memberId;
+        this.email = email;
     }
 
     public int getMemberId() {

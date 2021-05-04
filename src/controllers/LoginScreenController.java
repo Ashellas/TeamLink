@@ -146,7 +146,7 @@ public class LoginScreenController implements  InitializeData{
         int min = 10000000;
         int max = 99999999;
         tempPassword = String.valueOf((int) ((Math.random() * (max - min)) + min));
-        TeamMember member = DatabaseManager.getTeamMemberByEmail(resetEmailField.getText());
+        TeamMember member = DatabaseManager.getTeamMemberByEmail(userSession, resetEmailField.getText());
         if (member != null) {
             send(MAIL_FROM,"gzdbjvklvtofhphq",resetEmailField.getText(), MAIL_SUBJECT,
                     "The password for the account with this mail address has been changed to " +  tempPassword);
