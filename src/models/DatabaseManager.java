@@ -274,8 +274,10 @@ public class DatabaseManager {
             byte[] photoBytes = resultSet.getBytes("file");
             if(photoBytes != null)
             {
-                InputStream imageFile = resultSet.getBinaryStream("file");
-                profilePicture = new Image(imageFile);
+                if(photoBytes.length != 0){
+                    InputStream imageFile = resultSet.getBinaryStream("file");
+                    profilePicture = new Image(imageFile);
+                }
             }
             else{
                 profilePicture = null;
@@ -449,16 +451,15 @@ public class DatabaseManager {
             String teamRole = resultSet.getString("team_role");
             String sportBranch = resultSet.getString("sport_branch");
             int fileId = resultSet.getInt("file_id");
-            Image profilePicture;
+            Image profilePicture = null;
             byte[] photoBytes = resultSet.getBytes("file");
-            if(photoBytes.length != 0)
-            {
-                System.out.println("NOT NULL");
-                InputStream imageFile = resultSet.getBinaryStream("file");
-                profilePicture = new Image(imageFile);
-            }
-            else{
-                profilePicture = null;
+            if(photoBytes != null){
+                if(photoBytes.length != 0)
+                {
+                    System.out.println("NOT NULL");
+                    InputStream imageFile = resultSet.getBinaryStream("file");
+                    profilePicture = new Image(imageFile);
+                }
             }
             return new TeamMember(memberId, firstName, lastName, birthday, teamRole, email, sportBranch, profilePicture, fileId);
         }
@@ -492,15 +493,14 @@ public class DatabaseManager {
             String ageGroup = teamsResultSet.getString("age_group");
             String teamCode = teamsResultSet.getString("team_code");
             int teamFileıd = teamsResultSet.getInt("file_id");
-            Image teamLogo;
+            Image teamLogo = null;
             byte[] photoBytes = teamsResultSet.getBytes("file");
-            if(photoBytes.length != 0)
-            {
-                InputStream imageFile = teamsResultSet.getBinaryStream("file");
-                teamLogo = new Image(imageFile);
-            }
-            else{
-                teamLogo = null;
+            if(photoBytes != null){
+                if(photoBytes.length != 0)
+                {
+                    InputStream imageFile = teamsResultSet.getBinaryStream("file");
+                    teamLogo = new Image(imageFile);
+                }
             }
             prepStmt = databaseConnection.prepareStatement("select * from team_and_members join team_members tm on tm.member_id = " +
                     "team_and_members.team_member_id and team_id = ?");
@@ -821,8 +821,10 @@ public class DatabaseManager {
             byte[] photoBytes = resultSet.getBytes("file");
             if(photoBytes != null)
             {
-                InputStream imageFile = resultSet.getBinaryStream("file");
-                return new Image(imageFile);
+                if(photoBytes.length != 0){
+                    InputStream imageFile = resultSet.getBinaryStream("file");
+                    return new Image(imageFile);
+                }
             }
         }
         return null;
@@ -1235,15 +1237,14 @@ public class DatabaseManager {
                 String firstName = resultSet.getString("first_name");
                 String lastName = resultSet.getString("last_name");
 
-                Image profilePicture;
+                Image profilePicture = null;
                 byte[] photoBytes = resultSet.getBytes("file");
                 if(photoBytes != null)
                 {
-                    InputStream imageFile = resultSet.getBinaryStream("file");
-                    profilePicture = new Image(imageFile);
-                }
-                else{
-                    profilePicture = null;
+                    if(photoBytes.length != 0){
+                        InputStream imageFile = resultSet.getBinaryStream("file");
+                        profilePicture = new Image(imageFile);
+                    }
                 }
 
                 TeamMember member = new TeamMember(senderId, firstName, lastName, profilePicture);
