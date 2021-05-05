@@ -25,7 +25,9 @@ public class Notification {
         this.clickAction = clickAction;
         this.timeSent = timeSent;
         this.isUnread = isUnread;
-        this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
+        if(sender.getProfilePhoto() != null){
+            this.senderProfilePhoto = new ImageView(sender.getProfilePhoto().getImage());
+        }
     }
     public Notification(String title, String description, TeamMember sender, TeamMember recipient, String clickAction) {
         this.title = title;
